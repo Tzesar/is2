@@ -1,0 +1,16 @@
+1) git reset HEAD
+ unstage files from index and reset pointer to HEAD
+You can use it to unstage something that has been accidentally staged.
+* If you want to be able to just run git unstage, you can easily setup an alias in Git. Just run git config --global alias.unstage "reset HEAD". Once you have run that, you can then just run git unstage [file] instead.
+
+
+2) git reset --soft
+ moves HEAD to specified commit reference, index and staging are untouched
+The first thing git reset does is undo the last commit and put the files back onto the stage. If you include the --soft flag this is where it stops. For example, if you run git reset --soft HEAD~ (the parent of the HEAD) the last commit will be undone and the files touched will be back on the stage again.
+
+
+
+
+3) git reset --hard
+ unstage files AND undo any changes in the working directory since last commit
+The third option is to go --hard and make your working directory look like the index, unstage files and undo any changes made since the last commit. This is the most dangerous option and not working directory safe. Any changes not in the index or have not been commited will be lost.
