@@ -17,3 +17,4 @@ The third option is to go --hard and make your working directory look like the i
 
 4) Esto es una prueba del git
 algo abajo
+algo más abajo
