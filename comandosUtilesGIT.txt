@@ -14,3 +14,7 @@ The first thing git reset does is undo the last commit and put the files back on
 3) git reset --hard
  unstage files AND undo any changes in the working directory since last commit
 The third option is to go --hard and make your working directory look like the index, unstage files and undo any changes made since the last commit. This is the most dangerous option and not working directory safe. Any changes not in the index or have not been commited will be lost.
+
+4) Esto es una prueba del git
+algo abajo
+algo más abajo
