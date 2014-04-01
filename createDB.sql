@@ -1,0 +1,1 @@
+CREATE DATABASE zarbd OWNER zar;

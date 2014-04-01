@@ -1,0 +1,30 @@
+Para cambiar la contraseña del usuario 'postgres' de PostgresSQL mirar los
+sgtes. enlaces:
+
+http://stackoverflow.com/questions/10845998/i-forgot-the-password-i-entered-during-postgres-installation
+
+Fragmento relevante de la página
+
+You can change the file pg_hba.conf - it may be located, for example in /etc/postgresql/9.1/pg_hba.conf.
+Just place there a line (as the first not-commented one, or as the only one):
+
+	local  all   all   trust
+
+then restart your PostgreSQL server, and then you will be able to connect as any user.
+After you fix your password, remove this line as it is very dangerous (and restart the server) with
+
+	sudo service postgresql restart
+
+Then you may need to specify a superuser, so your command will be something like:
+
+	psql -U postgres -d template1
+
+Ahora dentro de la consola de PostgreSQL utilizar este comando para cambiar la contraseña a 'postgres'
+
+	ALTER ROLE postgres WITH PASSWORD 'postgres';
+
+Entonces se debe comentar o eliminar la línea que se agregó al archivo /etc/postgresql/9.1/pg_hba.conf
+
+	#local	all	all	trust
+
+Y reiniciar el servicio como se mostró anteriormente.
