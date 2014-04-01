@@ -2,7 +2,6 @@ RF-30 > Es necesario especificar esto?
 RF-49 > Reescribir para entender mejor.
 RF-53, RF-54 > El motivo y una observacion ? Puede ser.
 RF-55 > ...del Cambio de Estado del "Usuario", debe ser Proyecto?. Aplicar lo de RF-49.
-RF-[56-60] > Se pueden borrar proyectos?. Deberia existir un estado "Eliminado"?
 RF-60 > Que significa "desvincular" a usuarios?
 RF-67.3 > Estado "En desarrollo", puede ser "Activa"?
 RF-72 > corregir concordancia "puede"
@@ -11,6 +10,12 @@ RF-74 > Ya no corresponde. Segun el prof. GG "No se pueden modificar fases luego
 RF-75 > Cambiar "creados" por "asociados", ya que se pueden modificar las asociaciones a tipos de items que no fueron creados para dicha fase.
 RF-75 > Se debe especificar aqui que los Tipos de items pueden ser modificados?
 RF-76 > Especificar cuando y quienes pueden realizar cambios de estado en las fases asi como las tranciciones posibles de estados. justo como Cambio de Estado de Proyectos RF-[50-55]
-RF-78 > Idem RF-49
-
+RF-78 > Idem RF-49.
+RF-[87-88] > Las relaciones entre instancias de tipos de item ya estan definidas para todo el sistema.
+RF-89 > Reescribir "guardar el nombre del usuario que lo creo"
+	O tambien podemos definir un historial del proyecto que especifique los datos que se deben guardar y hacer referencia a este gestor en todos los lugares donde se necesite guardar los cambios.
+RF-102 > A los usuarios del proyecto.
+RF-111 > Todos "los" datos.
+RF-114 > Idem RF-49. Ver RF-89
+RF-119 > El Rol de un usuario es un dato opcional? Se debera asignar un nuevo Rol a los usuarios afectados?
 
