@@ -1,0 +1,26 @@
+Especificar a Pycharm que trabaje con Sphinx
+Primero vamos a la configuracion del proyecto en Pycharm
+    File > Settings... o CTRL + ALT + s
+
+Luego configurar las pruebas unitarias, ya que estamos no es necesario para documentar
+    Default test runner : Unittest
+
+Ahora a lo que vinimos, Docstrings!!
+Cambiar el formato de los docstrings a rst
+    Docstrings format : reStructuredText
+
+*Marcar la casilla "Analyze python code in docstrings"
+
+Por ultimo, asignar el directorio de trabajo de Sphinx al directorio docs de nuestro proyecto
+    Sphinx working directory : /direccion/local/del/repo/docs/
+
+
+# Crea la estructura de archivos para Sphinx
+sphinx-quickstart
+
+# Crea los archivos .rst
+sphinx-apidoc -f -o docs/ .
+
+# Luego moverse a donde se creo que archivo Makefile
+# Crea los archivos html
+make html
