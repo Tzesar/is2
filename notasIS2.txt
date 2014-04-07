@@ -1,0 +1,23 @@
+Notas IS2
+
+- Tres niveles de Usuario
+ + Nivel Dios
+ + Nivel Administrador
+ + Nivel Lider de Proyecto
+ + Nivel Participante/Visitante
+
+- Crear una nueva tabla para: 
+ + Proyectos
+ + Fases
+ + Roles
+
+- Modificar la tabla para los usuarios y añadir los campos que faltan según la ERS.
+ + Validación de Contraseña
+ + Modificación de datos de un usuario
+ + Sobre si mismo
+ + Por usuarios con permisos
+
+- Modificar la tabla de permisos y añadir los campos que faltan según la ERS.
+
+- Como administrar los roles de sistema?????
+ + Solo con Django Administrador o creamos nuestro propio gestor de usuarios y roles? 
