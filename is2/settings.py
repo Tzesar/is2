@@ -10,8 +10,8 @@ https://docs.djangoproject.com/en/1.6/ref/settings/
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 import os
-BASE_DIR = os.path.dirname(os.path.dirname(__file__))
 
+BASE_DIR = os.path.dirname(os.path.dirname(__file__))
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/1.6/howto/deployment/checklist/
@@ -24,7 +24,7 @@ DEBUG = True
 
 TEMPLATE_DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ["0.0.0.0"]
 
 
 # Application definition
@@ -35,7 +35,9 @@ INSTALLED_APPS = (
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'django.contrib.admin',
     'zar',
+    'autenticacion',
 )
 
 MIDDLEWARE_CLASSES = (
@@ -87,9 +89,14 @@ STATIC_URL = '/static/'
 
 STATICFILES_DIRS = (
     #os.path.join(BASE_DIR, "static"),
-    os.path.join(BASE_DIR, "zar", "static"),
+    os.path.join(BASE_DIR, "is2/", "static/"),
 )
 
 TEMPLATE_DIRS = (
     os.path.join(BASE_DIR, "templates"),
 )
+
+# Establece el modelo de usuario que se usa
+AUTH_USER_MODEL = "autenticacion.Usuario"
+
+LOGIN_URL = "/login/"
