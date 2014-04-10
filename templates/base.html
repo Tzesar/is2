@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang='es'>
+<head>
+  <meta charset='utf-8'>
+  <title>Zar - PM - {% block titulo %}{% endblock %}</title>
+     <link rel='stylesheet' href='{{ STATIC_URL }}static/bootstrap/css/bootstrap.css'>
+    <link rel='shortcut icon' href='{{ STATIC_URL }}static/img/zar.jpeg'>
+  {% block style_css %}{% endblock %}
+</head>
+<body>
+    <header>
+        {% block encabezado %} {% endblock %}
+        <nav>
+            <ul>
+                </ul>
+        </nav>
+    <hr>
+    </header>
+    <section class='contenido'>
+        {% block contenido %} {% endblock %}
+    </section>
+    <footer>
+        <p>Proyecto de Zar - PM para el curso Django &copy; 2014</p>
+    </footer>
+</body>
+</html>

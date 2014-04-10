@@ -1,5 +1,8 @@
 Notas IS2
 
+- La encriptación sera la utilizada por Django para almacenar las contraseñas
+que al mismo tiempo las más recomendada, PBKDF2
+
 - Tres niveles de Usuario
  + Nivel Dios
  + Nivel Administrador
@@ -12,7 +15,7 @@ Notas IS2
  + Roles
 
 - Modificar la tabla para los usuarios y añadir los campos que faltan según la ERS.
- + Validación de Contraseña
+ + Validación de Contraseña: Crear aserción para validar la contraseña =D
  + Modificación de datos de un usuario
  + Sobre si mismo
  + Por usuarios con permisos
@@ -21,3 +24,4 @@ Notas IS2
 
 - Como administrar los roles de sistema?????
  + Solo con Django Administrador o creamos nuestro propio gestor de usuarios y roles? 
+

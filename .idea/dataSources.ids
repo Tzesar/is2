@@ -2256,17 +2256,20 @@
       <column name="id" sqlType="serial" length="10" precision="0" nullable="false" jdbcType="4" def="bmV4dHZhbCgnYXV0aF91c2VyX2lkX3NlcSc6OnJlZ2NsYXNzKQ==" autoIncrement="true"/>
       <column name="password" sqlType="varchar" length="128" precision="0" nullable="false" jdbcType="12"/>
       <column name="last_login" sqlType="timestamptz" length="35" precision="6" nullable="false" jdbcType="93"/>
-      <column name="is_superuser" sqlType="bool" length="1" precision="0" nullable="false" jdbcType="-7"/>
       <column name="username" sqlType="varchar" length="30" precision="0" nullable="false" jdbcType="12"/>
       <column name="first_name" sqlType="varchar" length="30" precision="0" nullable="false" jdbcType="12"/>
       <column name="last_name" sqlType="varchar" length="30" precision="0" nullable="false" jdbcType="12"/>
       <column name="email" sqlType="varchar" length="75" precision="0" nullable="false" jdbcType="12"/>
-      <column name="is_staff" sqlType="bool" length="1" precision="0" nullable="false" jdbcType="-7"/>
       <column name="is_active" sqlType="bool" length="1" precision="0" nullable="false" jdbcType="-7"/>
       <column name="date_joined" sqlType="timestamptz" length="35" precision="6" nullable="false" jdbcType="93"/>
+      <column name="nro_telefono" sqlType="varchar" length="30" precision="0" nullable="true" jdbcType="12"/>
+      <column name="observaciones" sqlType="varchar" length="2147483647" precision="0" nullable="true" jdbcType="12"/>
+      <column name="is_superuser" sqlType="bool" length="1" precision="0" nullable="true" jdbcType="-7"/>
+      <column name="is_staff" sqlType="bool" length="1" precision="0" nullable="true" jdbcType="-7"/>
       <primary-key name="auth_user_pkey" columns="id"/>
       <exported-key name="user_id_refs_id_40c41112" table="auth_user_groups" schema="public" catalog="zarbd" columns="user_id"/>
       <exported-key name="user_id_refs_id_4dc23c39" table="auth_user_user_permissions" schema="public" catalog="zarbd" columns="user_id"/>
+      <exported-key name="django_admin_log_user_id_fkey" table="django_admin_log" schema="public" catalog="zarbd" columns="user_id"/>
       <index name="auth_user_username_key" unique="true" columns="username"/>
       <index name="auth_user_username_like" unique="false" columns="username"/>
     </table>
@@ -2328,6 +2331,33 @@
       <column name="is_cycled" sqlType="bool" length="1" precision="0" nullable="false" jdbcType="-7"/>
       <column name="is_called" sqlType="bool" length="1" precision="0" nullable="false" jdbcType="-7"/>
     </table>
+    <table name="django_admin_log" schema="public" catalog="zarbd" type="TABLE">
+      <column name="id" sqlType="serial" length="10" precision="0" nullable="false" jdbcType="4" def="bmV4dHZhbCgnZGphbmdvX2FkbWluX2xvZ19pZF9zZXEnOjpyZWdjbGFzcyk=" autoIncrement="true"/>
+      <column name="action_time" sqlType="timestamptz" length="35" precision="6" nullable="false" jdbcType="93"/>
+      <column name="user_id" sqlType="int4" length="10" precision="0" nullable="false" jdbcType="4"/>
+      <column name="content_type_id" sqlType="int4" length="10" precision="0" nullable="true" jdbcType="4"/>
+      <column name="object_id" sqlType="text" length="2147483647" precision="0" nullable="true" jdbcType="12"/>
+      <column name="object_repr" sqlType="varchar" length="200" precision="0" nullable="false" jdbcType="12"/>
+      <column name="action_flag" sqlType="int2" length="5" precision="0" nullable="false" jdbcType="5"/>
+      <column name="change_message" sqlType="text" length="2147483647" precision="0" nullable="false" jdbcType="12"/>
+      <primary-key name="django_admin_log_pkey" columns="id"/>
+      <foreign-key name="django_admin_log_user_id_fkey" columns="user_id" ref-table="auth_user" ref-schema="public" ref-catalog="" ref-columns="id" update-rule="3" delete-rule="3" deferrability="1"/>
+      <foreign-key name="django_admin_log_content_type_id_fkey" columns="content_type_id" ref-table="django_content_type" ref-schema="public" ref-catalog="" ref-columns="id" update-rule="3" delete-rule="3" deferrability="1"/>
+      <index name="django_admin_log_content_type_id" unique="false" columns="content_type_id"/>
+      <index name="django_admin_log_user_id" unique="false" columns="user_id"/>
+    </table>
+    <table name="django_admin_log_id_seq" schema="public" catalog="zarbd" type="SEQUENCE">
+      <column name="sequence_name" sqlType="name" length="2147483647" precision="0" nullable="false" jdbcType="12"/>
+      <column name="last_value" sqlType="int8" length="19" precision="0" nullable="false" jdbcType="-5"/>
+      <column name="start_value" sqlType="int8" length="19" precision="0" nullable="false" jdbcType="-5"/>
+      <column name="increment_by" sqlType="int8" length="19" precision="0" nullable="false" jdbcType="-5"/>
+      <column name="max_value" sqlType="int8" length="19" precision="0" nullable="false" jdbcType="-5"/>
+      <column name="min_value" sqlType="int8" length="19" precision="0" nullable="false" jdbcType="-5"/>
+      <column name="cache_value" sqlType="int8" length="19" precision="0" nullable="false" jdbcType="-5"/>
+      <column name="log_cnt" sqlType="int8" length="19" precision="0" nullable="false" jdbcType="-5"/>
+      <column name="is_cycled" sqlType="bool" length="1" precision="0" nullable="false" jdbcType="-7"/>
+      <column name="is_called" sqlType="bool" length="1" precision="0" nullable="false" jdbcType="-7"/>
+    </table>
     <table name="django_content_type" schema="public" catalog="zarbd" type="TABLE">
       <column name="id" sqlType="serial" length="10" precision="0" nullable="false" jdbcType="4" def="bmV4dHZhbCgnZGphbmdvX2NvbnRlbnRfdHlwZV9pZF9zZXEnOjpyZWdjbGFzcyk=" autoIncrement="true"/>
       <column name="name" sqlType="varchar" length="100" precision="0" nullable="false" jdbcType="12"/>
@@ -2335,6 +2365,7 @@
       <column name="model" sqlType="varchar" length="100" precision="0" nullable="false" jdbcType="12"/>
       <primary-key name="django_content_type_pkey" columns="id"/>
       <exported-key name="content_type_id_refs_id_d043b34a" table="auth_permission" schema="public" catalog="zarbd" columns="content_type_id"/>
+      <exported-key name="django_admin_log_content_type_id_fkey" table="django_admin_log" schema="public" catalog="zarbd" columns="content_type_id"/>
       <index name="django_content_type_app_label_model_key" unique="true" columns="app_label,model"/>
     </table>
     <table name="django_content_type_id_seq" schema="public" catalog="zarbd" type="SEQUENCE">
@@ -2356,6 +2387,49 @@
       <primary-key name="django_session_pkey" columns="session_key"/>
       <index name="django_session_expire_date" unique="false" columns="expire_date"/>
       <index name="django_session_session_key_like" unique="false" columns="session_key"/>
+    </table>
+    <table name="django_site" schema="public" catalog="zarbd" type="TABLE">
+      <column name="id" sqlType="serial" length="10" precision="0" nullable="false" jdbcType="4" def="bmV4dHZhbCgnZGphbmdvX3NpdGVfaWRfc2VxJzo6cmVnY2xhc3Mp" autoIncrement="true"/>
+      <column name="domain" sqlType="varchar" length="100" precision="0" nullable="false" jdbcType="12"/>
+      <column name="name" sqlType="varchar" length="50" precision="0" nullable="false" jdbcType="12"/>
+      <primary-key name="django_site_pkey" columns="id"/>
+    </table>
+    <table name="django_site_id_seq" schema="public" catalog="zarbd" type="SEQUENCE">
+      <column name="sequence_name" sqlType="name" length="2147483647" precision="0" nullable="false" jdbcType="12"/>
+      <column name="last_value" sqlType="int8" length="19" precision="0" nullable="false" jdbcType="-5"/>
+      <column name="start_value" sqlType="int8" length="19" precision="0" nullable="false" jdbcType="-5"/>
+      <column name="increment_by" sqlType="int8" length="19" precision="0" nullable="false" jdbcType="-5"/>
+      <column name="max_value" sqlType="int8" length="19" precision="0" nullable="false" jdbcType="-5"/>
+      <column name="min_value" sqlType="int8" length="19" precision="0" nullable="false" jdbcType="-5"/>
+      <column name="cache_value" sqlType="int8" length="19" precision="0" nullable="false" jdbcType="-5"/>
+      <column name="log_cnt" sqlType="int8" length="19" precision="0" nullable="false" jdbcType="-5"/>
+      <column name="is_cycled" sqlType="bool" length="1" precision="0" nullable="false" jdbcType="-7"/>
+      <column name="is_called" sqlType="bool" length="1" precision="0" nullable="false" jdbcType="-7"/>
+    </table>
+    <table name="zar_usuario" schema="public" catalog="zarbd" type="TABLE">
+      <column name="id" sqlType="serial" length="10" precision="0" nullable="false" jdbcType="4" def="bmV4dHZhbCgnemFyX3VzdWFyaW9faWRfc2VxJzo6cmVnY2xhc3Mp" autoIncrement="true"/>
+      <column name="nombre_usuario" sqlType="varchar" length="50" precision="0" nullable="false" jdbcType="12"/>
+      <column name="estado" sqlType="int4" length="10" precision="0" nullable="false" jdbcType="4"/>
+      <column name="password" sqlType="varchar" length="128" precision="0" nullable="false" jdbcType="12"/>
+      <column name="nombres" sqlType="varchar" length="50" precision="0" nullable="false" jdbcType="12"/>
+      <column name="apellidos" sqlType="varchar" length="50" precision="0" nullable="false" jdbcType="12"/>
+      <column name="nro_telefono" sqlType="varchar" length="13" precision="0" nullable="false" jdbcType="12"/>
+      <column name="email" sqlType="varchar" length="128" precision="0" nullable="false" jdbcType="12"/>
+      <column name="observaciones" sqlType="varchar" length="200" precision="0" nullable="false" jdbcType="12"/>
+      <column name="last_login" sqlType="timestamp" length="29" precision="6" nullable="false" jdbcType="93"/>
+      <primary-key name="zar_usuario_pkey" columns="id"/>
+    </table>
+    <table name="zar_usuario_id_seq" schema="public" catalog="zarbd" type="SEQUENCE">
+      <column name="sequence_name" sqlType="name" length="2147483647" precision="0" nullable="false" jdbcType="12"/>
+      <column name="last_value" sqlType="int8" length="19" precision="0" nullable="false" jdbcType="-5"/>
+      <column name="start_value" sqlType="int8" length="19" precision="0" nullable="false" jdbcType="-5"/>
+      <column name="increment_by" sqlType="int8" length="19" precision="0" nullable="false" jdbcType="-5"/>
+      <column name="max_value" sqlType="int8" length="19" precision="0" nullable="false" jdbcType="-5"/>
+      <column name="min_value" sqlType="int8" length="19" precision="0" nullable="false" jdbcType="-5"/>
+      <column name="cache_value" sqlType="int8" length="19" precision="0" nullable="false" jdbcType="-5"/>
+      <column name="log_cnt" sqlType="int8" length="19" precision="0" nullable="false" jdbcType="-5"/>
+      <column name="is_cycled" sqlType="bool" length="1" precision="0" nullable="false" jdbcType="-7"/>
+      <column name="is_called" sqlType="bool" length="1" precision="0" nullable="false" jdbcType="-7"/>
     </table>
     <procedure name="_pg_char_max_length" schema="information_schema" catalog="zarbd" type="2">
       <prototype>
