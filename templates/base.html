@@ -6,7 +6,7 @@
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1">
 
-        <title>{% block title %}Página Principal{% endblock %} - ZARco</title>
+        <title>{% block title %}Página Principal{% endblock %} - ZARpm</title>
 
         <!-- Bootstrap core CSS -->
         <link href="{% static "bootstrap/css/bootstrap.min.css" %}" rel="stylesheet">
@@ -20,39 +20,50 @@
 
     <body>
         {% block body %}
-            <div class="navbar-inverse navbar-default navbar-static-top" role="navigation">
-                <div class="container-fluid">
-                    <div class="navbar-header">
-                            <!-- Boton que aparece en xs-devices -->
-                            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar-example-collapse">
-                                <span class="sr-only">Toggle navigation</span>
-                                <span class="icon-bar"></span>
-                                <span class="icon-bar"></span>
-                                <span class="icon-bar"></span>
-                            </button>
-                            <a href="#" class="navbar-brand">Test</a>
+            {% block navbar %}
+                <nav class="navbar-inverse navbar-default navbar-static-top" role="navigation">
+                    <div class="container-fluid">
+                        <div class="navbar-header">
+                                <!-- Boton que aparece en xs-devices -->
+                                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar-example-collapse">
+                                    <span class="sr-only">Toggle navigation</span>
+                                    <span class="icon-bar"></span>
+                                    <span class="icon-bar"></span>
+                                    <span class="icon-bar"></span>
+                                </button>
+                                <a href="" class="navbar-brand">{% block pageName %}Página Principal{% endblock %}</a>
+                        </div>
+                        <!-- Seccion que se muestra con el boton en xs-devices -->
+                        <div class="collapse navbar-collapse" id="navbar-example-collapse">
+                            <p class="navbar-text">{{ user.username|capfirst }}</p>
+                            <ul class="nav navbar-nav navbar-right">
+                                <li class="dropdown">
+                                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">Dropdown <b class="caret"></b></a>
+                                    <ul class="dropdown-menu">
+                                        <li><a href="#">Action</a></li>
+                                        <li><a href="#">Another action</a></li>
+                                        <li><a href="#">Something else here</a></li>
+                                        <li class="divider"></li>
+                                        <li><a href="#">Separated link</a></li>
+                                    </ul>
+                                </li>
+                                <li>
+                                    <a href="{% url 'logout' %}">Logout</a>
+                                </li>
+                            </ul>
+                        </div>
                     </div>
-                    <!-- Seccion que se muestra con el boton en xs-devices -->
-                    <div class="collapse navbar-collapse" id="navbar-example-collapse">
-                        <p class="navbar-text navbar-right">{{ user.username }}</p>
-                        <ul class="nav navbar-nav navbar-right">
-                            <li class="dropdown">
-                                <a href="#" class="dropdown-toggle" data-toggle="dropdown">Dropdown <b class="caret"></b></a>
-                                <ul class="dropdown-menu">
-                                    <li><a href="#">Action</a></li>
-                                    <li><a href="#">Another action</a></li>
-                                    <li><a href="#">Something else here</a></li>
-                                    <li class="divider"></li>
-                                    <li><a href="#">Separated link</a></li>
-                                </ul>
-                            </li>
-                            <li>
-                                <a href="{% url 'logout' %}">Logout</a>
-                            </li>
-                        </ul>
+                </nav>
+            {% endblock %}
+            {% block mainBody %}
+                <div class="container">
+                    <div class="jumbotron">
+                        <h1>Bienvenido!</h1>
+                        <p>Pagina inicial del sistema ZARpm</p>
+                        <p><a class="btn btn-primary btn-lg" role="button">Learn more</a></p>
                     </div>
                 </div>
-            </div>
+            {% endblock %}
         {% endblock %}
 
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>

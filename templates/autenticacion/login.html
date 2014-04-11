@@ -19,17 +19,17 @@
             <div class="panel panel-default">
                 <div class="panel-body">
                     <div class="container-fluid">
-                        <h1 class="intro"><span class="glyphicon glyphicon-off"></span> ZAR<small>co</small></h1>
+                        <h1 class="intro"><span class="glyphicon glyphicon-off"></span> ZAR<small>pm</small></h1>
                     </div>
                     <form action="" class="form-signin" role="form" method="post">
                         {% csrf_token %}
                         <input name="username" type="text" class="form-control" placeholder="User Name" required autofocus>
                         <input name="password" type="password" class="form-control" placeholder="Password" required>
                         <label class="checkbox">
-                            <input type="checkbox" value="remember-me"> Remember me
+                            <input type="checkbox" name="remember_me" value="True"> Remember me
                         </label>
                         <button class="btn btn-lg btn-gray btn-block" type="submit">Sign in</button>
-                        <input type="hidden" name="next" value="{% url 'base' %}">
+                        <!--<input type="hidden" name="next" value="{% url 'base' %}">-->
                     </form>
                 </div>
             </div>
