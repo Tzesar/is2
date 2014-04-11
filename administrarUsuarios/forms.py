@@ -7,7 +7,8 @@ from autenticacion.models import Usuario
 
 class CustomUserCreationForm(forms.ModelForm):
     """
-    Formulario para la creacion de usuarios, donde el usuario creador debe especificar el nombre de usuario y la contrasena del nuevo usuario.
+    Formulario para la creacion de usuarios, especificar el nombre de usuario y la contrasena del nuevo usuario.
+    Formulario para la creacion usuarios por Django y personalizado para el proyecto ZARpm
     """
     error_messages = {
         'duplicate_username': _("A user with that username already exists."),
@@ -67,7 +68,8 @@ class CustomUserCreationForm(forms.ModelForm):
 
 class CustomUserChangeForm(forms.ModelForm):
     """
-    Formulario para modificar usuarios propuesto por Django
+    Formulario para la modificacion de usuarios, donde se visualiza el formulario con los campos y opciones de modificacion disponibles
+    Formulario para modificar usuarios propuesto por Django y personalizado para el proyecto ZARpm
     """
 
     class Meta:

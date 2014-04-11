@@ -1,9 +1,15 @@
+"""
+Descripcion de las diferentes URLs utilizadas en el proyecto ZAPpm
+"""
+
+
+
 from django.conf.urls import patterns, include, url
 from django.contrib import admin
 from django.contrib.auth.views import logout_then_login
 from autenticacion.views import base, myLogin
 from administrarUsuarios.views import createUser, changeUser
-from zar.views import about
+from zar.views import about, contact
 
 admin.autodiscover()
 
@@ -15,5 +21,6 @@ urlpatterns = patterns('',
                        url(r'^base/$', base, name="base"),
                        url(r'^about/$', about, name="about"),
                        url(r'^createuser/$', createUser),
-                       url(r'^changeuser/$', changeUser)
+                       url(r'^changeuser/$', changeUser),
+                       url(r'^contact/$', contact, name="contact"),
                        )

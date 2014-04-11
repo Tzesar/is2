@@ -6,6 +6,11 @@ from administrarUsuarios.forms import CustomUserChangeForm, CustomUserCreationFo
 
 @login_required
 def createUser(request):
+    """
+    Vista para la creacion de usuarios en el sistema
+    :param request:
+    :return proporciona la pagina createuser.html con el formulario correspondiente:
+    """
     if request.method == 'POST':
         form = CustomUserCreationForm(request.POST)
         if form.is_valid():
@@ -18,6 +23,11 @@ def createUser(request):
 
 @login_required()
 def changeUser(request):
+    """
+    Vista para la modificacion de usuarios en el sistema
+    :param request:
+    :return proporciona la pagina changeuser.html con el formulario correspondiente:
+    """
     if request.method == 'POST':
         postdata = request.POST.copy()
         form = CustomUserChangeForm(postdata, instance=request.user)

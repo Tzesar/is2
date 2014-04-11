@@ -4,6 +4,13 @@ from django.contrib.auth.views import login
 
 
 def myLogin(request, *args, **kwargs):
+    """
+    Vista para la plantilla login.html
+    :param request:
+    :param args:
+    :param kwargs:
+    :return:
+    """
     if request.method == 'POST':
         if not request.POST.get('remember_me'):
             request.session.set_expiry(0)
