@@ -7,7 +7,8 @@ from administrarUsuarios.forms import CustomUserChangeForm, CustomUserCreationFo
 @login_required
 def createUser(request):
     """
-    Vista para la creacion de usuarios en el sistema
+    Vista para la creacion de usuarios en el sistema.
+
     :param request:
     :return proporciona la pagina createuser.html con el formulario correspondiente:
     """
@@ -24,7 +25,8 @@ def createUser(request):
 @login_required()
 def changeUser(request):
     """
-    Vista para la modificacion de usuarios en el sistema
+    Vista para la modificacion de usuarios en el sistema.
+
     :param request:
     :return proporciona la pagina changeuser.html con el formulario correspondiente:
     """

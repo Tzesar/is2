@@ -5,7 +5,8 @@ from django.contrib.auth.views import login
 
 def myLogin(request, *args, **kwargs):
     """
-    Vista para la plantilla login.html
+    Vista para la plantilla login.html.
+
     :param request:
     :param args:
     :param kwargs:
@@ -22,6 +23,7 @@ def myLogin(request, *args, **kwargs):
 def base(request):
     """
     Vista para la plantilla base.html
+
     :param request: HttpRequest con los datos de la sesion del usuario actual.
     :return: Template base.html
     """
