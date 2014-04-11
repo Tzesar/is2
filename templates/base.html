@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 <!DOCTYPE html>
 <html lang='es'>
 <head>
@@ -23,4 +24,66 @@
         <p>Proyecto de Zar - PM para el curso Django &copy; 2014</p>
     </footer>
 </body>
+=======
+{% load staticfiles %}
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <title>{% block title %}Página Principal{% endblock %} - ZARco</title>
+
+        <!-- Bootstrap core CSS -->
+        <link href="{% static "bootstrap/css/bootstrap.min.css" %}" rel="stylesheet">
+
+        <!-- Custom styles for this template -->
+        {% block cssAdicional %}{% endblock %}
+        <link href="{% static "bootstrap/css/styles.css" %}" rel="stylesheet">
+
+        <link rel="icon" type="image/x-icon" href="{% static "favicon.ico" %}" />
+    </head>
+
+    <body>
+        {% block body %}
+            <div class="navbar-inverse navbar-default navbar-static-top" role="navigation">
+                <div class="container-fluid">
+                    <div class="navbar-header">
+                            <!-- Boton que aparece en xs-devices -->
+                            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar-example-collapse">
+                                <span class="sr-only">Toggle navigation</span>
+                                <span class="icon-bar"></span>
+                                <span class="icon-bar"></span>
+                                <span class="icon-bar"></span>
+                            </button>
+                            <a href="#" class="navbar-brand">Test</a>
+                    </div>
+                    <!-- Seccion que se muestra con el boton en xs-devices -->
+                    <div class="collapse navbar-collapse" id="navbar-example-collapse">
+                        <p class="navbar-text navbar-right">{{ user.username }}</p>
+                        <ul class="nav navbar-nav navbar-right">
+                            <li class="dropdown">
+                                <a href="#" class="dropdown-toggle" data-toggle="dropdown">Dropdown <b class="caret"></b></a>
+                                <ul class="dropdown-menu">
+                                    <li><a href="#">Action</a></li>
+                                    <li><a href="#">Another action</a></li>
+                                    <li><a href="#">Something else here</a></li>
+                                    <li class="divider"></li>
+                                    <li><a href="#">Separated link</a></li>
+                                </ul>
+                            </li>
+                            <li>
+                                <a href="{% url 'logout' %}">Logout</a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        {% endblock %}
+
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+        <script src="{% static "bootstrap/js/bootstrap.min.js" %}"></script>
+    </body>
+>>>>>>> origin/master
 </html>
