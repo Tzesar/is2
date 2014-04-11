@@ -1,35 +1,19 @@
+# coding=utf-8
 from __future__ import unicode_literals
-
-import warnings
-
 from django import forms
-from django.forms.util import flatatt
-from django.template import loader
-from django.utils.datastructures import SortedDict
-from django.utils.encoding import force_bytes
-from django.utils.html import format_html, format_html_join
-from django.utils.http import urlsafe_base64_encode
-from django.utils.safestring import mark_safe
-from django.utils.text import capfirst
 from django.utils.translation import ugettext, ugettext_lazy as _
-
-from django.contrib.auth import authenticate, get_user_model
 from autenticacion.models import Usuario
-from django.contrib.auth.hashers import UNUSABLE_PASSWORD_PREFIX, identify_hasher
-from django.contrib.auth.tokens import default_token_generator
-from django.contrib.sites.models import get_current_site
 
 
-
-class UserCreationForm(forms.ModelForm):
+class CustomUserCreationForm(forms.ModelForm):
     """
-    A form that creates a user, with no privileges, from the given username and
-    password.
+    Formulario para la creacion de usuarios, donde el usuario creador debe especificar el nombre de usuario y la contrasena del nuevo usuario.
     """
     error_messages = {
         'duplicate_username': _("A user with that username already exists."),
         'password_mismatch': _("The two password fields didn't match."),
     }
+
     username = forms.RegexField(label=_("Username"), max_length=30,
         regex=r'^[\w.@+-]+$',
         help_text=_("Required. 30 characters or fewer. Letters, digits and "
@@ -37,9 +21,12 @@ class UserCreationForm(forms.ModelForm):
         error_messages={
             'invalid': _("This value may contain only letters, numbers and "
                          "@/./+/-/_ characters.")})
-    password1 = forms.CharField(label=_("Password"),
+    password1 = forms.CharField(
+        label=_("Password"),
         widget=forms.PasswordInput)
-    password2 = forms.CharField(label=_("Password confirmation"),
+
+    password2 = forms.CharField(
+        label=_("Password confirmation"),
         widget=forms.PasswordInput,
         help_text=_("Enter the same password as above, for verification."))
 
@@ -71,8 +58,31 @@ class UserCreationForm(forms.ModelForm):
         return password2
 
     def save(self, commit=True):
-        user = super(UserCreationForm, self).save(commit=False)
+        user = super(CustomUserCreationForm, self).save(commit=False)
         user.set_password(self.cleaned_data["password1"])
         if commit:
             user.save()
         return user
+
+
+class CustomUserChangeForm(forms.ModelForm):
+    """
+    Formulario para modificar usuarios propuesto por Django
+    """
+
+    class Meta:
+        model = Usuario
+        fields = ('first_name', 'last_name', 'email', 'telefono',)
+        exclude = ('username', 'password',)
+
+    def __init__(self, *args, **kwargs):
+        super(CustomUserChangeForm, self).__init__(*args, **kwargs)
+        f = self.fields.get('user_permissions', None)
+        if f is not None:
+            f.queryset = f.queryset.select_related('content_type')
+
+    def clean_password(self):
+        # Regardless of what the user provides, return the initial value.
+        # This is done here, rather than on the field, because the
+        # field does not have access to the initial value
+        return self.initial["password"]

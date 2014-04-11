@@ -38,6 +38,7 @@ INSTALLED_APPS = (
     'django.contrib.admin',
     'zar',
     'autenticacion',
+    'administrarUsuarios',
 )
 
 MIDDLEWARE_CLASSES = (
@@ -71,7 +72,7 @@ DATABASES = {
 # Internationalization
 # https://docs.djangoproject.com/en/1.6/topics/i18n/
 
-LANGUAGE_CODE = 'en-us'
+LANGUAGE_CODE = 'es-PY'
 
 TIME_ZONE = 'America/Asuncion'
 
@@ -98,5 +99,5 @@ TEMPLATE_DIRS = (
 
 # Establece el modelo de usuario que se usa
 AUTH_USER_MODEL = "autenticacion.Usuario"
-
 LOGIN_URL = "/login/"
+LOGIN_REDIRECT_URL = '/base/'

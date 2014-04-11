@@ -5,8 +5,8 @@
         <link href="{% static "bootstrap/css/singin.css" %}" rel="stylesheet">
     {% endblock %}
 
-    {% block title %}Modificar Usuario{% endblock %}
-    {% block mainBody %}
+    {% block title %}Modificar Usuario Usuario{% endblock %}
+    {% block  mainBody %}
         {% if form.errors %}
             <div class="container-fluid">
                 <div class="alert alert-danger alert-dismissable">
@@ -24,10 +24,10 @@
                     <form action="" class="form-signin" role="form" method="post">
                         {% csrf_token %}
                         {{ form.as_p }}
-                        <button class="btn btn-lg btn-gray btn-block" type="submit">Guardar Cambios</button>
+                        <button class="btn btn-lg btn-gray btn-block" type="submit">Guardar cambios</button>
                         <input type="hidden" name="next" value="{% url 'base' %}">
                     </form>
                 </div>
             </div>
         </div>
-    {% endblock %}
+    {% endblock %}>
