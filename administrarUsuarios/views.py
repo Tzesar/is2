@@ -9,8 +9,8 @@ def createUser(request):
     """
     Vista para la creacion de usuarios en el sistema.
 
-    :param request:
-    :return proporciona la pagina createuser.html con el formulario correspondiente:
+    :param request: HttpRequest
+    :return: Proporciona la pagina createuser.html con el formulario correspondiente:
     """
     if request.method == 'POST':
         form = CustomUserCreationForm(request.POST)
@@ -27,8 +27,8 @@ def changeUser(request):
     """
     Vista para la modificacion de usuarios en el sistema.
 
-    :param request:
-    :return proporciona la pagina changeuser.html con el formulario correspondiente:
+    :param request: HttpRequest necesario para modificar los datos de usuario
+    :return:  Proporciona la pagina changeuser.html con el formulario correspondiente
     """
     if request.method == 'POST':
         postdata = request.POST.copy()
