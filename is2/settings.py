@@ -35,7 +35,10 @@ INSTALLED_APPS = (
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'django.contrib.admin',
     'zar',
+    'autenticacion',
+    'administrarUsuarios',
 )
 
 MIDDLEWARE_CLASSES = (
@@ -93,3 +96,9 @@ STATICFILES_DIRS = (
 TEMPLATE_DIRS = (
     os.path.join(BASE_DIR, "templates"),
 )
+
+
+# Establece el modelo de usuario que se usa
+AUTH_USER_MODEL = "autenticacion.Usuario"
+
+LOGIN_URL = "/login/"

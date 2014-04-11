@@ -2184,10 +2184,88 @@
       <column name="viewowner" sqlType="name" length="2147483647" precision="0" nullable="true" jdbcType="12"/>
       <column name="definition" sqlType="text" length="2147483647" precision="0" nullable="true" jdbcType="12"/>
     </table>
+    <table name="autenticacion_usuario" schema="public" catalog="zarbd" type="TABLE">
+      <column name="id" sqlType="serial" length="10" precision="0" nullable="false" jdbcType="4" def="bmV4dHZhbCgnYXV0ZW50aWNhY2lvbl91c3VhcmlvX2lkX3NlcSc6OnJlZ2NsYXNzKQ==" autoIncrement="true"/>
+      <column name="password" sqlType="varchar" length="128" precision="0" nullable="false" jdbcType="12"/>
+      <column name="last_login" sqlType="timestamptz" length="35" precision="6" nullable="false" jdbcType="93"/>
+      <column name="is_superuser" sqlType="bool" length="1" precision="0" nullable="false" jdbcType="-7"/>
+      <column name="username" sqlType="varchar" length="30" precision="0" nullable="false" jdbcType="12"/>
+      <column name="first_name" sqlType="varchar" length="30" precision="0" nullable="false" jdbcType="12"/>
+      <column name="last_name" sqlType="varchar" length="30" precision="0" nullable="false" jdbcType="12"/>
+      <column name="email" sqlType="varchar" length="75" precision="0" nullable="false" jdbcType="12"/>
+      <column name="is_staff" sqlType="bool" length="1" precision="0" nullable="false" jdbcType="-7"/>
+      <column name="is_active" sqlType="bool" length="1" precision="0" nullable="false" jdbcType="-7"/>
+      <column name="date_joined" sqlType="timestamptz" length="35" precision="6" nullable="false" jdbcType="93"/>
+      <column name="telefono" sqlType="varchar" length="20" precision="0" nullable="false" jdbcType="12"/>
+      <primary-key name="autenticacion_usuario_pkey" columns="id"/>
+      <exported-key name="usuario_id_refs_id_0ce0f49c" table="autenticacion_usuario_groups" schema="public" catalog="zarbd" columns="usuario_id"/>
+      <exported-key name="usuario_id_refs_id_6826e484" table="autenticacion_usuario_user_permissions" schema="public" catalog="zarbd" columns="usuario_id"/>
+      <index name="autenticacion_usuario_username_key" unique="true" columns="username"/>
+      <index name="autenticacion_usuario_username_like" unique="false" columns="username"/>
+    </table>
+    <table name="autenticacion_usuario_groups" schema="public" catalog="zarbd" type="TABLE">
+      <column name="id" sqlType="serial" length="10" precision="0" nullable="false" jdbcType="4" def="bmV4dHZhbCgnYXV0ZW50aWNhY2lvbl91c3VhcmlvX2dyb3Vwc19pZF9zZXEnOjpyZWdjbGFzcyk=" autoIncrement="true"/>
+      <column name="usuario_id" sqlType="int4" length="10" precision="0" nullable="false" jdbcType="4"/>
+      <column name="group_id" sqlType="int4" length="10" precision="0" nullable="false" jdbcType="4"/>
+      <primary-key name="autenticacion_usuario_groups_pkey" columns="id"/>
+      <foreign-key name="usuario_id_refs_id_0ce0f49c" columns="usuario_id" ref-table="autenticacion_usuario" ref-schema="public" ref-catalog="" ref-columns="id" update-rule="3" delete-rule="3" deferrability="1"/>
+      <foreign-key name="autenticacion_usuario_groups_group_id_fkey" columns="group_id" ref-table="auth_group" ref-schema="public" ref-catalog="" ref-columns="id" update-rule="3" delete-rule="3" deferrability="1"/>
+      <index name="autenticacion_usuario_groups_usuario_id_group_id_key" unique="true" columns="usuario_id,group_id"/>
+      <index name="autenticacion_usuario_groups_group_id" unique="false" columns="group_id"/>
+      <index name="autenticacion_usuario_groups_usuario_id" unique="false" columns="usuario_id"/>
+    </table>
+    <table name="autenticacion_usuario_groups_id_seq" schema="public" catalog="zarbd" type="SEQUENCE">
+      <column name="sequence_name" sqlType="name" length="2147483647" precision="0" nullable="false" jdbcType="12"/>
+      <column name="last_value" sqlType="int8" length="19" precision="0" nullable="false" jdbcType="-5"/>
+      <column name="start_value" sqlType="int8" length="19" precision="0" nullable="false" jdbcType="-5"/>
+      <column name="increment_by" sqlType="int8" length="19" precision="0" nullable="false" jdbcType="-5"/>
+      <column name="max_value" sqlType="int8" length="19" precision="0" nullable="false" jdbcType="-5"/>
+      <column name="min_value" sqlType="int8" length="19" precision="0" nullable="false" jdbcType="-5"/>
+      <column name="cache_value" sqlType="int8" length="19" precision="0" nullable="false" jdbcType="-5"/>
+      <column name="log_cnt" sqlType="int8" length="19" precision="0" nullable="false" jdbcType="-5"/>
+      <column name="is_cycled" sqlType="bool" length="1" precision="0" nullable="false" jdbcType="-7"/>
+      <column name="is_called" sqlType="bool" length="1" precision="0" nullable="false" jdbcType="-7"/>
+    </table>
+    <table name="autenticacion_usuario_id_seq" schema="public" catalog="zarbd" type="SEQUENCE">
+      <column name="sequence_name" sqlType="name" length="2147483647" precision="0" nullable="false" jdbcType="12"/>
+      <column name="last_value" sqlType="int8" length="19" precision="0" nullable="false" jdbcType="-5"/>
+      <column name="start_value" sqlType="int8" length="19" precision="0" nullable="false" jdbcType="-5"/>
+      <column name="increment_by" sqlType="int8" length="19" precision="0" nullable="false" jdbcType="-5"/>
+      <column name="max_value" sqlType="int8" length="19" precision="0" nullable="false" jdbcType="-5"/>
+      <column name="min_value" sqlType="int8" length="19" precision="0" nullable="false" jdbcType="-5"/>
+      <column name="cache_value" sqlType="int8" length="19" precision="0" nullable="false" jdbcType="-5"/>
+      <column name="log_cnt" sqlType="int8" length="19" precision="0" nullable="false" jdbcType="-5"/>
+      <column name="is_cycled" sqlType="bool" length="1" precision="0" nullable="false" jdbcType="-7"/>
+      <column name="is_called" sqlType="bool" length="1" precision="0" nullable="false" jdbcType="-7"/>
+    </table>
+    <table name="autenticacion_usuario_user_permissions" schema="public" catalog="zarbd" type="TABLE">
+      <column name="id" sqlType="serial" length="10" precision="0" nullable="false" jdbcType="4" def="bmV4dHZhbCgnYXV0ZW50aWNhY2lvbl91c3VhcmlvX3VzZXJfcGVybWlzc2lvbnNfaWRfc2VxJzo6cmVnY2xhc3Mp" autoIncrement="true"/>
+      <column name="usuario_id" sqlType="int4" length="10" precision="0" nullable="false" jdbcType="4"/>
+      <column name="permission_id" sqlType="int4" length="10" precision="0" nullable="false" jdbcType="4"/>
+      <primary-key name="autenticacion_usuario_user_permissions_pkey" columns="id"/>
+      <foreign-key name="usuario_id_refs_id_6826e484" columns="usuario_id" ref-table="autenticacion_usuario" ref-schema="public" ref-catalog="" ref-columns="id" update-rule="3" delete-rule="3" deferrability="1"/>
+      <foreign-key name="autenticacion_usuario_user_permissions_permission_id_fkey" columns="permission_id" ref-table="auth_permission" ref-schema="public" ref-catalog="" ref-columns="id" update-rule="3" delete-rule="3" deferrability="1"/>
+      <index name="autenticacion_usuario_user_permiss_usuario_id_permission_id_key" unique="true" columns="usuario_id,permission_id"/>
+      <index name="autenticacion_usuario_user_permissions_permission_id" unique="false" columns="permission_id"/>
+      <index name="autenticacion_usuario_user_permissions_usuario_id" unique="false" columns="usuario_id"/>
+    </table>
+    <table name="autenticacion_usuario_user_permissions_id_seq" schema="public" catalog="zarbd" type="SEQUENCE">
+      <column name="sequence_name" sqlType="name" length="2147483647" precision="0" nullable="false" jdbcType="12"/>
+      <column name="last_value" sqlType="int8" length="19" precision="0" nullable="false" jdbcType="-5"/>
+      <column name="start_value" sqlType="int8" length="19" precision="0" nullable="false" jdbcType="-5"/>
+      <column name="increment_by" sqlType="int8" length="19" precision="0" nullable="false" jdbcType="-5"/>
+      <column name="max_value" sqlType="int8" length="19" precision="0" nullable="false" jdbcType="-5"/>
+      <column name="min_value" sqlType="int8" length="19" precision="0" nullable="false" jdbcType="-5"/>
+      <column name="cache_value" sqlType="int8" length="19" precision="0" nullable="false" jdbcType="-5"/>
+      <column name="log_cnt" sqlType="int8" length="19" precision="0" nullable="false" jdbcType="-5"/>
+      <column name="is_cycled" sqlType="bool" length="1" precision="0" nullable="false" jdbcType="-7"/>
+      <column name="is_called" sqlType="bool" length="1" precision="0" nullable="false" jdbcType="-7"/>
+    </table>
     <table name="auth_group" schema="public" catalog="zarbd" type="TABLE">
       <column name="id" sqlType="serial" length="10" precision="0" nullable="false" jdbcType="4" def="bmV4dHZhbCgnYXV0aF9ncm91cF9pZF9zZXEnOjpyZWdjbGFzcyk=" autoIncrement="true"/>
       <column name="name" sqlType="varchar" length="80" precision="0" nullable="false" jdbcType="12"/>
       <primary-key name="auth_group_pkey" columns="id"/>
+      <exported-key name="autenticacion_usuario_groups_group_id_fkey" table="autenticacion_usuario_groups" schema="public" catalog="zarbd" columns="group_id"/>
       <exported-key name="group_id_refs_id_f4b32aac" table="auth_group_permissions" schema="public" catalog="zarbd" columns="group_id"/>
       <exported-key name="auth_user_groups_group_id_fkey" table="auth_user_groups" schema="public" catalog="zarbd" columns="group_id"/>
       <index name="auth_group_name_key" unique="true" columns="name"/>
@@ -2235,6 +2313,7 @@
       <column name="codename" sqlType="varchar" length="100" precision="0" nullable="false" jdbcType="12"/>
       <primary-key name="auth_permission_pkey" columns="id"/>
       <foreign-key name="content_type_id_refs_id_d043b34a" columns="content_type_id" ref-table="django_content_type" ref-schema="public" ref-catalog="" ref-columns="id" update-rule="3" delete-rule="3" deferrability="1"/>
+      <exported-key name="autenticacion_usuario_user_permissions_permission_id_fkey" table="autenticacion_usuario_user_permissions" schema="public" catalog="zarbd" columns="permission_id"/>
       <exported-key name="auth_group_permissions_permission_id_fkey" table="auth_group_permissions" schema="public" catalog="zarbd" columns="permission_id"/>
       <exported-key name="auth_user_user_permissions_permission_id_fkey" table="auth_user_user_permissions" schema="public" catalog="zarbd" columns="permission_id"/>
       <index name="auth_permission_content_type_id_codename_key" unique="true" columns="content_type_id,codename"/>
