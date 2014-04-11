@@ -2,8 +2,15 @@ from django.shortcuts import render
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.views import login
 
-
 def myLogin(request, *args, **kwargs):
+    """
+        Establece el tiempo de vida de la sesion.
+
+    :param request: HttpRequest con el contenido de la pagina actual.
+    :param args: Argumentos para la funcion contrib.auth.views.login.
+    :param kwargs: Keyword Arguments para la funcion contrib.auth.views.login.
+    :return: Retorna el resultado de la funcion contrib.auth.views.login.
+    """
     if request.method == 'POST':
         if not request.POST.get('remember_me'):
             request.session.set_expiry(0)
@@ -15,7 +22,8 @@ def myLogin(request, *args, **kwargs):
 def base(request):
     """
     Vista para la plantilla base.html
-    :param request: HttpRequest con los datos de la sesion del usuario actual.
-    :return: Template base.html
+
+    :param request: HttpRequest con el contenido de la pagina actual.
+    :return: Template base.html con el contexto proveido por request.
     """
     return render(request, 'base.html')
