@@ -5,20 +5,34 @@
 {% block pageName %}Usuarios{% endblock %}
 
 {% block mainBody %}
-    <div class="panel panel-default col-lg-offset-1 col-lg-10" style="padding-top: 1%">
-        <div class="panel panel-default">
-            <!-- Default panel contents -->
-            <div class="panel-heading"><h1>Usuarios</h1></div>
-                <div class="panel-body">
-                    <p>Usuarios del sistema</p>
+    <div class="container" style="padding-top: 1%">
+        <div class="panel panel-default col-lg-offset-1 col-lg-10" style="padding-top: 1%">
+            <div class="panel panel-default">
+                <!-- Default panel contents -->
+                <div class="panel-heading"><h1>Usuarios</h1></div>
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>Username</th>
+                            <th>Nombre</th>
+                            <th>Apellido</th>
+{#                            <th>  </th>#}
+                        </tr>
+                    </thead>
+                    <tbody>
+                            {% for user in usuarios %}
+                                <tr>
+                                    <td>{{ user.id }}</td>
+                                    <td>{{ user.username }}</td>
+                                    <td>{{ user.first_name }}</td>
+                                    <td>{{ user.last_name }}</td>
+{#                                    <td><button type="button" class="btn btn-default">Modificar</button> </td>#}
+                                </tr>
+                            {% endfor %}
+                    </tbody>
+                </table>
             </div>
-
-            <!-- List group -->
-            <ul class="list-group">
-                {% for user in usuarios %}
-                    <li class="list-group-item">{{ user.get_full_name }} - {{ user.username }}</li>
-                {% endfor %}
-            </ul>
         </div>
     </div>
 {% endblock %}
