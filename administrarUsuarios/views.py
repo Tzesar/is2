@@ -2,6 +2,7 @@ from django.contrib.auth.decorators import login_required
 from django.http import HttpResponseRedirect
 from django.shortcuts import render, RequestContext
 from administrarUsuarios.forms import CustomUserChangeForm, CustomUserCreationForm
+from autenticacion.models import Usuario
 
 
 @login_required
@@ -39,3 +40,7 @@ def changeUser(request):
     else:
         form = CustomUserChangeForm()
     return render(request, "usuario/createuser.html", { 'form': form, }, context_instance=RequestContext(request) )
+
+def userlist(request):
+    usuarios = Usuario.objects.all()
+    return render(request, "usuario/userlist.html", { 'usuarios':usuarios}, )
