@@ -61,6 +61,7 @@ def changePass(request):
     return render(request, "usuario/changepass.html", { 'form': form, }, context_instance=RequestContext(request) )
 
 
+@login_required
 def userlist(request):
     usuarios = Usuario.objects.all()
     return render(request, "usuario/userlist.html", { 'usuarios':usuarios}, )

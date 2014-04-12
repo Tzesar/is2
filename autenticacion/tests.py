@@ -30,9 +30,6 @@ class TestAutenticacionViewsMyLogin(TestCase):
     un_admin = 'admin'
     pw_admin = 'admin'
 
-    un_registered_user = 'agu'
-    pw_registered_user = 'agu'
-
     un_unknown_user = 'cualquiera'
     pw_unknown_user = 'cualquiera'
 

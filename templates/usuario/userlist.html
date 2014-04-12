@@ -5,8 +5,8 @@
 {% block pageName %}Usuarios{% endblock %}
 
 {% block mainBody %}
-    <div class="container" style="padding-top: 1%">
-        <div class="panel panel-default col-lg-offset-1 col-lg-10" style="padding-top: 1%">
+    <div class="container col-lg-offset-1 col-lg-10 col-xs-12" style="padding-top: 2%">
+        <div class="panel panel-default" style="padding-top: 2%; padding-left: 2%; padding-right: 2%">
             <div class="panel panel-default">
                 <!-- Default panel contents -->
                 <div class="panel-heading"><h1>Usuarios</h1></div>
@@ -21,15 +21,15 @@
                         </tr>
                     </thead>
                     <tbody>
-                            {% for user in usuarios %}
-                                <tr>
-                                    <td>{{ user.id }}</td>
-                                    <td>{{ user.username }}</td>
-                                    <td>{{ user.first_name }}</td>
-                                    <td>{{ user.last_name }}</td>
+                        {% for user in usuarios %}
+                            <tr>
+                                <td>{{ user.id }}</td>
+                                <td>{{ user.username }}</td>
+                                <td>{{ user.first_name }}</td>
+                                <td>{{ user.last_name }}</td>
 {#                                    <td><button type="button" class="btn btn-default">Modificar</button> </td>#}
-                                </tr>
-                            {% endfor %}
+                            </tr>
+                        {% endfor %}
                     </tbody>
                 </table>
             </div>
