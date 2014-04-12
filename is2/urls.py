@@ -2,8 +2,6 @@
 Descripcion de las diferentes URLs utilizadas en el proyecto ZAPpm
 """
 
-
-
 from django.conf.urls import patterns, include, url
 from django.contrib import admin
 from django.contrib.auth.views import logout_then_login
