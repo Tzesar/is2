@@ -24,7 +24,7 @@ def base(request):
     """
     Vista para la plantilla base.html
 
-    :param request: HttpRequest con el contenido de la pagina actual.
-    :return: Template base.html con el contexto proveido por request.
+    :param request: HttpRequest con los datos de la sesion del usuario actual.
+    :return: Template base.html. Los demas templates heredan de este la estructura y los estilos.
     """
     return render(request, 'base.html')

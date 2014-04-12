@@ -38,14 +38,19 @@
                             <p class="navbar-text">{{ user.username|capfirst }}</p>
                             <ul class="nav navbar-nav navbar-right">
                                 <li class="dropdown">
-                                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">Dropdown <b class="caret"></b></a>
+                                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">Usuarios <b class="caret"></b></a>
                                     <ul class="dropdown-menu">
-                                        <li><a href="#">Action</a></li>
-                                        <li><a href="#">Another action</a></li>
-                                        <li><a href="#">Something else here</a></li>
+                                        <li><a href="/createuser">Crear Usuario</a></li>
+                                        <li><a href="/changeuser">Modificar Usuario</a></li>
                                         <li class="divider"></li>
-                                        <li><a href="#">Separated link</a></li>
+                                        <li><a href="#">Usuarios en el Sistema</a></li>
                                     </ul>
+                                </li>
+                                <li>
+                                    <a href="/contact">Contact</a>
+                                </li>
+                                <li>
+                                    <a href="/about">About</a>
                                 </li>
                                 <li>
                                     <a href="{% url 'logout' %}">Logout</a>
@@ -65,7 +70,6 @@
                 </div>
             {% endblock %}
         {% endblock %}
-
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
         <script src="{% static "bootstrap/js/bootstrap.min.js" %}"></script>
     </body>
