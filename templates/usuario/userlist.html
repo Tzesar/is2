@@ -1,0 +1,11 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+
+{% block title %}Usuarios del Sistema{% endblock %}
+{% block pageName %}Usuarios{% endblock %}
+
+{% block mainBody %}
+    {% for user in usuarios %}
+        <p>{{ user.get_full_name }}</p>
+    {% endfor %}
+{% endblock %}

@@ -2,7 +2,8 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth.forms import PasswordChangeForm
 from django.http import HttpResponseRedirect
 from django.shortcuts import render, RequestContext
-from administrarUsuarios.forms import CustomUserChangeForm, CustomUserCreationForm, CustomPasswordChangeForm
+from administrarUsuarios.forms import CustomUserChangeForm, CustomUserCreationForm
+
 
 @login_required
 def createUser(request):
@@ -57,3 +58,8 @@ def changePass(request):
     else:
         form = PasswordChangeForm(user=request.user)
     return render(request, "usuario/changepass.html", { 'form': form, }, context_instance=RequestContext(request) )
+    
+    
+def userlist(request):
+    usuarios = Usuario.objects.all()
+    return render(request, "usuario/userlist.html", { 'usuarios':usuarios}, )
