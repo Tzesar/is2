@@ -2,6 +2,7 @@ from django.contrib.auth.decorators import login_required
 from django.http import HttpResponseRedirect
 from django.shortcuts import render
 from administrarUsuarios.forms import UserCreationForm
+from django.contrib.auth.forms import UserChangeForm
 
 
 @login_required

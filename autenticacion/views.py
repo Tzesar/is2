@@ -2,6 +2,7 @@ from django.shortcuts import render
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.views import login
 
+
 def myLogin(request, *args, **kwargs):
     """
         Establece el tiempo de vida de la sesion.
