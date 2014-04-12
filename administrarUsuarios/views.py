@@ -3,6 +3,7 @@ from django.contrib.auth.forms import PasswordChangeForm
 from django.http import HttpResponseRedirect
 from django.shortcuts import render, RequestContext
 from administrarUsuarios.forms import CustomUserChangeForm, CustomUserCreationForm
+from autenticacion.models import Usuario
 
 
 @login_required
@@ -58,8 +59,8 @@ def changePass(request):
     else:
         form = PasswordChangeForm(user=request.user)
     return render(request, "usuario/changepass.html", { 'form': form, }, context_instance=RequestContext(request) )
-    
-    
+
+
 def userlist(request):
     usuarios = Usuario.objects.all()
     return render(request, "usuario/userlist.html", { 'usuarios':usuarios}, )
