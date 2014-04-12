@@ -7,10 +7,10 @@ def myLogin(request, *args, **kwargs):
     """
     Vista para la plantilla login.html.
 
-    :param request:
-    :param args:
-    :param kwargs:
-    :return:
+    :param request: HttpRequest de autenticacion
+    :param args: Lista de argumentos
+    :param kwargs: Diccionarios
+    :return: Proporciona la pagina login.html
     """
     if request.method == 'POST':
         if not request.POST.get('remember_me'):
@@ -25,6 +25,6 @@ def base(request):
     Vista para la plantilla base.html
 
     :param request: HttpRequest con los datos de la sesion del usuario actual.
-    :return: Template base.html
+    :return: Template base.html. Los demas templates heredan de este la estructura y los estilos.
     """
     return render(request, 'base.html')
