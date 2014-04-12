@@ -1,3 +1,5 @@
+from django.http import HttpResponseRedirect
+from django.core.urlresolvers import reverse
 from django.shortcuts import render
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.views import login
@@ -12,12 +14,16 @@ def myLogin(request, *args, **kwargs):
     :param kwargs: Keyword Arguments para la funcion contrib.auth.views.login.
     :return: Retorna el resultado de la funcion contrib.auth.views.login.
     """
-    if request.method == 'POST':
-        if not request.POST.get('remember_me'):
-            request.session.set_expiry(0)
-        else:
-            request.session.set_expiry(604800)
-    return login(request, *args, **kwargs)
+    if request.user.is_authenticated():
+        return HttpResponseRedirect(reverse('base'))
+    else:
+        if request.method == 'POST':
+            if not request.POST.get('remember_me'):
+                request.session.set_expiry(0)
+            else:
+                request.session.set_expiry(604800)
+        return login(request, *args, **kwargs)
+
 
 @login_required
 def base(request):
