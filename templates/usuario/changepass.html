@@ -1,12 +1,8 @@
 {% extends 'base.html' %}
 {% load staticfiles %}
 
-    {% block cssAdicional %}
-        <link href="{% static "bootstrap/css/singin.css" %}" rel="stylesheet">
-    {% endblock %}
-
-    {% block title %}Crear Usuario{% endblock %}
-    {% block body %}
+    {% block title %}Modificar Contraseña Usuario{% endblock %}
+    {% block mainBody %}
         {% if form.errors %}
             <div class="container-fluid">
                 <div class="alert alert-danger alert-dismissable">
@@ -19,17 +15,15 @@
             <div class="panel panel-default">
                 <div class="panel-body">
                     <div class="container-fluid">
-                        <h1 class="intro"><span class="glyphicon glyphicon-off"></span> Crear Usuario <small>zarpm</small></h1>
+                        <h1 class="intro"><span class="glyphicon glyphicon-off"></span> Modificar Contraseña <small>zarpm</small></h1>
                     </div>
                     <form action="" class="form-signin" role="form" method="post">
                         {% csrf_token %}
-                        <input name="username" type="text" class="form-control" placeholder="Usuario" required autofocus>
-                        <input name="password1" type="password" class="form-control" placeholder="Ingrese la contraseña" required>
-                        <input name="password2" type="password" class="form-control" placeholder="Re-ingrese la contraseña" required>
-                        <button class="btn btn-lg btn-gray btn-block" type="submit">Crear</button>
+                        {{ form.as_p }}
+                        <button class="btn btn-lg btn-gray btn-block" type="submit">Guardar Cambios</button>
                         <input type="hidden" name="next" value="{% url 'base' %}">
                     </form>
                 </div>
             </div>
         </div>
-    {% endblock %}
+    {% endblock %}>

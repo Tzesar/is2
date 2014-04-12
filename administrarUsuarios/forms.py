@@ -1,6 +1,8 @@
 # coding=utf-8
 from __future__ import unicode_literals
 from django import forms
+from django.contrib.auth.forms import SetPasswordForm
+from django.utils.datastructures import SortedDict
 from django.utils.translation import ugettext, ugettext_lazy as _
 from autenticacion.models import Usuario
 
@@ -88,3 +90,30 @@ class CustomUserChangeForm(forms.ModelForm):
         # This is done here, rather than on the field, because the
         # field does not have access to the initial value
         return self.initial["password"]
+
+class CustomPasswordChangeForm(SetPasswordForm):
+    """
+    Formulario que permite a los usuarios cambiar la contraseña verificando con la contrasena anterior.
+    """
+    error_messages = dict(SetPasswordForm.error_messages, **{
+        'password_incorrect': _("Your old password was entered incorrectly. "
+                                "Please enter it again."),
+    })
+    old_password = forms.CharField(label=_("Old password"),
+                                   widget=forms.PasswordInput)
+
+    def clean_old_password(self):
+        """
+        Verificacion de la contraseña anterior
+        """
+        old_password = self.cleaned_data["old_password"]
+        if not self.user.check_password(old_password):
+            raise forms.ValidationError(
+                self.error_messages['password_incorrect'],
+                code='password_incorrect',
+            )
+        return old_password
+
+CustomPasswordChangeForm_fields = SortedDict([
+    (k, CustomPasswordChangeForm.base_fields[k])
+        for k in ['old_password', 'new_password1', 'new_password2']])

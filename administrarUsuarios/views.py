@@ -1,8 +1,8 @@
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth.forms import PasswordChangeForm
 from django.http import HttpResponseRedirect
 from django.shortcuts import render, RequestContext
-from administrarUsuarios.forms import CustomUserChangeForm, CustomUserCreationForm
-
+from administrarUsuarios.forms import CustomUserChangeForm, CustomUserCreationForm, CustomPasswordChangeForm
 
 @login_required
 def createUser(request):
@@ -38,4 +38,22 @@ def changeUser(request):
             return HttpResponseRedirect("/base/")
     else:
         form = CustomUserChangeForm()
-    return render(request, "usuario/createuser.html", { 'form': form, }, context_instance=RequestContext(request) )
+    return render(request, "usuario/changeuser.html", { 'form': form, }, context_instance=RequestContext(request) )
+
+
+@login_required()
+def changePass(request):
+    """
+    Vista para la modificacion de contrasena  del usuario.
+
+    :param request: HttpRequest necesario para modificar la contrasena del usuario
+    :return:  Proporciona la pagina changePass.html con el formulario correspondiente
+    """
+    if request.method == 'POST':
+        form = PasswordChangeForm(user=request.user, data=request.POST)
+        if form.is_valid():
+            form.save()
+            return HttpResponseRedirect("/base/")
+    else:
+        form = PasswordChangeForm(user=request.user)
+    return render(request, "usuario/changepass.html", { 'form': form, }, context_instance=RequestContext(request) )
