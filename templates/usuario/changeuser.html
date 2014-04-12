@@ -1,12 +1,8 @@
 {% extends 'base.html' %}
 {% load staticfiles %}
 
-    {% block cssAdicional %}
-        <link href="{% static "bootstrap/css/singin.css" %}" rel="stylesheet">
-    {% endblock %}
-
-    {% block title %}Modificar Usuario Usuario{% endblock %}
-    {% block  mainBody %}
+    {% block title %}Modificar Usuario{% endblock %}
+    {% block mainBody %}
         {% if form.errors %}
             <div class="container-fluid">
                 <div class="alert alert-danger alert-dismissable">

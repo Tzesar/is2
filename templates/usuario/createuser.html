@@ -1,10 +1,6 @@
 {% extends 'base.html' %}
 {% load staticfiles %}
 
-    {% block cssAdicional %}
-        <link href="{% static "bootstrap/css/singin.css" %}" rel="stylesheet">
-    {% endblock %}
-
     {% block title %}Modificar Usuario{% endblock %}
     {% block mainBody %}
         {% if form.errors %}
