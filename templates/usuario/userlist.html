@@ -5,8 +5,20 @@
 {% block pageName %}Usuarios{% endblock %}
 
 {% block mainBody %}
-    {% for user in usuarios %}
-        <p>  &nbsp;&nbsp;&nbsp;&nbsp; {{ user.get_full_name }} - {{ user.username }}</p>
+    <div class="panel panel-default col-lg-offset-1 col-lg-10" style="padding-top: 1%">
+        <div class="panel panel-default">
+            <!-- Default panel contents -->
+            <div class="panel-heading"><h1>Usuarios</h1></div>
+                <div class="panel-body">
+                    <p>Usuarios del sistema</p>
+            </div>
 
-    {% endfor %}
+            <!-- List group -->
+            <ul class="list-group">
+                {% for user in usuarios %}
+                    <li class="list-group-item">{{ user.get_full_name }} - {{ user.username }}</li>
+                {% endfor %}
+            </ul>
+        </div>
+    </div>
 {% endblock %}
