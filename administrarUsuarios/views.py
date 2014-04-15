@@ -51,6 +51,7 @@ def changePass(request):
     :param request: HttpRequest necesario para modificar la contrasena del usuario
     :return:  Proporciona la pagina changePass.html con el formulario correspondiente
     """
+
     if request.method == 'POST':
         form = PasswordChangeForm(user=request.user, data=request.POST)
         if form.is_valid():

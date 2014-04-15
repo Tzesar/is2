@@ -101,3 +101,5 @@ TEMPLATE_DIRS = (
 AUTH_USER_MODEL = "autenticacion.Usuario"
 LOGIN_URL = "/login/"
 LOGIN_REDIRECT_URL = '/base/'
+
+#encoding:utf-8

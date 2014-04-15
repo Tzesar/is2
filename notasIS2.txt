@@ -23,5 +23,11 @@ que al mismo tiempo las más recomendada, PBKDF2
 - Modificar la tabla de permisos y añadir los campos que faltan según la ERS.
 
 - Como administrar los roles de sistema?????
- + Solo con Django Administrador o creamos nuestro propio gestor de usuarios y roles? 
+ + Solo con Django Administrador o creamos nuestro propio gestor de usuarios y roles?
+
+- Como cambiar el estado del proyecto?
+ + Existiran botones en el menu para cada proyecto
+ + Las opciones seran Anular, Activa(?),
+
+- Sistema de Log ??? falta hacer como hacer???
 
