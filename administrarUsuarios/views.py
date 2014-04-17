@@ -39,7 +39,7 @@ def changeUser(request):
             form.save()
             return HttpResponseRedirect("/base/")
     else:
-        form = CustomUserChangeForm()
+        form = CustomUserChangeForm(instance=request.user)
     return render(request, "usuario/changeuser.html", { 'form': form, }, context_instance=RequestContext(request) )
 
 
