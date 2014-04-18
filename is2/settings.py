@@ -37,6 +37,7 @@ INSTALLED_APPS = (
     'django.contrib.staticfiles',
     'django.contrib.admin',
     'zar',
+    'gestionRolesPermisos',
     'autenticacion',
     'administrarUsuarios',
     'administrarProyectos',

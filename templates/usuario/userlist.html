@@ -26,6 +26,7 @@
                                 <td><a href='{% url 'administrarUsuarios.views.changeAnyUser' user.id %}'>{{user.username}}</a></td>
                                 <td>{{ user.first_name }}</td>
                                 <td>{{ user.last_name }}</td>
+{#                                    <td><button type="button" class="btn btn-default">Modificar</button> </td>#}
                             </tr>
                         {% endfor %}
                     </tbody>
