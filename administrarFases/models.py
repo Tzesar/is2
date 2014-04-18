@@ -3,8 +3,7 @@ from django.db import models
 from administrarProyectos.models import Proyecto
 
 
-
-class Fases(models.Model):
+class Fase(models.Model):
     """
     Modelo para la clase proyecto, en el cual se encuentras todos los atributos de una fase:
         + Codigo: Identificador Único dentro del Sistema
@@ -23,7 +22,7 @@ class Fases(models.Model):
     nombre = models.CharField(max_length=100, unique=True)
     descripcion = models.TextField(max_length=140, help_text='Introduzca una breve reseña del proyecto', null=True)
     estado = models.CharField(max_length=3, choices=opciones_estado, default='PEN', help_text='Estado de la Fase')
-    proyecto = models.ForeignKey(Proyecto, default=1)
+    proyecto = models.ForeignKey(Proyecto)
     #lista de tipo de ítems
 
     def __unicode__(self):

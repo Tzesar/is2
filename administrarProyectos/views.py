@@ -15,6 +15,7 @@ def createProject(request):
     """
     Vista para la creación de proyectos en el sistema.
     Opción válida para usuarios con rol de Administrador.
+
     :param request:
     :return:
     """

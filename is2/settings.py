@@ -40,6 +40,7 @@ INSTALLED_APPS = (
     'autenticacion',
     'administrarUsuarios',
     'administrarProyectos',
+    'administrarFases',
 )
 
 MIDDLEWARE_CLASSES = (
@@ -54,7 +55,6 @@ MIDDLEWARE_CLASSES = (
 ROOT_URLCONF = 'is2.urls'
 
 WSGI_APPLICATION = 'is2.wsgi.application'
-
 
 # Database
 # https://docs.djangoproject.com/en/1.6/ref/settings/#databases
@@ -102,6 +102,9 @@ TEMPLATE_DIRS = (
 AUTH_USER_MODEL = "autenticacion.Usuario"
 LOGIN_URL = "/login/"
 LOGIN_REDIRECT_URL = '/base/'
+
+MEDIA_ROOT = os.path.join(BASE_DIR, 'is2/', 'static/')
+MEDIA_URL ='/media/'
 
 #encoding:utf-8
 

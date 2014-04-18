@@ -46,6 +46,7 @@
 <li><a class="reference internal" href="#submodules">Submodules</a></li>
 <li><a class="reference internal" href="#module-administrarProyectos.forms">administrarProyectos.forms module</a></li>
 <li><a class="reference internal" href="#module-administrarProyectos.models">administrarProyectos.models module</a></li>
+<li><a class="reference internal" href="#module-administrarProyectos.tests">administrarProyectos.tests module</a></li>
 <li><a class="reference internal" href="#module-administrarProyectos.views">administrarProyectos.views module</a></li>
 <li><a class="reference internal" href="#module-administrarProyectos">Module contents</a></li>
 </ul>
@@ -109,7 +110,7 @@ Opción válida solo para usuarios con rol de Administrador.</p>
 
 <dl class="attribute">
 <dt id="administrarProyectos.forms.ChangeProjectForm.base_fields">
-<tt class="descclassname">ChangeProjectForm.</tt><tt class="descname">base_fields</tt><em class="property"> = {'nombre': &lt;django.forms.fields.CharField object at 0xa99ce6c&gt;, 'lider_proyecto': &lt;django.forms.models.ModelChoiceField object at 0xa953c6c&gt;, 'estado': &lt;django.forms.fields.TypedChoiceField object at 0xa9b70ec&gt;, 'descripcion': &lt;django.forms.fields.CharField object at 0xaa18fec&gt;}</em><a class="headerlink" href="#administrarProyectos.forms.ChangeProjectForm.base_fields" title="Permalink to this definition">¶</a></dt>
+<tt class="descclassname">ChangeProjectForm.</tt><tt class="descname">base_fields</tt><em class="property"> = {'nombre': &lt;django.forms.fields.CharField object at 0xa79a4cc&gt;, 'lider_proyecto': &lt;django.forms.models.ModelChoiceField object at 0xa79a5cc&gt;, 'estado': &lt;django.forms.fields.TypedChoiceField object at 0xa79a7cc&gt;, 'descripcion': &lt;django.forms.fields.CharField object at 0xa79a6ec&gt;}</em><a class="headerlink" href="#administrarProyectos.forms.ChangeProjectForm.base_fields" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="attribute">
@@ -148,7 +149,7 @@ Opción válida solo para usuarios con rol de Administrador.</p>
 
 <dl class="attribute">
 <dt id="administrarProyectos.forms.NewProjectForm.base_fields">
-<tt class="descclassname">NewProjectForm.</tt><tt class="descname">base_fields</tt><em class="property"> = {'nombre': &lt;django.forms.fields.CharField object at 0xa95336c&gt;, 'lider_proyecto': &lt;django.forms.models.ModelChoiceField object at 0xaa18cac&gt;, 'descripcion': &lt;django.forms.fields.CharField object at 0xaa18ecc&gt;}</em><a class="headerlink" href="#administrarProyectos.forms.NewProjectForm.base_fields" title="Permalink to this definition">¶</a></dt>
+<tt class="descclassname">NewProjectForm.</tt><tt class="descname">base_fields</tt><em class="property"> = {'nombre': &lt;django.forms.fields.CharField object at 0xa79a36c&gt;, 'lider_proyecto': &lt;django.forms.models.ModelChoiceField object at 0xa8017ac&gt;, 'descripcion': &lt;django.forms.fields.CharField object at 0xa79a3ac&gt;}</em><a class="headerlink" href="#administrarProyectos.forms.NewProjectForm.base_fields" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="attribute">
@@ -213,13 +214,59 @@ Opción válida solo para usuarios con rol de Administrador.</p>
 
 <dl class="attribute">
 <dt id="administrarProyectos.models.Proyecto.objects">
-<tt class="descclassname">Proyecto.</tt><tt class="descname">objects</tt><em class="property"> = &lt;django.db.models.manager.Manager object at 0xa8a490c&gt;</em><a class="headerlink" href="#administrarProyectos.models.Proyecto.objects" title="Permalink to this definition">¶</a></dt>
+<tt class="descclassname">Proyecto.</tt><tt class="descname">objects</tt><em class="property"> = &lt;django.db.models.manager.Manager object at 0xa68a2cc&gt;</em><a class="headerlink" href="#administrarProyectos.models.Proyecto.objects" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="attribute">
 <dt id="administrarProyectos.models.Proyecto.opciones_estado">
 <tt class="descclassname">Proyecto.</tt><tt class="descname">opciones_estado</tt><em class="property"> = (('PEN', 'Pendiente'), ('ANU', 'Anulado'), ('ACT', 'Activo'), ('FIN', 'Finalizado'))</em><a class="headerlink" href="#administrarProyectos.models.Proyecto.opciones_estado" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-administrarProyectos.tests">
+<span id="administrarproyectos-tests-module"></span><h2>administrarProyectos.tests module<a class="headerlink" href="#module-administrarProyectos.tests" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="administrarProyectos.tests.TestAdministrarProjectos">
+<em class="property">class </em><tt class="descclassname">administrarProyectos.tests.</tt><tt class="descname">TestAdministrarProjectos</tt><big>(</big><em>methodName='runTest'</em><big>)</big><a class="headerlink" href="#administrarProyectos.tests.TestAdministrarProjectos" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">django.test.testcases.TestCase</span></tt></p>
+<dl class="docutils">
+<dt>Test para Administración de usuarios, pruebas realizadas:</dt>
+<dd><ul class="first last simple">
+<li>ChangeProject: Test de vista y modificación de los atributos de un proyecto en el sistema.</li>
+<li>CreateProject: Test de Vista y creación de un nuevo proyecto en el sistema.</li>
+</ul>
+</dd>
+</dl>
+<dl class="method">
+<dt id="administrarProyectos.tests.TestAdministrarProjectos.setUp">
+<tt class="descname">setUp</tt><big>(</big><big>)</big><a class="headerlink" href="#administrarProyectos.tests.TestAdministrarProjectos.setUp" title="Permalink to this definition">¶</a></dt>
+<dd><p>Crea el usuario &#8216;admin&#8217; con contraseña &#8216;admin&#8217; para las pruebas.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="administrarProyectos.tests.TestAdministrarProjectos.test_NewProjectForm_response">
+<tt class="descname">test_NewProjectForm_response</tt><big>(</big><big>)</big><a class="headerlink" href="#administrarProyectos.tests.TestAdministrarProjectos.test_NewProjectForm_response" title="Permalink to this definition">¶</a></dt>
+<dd><p>Test para la vista de creación de proyectos en el sistema</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="administrarProyectos.tests.TestAdministrarProjectos.test_createProject_response">
+<tt class="descname">test_createProject_response</tt><big>(</big><big>)</big><a class="headerlink" href="#administrarProyectos.tests.TestAdministrarProjectos.test_createProject_response" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="administrarProyectos.tests.UsuarioFactory">
+<em class="property">class </em><tt class="descclassname">administrarProyectos.tests.</tt><tt class="descname">UsuarioFactory</tt><a class="headerlink" href="#administrarProyectos.tests.UsuarioFactory" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">factory.django.DjangoModelFactory</span></tt></p>
+<dl class="attribute">
+<dt id="administrarProyectos.tests.UsuarioFactory.FACTORY_FOR">
+<tt class="descname">FACTORY_FOR</tt><a class="headerlink" href="#administrarProyectos.tests.UsuarioFactory.FACTORY_FOR" title="Permalink to this definition">¶</a></dt>
+<dd><p>alias of <tt class="xref py py-class docutils literal"><span class="pre">Usuario</span></tt></p>
+</dd></dl>
 
 </dd></dl>
 
@@ -247,9 +294,17 @@ Opción válida para usuarios con rol de Administrador.</p>
 <dt id="administrarProyectos.views.createProject">
 <tt class="descclassname">administrarProyectos.views.</tt><tt class="descname">createProject</tt><big>(</big><em>request</em>, <em>*args</em>, <em>**kwargs</em><big>)</big><a class="headerlink" href="#administrarProyectos.views.createProject" title="Permalink to this definition">¶</a></dt>
 <dd><p>Vista para la creación de proyectos en el sistema.
-Opción válida para usuarios con rol de Administrador.
-:param request:
-:return:</p>
+Opción válida para usuarios con rol de Administrador.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>request</strong> &#8211; </td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"></td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 <dl class="function">

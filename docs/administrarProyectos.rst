@@ -20,6 +20,14 @@ administrarProyectos.models module
     :undoc-members:
     :show-inheritance:
 
+administrarProyectos.tests module
+---------------------------------
+
+.. automodule:: administrarProyectos.tests
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
 administrarProyectos.views module
 ---------------------------------
 
