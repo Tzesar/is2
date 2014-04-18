@@ -60,3 +60,8 @@ body {
   background-color: #464646;
   border-color: #adadad;
 }
+
+.list-group-item-gray {
+  color: #464646;
+  background-color: #ffffff;
+}

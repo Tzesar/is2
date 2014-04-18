@@ -22,7 +22,7 @@ class Proyecto(models.Model):
         ('ACT', 'Activo'),
         ('FIN', 'Finalizado'), )
 
-    codigo = models.CharField(max_length=2, default='PR')
+    codigo = models.CharField(max_length=2, default='PR', unique=True)
     nombre = models.CharField(max_length=100, unique=True)
     lider_proyecto = models.ForeignKey(Usuario)
     descripcion = models.TextField(max_length=140, help_text='Introduzca una breve reseña del proyecto', null=True)

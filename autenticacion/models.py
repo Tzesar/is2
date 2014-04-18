@@ -10,7 +10,6 @@ from django.utils import timezone
 from django.core import validators
 
 from django.contrib.auth.models import AbstractBaseUser, UserManager, SiteProfileNotAvailable, ImproperlyConfigured
-from gestionRolesPermisos.models import Rol
 
 class AbstractUser(AbstractBaseUser):
     """
@@ -107,8 +106,3 @@ class Usuario(AbstractUser):
     is_superuser = models.BooleanField('superuser status', default=False,
         help_text='Designates that this user has all permissions without '
                     'explicitly assigning them.')
-
-    roles_usuario = models.ManyToManyField(Rol,
-        verbose_name='roles de usuario', blank=True,
-        help_text='Especificar roles para este usuario.',
-        related_name="user_set", related_query_name="user")
