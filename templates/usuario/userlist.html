@@ -13,7 +13,8 @@
         <div class="panel panel-default">
             <div class="panel-heading">
                 <h1 style="display: inline-block">Usuarios</h1>
-                <span class="glyphicon glyphicon-search" style="font-size: x-large"></span>
+                <span class="glyphicon glyphicon-search disable" id="searchIcon" style="font-size: x-large; padding-left: 1em"></span>
+                <input id="searchInput" class="form-control" style="display: inline-block" placeholder="Filter"/>
             </div>
             <div class="panel-body">
                 <div class="table-responsive">
@@ -25,7 +26,7 @@
                                 <th>Activo</th>
                             </tr>
                         </thead>
-                        <tbody>
+                        <tbody id="rows">
                             {% for user in usuarios %}
                                 <tr id="{{ user.id }}">
                                     <td>{{ user.username }}</td>
@@ -34,6 +35,7 @@
                                         <input type="checkbox" name="usuario_activo" id="{{ user.id }}"
                                                data_user_id="{{ user.id }}" data_url="{% url 'userlist' %}"
                                                {% if user.is_active %} checked {% endif %} />
+                                        {{ request.session.name }}
                                     </td>
                                 </tr>
                             {% endfor %}
@@ -45,7 +47,8 @@
     </div>
 {% endblock %}
 {% block jsAdicional %}
-    <script src="{% static "bootstrap/js/bootstrap-switch.js" %}"></script>
+    <script src="{% static "bootstrap/js/bootstrap-switch.min.js" %}"></script>
     <script src="{% static "bootstrap/js/jquery.cookie.js" %}"></script>
-    <script src="{% static "bootstrap/js/userlist.js" %}"></script>
+    <script src="{% static "bootstrap/js/jquery-ui-1.10.4.min.js" %}"></script>
+    <script src="{% static "bootstrap/js/userList.js" %}"></script>
 {% endblock %}

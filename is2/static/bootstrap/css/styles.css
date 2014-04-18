@@ -65,3 +65,7 @@ body {
   color: #464646;
   background-color: #ffffff;
 }
+
+.disable {
+    color: #adadad;
+}

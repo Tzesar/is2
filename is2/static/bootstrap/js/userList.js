@@ -35,36 +35,47 @@ $('input[name="usuario_activo"]').on('switchChange.bootstrapSwitch', function(st
     });
 });
 
+// Muestra el campo searchInput cuando el mouse pasa sobre el icono searchIcon
+var timeOutId;
+
+$("#searchIcon").mouseover(function() {
+    $("#searchInput").fadeIn("fast");
+    $("#searchIcon").removeClass("disable");
+
+}).mouseleave(function() {
+    timeOutId = window.setTimeout(hideInput, 1000);
+});
+
+function hideInput(){
+    $("#searchInput").fadeOut(500);
+    $("#searchIcon").switchClass("", "disable", 500);
+}
+
 // Maneja el filtrado de los usuarios searchInput: id del input de texto
 $("#searchInput").keyup(function () {
-    //split the current value of searchInput
-    var data = this.value.split(" ");
-    //create a jquery object of the rows fbody: id del cuerpo de la tabla
-    var jo = $("#fbody").find("tr");
-    if (this.value == "") {
-        jo.show();
-        return;
-    }
-    //hide all the rows
-    jo.hide();
+    filter($(this));
 
-    //Recusively filter the jquery object to get results.
-    jo.filter(function (i, v) {
-        var $t = $(this);
-        for (var d = 0; d < data.length; ++d) {
-            if ($t.is(":contains('" + data[d] + "')")) {
-                return true;
-            }
-        }
-        return false;
-    //show the rows that match.
-    }).show();
-}).focus(function () {
-    this.value = "";
-    $(this).css({
-        "color": "black"
-    });
-    $(this).unbind('focus');
-}).css({
-    "color": "#C0C0C0"
+}).focus(function() {
+  window.clearTimeout(timeOutId);
+
+}).blur(function() {
+    if ( !$(this).val() ){
+        $("#searchInput").fadeOut(500);
+        $("#searchIcon").switchClass("", "disable", 500);
+    }
+
+}).keydown(function(e) {
+    if ( e.which == 27 ){
+        $("#searchInput").blur()
+  }
 });
+
+function filter(element) {
+    var value = $(element).val().toLowerCase();
+    var $li = $("#rows").find("tr");
+
+    $li.hide();
+    $li.filter(function() {
+        return $(this).text().toLowerCase().indexOf(value) > -1;
+    }).show();
+}
