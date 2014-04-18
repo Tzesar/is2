@@ -21,7 +21,7 @@ urlpatterns = patterns('',
                        url(r'^about/$', about, name="about"),
                        url(r'^createuser/$', createUser),
                        url(r'^changeuser/$', changeUser),
-                       url(r'^userlist/$', userlist),
+                       url(r'^userlist/$', userlist, name="userlist"),
                        url(r'^changepass/$', changePass),
                        url(r'^contact/$', contact, name="contact"),
                        )

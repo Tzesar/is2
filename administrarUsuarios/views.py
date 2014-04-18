@@ -1,7 +1,8 @@
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.forms import PasswordChangeForm
-from django.http import HttpResponseRedirect
+from django.http import HttpResponseRedirect, HttpResponse
 from django.shortcuts import render, RequestContext
+import json
 from administrarUsuarios.forms import CustomUserChangeForm, CustomUserCreationForm
 from autenticacion.models import Usuario
 
@@ -63,5 +64,35 @@ def changePass(request):
 
 @login_required
 def userlist(request):
-    usuarios = Usuario.objects.all()
-    return render(request, "usuario/userlist.html", { 'usuarios':usuarios}, )
+    if request.method == 'GET':
+        usuarios = Usuario.objects.all().order_by('id')
+        return render(request, "usuario/userlist.html", {'usuarios': usuarios}, )
+
+    xhr = request.GET.has_key('xhr')
+
+    idUsuario = request.POST['usuarioModificado']
+    estadoNuevo = request.POST['estadoNuevo']
+
+    if idUsuario and estadoNuevo:
+        idUsuario = int(idUsuario)
+        if estadoNuevo == 'true':
+            estadoNuevo = True
+        else:
+            estadoNuevo = False
+    else:
+        responseDict = {'exito': False}
+        return HttpResponse(json.dumps(responseDict), mimetype='application/javascript')
+
+    usuario = Usuario.objects.get(id=idUsuario)
+
+    if usuario:
+        usuario.is_active = estadoNuevo
+    else:
+        responseDict = {'exito': False}
+        return HttpResponse(json.dumps(responseDict), mimetype='application/javascript')
+
+    usuario.save()
+
+    if xhr:
+        responseDict = {'exito': True}
+        return HttpResponse(json.dumps(responseDict), mimetype='application/javascript')
