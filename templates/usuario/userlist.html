@@ -1,38 +1,51 @@
 {% extends 'base.html' %}
 {% load staticfiles %}
 
+{% block cssAdicional %}
+    <link href="{% static "bootstrap/css/bootstrap-switch.css" %}" rel="stylesheet">
+{% endblock %}
+
 {% block title %}Usuarios del Sistema{% endblock %}
 {% block pageName %}Usuarios{% endblock %}
 
 {% block mainBody %}
     <div class="container col-lg-offset-1 col-lg-10 col-xs-12" style="padding-top: 2%">
-        <div class="panel panel-default" style="padding-top: 2%; padding-left: 2%; padding-right: 2%">
-            <div class="panel panel-default">
-                <!-- Default panel contents -->
-                <div class="panel-heading"><h1>Usuarios</h1></div>
-                <table class="table">
-                    <thead>
-                        <tr>
-                            <th>#</th>
-                            <th>Username</th>
-                            <th>Nombre</th>
-                            <th>Apellido</th>
-{#                            <th>  </th>#}
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {% for user in usuarios %}
-                            <tr>
-                                <td>{{ user.id }}</td>
-                                <td>{{ user.username }}</td>
-                                <td>{{ user.first_name }}</td>
-                                <td>{{ user.last_name }}</td>
-{#                                    <td><button type="button" class="btn btn-default">Modificar</button> </td>#}
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h1 style="display: inline-block">Usuarios</h1>
+                <span class="glyphicon glyphicon-search" style="font-size: x-large"></span>
+            </div>
+            <div class="panel-body">
+                <div class="table-responsive">
+                    <table class="table table-hover">
+                        <thead>
+                            <tr class="text-info">
+                                <th>Username</th>
+                                <th>Nombre</th>
+                                <th>Activo</th>
                             </tr>
-                        {% endfor %}
-                    </tbody>
-                </table>
+                        </thead>
+                        <tbody>
+                            {% for user in usuarios %}
+                                <tr id="{{ user.id }}">
+                                    <td>{{ user.username }}</td>
+                                    <td>{{ user.get_full_name }}</td>
+                                    <td>
+                                        <input type="checkbox" name="usuario_activo" id="{{ user.id }}"
+                                               data_user_id="{{ user.id }}" data_url="{% url 'userlist' %}"
+                                               {% if user.is_active %} checked {% endif %} />
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
             </div>
         </div>
     </div>
+{% endblock %}
+{% block jsAdicional %}
+    <script src="{% static "bootstrap/js/bootstrap-switch.js" %}"></script>
+    <script src="{% static "bootstrap/js/jquery.cookie.js" %}"></script>
+    <script src="{% static "bootstrap/js/userlist.js" %}"></script>
 {% endblock %}

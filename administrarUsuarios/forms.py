@@ -1,4 +1,3 @@
-# coding=utf-8
 from __future__ import unicode_literals
 from django import forms
 from django.contrib.auth.forms import SetPasswordForm
@@ -91,9 +90,10 @@ class CustomUserChangeForm(forms.ModelForm):
         # field does not have access to the initial value
         return self.initial["password"]
 
+
 class CustomPasswordChangeForm(SetPasswordForm):
     """
-    Formulario que permite a los usuarios cambiar la contraseña verificando con la contrasena anterior.
+    Formulario que permite a los usuarios cambiar la contrasena verificando con la contrasena anterior.
     """
     error_messages = dict(SetPasswordForm.error_messages, **{
         'password_incorrect': _("Your old password was entered incorrectly. "
@@ -104,7 +104,7 @@ class CustomPasswordChangeForm(SetPasswordForm):
 
     def clean_old_password(self):
         """
-        Verificacion de la contraseña anterior
+        Verificacion de la contrasena anterior
         """
         old_password = self.cleaned_data["old_password"]
         if not self.user.check_password(old_password):

@@ -2,6 +2,6 @@
 
 # Mostrar la documentacion actual
 chromium docs/_build/html/index.html &
-if [ $? -z ]; then
+if [ $? -ne 0 ]; then
     firefox docs/_build/html/index.html &
 fi
