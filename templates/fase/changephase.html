@@ -19,7 +19,7 @@
                     </div>
                     <form action="" class="form-signin" role="form" method="post">
                         {% csrf_token %}
-                            <table> {{form.as_p}} </table>
+                            <table> {{ form.as_table }} </table>
                             <p class="text-center">
                                 <a href='/phaselist/' class="btn btn-lg btn-gray btn-lg" role="button">Lista Fases</a>
                                 <button class="btn btn-lg btn-gray btn-lg" type="submit">Guardar cambios</button>

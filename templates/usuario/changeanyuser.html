@@ -19,8 +19,8 @@
                     </div>
                     <form action="" class="form-signin" role="form" method="post">
                         {% csrf_token %}
-                        {{ form.as_p }}
-                            <p class="text-center">
+                        <table> {{ form.as_table }} </table>
+                        <p class="text-center">
                             <a href='/userlist/' class="btn btn-lg btn-gray btn-lg" role="button">Lista Usuarios</a>
                             <button class="btn btn-lg btn-gray btn-lg" type="submit">Guardar cambios</button>
                             <input type="hidden" name="next" value="{% url 'base' %}">

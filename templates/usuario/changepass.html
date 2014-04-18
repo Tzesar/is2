@@ -19,7 +19,7 @@
                     </div>
                     <form action="" class="form-signin" role="form" method="post">
                         {% csrf_token %}
-                        {{ form.as_p }}
+                        <table> {{ form.as_table }} </table>
                         <button class="btn btn-lg btn-gray btn-block" type="submit">Guardar Cambios</button>
                         <input type="hidden" name="next" value="{% url 'base' %}">
                     </form>

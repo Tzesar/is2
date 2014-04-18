@@ -1,6 +1,10 @@
 {% extends 'base.html' %}
 {% load staticfiles %}
 
+{% block cssAdicional %}
+    <link href="{% static "bootstrap/css/bootstrap-switch.css" %}" rel="stylesheet">
+{% endblock %}
+
 {% block title %}Usuarios del Sistema{% endblock %}
 {% block pageName %}Usuarios{% endblock %}
 
