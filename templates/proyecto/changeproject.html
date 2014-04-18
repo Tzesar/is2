@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
 {% load staticfiles %}
 
-    {% block title %}Crear Proyecto{% endblock %}
+    {% block title %}Modificar Proyecto{% endblock %}
     {% block mainBody %}
         {% if form.errors %}
             <div class="container-fluid">
@@ -15,13 +15,16 @@
             <div class="panel panel-default">
                 <div class="panel-body">
                     <div class="container-fluid">
-                        <h1 class="intro"><span class="glyphicon glyphicon-off"></span> Crear Proyecto <small>zarpm</small></h1>
+                        <h2 class="intro"><span class="glyphicon glyphicon-off"></span> {{ project.nombre }}  <small> Modificar Proyecto - ZARpm</small></h2>
                     </div>
                     <form action="" class="form-signin" role="form" method="post">
                         {% csrf_token %}
-                        {{ form.as_p }}
-                        <button class="btn btn-lg btn-gray btn-block" type="submit">Guardar cambios</button>
-                        <input type="hidden" name="next" value="{% url 'base' %}">
+                            <table> {{form.as_p}} </table>
+                            <p class="text-center">
+                                <a href='/projectlist/' class="btn btn-lg btn-gray btn-lg" role="button">Lista Proyectos</a>
+                                <button class="btn btn-lg btn-gray btn-lg" type="submit">Guardar cambios</button>
+                                <input type="hidden" name="next" value="{% url 'base' %}">
+                            </p>
                     </form>
                 </div>
             </div>

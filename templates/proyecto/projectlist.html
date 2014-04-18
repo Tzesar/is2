@@ -2,7 +2,7 @@
 {% load staticfiles %}
 
 {% block title %}Proyecto en el Sistema{% endblock %}
-{% block pageName %}Usuarios{% endblock %}
+{% block pageName %}Proyectos{% endblock %}
 
 {% block mainBody %}
     <div class="container col-lg-offset-1 col-lg-10 col-xs-12" style="padding-top: 2%">
@@ -17,17 +17,15 @@
                             <th>Nombre de Proyecto</th>
                             <th>Lider de Proyecto</th>
                             <th>Estado</th>
-{# <th> </th>#}
                         </tr>
                     </thead>
                     <tbody>
-                        {% for user in proyecto %}
+                        {% for project in project %}
                             <tr>
-                                <td>{{ user.id }}</td>
-                                <td>{{ user.nombre }}</td>
-                                <td>{{ user.lider_proyecto }}</td>
-                                <td>{{ user.estado }}</td>
-{# <td><button type="button" class="btn btn-default">Modificar</button> </td>#}
+                                <td>{{ project.id }}</td>
+                                <td><a href='{% url 'administrarProyectos.views.changeProject' project.id %}'>{{project.nombre}}</a></td>
+                                <td>{{ project.lider_proyecto }}</td>
+                                <td>{{ project.estado }}</td>
                             </tr>
                         {% endfor %}
                     </tbody>

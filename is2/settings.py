@@ -39,6 +39,7 @@ INSTALLED_APPS = (
     'zar',
     'autenticacion',
     'administrarUsuarios',
+    'administrarProyectos',
 )
 
 MIDDLEWARE_CLASSES = (
@@ -103,3 +104,68 @@ LOGIN_URL = "/login/"
 LOGIN_REDIRECT_URL = '/base/'
 
 #encoding:utf-8
+
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'formatters': {
+        'verbose': {
+            'format' : "[%(asctime)s] %(levelname)s %(message)s",
+            'datefmt' : "%d/%b/%Y %H:%M:%S"
+        },
+    },
+    'handlers': {
+        'proyecto': {
+            'level': 'INFO',
+            'class': 'logging.FileHandler',
+            'filename': 'Proyectos.log',
+            'formatter': 'verbose'
+        },
+        'usuario': {
+            'level': 'INFO',
+            'class': 'logging.FileHandler',
+            'filename': 'Usuarios.log',
+            'formatter': 'verbose'
+        },
+        'fase': {
+            'level': 'INFO',
+            'class': 'logging.FileHandler',
+            'filename': 'Fases.log',
+            'formatter': 'verbose'
+        },
+        'rol': {
+            'level': 'INFO',
+            'class': 'logging.FileHandler',
+            'filename': 'Roles.log',
+            'formatter': 'verbose'
+        },
+        'tipo_item': {
+            'level': 'INFO',
+            'class': 'logging.FileHandler',
+            'filename': 'Tipo_Items.log',
+            'formatter': 'verbose'
+        },
+        'item': {
+            'level': 'INFO',
+            'class': 'logging.FileHandler',
+            'filename': 'Items.log',
+            'formatter': 'verbose'
+        },
+        'linea_base': {
+            'level': 'INFO',
+            'class': 'logging.FileHandler',
+            'filename': 'Linea_base.log',
+            'formatter': 'verbose'
+        },
+    },
+    'loggers': {
+        'administrarProyectos': {
+            'handlers': ['proyecto'],
+            'level': 'INFO',
+        },
+        'administrarUsuarios': {
+            'handlers': ['usuario'],
+            'level': 'INFO',
+        },
+    }
+}

@@ -1,0 +1,42 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+
+{% block title %}Informacion del Usuario{% endblock %}
+{% block pageName %}Usuarios{% endblock %}
+
+{% block mainBody %}
+    <div class="container col-lg-offset-1 col-lg-10 col-xs-12" style="padding-top: 2%">
+        <div class="panel panel-default" style="padding-top: 2%; padding-left: 2%; padding-right: 2%">
+            <div class="panel panel-default">
+                <div class="panel-heading"><h1>{{ usuario.username }}</h1></div>
+                <table class="table">
+                <thead>
+                    <tr>
+                    <th>Nro. Usuario</th>
+                    <th>Nombre</th>
+                    <th>Apellido</th>
+                    <th>Email</th>
+                    <th>Telefono</th>
+                    <th>Estado</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>{{ usuario.id }}</td>
+                        <td>{{ usuario.first_name }}</td>
+                        <td>{{ usuario.last_name }}</td>
+                        <td>{{ usuario.email }}</td>
+                        <td>{{ usuario.telefono }}</td>
+                        <td>{{ usuario.is_active }}</td>
+                    </tr>
+                </tbody>
+            </table>
+            </div>
+            <div>
+                <a href='/userlist/' class="btn btn-lg btn-gray btn-lg" role="button">Atrás</a>
+                <a href='{% url 'administrarUsuarios.views.changeAnyUser' usuario.id %}' class="btn btn-lg btn-gray btn-lg" role="button">Modificar</a>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+

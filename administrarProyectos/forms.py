@@ -1,14 +1,30 @@
+#encoding=utf-8
 from django.forms import ModelForm
+from administrarProyectos.models import Proyecto
 from django import forms
-from autenticacion.models import Usuario
 
 
-class NewProyectoForm(forms.Form):
-    nombre = forms.CharField(label='Nombre del Proyecto')
-    lider_proyecto = forms.CharField(label='Usuario responsable del proyecto')
-    descripcion = forms.CharField(widget=forms.Textarea)
-    fecha_inicio = forms.DateField(label='Fecha de Inicio del Proyecto')
-    fecha_fin = forms.DateField(label='Fecha estimada de Finalización')
+class NewProjectForm(ModelForm):
+    """
+    Formulario para la creación de nuevos proyectos en el sistema.
+    Opción válida solo para usuarios con rol de Administrador.
+    """
+    class Meta:
+        model = Proyecto
+        fields = ('nombre', 'lider_proyecto', 'descripcion',)
 
 
+class ChangeProjectForm(forms.ModelForm):
+    """
+    Formulario para la modificacion de proyectos creados en el sistema.
+    Opción válida solo para usuarios con rol de Administrador.
+    """
+    class Meta:
+        model = Proyecto
+        fields = ('nombre', 'lider_proyecto', 'estado', 'descripcion',)
 
+    def __init__(self, *args, **kwargs):
+        super(ChangeProjectForm, self).__init__(*args, **kwargs)
+        f = self.fields.get('user_permissions', None)
+        if f is not None:
+            f.queryset = f.queryset.select_related('content_type')
