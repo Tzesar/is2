@@ -1,0 +1,36 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+
+{% block title %}Proyecto en el Sistema{% endblock %}
+{% block pageName %}Proyectos{% endblock %}
+
+{% block mainBody %}
+    <div class="container col-lg-offset-1 col-lg-10 col-xs-12" style="padding-top: 2%">
+        <div class="panel panel-default" style="padding-top: 2%; padding-left: 2%; padding-right: 2%">
+            <div class="panel panel-default">
+                <!-- Default panel contents -->
+                <div class="panel-heading"><h1>Proyectos</h1></div>
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>Nombre de Proyecto</th>
+                            <th>Lider de Proyecto</th>
+                            <th>Estado</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for project in project %}
+                            <tr>
+                                <td>{{ project.id }}</td>
+                                <td><a href='{% url 'administrarProyectos.views.changeProject' project.id %}'>{{project.nombre}}</a></td>
+                                <td>{{ project.lider_proyecto }}</td>
+                                <td>{{ project.estado }}</td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+{% endblock %}

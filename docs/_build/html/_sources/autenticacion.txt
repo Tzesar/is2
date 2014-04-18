@@ -4,14 +4,6 @@ autenticacion package
 Submodules
 ----------
 
-autenticacion.admin module
---------------------------
-
-.. automodule:: autenticacion.admin
-    :members:
-    :undoc-members:
-    :show-inheritance:
-
 autenticacion.models module
 ---------------------------
 

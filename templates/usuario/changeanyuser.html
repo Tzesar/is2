@@ -1,0 +1,32 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+
+    {% block title %}Modificar Usuario{% endblock %}
+    {% block mainBody %}
+        {% if form.errors %}
+            <div class="container-fluid">
+                <div class="alert alert-danger alert-dismissable">
+                    <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+                    Los datos ingresados son erróneos.
+                </div>
+            </div>
+        {% endif %}
+        <div class="container col-lg-4 col-md-4 col-sm-6 col-xs-12 col-lg-offset-4 col-md-offset-4 col-sm-offset-3">
+            <div class="panel panel-default">
+                <div class="panel-body">
+                    <div class="container-fluid">
+                        <h2 class="intro"><span class="glyphicon glyphicon-off"></span>  {{ usuario.username }} <br><small> Modificar Usuario - zarpm</small></h2>
+                    </div>
+                    <form action="" class="form-signin" role="form" method="post">
+                        {% csrf_token %}
+                        {{ form.as_p }}
+                            <p class="text-center">
+                            <a href='/userlist/' class="btn btn-lg btn-gray btn-lg" role="button">Lista Usuarios</a>
+                            <button class="btn btn-lg btn-gray btn-lg" type="submit">Guardar cambios</button>
+                            <input type="hidden" name="next" value="{% url 'base' %}">
+                        </p>
+                    </form>
+                </div>
+            </div>
+        </div>
+    {% endblock %}>

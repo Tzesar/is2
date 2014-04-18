@@ -4,6 +4,8 @@ Packages
 .. toctree::
    :maxdepth: 4
 
+   administrarFases
+   administrarProyectos
    administrarUsuarios
    autenticacion
    is2
