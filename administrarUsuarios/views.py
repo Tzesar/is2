@@ -66,7 +66,7 @@ def changePass(request):
 def userlist(request):
     if request.method == 'GET':
         usuarios = Usuario.objects.all().order_by('id')
-        return render(request, "usuario/userlist.html", {'usuarios': usuarios}, )
+        return render(request, "usuario/userList.html", {'usuarios': usuarios}, )
 
     xhr = request.GET.has_key('xhr')
 
@@ -92,6 +92,7 @@ def userlist(request):
         return HttpResponse(json.dumps(responseDict), mimetype='application/javascript')
 
     usuario.save()
+    # TODO: Deshabilitar al usuario de todos los proyectos a los que pertenece
 
     if xhr:
         responseDict = {'exito': True}

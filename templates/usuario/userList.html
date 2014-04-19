@@ -14,7 +14,10 @@
             <div class="panel-heading">
                 <h1 style="display: inline-block">Usuarios</h1>
                 <span class="glyphicon glyphicon-search disable" id="searchIcon" style="font-size: x-large; padding-left: 1em"></span>
-                <input id="searchInput" class="form-control" style="display: inline-block" placeholder="Filter"/>
+                <div id="searchDiv" class="input-group" style="display: none">
+                    <input id="searchInput" class="form-control" placeholder="Filter" hidden="hidden"/>
+                    <span id="searchHelp" class="input-group-addon" data-toggle="tooltip" title="[:activo | :inactivo] Usuarios Activos o Inactivos">?</span>
+                </div>
             </div>
             <div class="panel-body">
                 <div class="table-responsive">
@@ -29,9 +32,9 @@
                         <tbody id="rows">
                             {% for user in usuarios %}
                                 <tr id="{{ user.id }}">
-                                    <td>{{ user.username }}</td>
-                                    <td>{{ user.get_full_name }}</td>
-                                    <td>
+                                    <td class="datos">{{ user.username }}</td>
+                                    <td class="datos">{{ user.get_full_name }}</td>
+                                    <td class="estado">
                                         <input type="checkbox" name="usuario_activo" id="{{ user.id }}"
                                                data_user_id="{{ user.id }}" data_url="{% url 'userlist' %}"
                                                {% if user.is_active %} checked {% endif %} />

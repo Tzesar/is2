@@ -1,6 +1,6 @@
 {% load staticfiles %}
 <!DOCTYPE html>
-<html lang="en">
+<html>
     <head>
         <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -8,12 +8,9 @@
 
         <title>{% block title %}Página Principal{% endblock %} - ZARpm</title>
 
-        <!-- Bootstrap core CSS -->
         <link href="{% static "bootstrap/css/bootstrap.min.css" %}" rel="stylesheet">
-
-        <!-- Custom styles for this template -->
-        {% block cssAdicional %}{% endblock %}
         <link href="{% static "bootstrap/css/styles.css" %}" rel="stylesheet">
+        {% block cssAdicional %}{% endblock %}
 
         <link rel="icon" type="image/x-icon" href="{% static "favicon.ico" %}" />
     </head>
@@ -24,34 +21,19 @@
                 <nav class="navbar-inverse navbar-default navbar-static-top" role="navigation">
                     <div class="container-fluid">
                         <div class="navbar-header">
-                                <!-- Boton que aparece en xs-devices -->
                                 <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar-example-collapse">
                                     <span class="sr-only">Toggle navigation</span>
                                     <span class="icon-bar"></span>
                                     <span class="icon-bar"></span>
                                     <span class="icon-bar"></span>
                                 </button>
-                                <a href="" class="navbar-brand">{% block pageName %}Página Principal{% endblock %}</a>
+                                <a href="" class="navbar-brand">Página Principal</a>
                         </div>
-                        <!-- Seccion que se muestra con el boton en xs-devices -->
                         <div class="collapse navbar-collapse" id="navbar-example-collapse">
                             <p class="navbar-text">{{ user.username|capfirst }}</p>
                             <ul class="nav navbar-nav navbar-right">
-                                <li class="dropdown">
-                                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">Usuarios <b class="caret"></b></a>
-                                    <ul class="dropdown-menu">
-                                        <li><a href="/createuser">Crear Usuario</a></li>
-                                        <li><a href="/changeuser">Modificar Usuario</a></li>
-                                        <li><a href="/changepass">Cambiar Contraseña Usuario</a></li>
-                                        <li class="divider"></li>
-                                        <li><a href="/userlist">Usuarios en el Sistema</a></li>
-                                    </ul>
-                                </li>
                                 <li>
-                                    <a href="/contact">Contact</a>
-                                </li>
-                                <li>
-                                    <a href="/about">About</a>
+                                    <a href="{% url 'changeUser' %}">Cuenta</a>
                                 </li>
                                 <li>
                                     <a href="{% url 'logout' %}">Logout</a>
@@ -62,16 +44,14 @@
                 </nav>
             {% endblock %}
             {% block mainBody %}
-                <div class="container">
-                    <div class="jumbotron">
-                        <h1>Bienvenido!</h1>
-                        <p>Pagina inicial del sistema ZARpm</p>
-                        <p><a class="btn btn-primary btn-lg" role="button">Learn more</a></p>
+                <div class="container col-lg-offset-1 col-lg-10 col-xs-12" style="padding-top: 2%">
+                    <div class="panel panel-default">
+                        {% block panelCentral %}cosas{% endblock %}
                     </div>
                 </div>
             {% endblock %}
         {% endblock %}
-        <script src="{% static "bootstrap/js/jquery-1.11.0.min.js" %}"></script>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
         <script src="{% static "bootstrap/js/bootstrap.min.js" %}"></script>
         {% block jsAdicional %}{% endblock %}
     </body>

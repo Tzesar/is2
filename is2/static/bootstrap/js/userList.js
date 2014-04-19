@@ -1,5 +1,9 @@
+// Inicializa los switches
 $("[name='usuario_activo']").bootstrapSwitch('onText', 'SI');
 $("[name='usuario_activo']").bootstrapSwitch('offText', 'NO');
+
+// Inicializa el tooltip del elemento searchHelp
+$('#searchHelp').tooltip()
 
 // Maneja los switches de activacion de un usuario
 $('input[name="usuario_activo"]').on('switchChange.bootstrapSwitch', function(state) {
@@ -39,15 +43,15 @@ $('input[name="usuario_activo"]').on('switchChange.bootstrapSwitch', function(st
 var timeOutId;
 
 $("#searchIcon").mouseover(function() {
-    $("#searchInput").fadeIn("fast");
+    $("#searchDiv").fadeIn("fast");
     $("#searchIcon").removeClass("disable");
 
 }).mouseleave(function() {
-    timeOutId = window.setTimeout(hideInput, 1000);
+    timeOutId = window.setTimeout(hideInput, 1500);
 });
 
 function hideInput(){
-    $("#searchInput").fadeOut(500);
+    $("#searchDiv").fadeOut(500);
     $("#searchIcon").switchClass("", "disable", 500);
 }
 
@@ -60,22 +64,32 @@ $("#searchInput").keyup(function () {
 
 }).blur(function() {
     if ( !$(this).val() ){
-        $("#searchInput").fadeOut(500);
+        $("#searchDiv").fadeOut(500);
         $("#searchIcon").switchClass("", "disable", 500);
     }
 
 }).keydown(function(e) {
     if ( e.which == 27 ){
-        $("#searchInput").blur()
+        $("#searchDiv").blur()
   }
 });
 
 function filter(element) {
     var value = $(element).val().toLowerCase();
-    var $li = $("#rows").find("tr");
+    var $rows = $("#rows").find("tr");
 
-    $li.hide();
-    $li.filter(function() {
-        return $(this).text().toLowerCase().indexOf(value) > -1;
+    $rows.hide();
+    $rows.filter(function() {
+        var that
+        if (value == ":activo"){
+            return $(this).find("input").is(":checked");
+        }
+        else if (value == ":inactivo"){
+            return !($(this).find("input").is(":checked"));
+        }
+        else{
+            that = $(this).find("td.datos");
+        }
+        return $(that).text().toLowerCase().indexOf(value) > -1;
     }).show();
 }
