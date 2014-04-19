@@ -1,6 +1,6 @@
 #encoding=utf-8
 from django.forms import ModelForm
-from gestionRolesPermisos.models import Rol
+from gestionRolesPermisos.models import RolFase
 from django import forms
 
 
@@ -10,5 +10,23 @@ class NewRoleForm(ModelForm):
     Opción válida solo para usuarios con rol Líder de Proyecto.
     """
     class Meta:
-        model = Rol
+        model = RolFase
         fields = ('nombre', 'descripcion', 'permisos',)
+        exclude = ('proyecto',)
+
+
+class ChangeRoleForm(forms.ModelForm):
+    """
+    Formulario para la modificacion de proyectos creados en el sistema.
+    Opción válida solo para usuarios con rol de Administrador.
+    """
+    class Meta:
+        model = RolFase
+        fields = ('nombre', 'descripcion', 'permisos',)
+
+
+    def __init__(self, *args, **kwargs):
+        super(ChangeRoleForm, self).__init__(*args, **kwargs)
+        f = self.fields.get('user_permissions', None)
+        if f is not None:
+            f.queryset = f.queryset.select_related('content_type')

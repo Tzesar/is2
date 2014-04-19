@@ -10,7 +10,7 @@ from administrarUsuarios.views import createUser, changeUser, userList, changePa
 from zar.views import about, contact
 from administrarProyectos.views import createProject, changeProject, projectlist
 from administrarFases.views import changePhase, createPhase, phaseList, deletePhase
-from gestionRolesPermisos.views import createRole
+from gestionRolesPermisos.views import createRole, roleList, changeRole,deleteRole
 
 admin.autodiscover()
 
@@ -34,5 +34,8 @@ urlpatterns = patterns('',
                        url(r'^changephase/(?P<id_fase>\d+)$', changePhase),
                        url(r'^phaselist/$', phaseList),
                        url(r'^deletephase/(?P<id_fase>\d+)$', deletePhase),
-                       url(r'^createrole/$', createRole),
+                       url(r'^createrole/(?P<id_proyecto>\d+)$', createRole),
+                       url(r'^rolelist/(?P<id_proyecto>\d+)$', roleList, name="rolelist"),
+                       url(r'^changerole/(?P<id_proyecto>\d+)/(?P<id_rol>\d+)$', changeRole, name="rolelist"),
+                       url(r'^deleterole/(?P<id_proyecto>\d+)/(?P<id_rol>\d+)$', deleteRole),
                        )

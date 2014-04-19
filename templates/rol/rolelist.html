@@ -5,14 +5,14 @@
     <link href="{% static "bootstrap/css/bootstrap-switch.css" %}" rel="stylesheet">
 {% endblock %}
 
-{% block title %}Usuarios del Sistema{% endblock %}
-{% block pageName %}Usuarios{% endblock %}
+{% block title %}Roles del Proyecto - {{ project.nombre }}{% endblock %}
+{% block pageName %}Roles - Proyecto: {{ proyect.nombre }}{% endblock %}
 
 {% block mainBody %}
     <div class="container col-lg-offset-1 col-lg-10 col-xs-12" style="padding-top: 2%">
         <div class="panel panel-default">
             <div class="panel-heading">
-                <h1 style="display: inline-block">Usuarios</h1>
+                <h1 style="display: inline-block">Roles - Proyecto: {{ proyect.nombre }}</h1>
                 <span class="glyphicon glyphicon-search" style="font-size: x-large"></span>
             </div>
             <div class="panel-body">
@@ -20,25 +20,20 @@
                     <table class="table table-hover">
                         <thead>
                             <tr class="text-info">
-                                <th>Username</th>
                                 <th>Nombre</th>
-                                <th>Activo</th>
+                                <th>--</th>
                             </tr>
                         </thead>
                         <tbody>
-                            {% for user in usuarios %}
-                                <tr id="{{ user.id }}">
-                                    <td><a href='{% url 'administrarUsuarios.views.changeAnyUser' user.id %}'>{{user.username}}</a></td>
-                                    <td>{{ user.get_full_name }}</td>
-                                    <td>
-                                        <input type="checkbox" name="usuario_activo" id="{{ user.id }}"
-                                               data_user_id="{{ user.id }}" data_url="{% url 'userlist' %}"
-                                               {% if user.is_active %} checked {% endif %} />
-                                    </td>
+                            {% for rol in roles %}
+                                <tr id="{{ rol.id }}">
+                                    <td><a href='{% url 'gestionRolesPermisos.views.changeRole' project.id rol.id %}'>{{rol.nombre}}</a></td>
+                                    <td><a href='/deleterole/{{ project.id }}/{{ rol.id }}' class="btn btn-sm btn-gray btn-lg" role="button">Eliminar</a></td>
                                 </tr>
                             {% endfor %}
                         </tbody>
                     </table>
+                    <a href='/createrole/{{ project.id }}' class="btn btn-sm btn-gray btn-lg" role="button">Nuevo Rol</a>
                 </div>
             </div>
         </div>
