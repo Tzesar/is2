@@ -8,7 +8,7 @@
     
     <title>autenticacion package &mdash; ZARpm 0.1 documentation</title>
     
-    <link rel="stylesheet" href="_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="_static/sphinxdoc.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     
     <script type="text/javascript">
@@ -37,7 +37,41 @@
              >modules</a> |</li>
         <li><a href="index.html">ZARpm 0.1 documentation</a> &raquo;</li> 
       </ul>
-    </div>  
+    </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">autenticacion package</a><ul>
+<li><a class="reference internal" href="#submodules">Submodules</a></li>
+<li><a class="reference internal" href="#module-autenticacion.models">autenticacion.models module</a></li>
+<li><a class="reference internal" href="#module-autenticacion.tests">autenticacion.tests module</a></li>
+<li><a class="reference internal" href="#module-autenticacion.views">autenticacion.views module</a></li>
+<li><a class="reference internal" href="#module-autenticacion">Module contents</a></li>
+</ul>
+</li>
+</ul>
+
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="_sources/autenticacion.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
 
     <div class="document">
       <div class="documentwrapper">
@@ -48,9 +82,6 @@
 <h1>autenticacion package<a class="headerlink" href="#autenticacion-package" title="Permalink to this headline">¶</a></h1>
 <div class="section" id="submodules">
 <h2>Submodules<a class="headerlink" href="#submodules" title="Permalink to this headline">¶</a></h2>
-</div>
-<div class="section" id="module-autenticacion.admin">
-<span id="autenticacion-admin-module"></span><h2>autenticacion.admin module<a class="headerlink" href="#module-autenticacion.admin" title="Permalink to this headline">¶</a></h2>
 </div>
 <div class="section" id="module-autenticacion.models">
 <span id="autenticacion-models-module"></span><h2>autenticacion.models module<a class="headerlink" href="#module-autenticacion.models" title="Permalink to this headline">¶</a></h2>
@@ -103,7 +134,12 @@
 
 <dl class="attribute">
 <dt id="autenticacion.models.Usuario.objects">
-<tt class="descclassname">Usuario.</tt><tt class="descname">objects</tt><em class="property"> = &lt;django.contrib.auth.models.UserManager object at 0x26e9310&gt;</em><a class="headerlink" href="#autenticacion.models.Usuario.objects" title="Permalink to this definition">¶</a></dt>
+<tt class="descclassname">Usuario.</tt><tt class="descname">objects</tt><em class="property"> = &lt;django.contrib.auth.models.UserManager object at 0xa686bac&gt;</em><a class="headerlink" href="#autenticacion.models.Usuario.objects" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="autenticacion.models.Usuario.proyecto_set">
+<tt class="descclassname">Usuario.</tt><tt class="descname">proyecto_set</tt><a class="headerlink" href="#autenticacion.models.Usuario.proyecto_set" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="attribute">
@@ -116,6 +152,75 @@
 </div>
 <div class="section" id="module-autenticacion.tests">
 <span id="autenticacion-tests-module"></span><h2>autenticacion.tests module<a class="headerlink" href="#module-autenticacion.tests" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="autenticacion.tests.TestAutenticacionViewsMyLogin">
+<em class="property">class </em><tt class="descclassname">autenticacion.tests.</tt><tt class="descname">TestAutenticacionViewsMyLogin</tt><big>(</big><em>methodName='runTest'</em><big>)</big><a class="headerlink" href="#autenticacion.tests.TestAutenticacionViewsMyLogin" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">django.test.testcases.TestCase</span></tt></p>
+<p>Prueba para la vista autenticacion.views.myLogin.</p>
+<dl class="attribute">
+<dt id="autenticacion.tests.TestAutenticacionViewsMyLogin.pw_admin">
+<tt class="descname">pw_admin</tt><em class="property"> = 'admin'</em><a class="headerlink" href="#autenticacion.tests.TestAutenticacionViewsMyLogin.pw_admin" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="autenticacion.tests.TestAutenticacionViewsMyLogin.pw_unknown_user">
+<tt class="descname">pw_unknown_user</tt><em class="property"> = 'cualquiera'</em><a class="headerlink" href="#autenticacion.tests.TestAutenticacionViewsMyLogin.pw_unknown_user" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="autenticacion.tests.TestAutenticacionViewsMyLogin.setUp">
+<tt class="descname">setUp</tt><big>(</big><big>)</big><a class="headerlink" href="#autenticacion.tests.TestAutenticacionViewsMyLogin.setUp" title="Permalink to this definition">¶</a></dt>
+<dd><p>Crea el usuario &#8216;admin&#8217; con contrasena &#8216;admin&#8217;</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="autenticacion.tests.TestAutenticacionViewsMyLogin.test_login_admin">
+<tt class="descname">test_login_admin</tt><big>(</big><big>)</big><a class="headerlink" href="#autenticacion.tests.TestAutenticacionViewsMyLogin.test_login_admin" title="Permalink to this definition">¶</a></dt>
+<dd><p>Prueba del Logeo del usuario &#8216;admin&#8217;</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="autenticacion.tests.TestAutenticacionViewsMyLogin.test_login_response">
+<tt class="descname">test_login_response</tt><big>(</big><big>)</big><a class="headerlink" href="#autenticacion.tests.TestAutenticacionViewsMyLogin.test_login_response" title="Permalink to this definition">¶</a></dt>
+<dd><p>Prueba de la respuesta de la vista &#8216;/login/&#8217;</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="autenticacion.tests.TestAutenticacionViewsMyLogin.test_login_unknown_user">
+<tt class="descname">test_login_unknown_user</tt><big>(</big><big>)</big><a class="headerlink" href="#autenticacion.tests.TestAutenticacionViewsMyLogin.test_login_unknown_user" title="Permalink to this definition">¶</a></dt>
+<dd><p>Prueba del Logeo de un usuario no registrado</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="autenticacion.tests.TestAutenticacionViewsMyLogin.test_root_response">
+<tt class="descname">test_root_response</tt><big>(</big><big>)</big><a class="headerlink" href="#autenticacion.tests.TestAutenticacionViewsMyLogin.test_root_response" title="Permalink to this definition">¶</a></dt>
+<dd><p>Prueba de la respuesta de la vista &#8216;&#8217; root</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="autenticacion.tests.TestAutenticacionViewsMyLogin.un_admin">
+<tt class="descname">un_admin</tt><em class="property"> = 'admin'</em><a class="headerlink" href="#autenticacion.tests.TestAutenticacionViewsMyLogin.un_admin" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="autenticacion.tests.TestAutenticacionViewsMyLogin.un_unknown_user">
+<tt class="descname">un_unknown_user</tt><em class="property"> = 'cualquiera'</em><a class="headerlink" href="#autenticacion.tests.TestAutenticacionViewsMyLogin.un_unknown_user" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="autenticacion.tests.UsuarioFactory">
+<em class="property">class </em><tt class="descclassname">autenticacion.tests.</tt><tt class="descname">UsuarioFactory</tt><a class="headerlink" href="#autenticacion.tests.UsuarioFactory" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">factory.django.DjangoModelFactory</span></tt></p>
+<dl class="attribute">
+<dt id="autenticacion.tests.UsuarioFactory.FACTORY_FOR">
+<tt class="descname">FACTORY_FOR</tt><a class="headerlink" href="#autenticacion.tests.UsuarioFactory.FACTORY_FOR" title="Permalink to this definition">¶</a></dt>
+<dd><p>alias of <tt class="xref py py-class docutils literal"><span class="pre">Usuario</span></tt></p>
+</dd></dl>
+
+</dd></dl>
+
 </div>
 <div class="section" id="module-autenticacion.views">
 <span id="autenticacion-views-module"></span><h2>autenticacion.views module<a class="headerlink" href="#module-autenticacion.views" title="Permalink to this headline">¶</a></h2>
@@ -129,7 +234,7 @@
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>request</strong> &#8211; HttpRequest con los datos de la sesion del usuario actual.</td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">Template base.html</td>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">Template base.html. Los demas templates heredan de este la estructura y los estilos.</td>
 </tr>
 </tbody>
 </table>
@@ -138,19 +243,20 @@
 <dl class="function">
 <dt id="autenticacion.views.myLogin">
 <tt class="descclassname">autenticacion.views.</tt><tt class="descname">myLogin</tt><big>(</big><em>request</em>, <em>*args</em>, <em>**kwargs</em><big>)</big><a class="headerlink" href="#autenticacion.views.myLogin" title="Permalink to this definition">¶</a></dt>
-<dd><p>Vista para la plantilla login.html.</p>
+<dd><blockquote>
+<div>Establece el tiempo de vida de la sesion.</div></blockquote>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>request</strong> &#8211; </li>
-<li><strong>args</strong> &#8211; </li>
-<li><strong>kwargs</strong> &#8211; </li>
+<li><strong>request</strong> &#8211; HttpRequest con el contenido de la pagina actual.</li>
+<li><strong>args</strong> &#8211; Argumentos para la funcion contrib.auth.views.login.</li>
+<li><strong>kwargs</strong> &#8211; Keyword Arguments para la funcion contrib.auth.views.login.</li>
 </ul>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last"></p>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">Retorna el resultado de la funcion contrib.auth.views.login.</p>
 </td>
 </tr>
 </tbody>
@@ -165,41 +271,6 @@
 
 
           </div>
-        </div>
-      </div>
-      <div class="sphinxsidebar">
-        <div class="sphinxsidebarwrapper">
-  <h3><a href="index.html">Table Of Contents</a></h3>
-  <ul>
-<li><a class="reference internal" href="#">autenticacion package</a><ul>
-<li><a class="reference internal" href="#submodules">Submodules</a></li>
-<li><a class="reference internal" href="#module-autenticacion.admin">autenticacion.admin module</a></li>
-<li><a class="reference internal" href="#module-autenticacion.models">autenticacion.models module</a></li>
-<li><a class="reference internal" href="#module-autenticacion.tests">autenticacion.tests module</a></li>
-<li><a class="reference internal" href="#module-autenticacion.views">autenticacion.views module</a></li>
-<li><a class="reference internal" href="#module-autenticacion">Module contents</a></li>
-</ul>
-</li>
-</ul>
-
-  <h3>This Page</h3>
-  <ul class="this-page-menu">
-    <li><a href="_sources/autenticacion.txt"
-           rel="nofollow">Show Source</a></li>
-  </ul>
-<div id="searchbox" style="display: none">
-  <h3>Quick search</h3>
-    <form class="search" action="search.html" method="get">
-      <input type="text" name="q" />
-      <input type="submit" value="Go" />
-      <input type="hidden" name="check_keywords" value="yes" />
-      <input type="hidden" name="area" value="default" />
-    </form>
-    <p class="searchtip" style="font-size: 90%">
-    Enter search terms or a module, class or function name.
-    </p>
-</div>
-<script type="text/javascript">$('#searchbox').show(0);</script>
         </div>
       </div>
       <div class="clearer"></div>

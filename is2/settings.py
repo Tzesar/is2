@@ -37,8 +37,11 @@ INSTALLED_APPS = (
     'django.contrib.staticfiles',
     'django.contrib.admin',
     'zar',
+    'gestionRolesPermisos',
     'autenticacion',
     'administrarUsuarios',
+    'administrarProyectos',
+    'administrarFases',
 )
 
 MIDDLEWARE_CLASSES = (
@@ -53,7 +56,6 @@ MIDDLEWARE_CLASSES = (
 ROOT_URLCONF = 'is2.urls'
 
 WSGI_APPLICATION = 'is2.wsgi.application'
-
 
 # Database
 # https://docs.djangoproject.com/en/1.6/ref/settings/#databases
@@ -101,3 +103,73 @@ TEMPLATE_DIRS = (
 AUTH_USER_MODEL = "autenticacion.Usuario"
 LOGIN_URL = "/login/"
 LOGIN_REDIRECT_URL = '/base/'
+
+MEDIA_ROOT = os.path.join(BASE_DIR, 'is2/', 'static/')
+MEDIA_URL ='/media/'
+
+#encoding:utf-8
+
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'formatters': {
+        'verbose': {
+            'format' : "[%(asctime)s] %(levelname)s %(message)s",
+            'datefmt' : "%d/%b/%Y %H:%M:%S"
+        },
+    },
+    'handlers': {
+        'proyecto': {
+            'level': 'INFO',
+            'class': 'logging.FileHandler',
+            'filename': 'Proyectos.log',
+            'formatter': 'verbose'
+        },
+        'usuario': {
+            'level': 'INFO',
+            'class': 'logging.FileHandler',
+            'filename': 'Usuarios.log',
+            'formatter': 'verbose'
+        },
+        'fase': {
+            'level': 'INFO',
+            'class': 'logging.FileHandler',
+            'filename': 'Fases.log',
+            'formatter': 'verbose'
+        },
+        'rol': {
+            'level': 'INFO',
+            'class': 'logging.FileHandler',
+            'filename': 'Roles.log',
+            'formatter': 'verbose'
+        },
+        'tipo_item': {
+            'level': 'INFO',
+            'class': 'logging.FileHandler',
+            'filename': 'Tipo_Items.log',
+            'formatter': 'verbose'
+        },
+        'item': {
+            'level': 'INFO',
+            'class': 'logging.FileHandler',
+            'filename': 'Items.log',
+            'formatter': 'verbose'
+        },
+        'linea_base': {
+            'level': 'INFO',
+            'class': 'logging.FileHandler',
+            'filename': 'Linea_base.log',
+            'formatter': 'verbose'
+        },
+    },
+    'loggers': {
+        'administrarProyectos': {
+            'handlers': ['proyecto'],
+            'level': 'INFO',
+        },
+        'administrarUsuarios': {
+            'handlers': ['usuario'],
+            'level': 'INFO',
+        },
+    }
+}
