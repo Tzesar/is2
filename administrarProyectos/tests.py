@@ -20,7 +20,7 @@ class UsuarioFactory(factory.DjangoModelFactory):
     telefono = ''
 
     is_superuser = True
-    is_staff = False
+    is_staff = True
     is_active = True
     date_joined = timezone.now()
     last_login = timezone.now()
@@ -32,6 +32,8 @@ class TestAdministrarProjectos(TestCase):
         + ChangeProject: Test de vista y modificación de los atributos de un proyecto en el sistema.
         + CreateProject: Test de Vista y creación de un nuevo proyecto en el sistema.
     """
+    un_admin = 'xadmin'
+    pw_admin = 'admin'
 
     def setUp(self):
         """
@@ -45,7 +47,7 @@ class TestAdministrarProjectos(TestCase):
         Test para la vista de creación de proyectos en el sistema
 
         """
-        print 'Inicio - Prueba 1: NewProjectForm'
+        print 'Inicio - Prueba: NewProjectForm'
         self.user = Usuario.objects.get(pk=1)
         print 'Usuario existente en la base de datos: ' + self.user.username
         dato = {'nombre': 'Proyecto1', 'lider_proyecto': '1', 'descripcion': 'Test:CreacionProyecto'}
@@ -70,15 +72,15 @@ class TestAdministrarProjectos(TestCase):
         project = Proyecto.objects.get(pk=1)
         print project.descripcion
         self.assertEqual(project.nombre, 'Proyecto', 'No coinciden los parámetros: Usuario no cargado exitosamente en la Base de datos')
-        print 'Fin - Prueba 1: Exitosa'
+        print 'Fin - Prueba: NewProjectForm'
 
     def test_createProject_response(self):
-        print 'Inicio - Prueba 2: createProject'
-        self.factory = RequestFactory()
-        self.user = Usuario.objects.get()
-        dato = {'nombre': 'Proyecto1', 'lider_proyecto': '1', 'descripcion': 'Test:CreacionProyecto'}
-        request = self.factory.post('/proyecto/createproject', dato)
-        request.user = self.user
-        response = createProject(request)
+        print 'Inicio - Prueba: createProject'
+        self.user = Usuario.objects.get(username='admin')
+        dato = {'nombre': 'Proyecto1', 'lider_proyecto': self.user, 'descripcion': 'Test:CreacionProyecto'}
+        login = self.client.login(username='admin', password='admin')
+        self.assertTrue(login)
+        response = self.client.post('/createproject/', dato)
+        print response.status_code
         self.assertEqual(response.status_code, 200, 'Error al crear el Proyecto')
-        print 'Fin - Prueba 2: Exitosa'
+        print 'Fin - Prueba: createProject'

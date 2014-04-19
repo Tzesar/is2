@@ -32,7 +32,7 @@ urlpatterns = patterns('',
                        url(r'^projectlist/$', projectlist),
                        url(r'^createphase/(?P<id_proyecto>\d+)$', createPhase),
                        url(r'^changephase/(?P<id_fase>\d+)$', changePhase),
-                       url(r'^phaselist/$', phaseList),
+                       url(r'^phaselist/(?P<id_proyecto>\d+)$', phaseList),
                        url(r'^deletephase/(?P<id_fase>\d+)$', deletePhase),
                        url(r'^createrole/$', createRole),
                        )

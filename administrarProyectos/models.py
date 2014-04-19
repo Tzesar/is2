@@ -3,7 +3,6 @@ from django.db import models
 from autenticacion.models import Usuario
 
 
-
 class Proyecto(models.Model):
     """
     Modelo para la clase proyecto, en el cual se encuentras todos los atributos de un proyecto:
@@ -22,7 +21,7 @@ class Proyecto(models.Model):
         ('ACT', 'Activo'),
         ('FIN', 'Finalizado'), )
 
-    codigo = models.CharField(max_length=2, default='PR', unique=True)
+    codigo = models.CharField(max_length=2, default='PR')
     nombre = models.CharField(max_length=100, unique=True)
     lider_proyecto = models.ForeignKey(Usuario)
     descripcion = models.TextField(max_length=140, help_text='Introduzca una breve reseña del proyecto', null=True)
@@ -30,7 +29,6 @@ class Proyecto(models.Model):
     fecha_fin = models.DateField(help_text='Fecha estimada de finalizacion', null=True)
     estado = models.CharField(max_length=3, choices=opciones_estado, default='PEN', help_text='Estado del proyecto')
     observaciones = models.TextField(max_length=140, null=True)
-
 
     def __unicode__(self):
         return self.nombre

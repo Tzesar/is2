@@ -10,6 +10,7 @@ https://docs.djangoproject.com/en/1.6/ref/settings/
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 import os
+
 BASE_DIR = os.path.dirname(os.path.dirname(__file__))
 
 
@@ -42,6 +43,7 @@ INSTALLED_APPS = (
     'administrarUsuarios',
     'administrarProyectos',
     'administrarFases',
+    'administrarTipoItem',
 )
 
 MIDDLEWARE_CLASSES = (
@@ -105,17 +107,17 @@ LOGIN_URL = "/login/"
 LOGIN_REDIRECT_URL = '/base/'
 
 MEDIA_ROOT = os.path.join(BASE_DIR, 'is2/', 'static/')
-MEDIA_URL ='/media/'
+MEDIA_URL = '/media/'
 
 #encoding:utf-8
 
 LOGGING = {
     'version': 1,
-    'disable_existing_loggers': False,
+    'disable_existing_loggers': True,
     'formatters': {
         'verbose': {
-            'format' : "[%(asctime)s] %(levelname)s %(message)s",
-            'datefmt' : "%d/%b/%Y %H:%M:%S"
+            'format': "[%(asctime)s] %(levelname)s %(message)s",
+            'datefmt': "%d/%b/%Y %H:%M:%S"
         },
     },
     'handlers': {
@@ -171,5 +173,14 @@ LOGGING = {
             'handlers': ['usuario'],
             'level': 'INFO',
         },
+        'administrarFases': {
+            'handlers': ['fase'],
+            'level': 'INFO',
+        },
+        'administrarTipoItem': {
+            'handlers': ['tipo_item'],
+            'level': 'INFO',
+        },
     }
 }
+

@@ -86,14 +86,16 @@ class TestAdministrarUsuarios(TestCase):
         Test para la vista de creación de usuarios en el sistema
         """
         print 'Inicio - Prueba 3: createUser'
-        self.factory = RequestFactory()
+        self.user = Usuario.objects.all()
+        print self.user
+        print 'usuarios'
         self.user = Usuario.objects.get()
         dato = {'username': 'test2', 'password1': '123456', 'password2': '123456'}
         request = self.factory.post('/createUser/', dato)
         request.user = self.user
         response = createUser(request)
         self.assertEqual(response.status_code, 302, 'Error al crear el Usuario')
-        self.user = Usuario.objects.get(pk=6)
+        self.user = Usuario.objects.get(username='test2')
         self.assertEqual(self.user.username, 'test2', 'No coinciden los parámetros: Usuario no cargado exitosamente en la Base de datos')
         print 'Usuario '+self.user.username+' creado exitosamente en la Base de Datos'
         print 'Fin - Prueba 3: Exitosa'
