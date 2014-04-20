@@ -6,8 +6,10 @@ Packages
 
    administrarFases
    administrarProyectos
+   administrarTipoItem
    administrarUsuarios
    autenticacion
+   gestionRolesPermisos
    is2
    manage
    zar

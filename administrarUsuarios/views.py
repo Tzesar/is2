@@ -45,8 +45,7 @@ def changeUser(request):
         form = CustomUserChangeForm(postdata, instance=request.user)
         if form.is_valid():
             form.save()
-            logger.info('El usuario ' + request.user.username + ' ha modificado el usuario: ' +
-                        form["username"].value() + ' dentro del sistema')
+            logger.info('El usuario ' + request.user.username + ' ha modificado sus datos dentro del sistema')
             return HttpResponseRedirect("/base/")
     else:
         form = CustomUserChangeForm(instance=request.user)
@@ -67,8 +66,7 @@ def changePass(request):
         form = PasswordChangeForm(user=request.user, data=request.POST)
         if form.is_valid():
             form.save()
-            logger.info('El usuario ' + request.user.username + ' ha modificado su contraseña: ' +
-                        ' dentro del sistema')
+            logger.info('El usuario ' + request.user.username + ' ha modificado su contrasena dentro del sistema')
             return HttpResponseRedirect("/base/")
     else:
         form = PasswordChangeForm(user=request.user)
