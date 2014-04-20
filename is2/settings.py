@@ -181,6 +181,18 @@ LOGGING = {
             'handlers': ['tipo_item'],
             'level': 'INFO',
         },
+        'administrarRoles': {
+            'handlers': ['rol'],
+            'level': 'INFO',
+        },
+        'administrarItems': {
+            'handlers': ['item'],
+            'level': 'INFO',
+        },
+        'administrarLineaBase': {
+            'handlers': ['linea_base'],
+            'level': 'INFO',
+        },
     }
 }
 

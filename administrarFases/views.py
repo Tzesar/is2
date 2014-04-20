@@ -51,8 +51,8 @@ def changePhase(request, id_fase):
         form = ChangePhaseForm(request.POST, instance=phase)
         if form.is_valid():
             form.save()
-            logger.info('El usuario ' + request.user.username + ' ha modificado la fase con codigo  PH-' +
-                        id_fase + ' dentro del proyecto: ' + project.nombre)
+            logger.info('El usuario ' + request.user.username + ' ha modificado la fase con codigo ' +phase.codigo + '-'
+                        + str(id_fase) + ' dentro del proyecto: ' + project.nombre)
             return HttpResponseRedirect('/base/')
     else:
         form = ChangePhaseForm(instance=phase)
@@ -69,12 +69,13 @@ def deletePhase(request, id_fase):
     :return: Elimina la fase especifica en el proyecto y luego regresa al menu principal
     """
     phase = Fase.objects.get(pk=id_fase)
+    phase_copy = phase
     project = Proyecto.objects.get(pk=phase.proyecto.id)
-    logger.info('El usuario {0} ha eliminado la fase {1}{2} dentro del proyecto: {3}'.format(request.user.username,
-                                                                                             phase.proyecto,
-                                                                                             phase.nombre,
-                                                                                             project.nombre))
     phase.delete()
+    logger.info('El usuario {0} ha eliminado la fase {1}{2} dentro del proyecto: {3}'.format(request.user.username,
+                                                                                             phase_copy.proyecto,
+                                                                                             phase_copy.nombre,
+                                                                                             project.nombre))
     return render(request, "base.html",)
 
 @login_required
