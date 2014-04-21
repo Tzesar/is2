@@ -1,0 +1,32 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+
+{% block title %}Tipos de Item en la Fase {% endblock %}
+{% block pageName %}Proyectos{% endblock %}
+
+{% block mainBody %}
+    <div class="container col-lg-offset-1 col-lg-10 col-xs-12" style="padding-top: 2%">
+        <div class="panel panel-default" style="padding-top: 2%; padding-left: 2%; padding-right: 2%">
+            <div class="panel panel-default">
+                <!-- Default panel contents -->
+                <div class="panel-heading"><h1>Tipo de Items</h1></div>
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>Nombre de Tipo de Item</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for itemtype in itemtype %}
+                            <tr>
+                                <td>{{ itemtype.id }}</td>
+                                <td><a href='{% url 'administrarTipoItem.views.changeItemType' itemtype.id %}'>{{itemtype.nombre}}</a></td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+{% endblock %}

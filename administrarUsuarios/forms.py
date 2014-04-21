@@ -1,3 +1,4 @@
+#encoding:utf-8
 from __future__ import unicode_literals
 from django import forms
 from django.contrib.auth.forms import SetPasswordForm
@@ -8,8 +9,13 @@ from autenticacion.models import Usuario
 
 class CustomUserCreationForm(forms.ModelForm):
     """
-    Formulario para la creacion de usuarios, especificar el nombre de usuario y la contrasena del nuevo usuario.
-    Formulario para la creacion usuarios por Django y personalizado para el proyecto ZARpm
+    Formulario para la creación de usuarios, especificar el nombre de usuario y la contraseña del nuevo usuario.
+
+    Formulario para la creación usuarios por Django y personalizado para el proyecto ZARpm. Utiliza el modelo
+    personalizado Usuario extendido del modelos User.
+
+    Utilizamos el modelo Usuario del cual filtramos los campos de tal manera a que solo se habiliten los
+    campos necesarios para la creación de un usuario en el sistema.
     """
     error_messages = {
         'duplicate_username': _("A user with that username already exists."),
@@ -70,7 +76,13 @@ class CustomUserCreationForm(forms.ModelForm):
 class CustomUserChangeForm(forms.ModelForm):
     """
     Formulario para la modificacion de usuarios, donde se visualiza el formulario con los campos y opciones de modificacion disponibles
-    Formulario para modificar usuarios propuesto por Django y personalizado para el proyecto ZARpm
+
+    Formulario para modificar usuarios propuesto por Django y personalizado para el proyecto ZARpm. Utiliza el modelo
+    personalizado Usuario extendido del modelos User.
+
+    Utilizamos el modelo Usuario, del cual filtramos los campos de tal manera a que solo se habiliten los
+    campos disponibles para la modificación de un usuario en el sistema.
+
     """
 
     class Meta:
@@ -93,7 +105,9 @@ class CustomUserChangeForm(forms.ModelForm):
 
 class CustomPasswordChangeForm(SetPasswordForm):
     """
-    Formulario que permite a los usuarios cambiar la contrasena verificando con la contrasena anterior.
+    Formulario que permite a los usuarios cambiar la contraseña verificando con la contraseña anterior.
+    Utiliza el modelo personalizado Usuario extendido del modelos User.
+
     """
     error_messages = dict(SetPasswordForm.error_messages, **{
         'password_incorrect': _("Your old password was entered incorrectly. "

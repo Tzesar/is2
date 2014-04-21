@@ -18,19 +18,18 @@ def createPhase(request, id_proyecto):
     Vista para la creación de fases en el sistema.
     Opción válida para usuarios con los roles correspondientes.
 
-    :param request:
-    :return:
+    :param: Recibe la petición request y el identificador del Proyecto, de tal manera a identificar el proyecto a la cual pertence la fase.
+    :return: Crea la fase dentro del proyecto especificando y luego regresa al menu principal
     """
     project = Proyecto.objects.get(pk=id_proyecto)
     if request.method == 'POST':
         form = NewPhaseForm(request.POST, project)
         if form.is_valid():
             fase = form.save(commit=False)
-            fase.proyecto = project
+            fase.pertenece_proyecto = project
             fase.save()
-
-            logger.info('El usuario ' + request.user.username + ' ha creado la fase: ' +
-                        form["nombre"].value() + ' dentro del proyecto: ' + project.nombre)
+            logger.info('El usuario ' + request.user.username + ' ha creado la fase ' +
+                        form["nombre"].value() + ' dentro del proyecto ' + project.nombre)
 
             generarPermisosFase(project, fase)
 
@@ -105,32 +104,44 @@ def changePhase(request, id_fase):
     Vista para la modificacion de una fase dentro del sistema.
     Opción válida para usuarios con los roles correspondientes.
 
-    :param request:
-    :return:
+    :param: Recibe la petición request y el identificador de la fase la cual vamos a modificar
+    :return: Modifica la fase especifica  y luego regresa al menu principal
     """
 
     phase = Fase.objects.get(pk=id_fase)
+    project = Proyecto.objects.get(pk=phase.pertenece_proyecto.id)
     if request.method == 'POST':
         form = ChangePhaseForm(request.POST, instance=phase)
         if form.is_valid():
-            logger.info('El usuario ' + request.user.username + ' ha modificado la fase ' +
-                        phase.nombre + ' dentro del proyecto: ' + phase.proyecto)
             form.save()
+            logger.info('El usuario ' + request.user.username + ' ha modificado la fase con codigo ' +phase.codigo + '-'
+                        + str(id_fase) + ' dentro del proyecto: ' + project.nombre)
             return HttpResponseRedirect('/base/')
     else:
         form = ChangePhaseForm(instance=phase)
-    return render_to_response('fase/changephase.html', {'form': form}, context_instance=RequestContext(request))
+    return render_to_response('fase/changephase.html', {'form': form, 'phase': phase, 'project': project},
+                              context_instance=RequestContext(request))
 
 
 def deletePhase(request, id_fase):
+    """
+    Vista para la eliminación de una fase dentro del sistema.
+    Opción válida para usuarios con los roles correspondientes.
+
+    :param: Recibe la petición request y el identificador de la fase la cual deseamos modificar
+    :return: Elimina la fase especifica en el proyecto y luego regresa al menu principal
+    """
     phase = Fase.objects.get(pk=id_fase)
-    phase_copy = phase
 
     eliminarPermisos(phase)
+    phase_copy = phase
+    project = Proyecto.objects.get(pk=phase.pertenece_proyecto.id)
     phase.delete()
-
-    #LOG
-
+    logger.info('El usuario {0} ha eliminado la fase {1}{2} dentro del proyecto: {3}'.format(request.user.username,
+                                                                                             phase_copy.pertenece_proyecto,
+                                                                                             phase_copy.nombre,
+                                                                                             project.nombre))
+    
     return render(request, "base.html",)
 
 
@@ -143,6 +154,15 @@ def eliminarPermisos(phase):
 
 
 @login_required
-def phaseList(request):
-    phase = Fase.objects.all()
-    return render(request, "fase/phaselist.html", {'phase': phase}, )
+def phaseList(request, id_proyecto):
+    """
+    Vista para la listar todas las fases dentro de algún proyecto.
+    Opción válida para usuarios con los roles correspondientes.
+
+    :param: Recibe la petición request y el identificado de proyecto, para listar todas las fases pertenecientes al proyecto especificado
+    :return: Lista todas las fases pertenecientes al proyecto especificado
+    """
+    project = Proyecto.objects.get(pk=id_proyecto)
+    phase = Fase.objects.filter(pertenece_proyecto=id_proyecto)
+    return render(request, "fase/phaselist.html", {'phase': phase, 'project':project },
+                  context_instance=RequestContext(request) )

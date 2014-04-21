@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
 {% load staticfiles %}
 
-    {% block title %}Modificar Proyecto{% endblock %}
+    {% block title %}Vincular Usuarios a Proyectos{% endblock %}
     {% block mainBody %}
         {% if form.errors %}
             <div class="container-fluid">
@@ -15,7 +15,7 @@
             <div class="panel panel-default">
                 <div class="panel-body">
                     <div class="container-fluid">
-                        <h2 class="intro"><span class="glyphicon glyphicon-off"></span> {{ project.nombre }}  <br><small> Modificar Proyecto - ZARpm</small></h2>
+                        <h2 class="intro"><span class="glyphicon glyphicon-off"></span> {{ project.nombre }} - Version Model  <br><small> Vincular Usuarios a Proyecto - ZARpm</small></h2>
                     </div>
                     <form action="" class="form-signin" role="form" method="post">
                         {% csrf_token %}
