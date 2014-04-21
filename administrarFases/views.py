@@ -25,7 +25,7 @@ def createPhase(request, id_proyecto):
         form = NewPhaseForm(request.POST, project)
         if form.is_valid():
             fase = form.save(commit=False)
-            fase.proyecto = project
+            fase.pertenece_proyecto = project
             fase.save()
             logger.info('El usuario ' + request.user.username + ' ha creado la fase ' +
                         form["nombre"].value() + ' dentro del proyecto ' + project.nombre)
@@ -46,7 +46,7 @@ def changePhase(request, id_fase):
     """
 
     phase = Fase.objects.get(pk=id_fase)
-    project = Proyecto.objects.get(pk=phase.proyecto.id)
+    project = Proyecto.objects.get(pk=phase.pertenece_proyecto.id)
     if request.method == 'POST':
         form = ChangePhaseForm(request.POST, instance=phase)
         if form.is_valid():
@@ -70,10 +70,10 @@ def deletePhase(request, id_fase):
     """
     phase = Fase.objects.get(pk=id_fase)
     phase_copy = phase
-    project = Proyecto.objects.get(pk=phase.proyecto.id)
+    project = Proyecto.objects.get(pk=phase.pertenece_proyecto.id)
     phase.delete()
     logger.info('El usuario {0} ha eliminado la fase {1}{2} dentro del proyecto: {3}'.format(request.user.username,
-                                                                                             phase_copy.proyecto,
+                                                                                             phase_copy.pertenece_proyecto,
                                                                                              phase_copy.nombre,
                                                                                              project.nombre))
     return render(request, "base.html",)
@@ -88,5 +88,6 @@ def phaseList(request, id_proyecto):
     :return: Lista todas las fases pertenecientes al proyecto especificado
     """
     project = Proyecto.objects.get(pk=id_proyecto)
-    phase = Fase.objects.filter(proyecto=id_proyecto)
-    return render(request, "fase/phaselist.html", {'phase': phase, 'project':project }, context_instance=RequestContext(request) )
+    phase = Fase.objects.filter(pertenece_proyecto=id_proyecto)
+    return render(request, "fase/phaselist.html", {'phase': phase, 'project':project },
+                  context_instance=RequestContext(request) )

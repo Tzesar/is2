@@ -31,7 +31,7 @@ class ProyectoFactory(factory.DjangoModelFactory):
 
     codigo = 'PR'
     nombre = 'Proyecto de Prueba'
-    lider_proyecto = Usuario.objects.get(username='administrador')
+    lider_proyecto = Usuario.objects.get(pk='1')
     descripcion = 'Proyecto de Prueba para los Test'
     fecha_inicio = timezone.now()
     fecha_fin = timezone.now()

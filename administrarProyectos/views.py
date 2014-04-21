@@ -2,9 +2,10 @@
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponseRedirect
 from django.template import RequestContext
-from administrarProyectos.forms import NewProjectForm, ChangeProjectForm
-from django.shortcuts import render_to_response, render, get_object_or_404
+from administrarProyectos.forms import NewProjectForm, ChangeProjectForm, addUserProjectForm
+from django.shortcuts import render_to_response, render
 from administrarProyectos.models import Proyecto
+from django.utils import timezone
 import logging
 
 logger = logging.getLogger(__name__)
@@ -22,9 +23,11 @@ def createProject(request):
     if request.method == 'POST':
         form = NewProjectForm(request.POST)
         if form.is_valid():
+            project = form.save(commit=False)
             logger.info('El usuario ' + request.user.username + ' ha creado el proyecto: ' +
                         form["nombre"].value() + ' dentro del sistema')
-            form.save()
+            project.fecha_creacion = timezone.now()
+            project.save()
             return HttpResponseRedirect('/base/')
     else:
         form = NewProjectForm()
@@ -65,3 +68,30 @@ def projectlist(request):
     """
     project = Proyecto.objects.all()
     return render(request, "proyecto/projectlist.html", {'project': project}, )
+
+
+def addUserProject(request, id_proyecto):
+    """
+    Vista para vincular usuarios a un proyecto existente.
+
+    Acción solo realizada por los usuarios con rol de líder de proyecto
+    """
+    project = Proyecto.objects.get(pk=id_proyecto)
+    if request.method == 'POST':
+        form = addUserProjectForm(request.POST, instance=project)
+        if form.is_valid():
+            form.save()
+            return HttpResponseRedirect('/base/')
+    else:
+        form = addUserProjectForm(instance=project)
+    return render_to_response('proyecto/adduserproject.html', {'form': form, 'project': project},
+                              context_instance=RequestContext(request))
+
+
+def viewUserProject(request, id_proyecto):
+    """
+    Vista para visualizar usuarios que se encuentren vinculados a un proyecto
+    """
+    project = Proyecto.objects.get(pk=id_proyecto)
+    return render(request, "proyecto/usersetproject.html", {'project': project},
+                  context_instance=RequestContext(request))

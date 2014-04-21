@@ -20,6 +20,14 @@ administrarFases.models module
     :undoc-members:
     :show-inheritance:
 
+administrarFases.tests module
+-----------------------------
+
+.. automodule:: administrarFases.tests
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
 administrarFases.views module
 -----------------------------
 

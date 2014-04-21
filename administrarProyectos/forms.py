@@ -1,6 +1,7 @@
 #encoding=utf-8
 from django.forms import ModelForm
 from administrarProyectos.models import Proyecto
+from autenticacion.models import Usuario
 from django import forms
 
 
@@ -36,3 +37,15 @@ class ChangeProjectForm(forms.ModelForm):
         f = self.fields.get('user_permissions', None)
         if f is not None:
             f.queryset = f.queryset.select_related('content_type')
+
+
+class addUserProjectForm(forms.ModelForm):
+    """
+    Formulario para vincular usuarios a un proyecto
+    """
+    usuarios_asociados = forms.ModelMultipleChoiceField(widget=forms.CheckboxSelectMultiple,
+                                                        queryset=Usuario.objects.all(), label='Usuarios Vinculados', required=False)
+
+    class Meta:
+        model = Proyecto
+        fields = ('usuarios_asociados',)

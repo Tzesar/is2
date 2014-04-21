@@ -112,7 +112,7 @@ campos disponibles para la modificación de un proyecto en el sistema.</p>
 
 <dl class="attribute">
 <dt id="administrarProyectos.forms.ChangeProjectForm.base_fields">
-<tt class="descclassname">ChangeProjectForm.</tt><tt class="descname">base_fields</tt><em class="property"> = {'nombre': &lt;django.forms.fields.CharField object at 0xb0ea80c&gt;, 'lider_proyecto': &lt;django.forms.models.ModelChoiceField object at 0xb0ea90c&gt;, 'estado': &lt;django.forms.fields.TypedChoiceField object at 0xb0ea3ac&gt;, 'descripcion': &lt;django.forms.fields.CharField object at 0xb0ea2ac&gt;}</em><a class="headerlink" href="#administrarProyectos.forms.ChangeProjectForm.base_fields" title="Permalink to this definition">¶</a></dt>
+<tt class="descclassname">ChangeProjectForm.</tt><tt class="descname">base_fields</tt><em class="property"> = {'nombre': &lt;django.forms.fields.CharField object at 0xade6ccc&gt;, 'lider_proyecto': &lt;django.forms.models.ModelChoiceField object at 0xade6dcc&gt;, 'estado': &lt;django.forms.fields.TypedChoiceField object at 0xaded06c&gt;, 'descripcion': &lt;django.forms.fields.CharField object at 0xade6f6c&gt;}</em><a class="headerlink" href="#administrarProyectos.forms.ChangeProjectForm.base_fields" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="attribute">
@@ -153,7 +153,7 @@ campos necesarios para la creación de un proyecto en el sistema.</p>
 
 <dl class="attribute">
 <dt id="administrarProyectos.forms.NewProjectForm.base_fields">
-<tt class="descclassname">NewProjectForm.</tt><tt class="descname">base_fields</tt><em class="property"> = {'nombre': &lt;django.forms.fields.CharField object at 0xb07a3cc&gt;, 'lider_proyecto': &lt;django.forms.models.ModelChoiceField object at 0xb0fdc8c&gt;, 'descripcion': &lt;django.forms.fields.CharField object at 0xb0f8eec&gt;}</em><a class="headerlink" href="#administrarProyectos.forms.NewProjectForm.base_fields" title="Permalink to this definition">¶</a></dt>
+<tt class="descclassname">NewProjectForm.</tt><tt class="descname">base_fields</tt><em class="property"> = {'nombre': &lt;django.forms.fields.CharField object at 0xade672c&gt;, 'lider_proyecto': &lt;django.forms.models.ModelChoiceField object at 0xade694c&gt;, 'descripcion': &lt;django.forms.fields.CharField object at 0xade6bac&gt;}</em><a class="headerlink" href="#administrarProyectos.forms.NewProjectForm.base_fields" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="attribute">
@@ -218,12 +218,17 @@ campos necesarios para la creación de un proyecto en el sistema.</p>
 
 <dl class="attribute">
 <dt id="administrarProyectos.models.Proyecto.objects">
-<tt class="descclassname">Proyecto.</tt><tt class="descname">objects</tt><em class="property"> = &lt;django.db.models.manager.Manager object at 0xaf78a6c&gt;</em><a class="headerlink" href="#administrarProyectos.models.Proyecto.objects" title="Permalink to this definition">¶</a></dt>
+<tt class="descclassname">Proyecto.</tt><tt class="descname">objects</tt><em class="property"> = &lt;django.db.models.manager.Manager object at 0xac9ff2c&gt;</em><a class="headerlink" href="#administrarProyectos.models.Proyecto.objects" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="attribute">
 <dt id="administrarProyectos.models.Proyecto.opciones_estado">
 <tt class="descclassname">Proyecto.</tt><tt class="descname">opciones_estado</tt><em class="property"> = (('PEN', 'Pendiente'), ('ANU', 'Anulado'), ('ACT', 'Activo'), ('FIN', 'Finalizado'))</em><a class="headerlink" href="#administrarProyectos.models.Proyecto.opciones_estado" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="administrarProyectos.models.Proyecto.rol_set">
+<tt class="descclassname">Proyecto.</tt><tt class="descname">rol_set</tt><a class="headerlink" href="#administrarProyectos.models.Proyecto.rol_set" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 </dd></dl>
@@ -243,6 +248,11 @@ campos necesarios para la creación de un proyecto en el sistema.</p>
 </ul>
 </dd>
 </dl>
+<dl class="attribute">
+<dt id="administrarProyectos.tests.TestAdministrarProjectos.pw_admin">
+<tt class="descname">pw_admin</tt><em class="property"> = 'admin'</em><a class="headerlink" href="#administrarProyectos.tests.TestAdministrarProjectos.pw_admin" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
 <dl class="method">
 <dt id="administrarProyectos.tests.TestAdministrarProjectos.setUp">
 <tt class="descname">setUp</tt><big>(</big><big>)</big><a class="headerlink" href="#administrarProyectos.tests.TestAdministrarProjectos.setUp" title="Permalink to this definition">¶</a></dt>
@@ -250,14 +260,20 @@ campos necesarios para la creación de un proyecto en el sistema.</p>
 </dd></dl>
 
 <dl class="method">
-<dt id="administrarProyectos.tests.TestAdministrarProjectos.test_NewProjectForm_response">
-<tt class="descname">test_NewProjectForm_response</tt><big>(</big><big>)</big><a class="headerlink" href="#administrarProyectos.tests.TestAdministrarProjectos.test_NewProjectForm_response" title="Permalink to this definition">¶</a></dt>
-<dd><p>Test para la vista de creación de proyectos en el sistema</p>
+<dt id="administrarProyectos.tests.TestAdministrarProjectos.test_changeProject_response">
+<tt class="descname">test_changeProject_response</tt><big>(</big><big>)</big><a class="headerlink" href="#administrarProyectos.tests.TestAdministrarProjectos.test_changeProject_response" title="Permalink to this definition">¶</a></dt>
+<dd><p>Test para la vista de modificacion de proyectos en el sistema</p>
 </dd></dl>
 
 <dl class="method">
 <dt id="administrarProyectos.tests.TestAdministrarProjectos.test_createProject_response">
 <tt class="descname">test_createProject_response</tt><big>(</big><big>)</big><a class="headerlink" href="#administrarProyectos.tests.TestAdministrarProjectos.test_createProject_response" title="Permalink to this definition">¶</a></dt>
+<dd><p>Test para la vista de creacion de proyectos en el sistema</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="administrarProyectos.tests.TestAdministrarProjectos.un_admin">
+<tt class="descname">un_admin</tt><em class="property"> = 'xadmin'</em><a class="headerlink" href="#administrarProyectos.tests.TestAdministrarProjectos.un_admin" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 </dd></dl>
