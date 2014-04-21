@@ -8,6 +8,7 @@
     {% block title %}Log In{% endblock %}
     {% block body %}
         {% if form.errors %}
+{#            TODO: Mostrar un error del tipo necesita loguearse para acceder a esta pagina#}
             <div class="container-fluid">
                 <div class="alert alert-danger alert-dismissable">
                     <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
@@ -29,7 +30,6 @@
                             <input type="checkbox" name="remember_me" value="True"> Remember me
                         </label>
                         <button class="btn btn-lg btn-gray btn-block" type="submit">Sign in</button>
-                        <!--<input type="hidden" name="next" value="{% url 'base' %}">-->
                     </form>
                 </div>
             </div>

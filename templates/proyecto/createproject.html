@@ -2,7 +2,7 @@
 {% load staticfiles %}
 
     {% block title %}Crear Proyecto{% endblock %}
-    {% block mainBody %}
+    {% block errorBlock %}
         {% if form.errors %}
             <div class="container-fluid">
                 <div class="alert alert-danger alert-dismissable">
@@ -11,6 +11,8 @@
                 </div>
             </div>
         {% endif %}
+    {% endblock errorBlock %}
+    {% block panelCentral %}{% block padTop %}{% endblock padTop %}
         <div class="container col-lg-4 col-md-4 col-sm-6 col-xs-12 col-lg-offset-4 col-md-offset-4 col-sm-offset-3">
             <div class="panel panel-default">
                 <div class="panel-body">
@@ -21,9 +23,8 @@
                         {% csrf_token %}
                         <table> {{ form.as_table }} </table>
                         <button class="btn btn-lg btn-gray btn-block" type="submit">Crear Proyecto</button>
-                        <input type="hidden" name="next" value="{% url 'base' %}">
                     </form>
                 </div>
             </div>
         </div>
-    {% endblock %}>
+    {% endblock panelCentral %}>

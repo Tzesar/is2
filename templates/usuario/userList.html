@@ -6,49 +6,47 @@
 {% endblock %}
 
 {% block title %}Usuarios del Sistema{% endblock %}
-{% block pageName %}Usuarios{% endblock %}
 
-{% block mainBody %}
-    <div class="container col-lg-offset-1 col-lg-10 col-xs-12" style="padding-top: 2%">
-        <div class="panel panel-default">
-            <div class="panel-heading">
-                <h1 style="display: inline-block">Usuarios</h1>
-                <span class="glyphicon glyphicon-search disable" id="searchIcon" style="font-size: x-large; padding-left: 1em"></span>
-                <div id="searchDiv" class="input-group" style="display: none">
-                    <input id="searchInput" class="form-control" placeholder="Filter" hidden="hidden"/>
-                    <span id="searchHelp" class="input-group-addon" data-toggle="tooltip" title="[:activo | :inactivo] Usuarios Activos o Inactivos">?</span>
-                </div>
-            </div>
-            <div class="panel-body">
-                <div class="table-responsive">
-                    <table class="table table-hover">
-                        <thead>
-                            <tr class="text-info">
-                                <th>Username</th>
-                                <th>Nombre</th>
-                                <th>Activo</th>
-                            </tr>
-                        </thead>
-                        <tbody id="rows">
-                            {% for user in usuarios %}
-                                <tr id="{{ user.id }}">
-                                    <td class="datos">{{ user.username }}</td>
-                                    <td class="datos">{{ user.get_full_name }}</td>
-                                    <td class="estado">
-                                        <input type="checkbox" name="usuario_activo" id="{{ user.id }}"
-                                               data_user_id="{{ user.id }}" data_url="{% url 'userlist' %}"
-                                               {% if user.is_active %} checked {% endif %} />
-                                        {{ request.session.name }}
-                                    </td>
-                                </tr>
-                            {% endfor %}
-                        </tbody>
-                    </table>
-                </div>
-            </div>
+{% block panelCentral %}
+    {% block padTop %}{% endblock %}
+    <div class="panel-heading">
+        <h1 style="display: inline-block">Usuarios</h1>
+        <span class="glyphicon glyphicon-search disable" id="searchIcon" style="font-size: x-large; padding-left: 1em"></span>
+        <div id="searchDiv" class="input-group" style="display: none">
+            <input id="searchInput" class="form-control" placeholder="Filter" hidden="hidden"/>
+            <span id="searchHelp" class="input-group-addon" data-toggle="tooltip" title="Usuarios Activos o Inactivos [ :activo | :inactivo ]">?</span>
         </div>
     </div>
-{% endblock %}
+    <div class="panel-body">
+        <div class="table-responsive">
+            <table class="table table-hover">
+                <thead>
+                    <tr class="text-info">
+                        <th>Username</th>
+                        <th>Nombre</th>
+                        <th>Activo</th>
+                    </tr>
+                </thead>
+                <tbody id="rows">
+                    {% for user in usuarios %}
+                        <tr id="{{ user.id }}">
+                            <td class="datos">{{ user.username }}</td>
+                            <td class="datos">{{ user.get_full_name }}</td>
+                            <td class="estado">
+                                <input type="checkbox" name="usuario_activo" id="{{ user.id }}"
+                                       data_user_id="{{ user.id }}" data_url="{% url 'userlist' %}"
+                                       {% if user.is_active %} checked {% endif %} />
+                                {{ request.session.name }}
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <a href='/createuser/' class="btn btn-lg btn-success btn-lg" role="button">Nuevo Usuario</a>
+    <a href='/main/' class="btn btn-lg btn-warning btn-lg" role="button">Atrás</a>
+{% endblock panelCentral%}
 {% block jsAdicional %}
     <script src="{% static "bootstrap/js/bootstrap-switch.min.js" %}"></script>
     <script src="{% static "bootstrap/js/jquery.cookie.js" %}"></script>

@@ -8,6 +8,7 @@
 
         <title>{% block title %}Página Principal{% endblock %} - ZARpm</title>
 
+        <!-- CSS -->
         <link href="{% static "bootstrap/css/bootstrap.min.css" %}" rel="stylesheet">
         <link href="{% static "bootstrap/css/styles.css" %}" rel="stylesheet">
         {% block cssAdicional %}{% endblock %}
@@ -27,13 +28,12 @@
                                     <span class="icon-bar"></span>
                                     <span class="icon-bar"></span>
                                 </button>
-                                <a href="{url "base"}" class="navbar-brand">Página Principal</a>
+                                <a href="{% url "main" %}" class="navbar-brand">Página Principal </a>
                         </div>
                         <div class="collapse navbar-collapse" id="navbar-example-collapse">
-                            <p class="navbar-text">{{ user.username|capfirst }}</p>
                             <ul class="nav navbar-nav navbar-right">
                                 <li>
-                                    <a href="{% url 'changeUser' %}">Cuenta</a>
+                                    <a href="{% url 'changeuser' %}"><span class="glyphicon glyphicon-user"></span> {{ user.username|capfirst }}</a>
                                 </li>
                                 <li>
                                     <a href="{% url 'logout' %}">Logout</a>
@@ -44,15 +44,27 @@
                 </nav>
             {% endblock %}
             {% block mainBody %}
-                <div class="container col-lg-offset-1 col-lg-10 col-xs-12" style="padding-top: 2%">
-                    <div class="panel panel-default">
+                {% block errorBlock %}{% endblock errorBlock %}
+                <div class="container col-lg-offset-1 col-lg-10 col-xs-12" style="padding-top: 2%; padding-bottom: inherit">
+                {# Utilizar el bloque padTop dejandolo en blanco para arreglar el padding superior del panel #}
+                    <div class="panel panel-default" {% block padTop %}style="padding-top: 2%"{% endblock %}>
                         {% block panelCentral %}cosas{% endblock %}
                     </div>
                 </div>
-            {% endblock %}
-        {% endblock %}
-        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
-        <script src="{% static "bootstrap/js/bootstrap.min.js" %}"></script>
-        {% block jsAdicional %}{% endblock %}
+            {% endblock mainBody %}
+            <nav class="navbar navbar-default navbar-fixed-bottom" role="navigation">
+                <div class="container">
+                    <p class="navbar-text">ZARtm</p>
+                    <a href="https://github.com/Tzesar/is2.git"> <span class="bearglyph bearglyph-octocat bearglyph-center"></span></a>
+                    <p class="navbar-text navbar-right"><a href="{% url 'about' %}">About</a></p>
+                    <p class="navbar-text navbar-right">URL of this page: {{ request.get_full_path }}</p>
+                </div>
+            </nav>
+
+            <!-- JavaScripts -->
+            <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+            <script src="{% static "bootstrap/js/bootstrap.min.js" %}"></script>
+            {% block jsAdicional %}{% endblock jsAdicional %}
+        {% endblock body %}
     </body>
 </html>

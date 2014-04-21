@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+
+    {% block title %}Página Principal{% endblock %}
+
+    {% block panelCentral %}
+        <div class="container-fluid">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h1>Proyectos</h1>
+                </div>
+                <div class="panel-body">
+                    Módulo de administracion de proyectos.
+                    <a href="{% url 'projectlist' %}" class="btn btn-info" role="button"><span class="glyphicon glyphicon-chevron-right"></span></a>
+{#                    TODO: Listar proyectos creados/modificados recientemente#}
+                </div>
+            </div>
+        </div>
+
+        <div class="container-fluid">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h1>Usuarios</h1>
+                </div>
+                <div class="panel-body">
+                    Módulo de administracion de usuarios.
+                    <a href="{% url 'userlist' %}" class="btn btn-info" role="button"><span class="glyphicon glyphicon-chevron-right"></span></a>
+                </div>
+            </div>
+        </div>
+    {% endblock %}
