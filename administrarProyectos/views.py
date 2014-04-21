@@ -71,7 +71,7 @@ def projectlist(request):
     return render(request, "proyecto/projectlist.html", {'project': project}, )
 
 
-def setUserToProjec(request, id_proyecto):
+def setUserToProject(request, id_proyecto):
     """
     Vista para vincular usuarios a un proyecto existente.
 
@@ -87,7 +87,7 @@ def setUserToProjec(request, id_proyecto):
             return HttpResponseRedirect('/base/')
     else:
         form = setUserToProject(instance=project)
-    return render_to_response('proyecto/setusertoprojec.html', {'form': form, 'project': project},
+    return render_to_response('proyecto/setusertoproject.html', {'form': form, 'project': project},
                               context_instance=RequestContext(request))
 
 

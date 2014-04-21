@@ -8,7 +8,7 @@ from django.contrib.auth.views import logout_then_login
 from autenticacion.views import base, myLogin
 from administrarUsuarios.views import createUser, changeUser, userList, changePass, changeAnyUser
 from zar.views import about, contact
-from administrarProyectos.views import createProject, changeProject, projectlist, setUserToProjec, viewSetUserProject
+from administrarProyectos.views import createProject, changeProject, projectlist, setUserToProject, viewSetUserProject
 from administrarFases.views import changePhase, createPhase, phaseList, deletePhase
 
 admin.autodiscover()
@@ -28,7 +28,7 @@ urlpatterns = patterns('',
                        url(r'^contact/$', contact, name="contact"),
                        url(r'^createproject/$', createProject),
                        url(r'^changeproject/(?P<id_proyecto>\d+)$', changeProject),
-                       url(r'^setusertoprojec/(?P<id_proyecto>\d+)$', setUserToProjec),
+                       url(r'^setusertoprojec/(?P<id_proyecto>\d+)$', setUserToProject),
                        url(r'^usersetproject/(?P<id_proyecto>\d+)$', viewSetUserProject),
                        url(r'^projectlist/$', projectlist),
                        url(r'^createphase/(?P<id_proyecto>\d+)$', createPhase),
