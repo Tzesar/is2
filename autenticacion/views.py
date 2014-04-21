@@ -3,6 +3,7 @@ from django.core.urlresolvers import reverse
 from django.shortcuts import render
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.views import login
+from administrarProyectos.models import Proyecto
 
 
 def myLogin(request, *args, **kwargs):
@@ -15,7 +16,7 @@ def myLogin(request, *args, **kwargs):
     :return: Retorna el resultado de la funcion contrib.auth.views.login.
     """
     if request.user.is_authenticated():
-        return HttpResponseRedirect(reverse('base'))
+        return HttpResponseRedirect(reverse('main'))
     else:
         if request.method == 'POST':
             if not request.POST.get('remember_me'):
@@ -34,3 +35,18 @@ def base(request):
     :return: Template base.html. Los demas templates heredan de este la estructura y los estilos.
     """
     return render(request, 'base.html')
+
+@login_required
+def main(request):
+    """
+    Vista para la plantilla main.html
+
+    :param request: HttpRequest con los datos de la sesion del usuario actual.
+    :return: Template mainAdmin.html para el Administrador y mainAnyUser.html para los demas usuarios.
+    """
+
+    if request.user.is_superuser:
+        return render(request, 'mainAdmin.html', {'user': request.user})
+    else:
+        proyectos = Proyecto.objects.filter(lider_proyecto=request.user)
+        return render(request, 'mainAnyUser.html', {'user': request.user, 'proyectos': proyectos})

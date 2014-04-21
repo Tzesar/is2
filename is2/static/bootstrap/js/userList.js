@@ -56,7 +56,12 @@ function hideInput(){
 }
 
 // Maneja el filtrado de los usuarios searchInput: id del input de texto
-$("#searchInput").keyup(function () {
+$("#searchInput").keydown(function(e) {
+    if ( e.which == 27 ){
+        $("#searchInput").blur()
+    }
+
+}).keyup(function () {
     filter($(this));
 
 }).focus(function() {
@@ -67,11 +72,6 @@ $("#searchInput").keyup(function () {
         $("#searchDiv").fadeOut(500);
         $("#searchIcon").switchClass("", "disable", 500);
     }
-
-}).keydown(function(e) {
-    if ( e.which == 27 ){
-        $("#searchDiv").blur()
-  }
 });
 
 function filter(element) {

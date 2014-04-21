@@ -1,10 +1,12 @@
 #encoding:utf-8
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponseRedirect
-from django.template import RequestContext
+from django.shortcuts import render, get_object_or_404
+from django_tables2 import RequestConfig
 from administrarProyectos.forms import NewProjectForm, ChangeProjectForm
-from django.shortcuts import render_to_response, render, get_object_or_404
 from administrarProyectos.models import Proyecto
+from administrarProyectos.tables import ProyectoTabla
+from autenticacion.models import Usuario
 import logging
 
 logger = logging.getLogger(__name__)
@@ -25,10 +27,10 @@ def createProject(request):
             form.save()
             logger.info('El usuario ' + request.user.username + ' ha creado el proyecto: ' +
                         form["nombre"].value() + ' dentro del sistema')
-            return HttpResponseRedirect('/base/')
+            return HttpResponseRedirect('/main/')
     else:
         form = NewProjectForm()
-    return render_to_response('proyecto/createproject.html', {'form': form}, context_instance=RequestContext(request))
+    return render(request, 'proyecto/createproject.html', {'user': request.user, 'form': form})
 
 
 @login_required()
@@ -41,19 +43,21 @@ def changeProject(request, id_proyecto):
     :return:
     """
     project = Proyecto.objects.get(pk=id_proyecto)
+    users = Usuario.objects.filter(is_active=True)
     if request.method == 'POST':
         form = ChangeProjectForm(request.POST, instance=project)
         if form.is_valid():
             form.save()
             logger.info('El usuario ' + request.user.username + ' ha modificado el proyecto: ' +
                         form["nombre"].value() + ' dentro del sistema')
-            return HttpResponseRedirect('/base/')
+            return HttpResponseRedirect('/main/')
     else:
         form = ChangeProjectForm(instance=project)
-    return render_to_response('proyecto/changeproject.html', {'form': form, 'project': project}, context_instance=RequestContext(request))
+    return render(request, 'proyecto/changeproject.html', {'user': request.user, 'form': form, 'project': project, 'users': users})
 
 
 @login_required
-def projectlist(request):
-    project = Proyecto.objects.all()
-    return render(request, "proyecto/projectlist.html", {'project': project}, )
+def projectList(request):
+    proyectos = ProyectoTabla( Proyecto.objects.all() )
+    RequestConfig(request, paginate={"per_page": 25}).configure(proyectos)
+    return render(request, "proyecto/projectlist.html", {'user': request.user, 'proyectos': proyectos}, )

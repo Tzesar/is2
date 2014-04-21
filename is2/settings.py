@@ -36,6 +36,7 @@ INSTALLED_APPS = (
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'django.contrib.admin',
+    'django_tables2',
     'zar',
     'gestionRolesPermisos',
     'autenticacion',
@@ -51,6 +52,10 @@ MIDDLEWARE_CLASSES = (
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+)
+
+TEMPLATE_CONTEXT_PROCESSORS = (
+    'django.core.context_processors.request',
 )
 
 ROOT_URLCONF = 'is2.urls'
@@ -102,7 +107,7 @@ TEMPLATE_DIRS = (
 # Establece el modelo de usuario que se usa
 AUTH_USER_MODEL = "autenticacion.Usuario"
 LOGIN_URL = "/login/"
-LOGIN_REDIRECT_URL = '/base/'
+LOGIN_REDIRECT_URL = '/main/'
 
 MEDIA_ROOT = os.path.join(BASE_DIR, 'is2/', 'static/')
 MEDIA_URL ='/media/'

@@ -25,10 +25,10 @@ def createUser(request):
             form.save()
             logger.info('El usuario ' + request.user.username + ' ha creado el usuario: ' +
                         form["username"].value() + ' dentro del sistema')
-            return HttpResponseRedirect("/base/")
+            return HttpResponseRedirect("/main/")
     else:
         form = CustomUserChangeForm()
-    return render(request, "usuario/createuser.html", { 'form': form, })
+    return render(request, "usuario/createuser.html", {'form': form, })
 
 
 @login_required()
@@ -45,12 +45,11 @@ def changeUser(request):
         form = CustomUserChangeForm(postdata, instance=request.user)
         if form.is_valid():
             form.save()
-            logger.info('El usuario ' + request.user.username + ' ha modificado el usuario: ' +
-                        form["username"].value() + ' dentro del sistema')
-            return HttpResponseRedirect("/base/")
+            logger.info('El usuario ' + request.user.username + ' ha modificado sus datos personales dentro del sistema')
+            return HttpResponseRedirect("/main/")
     else:
         form = CustomUserChangeForm(instance=request.user)
-    return render(request, "usuario/changeuser.html", { 'form': form, }, context_instance=RequestContext(request) )
+    return render(request, "usuario/changeuser.html", {'form': form, 'user': request.user})
 
 
 @login_required()
@@ -79,7 +78,7 @@ def changePass(request):
 def userList(request):
     if request.method == 'GET':
         usuarios = Usuario.objects.all().order_by('id')
-        return render(request, "usuario/userList.html", {'usuarios': usuarios}, )
+        return render(request, "usuario/userList.html", {'user': request.user, 'usuarios': usuarios}, )
 
     xhr = request.GET.has_key('xhr')
 

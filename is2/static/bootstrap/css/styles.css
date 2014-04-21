@@ -1,48 +1,62 @@
 body {
-  background-color: #eee;
+    background-color: #eee;
+    padding-bottom: 70px;
 }
 
 @font-face {
-  font-family: 'Intro';
-  src: url('../fonts/Intro.otf') format("opentype");
+    font-family: 'Intro';
+    src: url('../fonts/Intro.otf') format("opentype");
 }
 
 .intro {
-  position: relative;
-  top: 1px;
-  display: inline-block;
-  font-family: 'Intro';
-  font-style: normal;
-  font-weight: normal;
-  line-height: 1;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+    position: relative;
+    top: 1px;
+    display: inline-block;
+    font-family: 'Intro';
+    font-style: normal;
+    font-weight: normal;
+    line-height: 1;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
 }
 
 @font-face {
-  font-family: 'Bear';
-  src: url('../fonts/bear/bearglyph.eot');
-  src: url('../fonts/bear/bearglyph.eot?#iefix') format('embedded-opentype'), url('../fonts/bear/bearglyph.woff') format('woff'), url('../fonts/bear/bearglyph.ttf') format('truetype'), url('../fonts/bear/bearglyph.svg#bearglyph') format('svg');
+    font-family: 'Bear';
+    src: url('../fonts/bear/bearglyph.eot');
+    src: url('../fonts/bear/bearglyph.eot?#iefix') format('embedded-opentype'), url('../fonts/bear/bearglyph.woff') format('woff'), url('../fonts/bear/bearglyph.ttf') format('truetype'), url('../fonts/bear/bearglyph.svg#bearglyph') format('svg');
 }
 
 .bearglyph {
-  position: relative;
-  top: 1px;
-  display: inline-block;
-  font-family: 'Bear';
-  font-style: normal;
-  font-weight: normal;
-  line-height: 1;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+    position: relative;
+    top: 1px;
+      display: inline-block;
+    font-family: 'Bear';
+    font-style: normal;
+    font-weight: normal;
+    line-height: 1;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+.bearglyph-center{
+    position: absolute;
+    top: 18px;
+    left: 50%;
+    height: 24px;
+    width: 24px;
+    font-size: 24px;
 }
 
 .bearglyph-claw:before {
-  content: "\e600";
+    content: "\e600";
 }
 
 .bearglyph-bear:before {
-  content: "\e601";
+    content: "\e601";
+}
+
+.bearglyph-octocat:before {
+    content: "\e602";
 }
 
 .btn-gray{
@@ -56,14 +70,14 @@ body {
 .btn-gray:active,
 .btn-gray.active,
 .open .dropdown-toggle.btn-gray {
-  color: #ffffff;
-  background-color: #464646;
-  border-color: #adadad;
+    color: #ffffff;
+    background-color: #464646;
+    border-color: #adadad;
 }
 
 .list-group-item-gray {
-  color: #464646;
-  background-color: #ffffff;
+    color: #464646;
+    background-color: #ffffff;
 }
 
 .disable {
