@@ -9,10 +9,14 @@ class NewRoleForm(ModelForm):
     Formulario para la creación de nuevos roles en un proyecto.
     Opción válida solo para usuarios con rol Líder de Proyecto.
     """
+
+    permisos = forms.ModelMultipleChoiceField(queryset=RolFase.objects.all(), widget=forms.CheckboxSelectMultiple, required=True)
+
     class Meta:
         model = RolFase
         fields = ('nombre', 'descripcion', 'permisos',)
         exclude = ('proyecto',)
+
 
 
 class ChangeRoleForm(forms.ModelForm):
@@ -20,6 +24,9 @@ class ChangeRoleForm(forms.ModelForm):
     Formulario para la modificacion de proyectos creados en el sistema.
     Opción válida solo para usuarios con rol de Administrador.
     """
+
+    permisos = forms.ModelMultipleChoiceField(queryset=RolFase.objects.all(), widget=forms.CheckboxSelectMultiple, required=True)
+
     class Meta:
         model = RolFase
         fields = ('nombre', 'descripcion', 'permisos',)

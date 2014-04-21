@@ -27,9 +27,9 @@ class PermisoFase(models.Model):
     Modelo que implementa la estructura basica de los permisos a ser provistos por el sistema
     para aquellos usuarios cuyo rol se aplique solamente a ciertas fases de un proyecto
     """
-    code = models.CharField('code', max_length=20)
+    code = models.CharField('code', max_length=50)
     nombre = models.CharField('nombre', max_length=50)
-    descripcion = models.CharField('descripción', max_length=100)
+    descripcion = models.CharField('descripción', max_length=200)
     fase = models.ForeignKey(Fase)
 
     class Meta:
