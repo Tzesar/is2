@@ -2,9 +2,10 @@
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponseRedirect
 from django.template import RequestContext
-from administrarProyectos.forms import NewProjectForm, ChangeProjectForm, addUserProjectForm
+from administrarProyectos.forms import NewProjectForm, ChangeProjectForm, setUserToProject
 from django.shortcuts import render_to_response, render
-from administrarProyectos.models import Proyecto
+from administrarProyectos.models import Proyecto, UsuariosVinculadosProyectos
+from autenticacion.models import Usuario
 from django.utils import timezone
 import logging
 
@@ -70,7 +71,7 @@ def projectlist(request):
     return render(request, "proyecto/projectlist.html", {'project': project}, )
 
 
-def addUserProject(request, id_proyecto):
+def setUserToProjec(request, id_proyecto):
     """
     Vista para vincular usuarios a un proyecto existente.
 
@@ -78,20 +79,25 @@ def addUserProject(request, id_proyecto):
     """
     project = Proyecto.objects.get(pk=id_proyecto)
     if request.method == 'POST':
-        form = addUserProjectForm(request.POST, instance=project)
+        form = setUserToProject(request.POST)
         if form.is_valid():
-            form.save()
+            usertoproject = form.save(commit=False)
+            usertoproject.cod_proyecto = project
+            usertoproject.save()
             return HttpResponseRedirect('/base/')
     else:
-        form = addUserProjectForm(instance=project)
-    return render_to_response('proyecto/adduserproject.html', {'form': form, 'project': project},
+        form = setUserToProject(instance=project)
+    return render_to_response('proyecto/setusertoprojec.html', {'form': form, 'project': project},
                               context_instance=RequestContext(request))
 
 
-def viewUserProject(request, id_proyecto):
+def viewSetUserProject(request, id_proyecto):
     """
     Vista para visualizar usuarios que se encuentren vinculados a un proyecto
     """
+    userproject = UsuariosVinculadosProyectos.objects.filter(cod_proyecto=id_proyecto)
     project = Proyecto.objects.get(pk=id_proyecto)
-    return render(request, "proyecto/usersetproject.html", {'project': project},
+
+    return render(request, "proyecto/usersetproject.html", {'project': project, 'userproject': userproject},
                   context_instance=RequestContext(request))
+

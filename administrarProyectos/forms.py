@@ -1,6 +1,6 @@
 #encoding=utf-8
 from django.forms import ModelForm
-from administrarProyectos.models import Proyecto
+from administrarProyectos.models import Proyecto, UsuariosVinculadosProyectos, Usuario
 from autenticacion.models import Usuario
 from django import forms
 
@@ -14,6 +14,7 @@ class NewProjectForm(ModelForm):
     Utilizamos el Modelo de Proyecto definido del cual filtramos los campos de tal manera a que solo se habiliten los
     campos necesarios para la creación de un proyecto en el sistema.
     """
+
     class Meta:
         model = Proyecto
         fields = ('nombre', 'lider_proyecto', 'descripcion',)
@@ -28,6 +29,7 @@ class ChangeProjectForm(forms.ModelForm):
     Utilizamos el Modelo de Proyecto definido del cual filtramos los campos de tal manera a que solo se habiliten los
     campos disponibles para la modificación de un proyecto en el sistema.
     """
+
     class Meta:
         model = Proyecto
         fields = ('nombre', 'lider_proyecto', 'estado', 'descripcion',)
@@ -43,9 +45,23 @@ class addUserProjectForm(forms.ModelForm):
     """
     Formulario para vincular usuarios a un proyecto
     """
+    user = Usuario.objects.all()
     usuarios_asociados = forms.ModelMultipleChoiceField(widget=forms.CheckboxSelectMultiple,
-                                                        queryset=Usuario.objects.all(), label='Usuarios Vinculados', required=False)
+                                                        queryset=user, label='Usuarios Vinculados', required=True, )
 
     class Meta:
         model = Proyecto
         fields = ('usuarios_asociados',)
+
+
+class setUserToProject(forms.ModelForm):
+    """
+    Formulario para vincular usuarios a un proyecto
+    """
+    user = Usuario.objects.all()
+    cod_usuario = str(forms.ModelChoiceField(widget=forms.CheckboxSelectMultiple, queryset=user,
+                                         label='Usuarios Vinculados', required=True, ))
+
+    class Meta:
+        model = UsuariosVinculadosProyectos
+        fields = ('cod_usuario',)

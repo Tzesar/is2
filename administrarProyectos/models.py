@@ -34,3 +34,19 @@ class Proyecto(models.Model):
 
     def __unicode__(self):
         return self.nombre
+
+class UsuariosVinculadosProyectos(models.Model):
+    """
+    Modelo para los usuarios vinculados a algún proyecto dentro del sistema
+        + Cod_Proyecto: Identificador del proyecto al cual se encuentra vinculado el usuario
+        + Cod_Usuario: Identificador del usuario que se encuentra vinculado a un proyecto
+        + Habilitado: Define si el usuario se encuentra habilitado para realizar cambios en el proyecto
+    """
+    cod_proyecto = models.ForeignKey(Proyecto)
+    cod_usuario = models.ForeignKey(Usuario)
+    habilitado = models.BooleanField('active', default=True,
+        help_text='Designates whether this user should be treated as '
+                    'active. Unselect this instead of deleting accounts.')
+
+    class Meta:
+        unique_together = (('cod_proyecto', 'cod_usuario'),)

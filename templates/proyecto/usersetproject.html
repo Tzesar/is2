@@ -14,14 +14,16 @@
                     <thead>
                         <tr>
                             <th>Username</th>
-                            <th>Nombre de Usuario</th>
+                            <th>Nombre Completo</th>
+                            <th>Habilitado</th>
                         </tr>
                     </thead>
                     <tbody>
-                        {% for userproject in project.usuarios_asociados.all %}
+                        {% for userproject in userproject %}
                             <tr>
-                                <td>{{ userproject }}</td>
-                                <td>{{ userproject.get_full_name }}</td>
+                                <td>{{ userproject.cod_usuario }}</td>
+                                <td>{{ userproject.cod_usuario.get_full_name }}</td>
+                                <td>{{ userproject.habilitado }}</td>
                             </tr>
                         {% endfor %}
                     </tbody>
