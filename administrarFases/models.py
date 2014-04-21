@@ -23,12 +23,12 @@ class Fase(models.Model):
     nombre = models.CharField(max_length=100)
     descripcion = models.TextField(max_length=140, help_text='Introduzca una breve reseña del proyecto', null=True)
     estado = models.CharField(max_length=3, choices=opciones_estado, default='PEN', help_text='Estado de la Fase')
-    pertenece_proyecto = models.ForeignKey(Proyecto)
+    proyecto = models.ForeignKey(Proyecto)
 
     class Meta:
         verbose_name = 'fase'
         verbose_name_plural = 'fases'
-        unique_together = (('pertenece_proyecto', 'nombre'),)
+        unique_together = (('proyecto', 'nombre'),)
 
     def __unicode__(self):
         return self.nombre

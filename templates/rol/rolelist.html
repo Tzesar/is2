@@ -27,7 +27,7 @@
                         <tbody>
                             {% for rol in roles %}
                                 <tr id="{{ rol.id }}">
-                                    <td><a href='{% url 'gestionRolesPermisos.views.changeRole' project.id rol.id %}'>{{rol.nombre}}</a></td>
+                                    <td><a href='{% url 'administrarRolesPermisos.views.changeRole' project.id rol.id %}'>{{rol.nombre}}</a></td>
                                     <td><a href='/deleterole/{{ project.id }}/{{ rol.id }}' class="btn btn-sm btn-gray btn-lg" role="button">Eliminar</a></td>
                                 </tr>
                             {% endfor %}

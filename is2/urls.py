@@ -10,7 +10,7 @@ from administrarUsuarios.views import createUser, changeUser, userList, changePa
 from zar.views import about, contact
 from administrarProyectos.views import createProject, changeProject, projectlist, setUserToProject, viewSetUserProject
 from administrarFases.views import changePhase, createPhase, phaseList, deletePhase
-from gestionRolesPermisos.views import createRole, roleList, changeRole,deleteRole
+from administrarRolesPermisos.views import createRole, roleList, changeRole,deleteRole
 
 admin.autodiscover()
 
