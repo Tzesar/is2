@@ -1,8 +1,10 @@
 #encoding=utf-8
 from django.forms import ModelForm
-from administrarProyectos.models import Proyecto, UsuariosVinculadosProyectos, Usuario
-from autenticacion.models import Usuario
 from django import forms
+
+from administrarProyectos.models import Proyecto, UsuariosVinculadosProyectos
+
+from autenticacion.models import Usuario
 
 
 class NewProjectForm(ModelForm):
