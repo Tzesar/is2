@@ -43,20 +43,7 @@ class ChangeProjectForm(forms.ModelForm):
             f.queryset = f.queryset.select_related('content_type')
 
 
-class addUserProjectForm(forms.ModelForm):
-    """
-    Formulario para vincular usuarios a un proyecto
-    """
-    user = Usuario.objects.all()
-    usuarios_asociados = forms.ModelMultipleChoiceField(widget=forms.CheckboxSelectMultiple,
-                                                        queryset=user, label='Usuarios Vinculados', required=True, )
-
-    class Meta:
-        model = Proyecto
-        fields = ('usuarios_asociados',)
-
-
-class setUserToProject(forms.ModelForm):
+class setUserToProjectForm(forms.ModelForm):
     """
     Formulario para vincular usuarios a un proyecto
     """
