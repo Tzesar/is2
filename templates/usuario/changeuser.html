@@ -36,8 +36,11 @@
                         <label for="id_telefono">Telefono</label>
                         <input value="{{ user.telefono }}" name="telefono" id="id_telefono" class="form-control" type="text">
                     </div>
-                    <button class="btn btn-lg btn-info" type="submit">Guardar cambios</button>
+                    <div class="form-group">
+                        <a id="changePass" href="{% url 'changepass' %}" class="btn btn-danger btn-block">Cambiar contraseña</a>
+                    </div>
                     <a href="{% url 'main' %}" class="btn btn-lg btn-warning" type="submit">Cancelar</a>
+                    <button class="btn btn-lg btn-info" type="submit">Guardar cambios</button>
                 </form>
             </div>
             <div class="col-lg-offset-2 col-md-offset-2 col-sm-offset-2 col-lg-5 col-md-5 col-sm-5 visible-lg visible-md visible-sm">

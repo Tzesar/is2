@@ -1,5 +1,6 @@
 {% extends 'base.html' %}
 {% load staticfiles %}
+{% load render_table from django_tables2 %}
 
     {% block title %}Página Principal{% endblock %}
 
@@ -9,26 +10,8 @@
                 <div class="panel-heading">
                     <h1>Proyectos</h1>
                 </div>
-                <div class="panel-body">
-                    <div class="col-lg-4 col-md-4 col-sm-4">
-                        {% if proyectos %}
-                            <table class="table">
-                                <tbody id="proyectosAsLider">
-                                    {% for proyecto in proyectos %}
-                                        <tr>
-                                            <td>{{ proyecto.nombre }}</td>
-                                            <td>{{ proyecto.fecha_creaion }}</td>
-                                            <td>{{ proyecto.estado }}</td>
-                                        </tr>
-                                    {% endfor %}
-                                </tbody>
-                            </table>
-                        {% else %}
-                            <p><h4>No participa en ningún proyecto</h4></p>
-                        {% endif %}
-                        {# TODO: Listar proyectos creados/modificados recientemente #}
-                    </div>
-                </div>
+                {% render_table proyectos %}
             </div>
+            <a href="{% url 'autenticacion.views.main' %}" class="btn btn-warning">Atrás</a>
         </div>
     {% endblock %}

@@ -35,13 +35,12 @@ def createRole(request, id_proyecto):
 
             roles = RolFase.objects.filter(proyecto=id_proyecto).order_by('id')
 
-            return render(request, "rol/rolelist.html", { 'roles': roles, 'project': project, })
+            return render(request, "rol/rolelist.html", {'roles': roles, 'project': project, })
     else:
         form = NewRoleForm()
         form.fields['permisos'].queryset = PermisoFase.objects.filter(fase__in=fases)
 
-
-    return render(request, "rol/createrole.html", { 'form': form })
+    return render(request, "rol/createrole.html", {'form': form, 'project': project, })
 
 
 def roleList(request, id_proyecto):

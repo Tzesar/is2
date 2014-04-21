@@ -20,8 +20,8 @@
                     <form action="" class="form-signin" role="form" method="post">
                         {% csrf_token %}
                         <table> {{ form.as_table }} </table>
-                        <button class="btn btn-lg btn-gray btn-block" type="submit">Guardar Cambios</button>
-                        <input type="hidden" name="next" value="{% url 'base' %}">
+                        <a href="{% url 'changeuser' %}" class="btn btn-lg btn-warning" type="submit">Cancelar</a>
+                        <button class="btn btn-lg btn-danger" type="submit">Guardar Cambios</button>
                     </form>
                 </div>
             </div>

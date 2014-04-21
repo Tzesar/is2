@@ -3,7 +3,9 @@ from django.core.urlresolvers import reverse
 from django.shortcuts import render
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.views import login
+from django_tables2 import RequestConfig
 from administrarProyectos.models import Proyecto
+from administrarProyectos.tables import ProyectoTabla
 
 
 def myLogin(request, *args, **kwargs):
@@ -48,5 +50,9 @@ def main(request):
     if request.user.is_superuser:
         return render(request, 'mainAdmin.html', {'user': request.user})
     else:
-        proyectos = Proyecto.objects.filter(lider_proyecto=request.user)
+        # proyectos = Proyecto.objects.filter(lider_proyecto=request.user, usuarios_asociados__in=[request.user, ])
+
+        proyectos = ProyectoTabla(Proyecto.objects.filter(lider_proyecto=request.user) | Proyecto.objects.filter(usuarios_asociados__in=[request.user, ]))
+        RequestConfig(request, paginate={"per_page": 25}).configure(proyectos)
+
         return render(request, 'mainAnyUser.html', {'user': request.user, 'proyectos': proyectos})

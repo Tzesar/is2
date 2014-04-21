@@ -25,7 +25,7 @@ def createUser(request):
             form.save()
             logger.info('El usuario ' + request.user.username + ' ha creado el usuario: ' +
                         form["username"].value() + ' dentro del sistema')
-            return HttpResponseRedirect("/main/")
+            return HttpResponseRedirect("/userlist/")
     else:
         form = CustomUserChangeForm()
     return render(request, "usuario/createuser.html", {'form': form, })
@@ -46,7 +46,7 @@ def changeUser(request):
         if form.is_valid():
             form.save()
             logger.info('El usuario ' + request.user.username + ' ha modificado sus datos personales dentro del sistema')
-            return HttpResponseRedirect("/main/")
+            return HttpResponseRedirect("/userlist/")
     else:
         form = CustomUserChangeForm(instance=request.user)
     return render(request, "usuario/changeuser.html", {'form': form, 'user': request.user})
@@ -67,10 +67,10 @@ def changePass(request):
         if form.is_valid():
             form.save()
             logger.info('El usuario ' + request.user.username + ' ha modificado su contrasena dentro del sistema')
-            return HttpResponseRedirect("/base/")
+            return HttpResponseRedirect("/userlist/")
     else:
         form = PasswordChangeForm(user=request.user)
-    return render(request, "usuario/changepass.html", {'form': form, }, context_instance=RequestContext(request) )
+    return render(request, "usuario/changepass.html", {'form': form, 'user': request.user}, )
 
 
 @login_required
@@ -132,7 +132,7 @@ def changeAnyUser(request, id_usuario):
             form.save()
             logger.info('El usuario ' + request.user.username + ' ha modificado el usuario ' +
                         usuarios.username + ' dentro del sistema')
-            return HttpResponseRedirect("/base/")
+            return HttpResponseRedirect("/userlist/")
     else:
         form = CustomUserChangeForm(instance=usuarios)
-    return render(request, "usuario/changeanyuser.html", {'form': form, 'usuario': usuarios }, context_instance=RequestContext(request) )
+    return render(request, "usuario/changeanyuser.html", {'form': form, 'usuario': usuarios, 'user': request.user}, )

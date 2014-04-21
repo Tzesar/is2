@@ -25,7 +25,6 @@
                                 <a href='{% url 'administrarFases.views.phaseList' project.id %}' class="btn btn-lg btn-gray btn-lg" role="button">Lista Fases</a>
                                 <a href='{% url 'administrarFases.views.createPhase' project.id %}' class='btn btn-lg btn-gray btn-lg' role="button">Añadir Fases</a>
                                 <button class="btn btn-lg btn-gray btn-lg" type="submit">Guardar cambios</button>
-                                <input type="hidden" name="next" value="{% url 'base' %}">
                             </p>
                     </form>
                 </div>

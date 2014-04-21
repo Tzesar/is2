@@ -1,0 +1,67 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+
+    {% block title %}Modificar Proyecto{% endblock %}
+    {% block errorBlock %}
+    {% endblock errorBlock %}
+    {% block panelCentral %}{% block padTop %}{% endblock padTop %}
+        <div class="panel-heading">
+            <h1 class="text-info" style="display: inline-block">Información sobre el proyecto: {{ proyecto.nombre|capfirst }}</h1>
+        </div>
+        <div class="panel-body">
+            <div class="col-lg-4 col-md-4 col-sm-4">
+                <div class="list-group">
+                    {% if fases %}
+                        {% for fase in fases %}
+                            <a href="{% url 'administrarFases.views.changePhase' fase.id %}" class="list-group-item">{{ fase.nombre }}</a>
+                        {% endfor %}
+                    {% else %}
+                        <a class="list-group-item list-group-item-warning disabled">El proyecto no tiene fases asociadas.</a>
+                    {% endif %}
+                </div>
+                <a href="{% url 'administrarFases.views.createPhase' proyecto.id %}" class="btn btn-success disabled">Nueva Fase</a>
+            </div>
+            <div class="col-lg-4 col-md-4 col-sm-4">
+                <div class="list-group">
+                    {% if roles %}
+                        {% for rol in rolesFases %}
+                            <a href="{% url 'administrarRolesPermisos.views.changeRole' proyecto.id rol.id %}" class="list-group-item">{{ rol.nombre }}</a>
+                        {% endfor %}
+                        {% for rol in rolesGenerales %}
+                            <a href="{% url 'administrarRolesPermisos.views.changeRole' proyecto.id rol.id %}" class="list-group-item">{{ rol.nombre }}</a>
+                        {% endfor %}
+                    {% else %}
+                        <a class="list-group-item list-group-item-warning disabled">El proyecto no tiene roles asociados.</a>
+                    {% endif %}
+                </div>
+                <a href="{% url 'administrarRolesPermisos.views.createRole' proyecto.id %}" class="btn btn-success">Nuevo Rol</a>
+            </div>
+            <div class="col-lg-4 col-md-4 col-sm-4">
+                <table class="table table-condensed">
+                    <thead>
+                        <tr>
+                            <th>Miembros del proyecto</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for usuario in usuariosAsociados %}
+                            <tr {% if not usuario.habilitado %} class="alert-danger" {% endif %}>
+                                <td>{{ usuario.cod_usuario.get_full_name }}</td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+{#                <div class="list-group">#}
+{#                    {% if usuariosAsociados %}#}
+{#                        {% for usuario in usuariosAsociados %}#}
+{#                            <a href="{% url 'administrarRolesPermisos.views.changeRole' proyecto.id rol.id %}" class="list-group-item">{{ rol.nombre }}</a>#}
+{#                        {% endfor %}#}
+{#                    {% else %}#}
+{#                        <a class="list-group-item list-group-item-warning disabled">El proyecto no tiene roles asociados.</a>#}
+{#                    {% endif %}#}
+{#                </div>#}
+{#                <a href="{% url 'administrarRolesPermisos.views.createRole' proyecto.id %}" class="btn btn-success">Nuevo Rol</a>#}
+            </div>
+        </div>
+        <a href="{% url 'autenticacion.views.main' %}" class="btn btn-lg btn-warning btn-lg" role="button">Atrás</a>
+    {% endblock panelCentral %}>

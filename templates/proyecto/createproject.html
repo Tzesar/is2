@@ -22,7 +22,8 @@
                     <form action="" class="form-signin" role="form" method="post">
                         {% csrf_token %}
                         <table> {{ form.as_table }} </table>
-                        <button class="btn btn-lg btn-gray btn-block" type="submit">Crear Proyecto</button>
+                        <a href='/projectlist/' class="btn btn-lg btn-warning btn-lg" role="button">Atrás</a>
+                        <button class="btn btn-lg btn-success" type="submit">Crear Proyecto</button>
                     </form>
                 </div>
             </div>

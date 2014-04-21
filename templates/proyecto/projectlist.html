@@ -12,8 +12,8 @@
                 <div class="panel-heading"><h1>Proyectos</h1></div>
                 {% render_table proyectos %}
             </div>
-            <a href="{% url 'administrarProyectos.views.createProject' %}" class="btn btn-success">Proyecto Nuevo</a>
             <a href="{% url 'autenticacion.views.main' %}" class="btn btn-warning">Atrás</a>
+            <a href="{% url 'administrarProyectos.views.createProject' %}" class="btn btn-success">Proyecto Nuevo</a>
         </div>
     </div>
 {% endblock %}

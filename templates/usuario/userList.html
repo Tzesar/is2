@@ -25,6 +25,7 @@
                         <th>Username</th>
                         <th>Nombre</th>
                         <th>Activo</th>
+                        <th>Ver</th>
                     </tr>
                 </thead>
                 <tbody id="rows">
@@ -38,14 +39,15 @@
                                        {% if user.is_active %} checked {% endif %} />
                                 {{ request.session.name }}
                             </td>
+                            <td><a href="{% url 'changeanyuser' user.id %}" class="btn btn-info"><span class="glyphicon glyphicon-chevron-right"></span></a></td>
                         </tr>
                     {% endfor %}
                 </tbody>
             </table>
         </div>
     </div>
-    <a href='/createuser/' class="btn btn-lg btn-success btn-lg" role="button">Nuevo Usuario</a>
-    <a href='/main/' class="btn btn-lg btn-warning btn-lg" role="button">Atrás</a>
+    <a href='/main/' class="btn btn-lg btn-warning" role="button">Atrás</a>
+    <a href='/createuser/' class="btn btn-lg btn-success" role="button">Nuevo Usuario</a>
 {% endblock panelCentral%}
 {% block jsAdicional %}
     <script src="{% static "bootstrap/js/bootstrap-switch.min.js" %}"></script>

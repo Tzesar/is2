@@ -2,8 +2,10 @@
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponseRedirect
 from django.template import RequestContext
-from administrarFases.forms import NewPhaseForm, ChangePhaseForm
 from django.shortcuts import render_to_response, render, get_object_or_404
+from django.utils.safestring import mark_safe
+from administrarFases.forms import NewPhaseForm, ChangePhaseForm
+from django.core.urlresolvers import reverse
 from administrarProyectos.models import Proyecto
 from administrarFases.models import Fase
 from administrarRolesPermisos.models import PermisoFase
@@ -141,8 +143,9 @@ def deletePhase(request, id_fase):
                                                                                              phase_copy.proyecto,
                                                                                              phase_copy.nombre,
                                                                                              project.nombre))
-    
-    return render(request, "base.html",)
+
+    siguienteURL = reverse("administrarProyectos.views.changePhase", args=[id_fase])
+    return render(request, mark_safe(siguienteURL), )
 
 
 def eliminarPermisos(phase):
