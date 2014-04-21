@@ -49,8 +49,8 @@ class TestAdministrarUsuarios(TestCase):
         """
         Test para el formulario de  creación de usuarios en el sistema
         """
-        print 'Inicio - Prueba 1: CustomUserCreationForm'
-        self.user = Usuario.objects.get(pk=1)
+        print '\nInicio - Prueba: CustomUserCreationForm'
+        self.user = Usuario.objects.get()
         print 'Usuario existente en la base de datos: ' + self.user.username
         dato = {'username': 'test', 'password1': '123456', 'password2': '123456'}
         form = CustomUserCreationForm(dato)
@@ -60,49 +60,56 @@ class TestAdministrarUsuarios(TestCase):
         else:
             print 'Error en los datos del formulario'
 
-        self.user = Usuario.objects.get(pk=2)
+        self.user = Usuario.objects.get(username='test')
         self.assertEqual(self.user.username, 'test', 'No coinciden los parámetros: Usuario no cargado exitosamente en la Base de datos')
-        print 'Fin - Prueba 1: Exitosa'
+        print 'Sin errores detectados'
+        print self.user
+        print 'Fin - Prueba: CustomUserCreationForm\n'
 
     def test_changeUser_response(self):
         """
         Test para la vista de modificación de usuarios en el sistema
         """
-        print 'Inicio - Prueba 2: changeUser'
+        print 'Inicio - Prueba: changeUser'
         self.factory = RequestFactory()
-        self.user = Usuario.objects.get(pk=4)
+        self.user = Usuario.objects.get(username='admin')
         dato = {'first_name': 'Administrador', 'last_name': 'Test3', 'email': 'test3@zarpm.com', 'telefono': '3435365'}
         request = self.factory.post('usuario/changeuser/', dato)
         request.user = self.user
         response = changeUser(request)
         self.assertEqual(response.status_code, 302, 'Error al modificar el usuario')
-        self.user = Usuario.objects.get(pk=4)
+        self.user = Usuario.objects.get(first_name='Administrador')
         usuario = Usuario.objects.get(first_name='Administrador')
         self.assertEqual(self.user, usuario, 'Los datos no coinciden: Usuario no modificado correctamente')
-        print 'Fin - Prueba 2: Exitosa'
+        print 'Sin errores detectados'
+        print usuario
+        print 'Fin - Prueba: changeUser\n'
 
     def test_createUser_response(self):
         """
         Test para la vista de creación de usuarios en el sistema
         """
-        print 'Inicio - Prueba 3: createUser'
-        self.factory = RequestFactory()
+        print 'Inicio - Prueba: createUser'
+        self.user = Usuario.objects.all()
+        print self.user
         self.user = Usuario.objects.get()
         dato = {'username': 'test2', 'password1': '123456', 'password2': '123456'}
         request = self.factory.post('/createUser/', dato)
         request.user = self.user
         response = createUser(request)
         self.assertEqual(response.status_code, 302, 'Error al crear el Usuario')
-        self.user = Usuario.objects.get(pk=6)
+        self.user = Usuario.objects.get(username='test2')
         self.assertEqual(self.user.username, 'test2', 'No coinciden los parámetros: Usuario no cargado exitosamente en la Base de datos')
         print 'Usuario '+self.user.username+' creado exitosamente en la Base de Datos'
-        print 'Fin - Prueba 3: Exitosa'
+        print 'Sin errores detectados'
+        print self.user
+        print 'Fin - Prueba: createUser\n'
 
     def test_changePass_response(self):
         """
         Test del Logeo del usuario 'admin' y posterior modificación de la contraseña.
         """
-        print 'Inicio - Prueba 4: changePass'
+        print 'Inicio - Prueba: changePass'
         login = self.client.login(username=self.un_admin, password=self.pw_admin)
         self.assertTrue(login)
         self.factory = RequestFactory()
@@ -114,4 +121,6 @@ class TestAdministrarUsuarios(TestCase):
         self.assertEqual(response.status_code, 302, 'Error al modificar la contraseña del usuario ')
         login = self.client.login(username=self.un_admin, password=self.pw_new_admin)
         self.assertTrue(login, 'Error al cambiar contraseña')
-        print 'Fin - Prueba 4: Exitosa'
+        print 'Sin errores detectados'
+        print self.user
+        print 'Fin - Prueba: changePass\n'

@@ -1,9 +1,8 @@
 #encoding:utf-8
 from django.contrib.auth.decorators import login_required
-from django.shortcuts import render, RequestContext, get_object_or_404, render_to_response
-from django.http import HttpResponseRedirect, HttpResponse
-from gestionRolesPermisos.forms import NewRoleForm, ChangeRoleForm
-from gestionRolesPermisos.models import RolFase, PermisoFase
+from django.shortcuts import render, RequestContext, render_to_response
+from administrarRolesPermisos.forms import NewRoleForm, ChangeRoleForm
+from administrarRolesPermisos.models import RolFase, PermisoFase
 from administrarProyectos.models import Proyecto
 from administrarFases.models import Fase
 

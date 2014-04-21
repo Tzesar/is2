@@ -1,6 +1,6 @@
 #encoding=utf-8
 from django.forms import ModelForm
-from gestionRolesPermisos.models import RolFase
+from administrarRolesPermisos.models import RolFase
 from django import forms
 
 

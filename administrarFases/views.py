@@ -6,6 +6,7 @@ from administrarFases.forms import NewPhaseForm, ChangePhaseForm
 from django.shortcuts import render_to_response, render, get_object_or_404
 from administrarProyectos.models import Proyecto
 from administrarFases.models import Fase
+from administrarRolesPermisos.models import PermisoFase
 import logging
 
 logger = logging.getLogger(__name__)
@@ -17,22 +18,84 @@ def createPhase(request, id_proyecto):
     Vista para la creación de fases en el sistema.
     Opción válida para usuarios con los roles correspondientes.
 
-    :param request:
-    :return:
+    :param: Recibe la petición request y el identificador del Proyecto, de tal manera a identificar el proyecto a la cual pertence la fase.
+    :return: Crea la fase dentro del proyecto especificando y luego regresa al menu principal
     """
     project = Proyecto.objects.get(pk=id_proyecto)
     if request.method == 'POST':
         form = NewPhaseForm(request.POST, project)
         if form.is_valid():
-            logger.info('El usuario ' + request.user.username + ' ha creado la fase: ' +
-                        form["nombre"].value() + ' dentro del proyecto: ' + project.nombre)
             fase = form.save(commit=False)
             fase.proyecto = project
             fase.save()
+            logger.info('El usuario ' + request.user.username + ' ha creado la fase ' +
+                        form["nombre"].value() + ' dentro del proyecto ' + project.nombre)
+
+            generarPermisosFase(project, fase)
+
             return HttpResponseRedirect('/base/')
     else:
         form = NewPhaseForm()
     return render_to_response('fase/createphase.html', {'form': form}, context_instance=RequestContext(request))
+
+
+def generarPermisosFase(project, fase):
+
+    #Permiso de creación de items
+    codigoPermiso = "CRE_ITEM_FASE:" + fase.nombre
+    nombrePermiso = "Crear Item - Fase: " + fase.nombre
+    descripcionPermiso = "Permite la creacion de items en la fase " + fase.nombre + " del proyecto " + project.nombre
+    p = PermisoFase(code=codigoPermiso.upper(), nombre=nombrePermiso, descripcion=descripcionPermiso)
+    p.fase = fase
+    p.save()
+
+    #Permiso de modificación de items
+    codigoPermiso = "ALT_ITEM_FASE:" + fase.nombre
+    nombrePermiso = "Modificar Items - Fase: " + fase.nombre
+    descripcionPermiso = "Permite la modificacion de items en la fase " + fase.nombre + " del proyecto " + project.nombre
+    p = PermisoFase(code=codigoPermiso.upper(), nombre=nombrePermiso, descripcion=descripcionPermiso)
+    p.fase = fase
+    p.save()
+
+    #Permiso de baja de items
+    codigoPermiso = "DDB_ITEM_FASE:" + fase.nombre
+    nombrePermiso = "Dar de baja Items - Fase: " + fase.nombre
+    descripcionPermiso = "Permite la baja de items en la fase " + fase.nombre + " del proyecto " + project.nombre
+    p = PermisoFase(code=codigoPermiso.upper(), nombre=nombrePermiso, descripcion=descripcionPermiso)
+    p.fase = fase
+    p.save()
+
+    #Permiso de consulta de items
+    codigoPermiso = "VER_ITEM_FASE:" + fase.nombre
+    nombrePermiso = "Visualizar Items - Fase: " + fase.nombre
+    descripcionPermiso = "Permite la visualizacion de items en la fase " + fase.nombre + " del proyecto " + project.nombre
+    p = PermisoFase(code=codigoPermiso.upper(), nombre=nombrePermiso, descripcion=descripcionPermiso)
+    p.fase = fase
+    p.save()
+
+    #Permiso de restauracion de items
+    codigoPermiso = "RVV_ITEM_FASE:" + fase.nombre
+    nombrePermiso = "Restaurar Item - Fase: " + fase.nombre
+    descripcionPermiso = "Permite la restauracion de items en la fase " + fase.nombre + " del proyecto " + project.nombre + " previamente eliminados"
+    p = PermisoFase(code=codigoPermiso.upper(), nombre=nombrePermiso, descripcion=descripcionPermiso)
+    p.fase = fase
+    p.save()
+
+    #Permiso de reversion de items
+    codigoPermiso = "REV_ITEM_FASE:" + fase.nombre
+    nombrePermiso = "Reversionar Item - Fase: " + fase.nombre
+    descripcionPermiso = "Permite volver a la version anterior de items en la fase " + fase.nombre + " del proyecto " + project.nombre
+    p = PermisoFase(code=codigoPermiso.upper(), nombre=nombrePermiso, descripcion=descripcionPermiso)
+    p.fase = fase
+    p.save()
+
+    #Permiso de creación solicitudes de cambio
+    codigoPermiso = "CRE_SOLCAMBIO_FASE:" + fase.nombre
+    nombrePermiso = "Crear Solicitud de Cambios - Fase: " + fase.nombre
+    descripcionPermiso = "Permite la creacion de solicitudes de cambios para items en linea base de la fase " + fase.nombre + " del proyecto " + project.nombre
+    p = PermisoFase(code=codigoPermiso.upper(), nombre=nombrePermiso, descripcion=descripcionPermiso)
+    p.fase = fase
+    p.save()
 
 
 @login_required()
@@ -41,31 +104,65 @@ def changePhase(request, id_fase):
     Vista para la modificacion de una fase dentro del sistema.
     Opción válida para usuarios con los roles correspondientes.
 
-    :param request:
-    :return:
+    :param: Recibe la petición request y el identificador de la fase la cual vamos a modificar
+    :return: Modifica la fase especifica  y luego regresa al menu principal
     """
 
     phase = Fase.objects.get(pk=id_fase)
+    project = Proyecto.objects.get(pk=phase.proyecto.id)
     if request.method == 'POST':
         form = ChangePhaseForm(request.POST, instance=phase)
         if form.is_valid():
-            logger.info('El usuario ' + request.user.username + ' ha modificado la fase ' +
-                        phase.nombre + ' dentro del proyecto: ' + phase.proyecto)
             form.save()
+            logger.info('El usuario ' + request.user.username + ' ha modificado la fase con codigo ' +phase.codigo + '-'
+                        + str(id_fase) + ' dentro del proyecto: ' + project.nombre)
             return HttpResponseRedirect('/base/')
     else:
         form = ChangePhaseForm(instance=phase)
-    return render_to_response('fase/changephase.html', {'form': form}, context_instance=RequestContext(request))
+    return render_to_response('fase/changephase.html', {'form': form, 'phase': phase, 'project': project},
+                              context_instance=RequestContext(request))
 
 
 def deletePhase(request, id_fase):
+    """
+    Vista para la eliminación de una fase dentro del sistema.
+    Opción válida para usuarios con los roles correspondientes.
+
+    :param: Recibe la petición request y el identificador de la fase la cual deseamos modificar
+    :return: Elimina la fase especifica en el proyecto y luego regresa al menu principal
+    """
     phase = Fase.objects.get(pk=id_fase)
-    logger.info('El usuario ' + request.user.username + ' ha eliminado la fase ' +
-                        phase.nombre + ' dentro del proyecto: ' + phase.proyecto)
+
+    eliminarPermisos(phase)
+    phase_copy = phase
+    project = Proyecto.objects.get(pk=phase.proyecto.id)
     phase.delete()
+    logger.info('El usuario {0} ha eliminado la fase {1}{2} dentro del proyecto: {3}'.format(request.user.username,
+                                                                                             phase_copy.proyecto,
+                                                                                             phase_copy.nombre,
+                                                                                             project.nombre))
+    
     return render(request, "base.html",)
 
+
+def eliminarPermisos(phase):
+
+    perm_list = PermisoFase.objects.filter(fase=phase)
+    for p in perm_list:
+        p.delete()
+
+
+
 @login_required
-def phaseList(request):
-    phase = Fase.objects.all()
-    return render(request, "fase/phaselist.html", {'phase': phase}, )
+def phaseList(request, id_proyecto):
+    """
+    Vista para la listar todas las fases dentro de algún proyecto.
+    Opción válida para usuarios con los roles correspondientes.
+
+    :param: Recibe la petición request y el identificado de proyecto, para listar todas las fases pertenecientes al proyecto especificado
+    :return: Lista todas las fases pertenecientes al proyecto especificado
+    """
+    project = Proyecto.objects.get(pk=id_proyecto)
+    phase = Fase.objects.filter(proyecto=id_proyecto)
+    return render(request, "fase/phaselist.html", {'phase': phase, 'project':project },
+                  context_instance=RequestContext(request) )

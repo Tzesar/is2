@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
 {% load staticfiles %}
 
-    {% block title %}Modificar Fase{% endblock %}
+    {% block title %}Vincular Usuarios a Proyectos{% endblock %}
     {% block mainBody %}
         {% if form.errors %}
             <div class="container-fluid">
@@ -15,14 +15,15 @@
             <div class="panel panel-default">
                 <div class="panel-body">
                     <div class="container-fluid">
-                        <h2 class="intro"><span class="glyphicon glyphicon-off"></span> {{ phase.nombre }} <br> {{ project.nombre }}<br><small> Modificar Fase - ZARpm</small></h2>
+                        <h2 class="intro"><span class="glyphicon glyphicon-off"></span> {{ project.nombre }} - Version Model  <br><small> Vincular Usuarios a Proyecto - ZARpm</small></h2>
                     </div>
                     <form action="" class="form-signin" role="form" method="post">
                         {% csrf_token %}
                             <table> {{ form.as_table }} </table>
                             <p class="text-center">
+                                <a href='/projectlist/' class="btn btn-lg btn-gray btn-lg" role="button">Lista Proyectos</a>
                                 <a href='{% url 'administrarFases.views.phaseList' project.id %}' class="btn btn-lg btn-gray btn-lg" role="button">Lista Fases</a>
-                                <a href='{% url 'administrarFases.views.deletePhase' phase.id %}' class="btn btn-lg btn-gray btn-lg" role="button">Eliminar Fase</a>
+                                <a href='{% url 'administrarFases.views.createPhase' project.id %}' class='btn btn-lg btn-gray btn-lg' role="button">Añadir Fases</a>
                                 <button class="btn btn-lg btn-gray btn-lg" type="submit">Guardar cambios</button>
                                 <input type="hidden" name="next" value="{% url 'base' %}">
                             </p>
@@ -30,4 +31,4 @@
                 </div>
             </div>
         </div>
-    {% endblock %}>>
+    {% endblock %}>

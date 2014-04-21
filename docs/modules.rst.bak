@@ -6,6 +6,7 @@ Packages
 
    administrarFases
    administrarProyectos
+   administrarTipoItem
    administrarUsuarios
    autenticacion
    is2

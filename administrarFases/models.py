@@ -10,6 +10,7 @@ class Fase(models.Model):
         + Nombre: Nombre de la fase
         + Descripción: Breve reseña del proyecto
         + Estado: Los estados posibles del Proyecto. Por default: PEN(Pendiente)
+        + Proyecto: Instancia del proyecto a la cual pertenece la fase
     """
     opciones_estado = (
         ('PEN', 'Pendiente'),
@@ -18,12 +19,11 @@ class Fase(models.Model):
         ('FIN', 'Finalizado'),
         ('REV', 'En revision'), )
 
-    codigo = models.CharField(max_length=2, default='PH', unique=True)
+    codigo = models.CharField(max_length=2, default='PH')
     nombre = models.CharField(max_length=100)
     descripcion = models.TextField(max_length=140, help_text='Introduzca una breve reseña del proyecto', null=True)
     estado = models.CharField(max_length=3, choices=opciones_estado, default='PEN', help_text='Estado de la Fase')
     proyecto = models.ForeignKey(Proyecto)
-    #lista de tipo de ítems
 
     class Meta:
         verbose_name = 'fase'

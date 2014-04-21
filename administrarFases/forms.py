@@ -9,6 +9,9 @@ class NewPhaseForm(forms.ModelForm):
     """
     Formulario para la creación de nuevas fases en el sistema.
     Opción válida solo para usuarios con roles correspondientes.
+
+    Utilizamos el Modelo de Fase definido del cual filtramos los campos de tal manera a que solo se habiliten los
+    campos necesarios para la creación de una fase en el proyecto.
     """
 
     class Meta:
@@ -20,7 +23,12 @@ class NewPhaseForm(forms.ModelForm):
 class ChangePhaseForm(forms.ModelForm):
     """
     Formulario para la modificacion de proyectos creados en el sistema.
+
     Opción válida solo para usuarios con rol de Administrador.
+
+    Utilizamos el Modelo de Fase definido del cual filtramos los campos de tal manera a que solo se habiliten los
+    campos disponibles para la modificación de una fase en el proyecto.
+
     """
 
     class Meta:

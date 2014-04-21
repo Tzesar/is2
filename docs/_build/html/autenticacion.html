@@ -44,7 +44,7 @@
   <ul>
 <li><a class="reference internal" href="#">autenticacion package</a><ul>
 <li><a class="reference internal" href="#submodules">Submodules</a></li>
-<li><a class="reference internal" href="#module-autenticacion.models">autenticacion.models module</a></li>
+<li><a class="reference internal" href="#autenticacion-models-module">autenticacion.models module</a></li>
 <li><a class="reference internal" href="#module-autenticacion.tests">autenticacion.tests module</a></li>
 <li><a class="reference internal" href="#module-autenticacion.views">autenticacion.views module</a></li>
 <li><a class="reference internal" href="#module-autenticacion">Module contents</a></li>
@@ -83,18 +83,112 @@
 <div class="section" id="submodules">
 <h2>Submodules<a class="headerlink" href="#submodules" title="Permalink to this headline">¶</a></h2>
 </div>
-<div class="section" id="module-autenticacion.models">
-<span id="autenticacion-models-module"></span><h2>autenticacion.models module<a class="headerlink" href="#module-autenticacion.models" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="autenticacion-models-module">
+<h2>autenticacion.models module<a class="headerlink" href="#autenticacion-models-module" title="Permalink to this headline">¶</a></h2>
+<span class="target" id="module-autenticacion.models"></span><dl class="class">
+<dt id="autenticacion.models.AbstractUser">
+<em class="property">class </em><tt class="descclassname">autenticacion.models.</tt><tt class="descname">AbstractUser</tt><big>(</big><em>*args</em>, <em>**kwargs</em><big>)</big><a class="headerlink" href="#autenticacion.models.AbstractUser" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">django.contrib.auth.models.AbstractBaseUser</span></tt></p>
+<p>An abstract base class implementing a fully featured User model without
+admin-compliant permissions.</p>
+<p>Username, password and email are required. Other fields are optional.</p>
+<dl class="class">
+<dt id="autenticacion.models.AbstractUser.Meta">
+<em class="property">class </em><tt class="descname">Meta</tt><a class="headerlink" href="#autenticacion.models.AbstractUser.Meta" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="attribute">
+<dt id="autenticacion.models.AbstractUser.Meta.abstract">
+<tt class="descname">abstract</tt><em class="property"> = False</em><a class="headerlink" href="#autenticacion.models.AbstractUser.Meta.abstract" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="autenticacion.models.AbstractUser.Meta.verbose_name">
+<tt class="descname">verbose_name</tt><em class="property"> = 'user'</em><a class="headerlink" href="#autenticacion.models.AbstractUser.Meta.verbose_name" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="autenticacion.models.AbstractUser.Meta.verbose_name_plural">
+<tt class="descname">verbose_name_plural</tt><em class="property"> = 'users'</em><a class="headerlink" href="#autenticacion.models.AbstractUser.Meta.verbose_name_plural" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="attribute">
+<dt id="autenticacion.models.AbstractUser.REQUIRED_FIELDS">
+<tt class="descclassname">AbstractUser.</tt><tt class="descname">REQUIRED_FIELDS</tt><em class="property"> = ['email']</em><a class="headerlink" href="#autenticacion.models.AbstractUser.REQUIRED_FIELDS" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="autenticacion.models.AbstractUser.USERNAME_FIELD">
+<tt class="descclassname">AbstractUser.</tt><tt class="descname">USERNAME_FIELD</tt><em class="property"> = 'username'</em><a class="headerlink" href="#autenticacion.models.AbstractUser.USERNAME_FIELD" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="autenticacion.models.AbstractUser.email_user">
+<tt class="descclassname">AbstractUser.</tt><tt class="descname">email_user</tt><big>(</big><em>subject</em>, <em>message</em>, <em>from_email=None</em><big>)</big><a class="headerlink" href="#autenticacion.models.AbstractUser.email_user" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sends an email to this User.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="autenticacion.models.AbstractUser.get_absolute_url">
+<tt class="descclassname">AbstractUser.</tt><tt class="descname">get_absolute_url</tt><big>(</big><big>)</big><a class="headerlink" href="#autenticacion.models.AbstractUser.get_absolute_url" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="autenticacion.models.AbstractUser.get_full_name">
+<tt class="descclassname">AbstractUser.</tt><tt class="descname">get_full_name</tt><big>(</big><big>)</big><a class="headerlink" href="#autenticacion.models.AbstractUser.get_full_name" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the first_name plus the last_name, with a space in between.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="autenticacion.models.AbstractUser.get_next_by_date_joined">
+<tt class="descclassname">AbstractUser.</tt><tt class="descname">get_next_by_date_joined</tt><big>(</big><em>*moreargs</em>, <em>**morekwargs</em><big>)</big><a class="headerlink" href="#autenticacion.models.AbstractUser.get_next_by_date_joined" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="autenticacion.models.AbstractUser.get_next_by_last_login">
+<tt class="descclassname">AbstractUser.</tt><tt class="descname">get_next_by_last_login</tt><big>(</big><em>*moreargs</em>, <em>**morekwargs</em><big>)</big><a class="headerlink" href="#autenticacion.models.AbstractUser.get_next_by_last_login" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="autenticacion.models.AbstractUser.get_previous_by_date_joined">
+<tt class="descclassname">AbstractUser.</tt><tt class="descname">get_previous_by_date_joined</tt><big>(</big><em>*moreargs</em>, <em>**morekwargs</em><big>)</big><a class="headerlink" href="#autenticacion.models.AbstractUser.get_previous_by_date_joined" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="autenticacion.models.AbstractUser.get_previous_by_last_login">
+<tt class="descclassname">AbstractUser.</tt><tt class="descname">get_previous_by_last_login</tt><big>(</big><em>*moreargs</em>, <em>**morekwargs</em><big>)</big><a class="headerlink" href="#autenticacion.models.AbstractUser.get_previous_by_last_login" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="autenticacion.models.AbstractUser.get_profile">
+<tt class="descclassname">AbstractUser.</tt><tt class="descname">get_profile</tt><big>(</big><big>)</big><a class="headerlink" href="#autenticacion.models.AbstractUser.get_profile" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns site-specific profile for this user. Raises
+SiteProfileNotAvailable if this site does not allow profiles.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="autenticacion.models.AbstractUser.get_short_name">
+<tt class="descclassname">AbstractUser.</tt><tt class="descname">get_short_name</tt><big>(</big><big>)</big><a class="headerlink" href="#autenticacion.models.AbstractUser.get_short_name" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the short name for the user.</p>
+</dd></dl>
+
+</dd></dl>
+
 <dl class="class">
 <dt id="autenticacion.models.Usuario">
 <em class="property">class </em><tt class="descclassname">autenticacion.models.</tt><tt class="descname">Usuario</tt><big>(</big><em>*args</em>, <em>**kwargs</em><big>)</big><a class="headerlink" href="#autenticacion.models.Usuario" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">django.contrib.auth.models.AbstractUser</span></tt></p>
+<dd><p>Bases: <a class="reference internal" href="#autenticacion.models.AbstractUser" title="autenticacion.models.AbstractUser"><tt class="xref py py-class docutils literal"><span class="pre">autenticacion.models.AbstractUser</span></tt></a></p>
 <p>Extension de la clase User de Django. Agrega los campos telefono y otros.</p>
 <dl class="exception">
 <dt id="autenticacion.models.Usuario.DoesNotExist">
 <em class="property">exception </em><tt class="descname">DoesNotExist</tt><a class="headerlink" href="#autenticacion.models.Usuario.DoesNotExist" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">django.core.exceptions.ObjectDoesNotExist</span></tt></p>
 </dd></dl>
+
+<dl class="attribute">
+<dt id="autenticacion.models.Usuario.Lider">
+<tt class="descclassname">Usuario.</tt><tt class="descname">Lider</tt><a class="headerlink" href="#autenticacion.models.Usuario.Lider" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
 
 <dl class="exception">
 <dt id="autenticacion.models.Usuario.MultipleObjectsReturned">
@@ -128,13 +222,13 @@
 <dd></dd></dl>
 
 <dl class="attribute">
-<dt id="autenticacion.models.Usuario.groups">
-<tt class="descclassname">Usuario.</tt><tt class="descname">groups</tt><a class="headerlink" href="#autenticacion.models.Usuario.groups" title="Permalink to this definition">¶</a></dt>
+<dt id="autenticacion.models.Usuario.logentry_set">
+<tt class="descclassname">Usuario.</tt><tt class="descname">logentry_set</tt><a class="headerlink" href="#autenticacion.models.Usuario.logentry_set" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="attribute">
 <dt id="autenticacion.models.Usuario.objects">
-<tt class="descclassname">Usuario.</tt><tt class="descname">objects</tt><em class="property"> = &lt;django.contrib.auth.models.UserManager object at 0xa686bac&gt;</em><a class="headerlink" href="#autenticacion.models.Usuario.objects" title="Permalink to this definition">¶</a></dt>
+<tt class="descclassname">Usuario.</tt><tt class="descname">objects</tt><em class="property"> = &lt;django.contrib.auth.models.UserManager object at 0xa5b896c&gt;</em><a class="headerlink" href="#autenticacion.models.Usuario.objects" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="attribute">
@@ -143,8 +237,8 @@
 <dd></dd></dl>
 
 <dl class="attribute">
-<dt id="autenticacion.models.Usuario.user_permissions">
-<tt class="descclassname">Usuario.</tt><tt class="descname">user_permissions</tt><a class="headerlink" href="#autenticacion.models.Usuario.user_permissions" title="Permalink to this definition">¶</a></dt>
+<dt id="autenticacion.models.Usuario.usuariosvinculadosproyectos_set">
+<tt class="descclassname">Usuario.</tt><tt class="descname">usuariosvinculadosproyectos_set</tt><a class="headerlink" href="#autenticacion.models.Usuario.usuariosvinculadosproyectos_set" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 </dd></dl>
@@ -199,7 +293,7 @@
 
 <dl class="attribute">
 <dt id="autenticacion.tests.TestAutenticacionViewsMyLogin.un_admin">
-<tt class="descname">un_admin</tt><em class="property"> = 'admin'</em><a class="headerlink" href="#autenticacion.tests.TestAutenticacionViewsMyLogin.un_admin" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">un_admin</tt><em class="property"> = 'xadmin'</em><a class="headerlink" href="#autenticacion.tests.TestAutenticacionViewsMyLogin.un_admin" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="attribute">

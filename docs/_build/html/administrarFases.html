@@ -46,6 +46,7 @@
 <li><a class="reference internal" href="#submodules">Submodules</a></li>
 <li><a class="reference internal" href="#module-administrarFases.forms">administrarFases.forms module</a></li>
 <li><a class="reference internal" href="#module-administrarFases.models">administrarFases.models module</a></li>
+<li><a class="reference internal" href="#module-administrarFases.tests">administrarFases.tests module</a></li>
 <li><a class="reference internal" href="#module-administrarFases.views">administrarFases.views module</a></li>
 <li><a class="reference internal" href="#module-administrarFases">Module contents</a></li>
 </ul>
@@ -89,8 +90,10 @@
 <dt id="administrarFases.forms.ChangePhaseForm">
 <em class="property">class </em><tt class="descclassname">administrarFases.forms.</tt><tt class="descname">ChangePhaseForm</tt><big>(</big><em>*args</em>, <em>**kwargs</em><big>)</big><a class="headerlink" href="#administrarFases.forms.ChangePhaseForm" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">django.forms.models.ModelForm</span></tt></p>
-<p>Formulario para la modificacion de proyectos creados en el sistema.
-Opción válida solo para usuarios con rol de Administrador.</p>
+<p>Formulario para la modificacion de proyectos creados en el sistema.</p>
+<p>Opción válida solo para usuarios con rol de Administrador.</p>
+<p>Utilizamos el Modelo de Fase definido del cual filtramos los campos de tal manera a que solo se habiliten los
+campos disponibles para la modificación de una fase en el proyecto.</p>
 <dl class="class">
 <dt id="administrarFases.forms.ChangePhaseForm.Meta">
 <em class="property">class </em><tt class="descname">Meta</tt><a class="headerlink" href="#administrarFases.forms.ChangePhaseForm.Meta" title="Permalink to this definition">¶</a></dt>
@@ -102,14 +105,14 @@ Opción válida solo para usuarios con rol de Administrador.</p>
 <dl class="attribute">
 <dt id="administrarFases.forms.ChangePhaseForm.Meta.model">
 <tt class="descname">model</tt><a class="headerlink" href="#administrarFases.forms.ChangePhaseForm.Meta.model" title="Permalink to this definition">¶</a></dt>
-<dd><p>alias of <tt class="xref py py-class docutils literal"><span class="pre">Fases</span></tt></p>
+<dd><p>alias of <tt class="xref py py-class docutils literal"><span class="pre">Fase</span></tt></p>
 </dd></dl>
 
 </dd></dl>
 
 <dl class="attribute">
 <dt id="administrarFases.forms.ChangePhaseForm.base_fields">
-<tt class="descclassname">ChangePhaseForm.</tt><tt class="descname">base_fields</tt><em class="property"> = {'nombre': &lt;django.forms.fields.CharField object at 0xa68ad8c&gt;, 'estado': &lt;django.forms.fields.TypedChoiceField object at 0xa68af4c&gt;, 'descripcion': &lt;django.forms.fields.CharField object at 0xa68ae2c&gt;}</em><a class="headerlink" href="#administrarFases.forms.ChangePhaseForm.base_fields" title="Permalink to this definition">¶</a></dt>
+<tt class="descclassname">ChangePhaseForm.</tt><tt class="descname">base_fields</tt><em class="property"> = {'nombre': &lt;django.forms.fields.CharField object at 0xa5c366c&gt;, 'estado': &lt;django.forms.fields.TypedChoiceField object at 0xa5c382c&gt;, 'descripcion': &lt;django.forms.fields.CharField object at 0xa5c370c&gt;}</em><a class="headerlink" href="#administrarFases.forms.ChangePhaseForm.base_fields" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="attribute">
@@ -130,10 +133,17 @@ Opción válida solo para usuarios con rol de Administrador.</p>
 <dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">django.forms.models.ModelForm</span></tt></p>
 <p>Formulario para la creación de nuevas fases en el sistema.
 Opción válida solo para usuarios con roles correspondientes.</p>
+<p>Utilizamos el Modelo de Fase definido del cual filtramos los campos de tal manera a que solo se habiliten los
+campos necesarios para la creación de una fase en el proyecto.</p>
 <dl class="class">
 <dt id="administrarFases.forms.NewPhaseForm.Meta">
 <em class="property">class </em><tt class="descname">Meta</tt><a class="headerlink" href="#administrarFases.forms.NewPhaseForm.Meta" title="Permalink to this definition">¶</a></dt>
 <dd><dl class="attribute">
+<dt id="administrarFases.forms.NewPhaseForm.Meta.exclude">
+<tt class="descname">exclude</tt><em class="property"> = ('proyecto',)</em><a class="headerlink" href="#administrarFases.forms.NewPhaseForm.Meta.exclude" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
 <dt id="administrarFases.forms.NewPhaseForm.Meta.fields">
 <tt class="descname">fields</tt><em class="property"> = ('nombre', 'descripcion')</em><a class="headerlink" href="#administrarFases.forms.NewPhaseForm.Meta.fields" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
@@ -141,14 +151,14 @@ Opción válida solo para usuarios con roles correspondientes.</p>
 <dl class="attribute">
 <dt id="administrarFases.forms.NewPhaseForm.Meta.model">
 <tt class="descname">model</tt><a class="headerlink" href="#administrarFases.forms.NewPhaseForm.Meta.model" title="Permalink to this definition">¶</a></dt>
-<dd><p>alias of <tt class="xref py py-class docutils literal"><span class="pre">Fases</span></tt></p>
+<dd><p>alias of <tt class="xref py py-class docutils literal"><span class="pre">Fase</span></tt></p>
 </dd></dl>
 
 </dd></dl>
 
 <dl class="attribute">
 <dt id="administrarFases.forms.NewPhaseForm.base_fields">
-<tt class="descclassname">NewPhaseForm.</tt><tt class="descname">base_fields</tt><em class="property"> = {'nombre': &lt;django.forms.fields.CharField object at 0xa68abac&gt;, 'descripcion': &lt;django.forms.fields.CharField object at 0xa68ac4c&gt;}</em><a class="headerlink" href="#administrarFases.forms.NewPhaseForm.base_fields" title="Permalink to this definition">¶</a></dt>
+<tt class="descclassname">NewPhaseForm.</tt><tt class="descname">base_fields</tt><em class="property"> = {'nombre': &lt;django.forms.fields.CharField object at 0xa5c348c&gt;, 'descripcion': &lt;django.forms.fields.CharField object at 0xa5c352c&gt;}</em><a class="headerlink" href="#administrarFases.forms.NewPhaseForm.base_fields" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="attribute">
@@ -167,8 +177,8 @@ Opción válida solo para usuarios con roles correspondientes.</p>
 <div class="section" id="module-administrarFases.models">
 <span id="administrarfases-models-module"></span><h2>administrarFases.models module<a class="headerlink" href="#module-administrarFases.models" title="Permalink to this headline">¶</a></h2>
 <dl class="class">
-<dt id="administrarFases.models.Fases">
-<em class="property">class </em><tt class="descclassname">administrarFases.models.</tt><tt class="descname">Fases</tt><big>(</big><em>*args</em>, <em>**kwargs</em><big>)</big><a class="headerlink" href="#administrarFases.models.Fases" title="Permalink to this definition">¶</a></dt>
+<dt id="administrarFases.models.Fase">
+<em class="property">class </em><tt class="descclassname">administrarFases.models.</tt><tt class="descname">Fase</tt><big>(</big><em>*args</em>, <em>**kwargs</em><big>)</big><a class="headerlink" href="#administrarFases.models.Fase" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">django.db.models.base.Model</span></tt></p>
 <dl class="docutils">
 <dt>Modelo para la clase proyecto, en el cual se encuentras todos los atributos de una fase:</dt>
@@ -177,40 +187,107 @@ Opción válida solo para usuarios con roles correspondientes.</p>
 <li>Nombre: Nombre de la fase</li>
 <li>Descripción: Breve reseña del proyecto</li>
 <li>Estado: Los estados posibles del Proyecto. Por default: PEN(Pendiente)</li>
+<li>Proyecto: Instancia del proyecto a la cual pertenece la fase</li>
 </ul>
 </dd>
 </dl>
 <dl class="exception">
-<dt id="administrarFases.models.Fases.DoesNotExist">
-<em class="property">exception </em><tt class="descname">DoesNotExist</tt><a class="headerlink" href="#administrarFases.models.Fases.DoesNotExist" title="Permalink to this definition">¶</a></dt>
+<dt id="administrarFases.models.Fase.DoesNotExist">
+<em class="property">exception </em><tt class="descname">DoesNotExist</tt><a class="headerlink" href="#administrarFases.models.Fase.DoesNotExist" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">django.core.exceptions.ObjectDoesNotExist</span></tt></p>
 </dd></dl>
 
 <dl class="exception">
-<dt id="administrarFases.models.Fases.MultipleObjectsReturned">
-<em class="property">exception </em><tt class="descclassname">Fases.</tt><tt class="descname">MultipleObjectsReturned</tt><a class="headerlink" href="#administrarFases.models.Fases.MultipleObjectsReturned" title="Permalink to this definition">¶</a></dt>
+<dt id="administrarFases.models.Fase.MultipleObjectsReturned">
+<em class="property">exception </em><tt class="descclassname">Fase.</tt><tt class="descname">MultipleObjectsReturned</tt><a class="headerlink" href="#administrarFases.models.Fase.MultipleObjectsReturned" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">django.core.exceptions.MultipleObjectsReturned</span></tt></p>
 </dd></dl>
 
 <dl class="method">
-<dt id="administrarFases.models.Fases.get_estado_display">
-<tt class="descclassname">Fases.</tt><tt class="descname">get_estado_display</tt><big>(</big><em>*moreargs</em>, <em>**morekwargs</em><big>)</big><a class="headerlink" href="#administrarFases.models.Fases.get_estado_display" title="Permalink to this definition">¶</a></dt>
+<dt id="administrarFases.models.Fase.get_estado_display">
+<tt class="descclassname">Fase.</tt><tt class="descname">get_estado_display</tt><big>(</big><em>*moreargs</em>, <em>**morekwargs</em><big>)</big><a class="headerlink" href="#administrarFases.models.Fase.get_estado_display" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="attribute">
-<dt id="administrarFases.models.Fases.objects">
-<tt class="descclassname">Fases.</tt><tt class="descname">objects</tt><em class="property"> = &lt;django.db.models.manager.Manager object at 0xa68a8ac&gt;</em><a class="headerlink" href="#administrarFases.models.Fases.objects" title="Permalink to this definition">¶</a></dt>
+<dt id="administrarFases.models.Fase.objects">
+<tt class="descclassname">Fase.</tt><tt class="descname">objects</tt><em class="property"> = &lt;django.db.models.manager.Manager object at 0xa5c318c&gt;</em><a class="headerlink" href="#administrarFases.models.Fase.objects" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="attribute">
-<dt id="administrarFases.models.Fases.opciones_estado">
-<tt class="descclassname">Fases.</tt><tt class="descname">opciones_estado</tt><em class="property"> = (('PEN', 'Pendiente'), ('PAU', 'Pausado'), ('DES', 'Desarrollo'), ('FIN', 'Finalizado'), ('REV', 'En revision'))</em><a class="headerlink" href="#administrarFases.models.Fases.opciones_estado" title="Permalink to this definition">¶</a></dt>
+<dt id="administrarFases.models.Fase.opciones_estado">
+<tt class="descclassname">Fase.</tt><tt class="descname">opciones_estado</tt><em class="property"> = (('PEN', 'Pendiente'), ('PAU', 'Pausado'), ('DES', 'Desarrollo'), ('FIN', 'Finalizado'), ('REV', 'En revision'))</em><a class="headerlink" href="#administrarFases.models.Fase.opciones_estado" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="attribute">
-<dt id="administrarFases.models.Fases.proyecto">
-<tt class="descclassname">Fases.</tt><tt class="descname">proyecto</tt><a class="headerlink" href="#administrarFases.models.Fases.proyecto" title="Permalink to this definition">¶</a></dt>
+<dt id="administrarFases.models.Fase.pertenece_proyecto">
+<tt class="descclassname">Fase.</tt><tt class="descname">pertenece_proyecto</tt><a class="headerlink" href="#administrarFases.models.Fase.pertenece_proyecto" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-administrarFases.tests">
+<span id="administrarfases-tests-module"></span><h2>administrarFases.tests module<a class="headerlink" href="#module-administrarFases.tests" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="administrarFases.tests.ProyectoFactory">
+<em class="property">class </em><tt class="descclassname">administrarFases.tests.</tt><tt class="descname">ProyectoFactory</tt><a class="headerlink" href="#administrarFases.tests.ProyectoFactory" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">factory.django.DjangoModelFactory</span></tt></p>
+<dl class="attribute">
+<dt id="administrarFases.tests.ProyectoFactory.FACTORY_FOR">
+<tt class="descname">FACTORY_FOR</tt><a class="headerlink" href="#administrarFases.tests.ProyectoFactory.FACTORY_FOR" title="Permalink to this definition">¶</a></dt>
+<dd><p>alias of <tt class="xref py py-class docutils literal"><span class="pre">Proyecto</span></tt></p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="administrarFases.tests.TestAdministrarFases">
+<em class="property">class </em><tt class="descclassname">administrarFases.tests.</tt><tt class="descname">TestAdministrarFases</tt><big>(</big><em>methodName='runTest'</em><big>)</big><a class="headerlink" href="#administrarFases.tests.TestAdministrarFases" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">django.test.testcases.TestCase</span></tt></p>
+<dl class="docutils">
+<dt>Test para Administración de usuarios, pruebas realizadas:</dt>
+<dd><ul class="first last simple">
+<li>ChangePhase: Test de vista y modificación de los atributos de una fase en el sistema.</li>
+<li>CreatePhase: Test de Vista y creación de una nueva fase en el sistema.</li>
+<li>DeletePhase: Test de vista y eliminación de una fase en el sistema</li>
+</ul>
+</dd>
+</dl>
+<dl class="method">
+<dt id="administrarFases.tests.TestAdministrarFases.setUp">
+<tt class="descname">setUp</tt><big>(</big><big>)</big><a class="headerlink" href="#administrarFases.tests.TestAdministrarFases.setUp" title="Permalink to this definition">¶</a></dt>
+<dd><p>Crea el usuario &#8216;admin&#8217; con contraseña &#8216;admin&#8217; para las pruebas.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="administrarFases.tests.TestAdministrarFases.test_changePhase_response">
+<tt class="descname">test_changePhase_response</tt><big>(</big><big>)</big><a class="headerlink" href="#administrarFases.tests.TestAdministrarFases.test_changePhase_response" title="Permalink to this definition">¶</a></dt>
+<dd><p>Test para la vista de modificacion de fases en el sistema</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="administrarFases.tests.TestAdministrarFases.test_createPhase_response">
+<tt class="descname">test_createPhase_response</tt><big>(</big><big>)</big><a class="headerlink" href="#administrarFases.tests.TestAdministrarFases.test_createPhase_response" title="Permalink to this definition">¶</a></dt>
+<dd><p>Test para la vista de creacion de proyectos en el sistema</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="administrarFases.tests.TestAdministrarFases.test_deletePhase_response">
+<tt class="descname">test_deletePhase_response</tt><big>(</big><big>)</big><a class="headerlink" href="#administrarFases.tests.TestAdministrarFases.test_deletePhase_response" title="Permalink to this definition">¶</a></dt>
+<dd><p>Test para la vista de eliminacion de una fase en el sistema</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="administrarFases.tests.UsuarioFactory">
+<em class="property">class </em><tt class="descclassname">administrarFases.tests.</tt><tt class="descname">UsuarioFactory</tt><a class="headerlink" href="#administrarFases.tests.UsuarioFactory" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">factory.django.DjangoModelFactory</span></tt></p>
+<dl class="attribute">
+<dt id="administrarFases.tests.UsuarioFactory.FACTORY_FOR">
+<tt class="descname">FACTORY_FOR</tt><a class="headerlink" href="#administrarFases.tests.UsuarioFactory.FACTORY_FOR" title="Permalink to this definition">¶</a></dt>
+<dd><p>alias of <tt class="xref py py-class docutils literal"><span class="pre">Usuario</span></tt></p>
+</dd></dl>
 
 </dd></dl>
 
@@ -221,24 +298,69 @@ Opción válida solo para usuarios con roles correspondientes.</p>
 <dt id="administrarFases.views.changePhase">
 <tt class="descclassname">administrarFases.views.</tt><tt class="descname">changePhase</tt><big>(</big><em>request</em>, <em>*args</em>, <em>**kwargs</em><big>)</big><a class="headerlink" href="#administrarFases.views.changePhase" title="Permalink to this definition">¶</a></dt>
 <dd><p>Vista para la modificacion de una fase dentro del sistema.
-Opción válida para usuarios con los roles correspondientes.
-:param request:
-:return:</p>
+Opción válida para usuarios con los roles correspondientes.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Param:</th><td class="field-body">Recibe la petición request y el identificador de la fase la cual vamos a modificar</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">Modifica la fase especifica  y luego regresa al menu principal</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 <dl class="function">
 <dt id="administrarFases.views.createPhase">
 <tt class="descclassname">administrarFases.views.</tt><tt class="descname">createPhase</tt><big>(</big><em>request</em>, <em>*args</em>, <em>**kwargs</em><big>)</big><a class="headerlink" href="#administrarFases.views.createPhase" title="Permalink to this definition">¶</a></dt>
 <dd><p>Vista para la creación de fases en el sistema.
-Opción válida para usuarios con los roles correspondientes.
-:param request:
-:return:</p>
+Opción válida para usuarios con los roles correspondientes.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Param:</th><td class="field-body">Recibe la petición request y el identificador del Proyecto, de tal manera a identificar el proyecto a la cual pertence la fase.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">Crea la fase dentro del proyecto especificando y luego regresa al menu principal</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 <dl class="function">
-<dt id="administrarFases.views.projectlist">
-<tt class="descclassname">administrarFases.views.</tt><tt class="descname">projectlist</tt><big>(</big><em>request</em>, <em>*args</em>, <em>**kwargs</em><big>)</big><a class="headerlink" href="#administrarFases.views.projectlist" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dt id="administrarFases.views.deletePhase">
+<tt class="descclassname">administrarFases.views.</tt><tt class="descname">deletePhase</tt><big>(</big><em>request</em>, <em>id_fase</em><big>)</big><a class="headerlink" href="#administrarFases.views.deletePhase" title="Permalink to this definition">¶</a></dt>
+<dd><p>Vista para la eliminación de una fase dentro del sistema.
+Opción válida para usuarios con los roles correspondientes.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Param:</th><td class="field-body">Recibe la petición request y el identificador de la fase la cual deseamos modificar</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">Elimina la fase especifica en el proyecto y luego regresa al menu principal</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="administrarFases.views.phaseList">
+<tt class="descclassname">administrarFases.views.</tt><tt class="descname">phaseList</tt><big>(</big><em>request</em>, <em>*args</em>, <em>**kwargs</em><big>)</big><a class="headerlink" href="#administrarFases.views.phaseList" title="Permalink to this definition">¶</a></dt>
+<dd><p>Vista para la listar todas las fases dentro de algún proyecto.
+Opción válida para usuarios con los roles correspondientes.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Param:</th><td class="field-body">Recibe la petición request y el identificado de proyecto, para listar todas las fases pertenecientes al proyecto especificado</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">Lista todas las fases pertenecientes al proyecto especificado</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
 
 </div>
 <div class="section" id="module-administrarFases">
