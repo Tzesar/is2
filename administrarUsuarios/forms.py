@@ -3,7 +3,8 @@ from __future__ import unicode_literals
 from django import forms
 from django.contrib.auth.forms import SetPasswordForm
 from django.utils.datastructures import SortedDict
-from django.utils.translation import ugettext, ugettext_lazy as _
+from django.utils.translation import ugettext_lazy as _
+import floppyforms as forms2
 from autenticacion.models import Usuario
 
 
@@ -102,6 +103,29 @@ class CustomUserChangeForm(forms.ModelForm):
         # field does not have access to the initial value
         return self.initial["password"]
 
+
+class CambiarUsuarioForm(forms2.ModelForm):
+    """
+    Formulario para la modificacion de usuarios, donde se visualiza el formulario con los campos y opciones de modificacion disponibles
+
+    Formulario para modificar usuarios propuesto por Django y personalizado para el proyecto ZARpm. Utiliza el modelo
+    personalizado Usuario extendido del modelos User.
+
+    Utilizamos el modelo Usuario, del cual filtramos los campos de tal manera a que solo se habiliten los
+    campos disponibles para la modificación de un usuario en el sistema.
+
+    """
+
+    class Meta:
+        model = Usuario
+        fields = ('first_name', 'last_name', 'email', 'telefono',)
+        exclude = ('username', 'password',)
+        widgets = {
+            'first_name': forms2.TextInput(attrs={'class': 'form-control', }),
+            'last_name': forms2.TextInput(attrs={'class': 'form-control', }),
+            'email': forms2.EmailInput(attrs={'class': 'form-control', }),
+            'telefono': forms2.TextInput(attrs={'class': 'form-control', }),
+        }
 
 class CustomPasswordChangeForm(SetPasswordForm):
     """

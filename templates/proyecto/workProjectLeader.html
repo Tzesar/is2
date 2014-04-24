@@ -16,10 +16,10 @@
                             <a href="{% url 'administrarFases.views.changePhase' fase.id %}" class="list-group-item">{{ fase.nombre }}</a>
                         {% endfor %}
                     {% else %}
-                        <a class="list-group-item list-group-item-warning disabled">El proyecto no tiene fases asociadas.</a>
+                        <a class="list-group-item list-group-item-warning">El proyecto no tiene fases asociadas.</a>
                     {% endif %}
                 </div>
-                <a href="{% url 'administrarFases.views.createPhase' proyecto.id %}" class="btn btn-success disabled">Nueva Fase</a>
+                <a href="{% url 'administrarFases.views.createPhase' proyecto.id %}" class="btn btn-success">Nueva Fase</a>
             </div>
             <div class="col-lg-4 col-md-4 col-sm-4">
                 <div class="list-group">

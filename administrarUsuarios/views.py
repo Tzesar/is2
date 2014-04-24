@@ -4,7 +4,7 @@ from django.contrib.auth.forms import PasswordChangeForm
 from django.shortcuts import render, RequestContext, get_object_or_404, render_to_response
 from django.http import HttpResponseRedirect, HttpResponse
 import json
-from administrarUsuarios.forms import CustomUserChangeForm, CustomUserCreationForm
+from administrarUsuarios.forms import CustomUserChangeForm, CustomUserCreationForm, CambiarUsuarioForm
 from autenticacion.models import Usuario
 import logging
 
@@ -38,7 +38,7 @@ def changeUser(request):
     Modificación de los datos propios del usuario actual.
 
     :param request: HttpRequest necesario para modificar los datos de usuario
-    :return:  Proporciona la pagina changeuser.html con el formulario correspondiente
+    :return:  Proporciona la pagina changeuser1.html con el formulario correspondiente
     """
     if request.method == 'POST':
         postdata = request.POST.copy()
@@ -50,6 +50,26 @@ def changeUser(request):
     else:
         form = CustomUserChangeForm(instance=request.user)
     return render(request, "usuario/changeuser.html", {'form': form, 'user': request.user})
+
+@login_required()
+def changeUser2(request):
+    """
+    Vista para la modificacion de datos del usuario actual en el sistema.
+    Modificación de los datos propios del usuario actual.
+
+    :param request: HttpRequest necesario para modificar los datos de usuario
+    :return:  Proporciona la pagina changeuser1.html con el formulario correspondiente
+    """
+    if request.method == 'POST':
+        postdata = request.POST.copy()
+        myform = CambiarUsuarioForm(postdata, instance=request.user)
+        if myform.is_valid():
+            myform.save()
+            logger.info('El usuario ' + request.user.username + ' ha modificado sus datos personales dentro del sistema')
+            return HttpResponseRedirect("/userlist/")
+    else:
+        myform = CambiarUsuarioForm(instance=request.user)
+    return render(request, "usuario/changeuser2.html", {'myform': myform, 'user': request.user})
 
 
 @login_required()

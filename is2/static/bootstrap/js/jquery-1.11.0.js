@@ -6299,7 +6299,7 @@ function addGetHookIf( conditionFn, hookFn ) {
 			// Support: IE8
 			// Check if table cells still have offsetWidth/Height when they are set
 			// to display:none and there are still other visible table cells in a
-			// table row; if so, offsetWidth/Height are not reliable for use when
+			// table rows; if so, offsetWidth/Height are not reliable for use when
 			// determining if an element has been hidden directly using
 			// display:none (it is still safe to use offsets if a parent element is
 			// hidden; don safety goggles and see bug #4512 for more information).

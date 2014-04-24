@@ -2,11 +2,11 @@
 Descripcion de las diferentes URLs utilizadas en el proyecto ZAPpm
 """
 
-from django.conf.urls import patterns, include, url
+from django.conf.urls import patterns, url
 from django.contrib import admin
 from django.contrib.auth.views import logout_then_login
 from autenticacion.views import main, myLogin
-from administrarUsuarios.views import createUser, changeUser, userList, changePass, changeAnyUser
+from administrarUsuarios.views import createUser, changeUser, userList, changePass, changeAnyUser, changeUser2
 from zar.views import about, contact
 from administrarProyectos.views import createProject, changeProject, projectList, workProject, setUserToProject, viewSetUserProject
 from administrarFases.views import changePhase, createPhase, phaseList, deletePhase
@@ -18,11 +18,11 @@ urlpatterns = patterns('',
                        url(r'^$', myLogin, {'template_name': 'autenticacion/login.html'}),
                        url(r'^login/$', myLogin, {'template_name': 'autenticacion/login.html'}),
                        url(r'^logout/$', logout_then_login, name="logout"),
-                       # url(r'^base/$', base, name="base"),
                        url(r'^main/$', main, name="main"),
                        url(r'^about/$', about, name="about"),
                        url(r'^createuser/$', createUser, name="createuser"),
                        url(r'^changeuser/$', changeUser, name="changeuser"),
+                       url(r'^changeuser2/$', changeUser2, name="changeuser2"),
                        url(r'^changeanyuser/(?P<id_usuario>\d+)$', changeAnyUser, name="changeanyuser"),
                        url(r'^userlist/$', userList, name="userlist"),
                        url(r'^changepass/$', changePass, name="changepass"),

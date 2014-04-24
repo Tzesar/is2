@@ -38,6 +38,7 @@ INSTALLED_APPS = (
     'django.contrib.staticfiles',
     'django.contrib.admin',
     'django_tables2',
+    'floppyforms',
     'zar',
     'autenticacion',
     'administrarUsuarios',
