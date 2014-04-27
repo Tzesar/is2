@@ -17,11 +17,13 @@ logger = logging.getLogger(__name__)
 @login_required()
 def createPhase(request, id_proyecto):
     """
-    Vista para la creación de fases en el sistema.
-    Opción válida para usuarios con los roles correspondientes.
+    *Vista para la creación de fases en el sistema.
+    Opción válida para usuarios con los roles correspondientes.*
 
-    :param: Recibe la petición request y el identificador del Proyecto, de tal manera a identificar el proyecto a la cual pertence la fase.
-    :return: Crea la fase dentro del proyecto especificando y luego regresa al menu principal
+    :param request: HttpRequest necesario para crear fases dentro de los proyectos, es la solicitud de la acción.
+    :param id_proyecto: Identificador del proyecto dentro del sistema al cual se le vincularán las fases creadas.
+    :return: Proporciona la pagina ``createphase.html`` con el formulario correspondiente.
+            Crea la fase dentro del proyecto especificando y luego regresa al menu principal
     """
     project = Proyecto.objects.get(pk=id_proyecto)
     if request.method == 'POST':
@@ -42,6 +44,13 @@ def createPhase(request, id_proyecto):
 
 
 def generarPermisosFase(project, fase):
+    """
+    *Vista para generación de permisos correspondientes a la fase*
+
+    :param project: Recibe la instancia del proyecto al cual pertenece la fase.
+    :param fase: Recibe la instancia de la fase en la cual se crearán los permisos.
+    :return: Los permisos generados se vinculan correctamente a la fase creada.
+    """
 
     #Permiso de creación de items
     codigoPermiso = "CRE_ITEM_FASE:" + fase.nombre
@@ -103,12 +112,20 @@ def generarPermisosFase(project, fase):
 @login_required()
 def changePhase(request, id_fase):
     """
-    Vista para la modificacion de una fase dentro del sistema.
-    Opción válida para usuarios con los roles correspondientes.
+    *Vista para la modificacion de una fase dentro del sistema.
+    Opción válida para usuarios con los roles correspondientes.*
 
-    :param: Recibe la petición request y el identificador de la fase la cual vamos a modificar
-    :return: Modifica la fase especifica  y luego regresa al menu principal
+    :param request: HttpRequest necesario para modificar la fase, es la solicitud de la acción.
+    :param id_fase: Identificador de la fase dentro del sistema la cual se desea modificar.
+    :return: Proporciona la pagina ``changephase.html`` con el formulario correspondiente.
+             Modifica la fase especifica  y luego regresa al menu principal
     """
+
+    try:
+        Fase.objects.get(pk=id_fase)
+    except Fase.DoesNotExist:
+        print 'La fase especificada no existe'
+        return
 
     phase = Fase.objects.get(pk=id_fase)
     project = Proyecto.objects.get(pk=phase.proyecto.id)
@@ -127,14 +144,14 @@ def changePhase(request, id_fase):
 
 def deletePhase(request, id_fase):
     """
-    Vista para la eliminación de una fase dentro del sistema.
-    Opción válida para usuarios con los roles correspondientes.
+    *Vista para la eliminación de una fase dentro del sistema.
+    Opción válida para usuarios con los roles correspondientes.*
 
-    :param: Recibe la petición request y el identificador de la fase la cual deseamos modificar
-    :return: Elimina la fase especifica en el proyecto y luego regresa al menu principal
+    :param request: HttpRequest necesario para eliminar fases de un proyectos, es la solicitud de la acción.
+    :param id_fase: Identificador de la fase dentro del sistema la cual se desea eliminar.
+    :return: Elimina la fase especifica  y luego regresa al menu de fases.
     """
     phase = Fase.objects.get(pk=id_fase)
-
     eliminarPermisos(phase)
     phase_copy = phase
     project = Proyecto.objects.get(pk=phase.proyecto.id)
@@ -144,12 +161,16 @@ def deletePhase(request, id_fase):
                                                                                              phase_copy.nombre,
                                                                                              project.nombre))
 
-    siguienteURL = reverse("administrarProyectos.views.changePhase", args=[id_fase])
-    return render(request, mark_safe(siguienteURL), )
+    return HttpResponseRedirect('/main/')
 
 
 def eliminarPermisos(phase):
+    """
+    *Vista para la eliminacion de permisos correspondientes a la fase*
 
+    :param fase: Recibe la instancia de la fase que se eliminará.
+    :return: Los permisos vinculados son eliminados correctamente.
+    """
     perm_list = PermisoFase.objects.filter(fase=phase)
     for p in perm_list:
         p.delete()
@@ -159,11 +180,12 @@ def eliminarPermisos(phase):
 @login_required
 def phaseList(request, id_proyecto):
     """
-    Vista para la listar todas las fases dentro de algún proyecto.
-    Opción válida para usuarios con los roles correspondientes.
+    *Vista para la listar todas las fases dentro de algún proyecto.
+    Opción válida para usuarios con los roles correspondientes.*
 
-    :param: Recibe la petición request y el identificado de proyecto, para listar todas las fases pertenecientes al proyecto especificado
-    :return: Lista todas las fases pertenecientes al proyecto especificado
+    :param request: HttpRequest necesario para visualizar las fases dentro de los proyectos, es la solicitud de la acción.
+    :param id_proyecto: Identificador del proyecto dentro del sistema.
+    :return: Proporciona la pagina ``phaselist.html`` con la lista todas las fases pertenecientes al proyecto especificado
     """
     project = Proyecto.objects.get(pk=id_proyecto)
     phase = Fase.objects.filter(proyecto=id_proyecto)

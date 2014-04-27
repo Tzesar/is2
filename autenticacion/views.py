@@ -10,7 +10,7 @@ from administrarProyectos.tables import ProyectoTabla
 
 def myLogin(request, *args, **kwargs):
     """
-        Establece el tiempo de vida de la sesion.
+    *Establece el tiempo de vida de la sesion.*
 
     :param request: HttpRequest con el contenido de la pagina actual.
     :param args: Argumentos para la funcion contrib.auth.views.login.
@@ -31,7 +31,7 @@ def myLogin(request, *args, **kwargs):
 @login_required
 def base(request):
     """
-    Vista para la plantilla base.html
+    *Vista para la plantilla base.html*
 
     :param request: HttpRequest con los datos de la sesion del usuario actual.
     :return: Template base.html. Los demas templates heredan de este la estructura y los estilos.
@@ -41,9 +41,9 @@ def base(request):
 @login_required
 def main(request):
     """
-    Vista para la plantilla main.html
+    *Vista para la plantilla main.html*
 
-    :param request: HttpRequest con los datos de la sesion del usuario actual.
+    :param: HttpRequest con los datos de la sesion del usuario actual.
     :return: Template mainAdmin.html para el Administrador y mainAnyUser.html para los demas usuarios.
     """
 

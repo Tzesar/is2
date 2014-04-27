@@ -40,14 +40,14 @@ class TestAdministrarUsuarios(TestCase):
 
     def setUp(self):
         """
-            Crea el usuario 'admin' con contraseña 'admin'
+            *Crea el usuario 'admin' con contraseña 'admin'.*
         """
         UsuarioFactory.create()
         self.factory = RequestFactory()
 
     def test_CustomUserCreationForm_response(self):
         """
-        Test para el formulario de  creación de usuarios en el sistema
+        *Test para el formulario de  creación de usuarios en el sistema.*
         """
         print '\nInicio - Prueba: CustomUserCreationForm'
         self.user = Usuario.objects.get()
@@ -58,17 +58,18 @@ class TestAdministrarUsuarios(TestCase):
             form.save()
             print 'Usuario '+form['username'].value()+' creado exitosamente en la Base de Datos'
         else:
-            print 'Error en los datos del formulario'
+            print 'Error Previsto: Error en los datos del formulario'
+            form.clean_password2()
+            form.clean_username()
 
         self.user = Usuario.objects.get(username='test')
         self.assertEqual(self.user.username, 'test', 'No coinciden los parámetros: Usuario no cargado exitosamente en la Base de datos')
         print 'Sin errores detectados'
-        print self.user
         print 'Fin - Prueba: CustomUserCreationForm\n'
 
     def test_changeUser_response(self):
         """
-        Test para la vista de modificación de usuarios en el sistema
+        *Test para la vista de modificación de usuarios en el sistema.*
         """
         print 'Inicio - Prueba: changeUser'
         self.factory = RequestFactory()
@@ -78,16 +79,15 @@ class TestAdministrarUsuarios(TestCase):
         request.user = self.user
         response = changeUser(request)
         self.assertEqual(response.status_code, 302, 'Error al modificar el usuario')
-        self.user = Usuario.objects.get(first_name='Administrador')
-        usuario = Usuario.objects.get(first_name='Administrador')
-        self.assertEqual(self.user, usuario, 'Los datos no coinciden: Usuario no modificado correctamente')
+        self.user = Usuario.objects.get(username='admin')
+        self.assertEqual(self.user.first_name, 'Admin', 'Error Previsto - Los datos no coinciden: Usuario no modificado '
+                                                        'correctamente. El nombre especificado no se encuentra en la Base de Datos de Usuarios')
         print 'Sin errores detectados'
-        print usuario
         print 'Fin - Prueba: changeUser\n'
 
     def test_createUser_response(self):
         """
-        Test para la vista de creación de usuarios en el sistema
+        *Test para la vista de creación de usuarios en el sistema.*
         """
         print 'Inicio - Prueba: createUser'
         self.user = Usuario.objects.all()
@@ -102,12 +102,11 @@ class TestAdministrarUsuarios(TestCase):
         self.assertEqual(self.user.username, 'test2', 'No coinciden los parámetros: Usuario no cargado exitosamente en la Base de datos')
         print 'Usuario '+self.user.username+' creado exitosamente en la Base de Datos'
         print 'Sin errores detectados'
-        print self.user
         print 'Fin - Prueba: createUser\n'
 
     def test_changePass_response(self):
         """
-        Test del Logeo del usuario 'admin' y posterior modificación de la contraseña.
+        *Test del Logeo del usuario 'admin' y posterior modificación de la contraseña.*
         """
         print 'Inicio - Prueba: changePass'
         login = self.client.login(username=self.un_admin, password=self.pw_admin)
@@ -122,5 +121,4 @@ class TestAdministrarUsuarios(TestCase):
         login = self.client.login(username=self.un_admin, password=self.pw_new_admin)
         self.assertTrue(login, 'Error al cambiar contraseña')
         print 'Sin errores detectados'
-        print self.user
         print 'Fin - Prueba: changePass\n'

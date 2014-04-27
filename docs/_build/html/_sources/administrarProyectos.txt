@@ -1,46 +1,37 @@
-administrarProyectos package
+Proyectos
 ============================
 
-Submodules
-----------
-
-administrarProyectos.forms module
+forms 
 ---------------------------------
 
 .. automodule:: administrarProyectos.forms
     :members:
-    :undoc-members:
     :show-inheritance:
 
-administrarProyectos.models module
+models 
 ----------------------------------
 
 .. automodule:: administrarProyectos.models
     :members:
-    :undoc-members:
     :show-inheritance:
 
-administrarProyectos.tests module
+tables 
+----------------------------------
+
+.. automodule:: administrarProyectos.tables
+    :members:
+    :show-inheritance:
+
+tests 
 ---------------------------------
 
 .. automodule:: administrarProyectos.tests
     :members:
-    :undoc-members:
     :show-inheritance:
 
-administrarProyectos.views module
+views 
 ---------------------------------
 
 .. automodule:: administrarProyectos.views
     :members:
-    :undoc-members:
-    :show-inheritance:
-
-
-Module contents
----------------
-
-.. automodule:: administrarProyectos
-    :members:
-    :undoc-members:
     :show-inheritance:

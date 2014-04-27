@@ -5,15 +5,15 @@ from autenticacion.models import Usuario
 
 class Proyecto(models.Model):
     """
-    Modelo para la clase proyecto, en el cual se encuentras todos los atributos de un proyecto:
-        + Codigo: Identificador Único dentro del Sistema
-        + Nombre: Nombre del Proyecto
-        + Líder de Proyecto: Usuario responsable del Proyecto
-        + Descripción: Breve reseña del proyecto
-        + Fecha de Inicio: Fecha de inicio del proyecto
-        + Fecha de Fin: Fecha estimada de finalización del proyecto
-        + Estado: Los estados posibles del Proyecto. Por default: PEN(Pendiente)
-        + Observaciones: Notas relevantes acerca del proyecto
+    *Modelo para la clase ``Proyecto``, en el cual se encuentras todos los atributos de un proyecto:*
+        + *Codigo*: Identificador Único dentro del Sistema
+        + *Nombre*: Nombre del Proyecto
+        + *Líder de Proyecto*: Usuario responsable del Proyecto
+        + *Descripción*: Breve reseña del proyecto
+        + *Fecha de Inicio*: Fecha de inicio del proyecto
+        + *Fecha de Fin*: Fecha estimada de finalización del proyecto
+        + *Estado*: Los estados posibles del Proyecto. Por default: PEN(Pendiente)
+        + *Observaciones*: Notas relevantes acerca del proyecto
     """
     opciones_estado = (
         ('PEN', 'Pendiente'),
@@ -37,10 +37,18 @@ class Proyecto(models.Model):
 
 class UsuariosVinculadosProyectos(models.Model):
     """
-    Modelo para los usuarios vinculados a algún proyecto dentro del sistema
-        + Cod_Proyecto: Identificador del proyecto al cual se encuentra vinculado el usuario
-        + Cod_Usuario: Identificador del usuario que se encuentra vinculado a un proyecto
-        + Habilitado: Define si el usuario se encuentra habilitado para realizar cambios en el proyecto
+    *Modelo para los usuarios vinculados a algún proyecto dentro del sistema.*
+        + *Cod_Proyecto*: Identificador del proyecto al cual se encuentra vinculado el usuario
+        + *Cod_Usuario*: Identificador del usuario que se encuentra vinculado a un proyecto
+        + *Habilitado*: Define si el usuario se encuentra habilitado para realizar cambios en el proyecto
+
+    *La unión entre un usuario y el proyecto debe ser única en el sistema.*
+    ::
+
+        class Meta:
+            unique_together = (('cod_proyecto', 'cod_usuario'),)
+
+
     """
     cod_proyecto = models.ForeignKey(Proyecto)
     cod_usuario = models.ForeignKey(Usuario)

@@ -3,17 +3,27 @@
    You can adapt this file completely to your liking, but it should at least
    contain the root `toctree` directive.
 
-Welcome to ZARpm's documentation!
-=================================
-
-Contents:
+Contenidos:
+=======================
 
 .. toctree::
-   :maxdepth: 2
+   :maxdepth: 1
+   
+   autenticacion
+   =======================
+   administrarUsuarios
+   =======================
+   administrarRolesPermisos
+   =======================
+   administrarProyectos
+   =======================
+   administrarFases
+   =======================
+   administrarTipoItem
+   =======================
 
 
-
-Indices and tables
+Indices & Tablas
 ==================
 
 * :ref:`genindex`

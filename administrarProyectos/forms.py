@@ -9,12 +9,18 @@ from autenticacion.models import Usuario
 
 class NewProjectForm(ModelForm):
     """
-    Formulario para la creación de nuevos proyectos en el sistema.
+    *Formulario para la creación de nuevos proyectos en el sistema. Utilizamos el modelo de* ``Proyecto``
+    *definido del cual filtramos los campos de tal manera a que solo se habiliten los
+    campos necesarios para la creación de un proyecto en el sistema.*
 
-    Opción válida solo para usuarios con rol de Administrador.
+    Opción válida solo para usuarios con rol de ``Administrador``.
 
-    Utilizamos el Modelo de Proyecto definido del cual filtramos los campos de tal manera a que solo se habiliten los
-    campos necesarios para la creación de un proyecto en el sistema.
+    ::
+
+        class Meta:
+            model = Proyecto
+            fields = ('nombre', 'lider_proyecto', 'descripcion',)
+
     """
 
     class Meta:
@@ -22,14 +28,24 @@ class NewProjectForm(ModelForm):
         fields = ('nombre', 'lider_proyecto', 'descripcion',)
 
 
+    def __init__(self, *args, **kwargs):
+        super(NewProjectForm, self).__init__(*args, **kwargs)
+
+
 class ChangeProjectForm(forms.ModelForm):
     """
-    Formulario para la modificacion de proyectos creados en el sistema.
+    *Formulario para la modificación de proyectos creados en el sistema.  Utilizamos el modelo de* ``Proyecto``
+    *definido del cual filtramos los campos de tal manera a que solo se habiliten los
+    campos disponibles para la modificación de un proyecto en el sistema.*
 
-    Opción válida solo para usuarios con rol de Administrador.
+    Opción válida solo para usuarios con rol de ``Administrador``.
 
-    Utilizamos el Modelo de Proyecto definido del cual filtramos los campos de tal manera a que solo se habiliten los
-    campos disponibles para la modificación de un proyecto en el sistema.
+    ::
+
+        class Meta:
+            model = Proyecto
+            fields = ('nombre', 'lider_proyecto', 'estado', 'descripcion',)
+
     """
 
     class Meta:
@@ -45,7 +61,7 @@ class ChangeProjectForm(forms.ModelForm):
 
 class setUserToProjectForm(forms.ModelForm):
     """
-    Formulario para vincular usuarios a un proyecto
+    *Formulario para vincular usuarios a un proyecto*
     """
     user = Usuario.objects.all()
     cod_usuario = str(forms.ModelChoiceField(widget=forms.CheckboxSelectMultiple, queryset=user,
@@ -54,3 +70,6 @@ class setUserToProjectForm(forms.ModelForm):
     class Meta:
         model = UsuariosVinculadosProyectos
         fields = ('cod_usuario',)
+
+    def __init__(self, *args, **kwargs):
+        super(setUserToProjectForm, self).__init__(*args, **kwargs)

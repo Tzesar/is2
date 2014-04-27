@@ -6,15 +6,15 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>administrarUsuarios package &mdash; ZARpm 0.1 documentation</title>
+    <title>Usuarios &mdash; ZARpm - Documentation</title>
     
-    <link rel="stylesheet" href="_static/sphinxdoc.css" type="text/css" />
+    <link rel="stylesheet" href="_static/nature.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    './',
-        VERSION:     '0.1',
+        VERSION:     '1.0',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -23,218 +23,123 @@
     <script type="text/javascript" src="_static/jquery.js"></script>
     <script type="text/javascript" src="_static/underscore.js"></script>
     <script type="text/javascript" src="_static/doctools.js"></script>
-    <link rel="top" title="ZARpm 0.1 documentation" href="index.html" /> 
+    <link rel="shortcut icon" href="_static/favicon.ico"/>
+    <link rel="top" title="ZARpm - Documentation" href="index.html" />
+    <link rel="next" title="RolesPermisos" href="administrarRolesPermisos.html" />
+    <link rel="prev" title="Autenticacion" href="autenticacion.html" /> 
   </head>
   <body>
     <div class="related">
-      <h3>Navigation</h3>
+      <h3>Navegación</h3>
       <ul>
         <li class="right" style="margin-right: 10px">
-          <a href="genindex.html" title="General Index"
-             accesskey="I">index</a></li>
+          <a href="genindex.html" title="Índice General"
+             accesskey="I">índice</a></li>
         <li class="right" >
-          <a href="py-modindex.html" title="Python Module Index"
-             >modules</a> |</li>
-        <li><a href="index.html">ZARpm 0.1 documentation</a> &raquo;</li> 
+          <a href="py-modindex.html" title="Índice de Módulos Python"
+             >módulos</a> |</li>
+        <li class="right" >
+          <a href="administrarRolesPermisos.html" title="RolesPermisos"
+             accesskey="N">siguiente</a> |</li>
+        <li class="right" >
+          <a href="autenticacion.html" title="Autenticacion"
+             accesskey="P">anterior</a> |</li>
+        <li><a href="index.html">ZARpm - Documentation</a> &raquo;</li> 
       </ul>
-    </div>
-      <div class="sphinxsidebar">
-        <div class="sphinxsidebarwrapper">
-  <h3><a href="index.html">Table Of Contents</a></h3>
-  <ul>
-<li><a class="reference internal" href="#">administrarUsuarios package</a><ul>
-<li><a class="reference internal" href="#submodules">Submodules</a></li>
-<li><a class="reference internal" href="#module-administrarUsuarios.forms">administrarUsuarios.forms module</a></li>
-<li><a class="reference internal" href="#module-administrarUsuarios.tests">administrarUsuarios.tests module</a></li>
-<li><a class="reference internal" href="#module-administrarUsuarios.views">administrarUsuarios.views module</a></li>
-<li><a class="reference internal" href="#module-administrarUsuarios">Module contents</a></li>
-</ul>
-</li>
-</ul>
-
-  <h3>This Page</h3>
-  <ul class="this-page-menu">
-    <li><a href="_sources/administrarUsuarios.txt"
-           rel="nofollow">Show Source</a></li>
-  </ul>
-<div id="searchbox" style="display: none">
-  <h3>Quick search</h3>
-    <form class="search" action="search.html" method="get">
-      <input type="text" name="q" />
-      <input type="submit" value="Go" />
-      <input type="hidden" name="check_keywords" value="yes" />
-      <input type="hidden" name="area" value="default" />
-    </form>
-    <p class="searchtip" style="font-size: 90%">
-    Enter search terms or a module, class or function name.
-    </p>
-</div>
-<script type="text/javascript">$('#searchbox').show(0);</script>
-        </div>
-      </div>
+    </div>  
 
     <div class="document">
       <div class="documentwrapper">
         <div class="bodywrapper">
           <div class="body">
             
-  <div class="section" id="administrarusuarios-package">
-<h1>administrarUsuarios package<a class="headerlink" href="#administrarusuarios-package" title="Permalink to this headline">¶</a></h1>
-<div class="section" id="submodules">
-<h2>Submodules<a class="headerlink" href="#submodules" title="Permalink to this headline">¶</a></h2>
-</div>
+  <div class="section" id="usuarios">
+<h1>Usuarios<a class="headerlink" href="#usuarios" title="Enlazar permanentemente con este título">¶</a></h1>
 <div class="section" id="module-administrarUsuarios.forms">
-<span id="administrarusuarios-forms-module"></span><h2>administrarUsuarios.forms module<a class="headerlink" href="#module-administrarUsuarios.forms" title="Permalink to this headline">¶</a></h2>
+<span id="forms"></span><h2>forms<a class="headerlink" href="#module-administrarUsuarios.forms" title="Enlazar permanentemente con este título">¶</a></h2>
 <dl class="class">
-<dt id="administrarUsuarios.forms.CustomPasswordChangeForm">
-<em class="property">class </em><tt class="descclassname">administrarUsuarios.forms.</tt><tt class="descname">CustomPasswordChangeForm</tt><big>(</big><em>user</em>, <em>*args</em>, <em>**kwargs</em><big>)</big><a class="headerlink" href="#administrarUsuarios.forms.CustomPasswordChangeForm" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">django.contrib.auth.forms.SetPasswordForm</span></tt></p>
-<p>Formulario que permite a los usuarios cambiar la contraseña verificando con la contraseña anterior.
-Utiliza el modelo personalizado Usuario extendido del modelos User.</p>
-<dl class="attribute">
-<dt id="administrarUsuarios.forms.CustomPasswordChangeForm.base_fields">
-<tt class="descname">base_fields</tt><em class="property"> = {'new_password1': &lt;django.forms.fields.CharField object at 0xa7fe6cc&gt;, 'new_password2': &lt;django.forms.fields.CharField object at 0xa7fe76c&gt;, 'old_password': &lt;django.forms.fields.CharField object at 0xab75f2c&gt;}</em><a class="headerlink" href="#administrarUsuarios.forms.CustomPasswordChangeForm.base_fields" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="method">
-<dt id="administrarUsuarios.forms.CustomPasswordChangeForm.clean_old_password">
-<tt class="descname">clean_old_password</tt><big>(</big><big>)</big><a class="headerlink" href="#administrarUsuarios.forms.CustomPasswordChangeForm.clean_old_password" title="Permalink to this definition">¶</a></dt>
-<dd><p>Verificacion de la contrasena anterior</p>
+<dt id="administrarUsuarios.forms.CambiarUsuarioForm">
+<em class="property">class </em><tt class="descclassname">administrarUsuarios.forms.</tt><tt class="descname">CambiarUsuarioForm</tt><big>(</big><em>*args</em>, <em>**kwargs</em><big>)</big><a class="headerlink" href="#administrarUsuarios.forms.CambiarUsuarioForm" title="Enlazar permanentemente con esta definición">¶</a></dt>
+<dd><p>Clases base: <tt class="xref py py-class docutils literal"><span class="pre">floppyforms.models.ModelForm</span></tt></p>
+<p><em>Formulario para la modificacion de usuarios. Utilizamos el modelo</em> <tt class="docutils literal"><span class="pre">Usuario</span></tt>, <em>del cual filtramos los campos de tal manera a que solo se habiliten los
+campos disponibles para la modificación de un usuario en el sistema./n
+Formulario para modificar usuarios propuesto por Django y personalizado para el proyecto ZARpm. Utiliza el modelo
+personalizado Usuario extendido del modelo User.</em></p>
+<div class="highlight-python"><div class="highlight"><pre><span class="k">class</span> <span class="nc">Meta</span><span class="p">:</span>
+    <span class="n">model</span> <span class="o">=</span> <span class="n">Usuario</span>
+    <span class="n">fields</span> <span class="o">=</span> <span class="p">(</span><span class="s">&#39;first_name&#39;</span><span class="p">,</span> <span class="s">&#39;last_name&#39;</span><span class="p">,</span> <span class="s">&#39;email&#39;</span><span class="p">,</span> <span class="s">&#39;telefono&#39;</span><span class="p">,)</span>
+    <span class="n">exclude</span> <span class="o">=</span> <span class="p">(</span><span class="s">&#39;username&#39;</span><span class="p">,</span> <span class="s">&#39;password&#39;</span><span class="p">,)</span>
+</pre></div>
+</div>
 </dd></dl>
 
-<dl class="attribute">
-<dt id="administrarUsuarios.forms.CustomPasswordChangeForm.error_messages">
-<tt class="descname">error_messages</tt><em class="property"> = {u'password_incorrect': &lt;django.utils.functional.__proxy__ object at 0xab7536c&gt;, u'password_mismatch': &lt;django.utils.functional.__proxy__ object at 0xa7fe64c&gt;}</em><a class="headerlink" href="#administrarUsuarios.forms.CustomPasswordChangeForm.error_messages" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="attribute">
-<dt id="administrarUsuarios.forms.CustomPasswordChangeForm.media">
-<tt class="descname">media</tt><a class="headerlink" href="#administrarUsuarios.forms.CustomPasswordChangeForm.media" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dl class="class">
+<dt id="administrarUsuarios.forms.CustomPasswordChangeForm">
+<em class="property">class </em><tt class="descclassname">administrarUsuarios.forms.</tt><tt class="descname">CustomPasswordChangeForm</tt><big>(</big><em>*args</em>, <em>**kwargs</em><big>)</big><a class="headerlink" href="#administrarUsuarios.forms.CustomPasswordChangeForm" title="Enlazar permanentemente con esta definición">¶</a></dt>
+<dd><p>Clases base: <tt class="xref py py-class docutils literal"><span class="pre">django.contrib.auth.forms.SetPasswordForm</span></tt></p>
+<p><em>Formulario que permite a los usuarios cambiar la contraseña confirmando con la contraseña anterior.
+Utiliza el modelo personalizado</em>  <tt class="docutils literal"><span class="pre">Usuario</span></tt>.</p>
+<dl class="method">
+<dt id="administrarUsuarios.forms.CustomPasswordChangeForm.clean_old_password">
+<tt class="descname">clean_old_password</tt><big>(</big><big>)</big><a class="headerlink" href="#administrarUsuarios.forms.CustomPasswordChangeForm.clean_old_password" title="Enlazar permanentemente con esta definición">¶</a></dt>
+<dd><p><em>Funcion que confirma la contrasena anterior ingresada por el usuario. Si las contraseñas no coinciden no
+se realizará ningún cambio en la contraseña.</em></p>
+</dd></dl>
 
 </dd></dl>
 
 <dl class="class">
 <dt id="administrarUsuarios.forms.CustomUserChangeForm">
-<em class="property">class </em><tt class="descclassname">administrarUsuarios.forms.</tt><tt class="descname">CustomUserChangeForm</tt><big>(</big><em>*args</em>, <em>**kwargs</em><big>)</big><a class="headerlink" href="#administrarUsuarios.forms.CustomUserChangeForm" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">django.forms.models.ModelForm</span></tt></p>
-<p>Formulario para la modificacion de usuarios, donde se visualiza el formulario con los campos y opciones de modificacion disponibles</p>
-<p>Formulario para modificar usuarios propuesto por Django y personalizado para el proyecto ZARpm. Utiliza el modelo
-personalizado Usuario extendido del modelos User.</p>
-<p>Utilizamos el modelo Usuario, del cual filtramos los campos de tal manera a que solo se habiliten los
-campos disponibles para la modificación de un usuario en el sistema.</p>
-<dl class="class">
-<dt id="administrarUsuarios.forms.CustomUserChangeForm.Meta">
-<em class="property">class </em><tt class="descname">Meta</tt><a class="headerlink" href="#administrarUsuarios.forms.CustomUserChangeForm.Meta" title="Permalink to this definition">¶</a></dt>
-<dd><dl class="attribute">
-<dt id="administrarUsuarios.forms.CustomUserChangeForm.Meta.exclude">
-<tt class="descname">exclude</tt><em class="property"> = (u'username', u'password')</em><a class="headerlink" href="#administrarUsuarios.forms.CustomUserChangeForm.Meta.exclude" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="attribute">
-<dt id="administrarUsuarios.forms.CustomUserChangeForm.Meta.fields">
-<tt class="descname">fields</tt><em class="property"> = (u'first_name', u'last_name', u'email', u'telefono')</em><a class="headerlink" href="#administrarUsuarios.forms.CustomUserChangeForm.Meta.fields" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="attribute">
-<dt id="administrarUsuarios.forms.CustomUserChangeForm.Meta.model">
-<tt class="descname">model</tt><a class="headerlink" href="#administrarUsuarios.forms.CustomUserChangeForm.Meta.model" title="Permalink to this definition">¶</a></dt>
-<dd><p>alias of <tt class="xref py py-class docutils literal"><span class="pre">Usuario</span></tt></p>
-</dd></dl>
-
-</dd></dl>
-
-<dl class="attribute">
-<dt id="administrarUsuarios.forms.CustomUserChangeForm.base_fields">
-<tt class="descclassname">CustomUserChangeForm.</tt><tt class="descname">base_fields</tt><em class="property"> = {u'first_name': &lt;django.forms.fields.CharField object at 0xab7562c&gt;, u'last_name': &lt;django.forms.fields.CharField object at 0xab7530c&gt;, u'email': &lt;django.forms.fields.EmailField object at 0xab75b2c&gt;, u'telefono': &lt;django.forms.fields.CharField object at 0xab7520c&gt;}</em><a class="headerlink" href="#administrarUsuarios.forms.CustomUserChangeForm.base_fields" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="method">
-<dt id="administrarUsuarios.forms.CustomUserChangeForm.clean_password">
-<tt class="descclassname">CustomUserChangeForm.</tt><tt class="descname">clean_password</tt><big>(</big><big>)</big><a class="headerlink" href="#administrarUsuarios.forms.CustomUserChangeForm.clean_password" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="attribute">
-<dt id="administrarUsuarios.forms.CustomUserChangeForm.declared_fields">
-<tt class="descclassname">CustomUserChangeForm.</tt><tt class="descname">declared_fields</tt><em class="property"> = {}</em><a class="headerlink" href="#administrarUsuarios.forms.CustomUserChangeForm.declared_fields" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="attribute">
-<dt id="administrarUsuarios.forms.CustomUserChangeForm.media">
-<tt class="descclassname">CustomUserChangeForm.</tt><tt class="descname">media</tt><a class="headerlink" href="#administrarUsuarios.forms.CustomUserChangeForm.media" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
+<em class="property">class </em><tt class="descclassname">administrarUsuarios.forms.</tt><tt class="descname">CustomUserChangeForm</tt><big>(</big><em>*args</em>, <em>**kwargs</em><big>)</big><a class="headerlink" href="#administrarUsuarios.forms.CustomUserChangeForm" title="Enlazar permanentemente con esta definición">¶</a></dt>
+<dd><p>Clases base: <tt class="xref py py-class docutils literal"><span class="pre">django.forms.models.ModelForm</span></tt></p>
+<p><em>Formulario para la modificacion de usuarios. Utilizamos el modelo</em> <tt class="docutils literal"><span class="pre">Usuario</span></tt>, <em>del cual filtramos los campos de tal manera a que solo se habiliten los
+campos disponibles para la modificación de un usuario en el sistema.
+Formulario para modificar usuarios propuesto por Django y personalizado para el proyecto ZARpm. Utiliza el modelo
+personalizado Usuario extendido del modelos User.</em></p>
+<div class="highlight-python"><div class="highlight"><pre><span class="k">class</span> <span class="nc">Meta</span><span class="p">:</span>
+    <span class="n">model</span> <span class="o">=</span> <span class="n">Usuario</span>
+    <span class="n">fields</span> <span class="o">=</span> <span class="p">(</span><span class="s">&#39;first_name&#39;</span><span class="p">,</span> <span class="s">&#39;last_name&#39;</span><span class="p">,</span> <span class="s">&#39;email&#39;</span><span class="p">,</span> <span class="s">&#39;telefono&#39;</span><span class="p">,)</span>
+    <span class="n">exclude</span> <span class="o">=</span> <span class="p">(</span><span class="s">&#39;username&#39;</span><span class="p">,</span> <span class="s">&#39;password&#39;</span><span class="p">,)</span>
+</pre></div>
+</div>
 </dd></dl>
 
 <dl class="class">
 <dt id="administrarUsuarios.forms.CustomUserCreationForm">
-<em class="property">class </em><tt class="descclassname">administrarUsuarios.forms.</tt><tt class="descname">CustomUserCreationForm</tt><big>(</big><em>data=None</em>, <em>files=None</em>, <em>auto_id=u'id_%s'</em>, <em>prefix=None</em>, <em>initial=None</em>, <em>error_class=&lt;class 'django.forms.util.ErrorList'&gt;</em>, <em>label_suffix=None</em>, <em>empty_permitted=False</em>, <em>instance=None</em><big>)</big><a class="headerlink" href="#administrarUsuarios.forms.CustomUserCreationForm" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">django.forms.models.ModelForm</span></tt></p>
-<p>Formulario para la creación de usuarios, especificar el nombre de usuario y la contraseña del nuevo usuario.</p>
-<p>Formulario para la creación usuarios por Django y personalizado para el proyecto ZARpm. Utiliza el modelo
+<em class="property">class </em><tt class="descclassname">administrarUsuarios.forms.</tt><tt class="descname">CustomUserCreationForm</tt><big>(</big><em>*args</em>, <em>**kwargs</em><big>)</big><a class="headerlink" href="#administrarUsuarios.forms.CustomUserCreationForm" title="Enlazar permanentemente con esta definición">¶</a></dt>
+<dd><p>Clases base: <tt class="xref py py-class docutils literal"><span class="pre">django.forms.models.ModelForm</span></tt></p>
+<p><em>Formulario para la creación de usuarios.Utilizamos el modelo</em> <tt class="docutils literal"><span class="pre">Usuario</span></tt> del cual filtramos los campos de tal manera a que solo se habiliten los
+campos necesarios para la creación de un usuario en el sistema.
+Formulario para la creación usuarios por Django y personalizado para el proyecto ZARpm. Utiliza el modelo
 personalizado Usuario extendido del modelos User.</p>
-<p>Utilizamos el modelo Usuario del cual filtramos los campos de tal manera a que solo se habiliten los
-campos necesarios para la creación de un usuario en el sistema.</p>
-<dl class="class">
-<dt id="administrarUsuarios.forms.CustomUserCreationForm.Meta">
-<em class="property">class </em><tt class="descname">Meta</tt><a class="headerlink" href="#administrarUsuarios.forms.CustomUserCreationForm.Meta" title="Permalink to this definition">¶</a></dt>
-<dd><dl class="attribute">
-<dt id="administrarUsuarios.forms.CustomUserCreationForm.Meta.fields">
-<tt class="descname">fields</tt><em class="property"> = (u'username',)</em><a class="headerlink" href="#administrarUsuarios.forms.CustomUserCreationForm.Meta.fields" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="attribute">
-<dt id="administrarUsuarios.forms.CustomUserCreationForm.Meta.model">
-<tt class="descname">model</tt><a class="headerlink" href="#administrarUsuarios.forms.CustomUserCreationForm.Meta.model" title="Permalink to this definition">¶</a></dt>
-<dd><p>alias of <tt class="xref py py-class docutils literal"><span class="pre">Usuario</span></tt></p>
-</dd></dl>
-
-</dd></dl>
-
-<dl class="attribute">
-<dt id="administrarUsuarios.forms.CustomUserCreationForm.base_fields">
-<tt class="descclassname">CustomUserCreationForm.</tt><tt class="descname">base_fields</tt><em class="property"> = {u'username': &lt;django.forms.fields.RegexField object at 0xab7582c&gt;, 'password1': &lt;django.forms.fields.CharField object at 0xab7568c&gt;, 'password2': &lt;django.forms.fields.CharField object at 0xab754ac&gt;}</em><a class="headerlink" href="#administrarUsuarios.forms.CustomUserCreationForm.base_fields" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
+<div class="highlight-python"><div class="highlight"><pre><span class="k">class</span> <span class="nc">Meta</span><span class="p">:</span>
+    <span class="n">model</span> <span class="o">=</span> <span class="n">Usuario</span>
+    <span class="n">fields</span> <span class="o">=</span> <span class="p">(</span><span class="s">&quot;username&quot;</span><span class="p">,)</span>
+</pre></div>
+</div>
 <dl class="method">
 <dt id="administrarUsuarios.forms.CustomUserCreationForm.clean_password2">
-<tt class="descclassname">CustomUserCreationForm.</tt><tt class="descname">clean_password2</tt><big>(</big><big>)</big><a class="headerlink" href="#administrarUsuarios.forms.CustomUserCreationForm.clean_password2" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<tt class="descname">clean_password2</tt><big>(</big><big>)</big><a class="headerlink" href="#administrarUsuarios.forms.CustomUserCreationForm.clean_password2" title="Enlazar permanentemente con esta definición">¶</a></dt>
+<dd><p><em>Función responsable de confirmar la contraseña ingresada por el usuario, de tal manera que las contraseñas
+coincidan.``Contraseña1 == Contraseña2</em></p>
+</dd></dl>
 
 <dl class="method">
 <dt id="administrarUsuarios.forms.CustomUserCreationForm.clean_username">
-<tt class="descclassname">CustomUserCreationForm.</tt><tt class="descname">clean_username</tt><big>(</big><big>)</big><a class="headerlink" href="#administrarUsuarios.forms.CustomUserCreationForm.clean_username" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="attribute">
-<dt id="administrarUsuarios.forms.CustomUserCreationForm.declared_fields">
-<tt class="descclassname">CustomUserCreationForm.</tt><tt class="descname">declared_fields</tt><em class="property"> = {'username': &lt;django.forms.fields.RegexField object at 0xab7582c&gt;, 'password1': &lt;django.forms.fields.CharField object at 0xab7568c&gt;, 'password2': &lt;django.forms.fields.CharField object at 0xab754ac&gt;}</em><a class="headerlink" href="#administrarUsuarios.forms.CustomUserCreationForm.declared_fields" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="attribute">
-<dt id="administrarUsuarios.forms.CustomUserCreationForm.error_messages">
-<tt class="descclassname">CustomUserCreationForm.</tt><tt class="descname">error_messages</tt><em class="property"> = {u'duplicate_username': &lt;django.utils.functional.__proxy__ object at 0xab280ec&gt;, u'password_mismatch': &lt;django.utils.functional.__proxy__ object at 0x9a246ac&gt;}</em><a class="headerlink" href="#administrarUsuarios.forms.CustomUserCreationForm.error_messages" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="attribute">
-<dt id="administrarUsuarios.forms.CustomUserCreationForm.media">
-<tt class="descclassname">CustomUserCreationForm.</tt><tt class="descname">media</tt><a class="headerlink" href="#administrarUsuarios.forms.CustomUserCreationForm.media" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="method">
-<dt id="administrarUsuarios.forms.CustomUserCreationForm.save">
-<tt class="descclassname">CustomUserCreationForm.</tt><tt class="descname">save</tt><big>(</big><em>commit=True</em><big>)</big><a class="headerlink" href="#administrarUsuarios.forms.CustomUserCreationForm.save" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<tt class="descname">clean_username</tt><big>(</big><big>)</big><a class="headerlink" href="#administrarUsuarios.forms.CustomUserCreationForm.clean_username" title="Enlazar permanentemente con esta definición">¶</a></dt>
+<dd><p><em>Función responsable de validar la unicidad del nombre de usuario dentro del sistema. Si existe error no se
+creará el usuario.</em></p>
+</dd></dl>
 
 </dd></dl>
 
 </div>
 <div class="section" id="module-administrarUsuarios.tests">
-<span id="administrarusuarios-tests-module"></span><h2>administrarUsuarios.tests module<a class="headerlink" href="#module-administrarUsuarios.tests" title="Permalink to this headline">¶</a></h2>
+<span id="tests"></span><h2>tests<a class="headerlink" href="#module-administrarUsuarios.tests" title="Enlazar permanentemente con este título">¶</a></h2>
 <dl class="class">
 <dt id="administrarUsuarios.tests.TestAdministrarUsuarios">
-<em class="property">class </em><tt class="descclassname">administrarUsuarios.tests.</tt><tt class="descname">TestAdministrarUsuarios</tt><big>(</big><em>methodName='runTest'</em><big>)</big><a class="headerlink" href="#administrarUsuarios.tests.TestAdministrarUsuarios" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">django.test.testcases.TestCase</span></tt></p>
+<em class="property">class </em><tt class="descclassname">administrarUsuarios.tests.</tt><tt class="descname">TestAdministrarUsuarios</tt><big>(</big><em>methodName='runTest'</em><big>)</big><a class="headerlink" href="#administrarUsuarios.tests.TestAdministrarUsuarios" title="Enlazar permanentemente con esta definición">¶</a></dt>
+<dd><p>Clases base: <tt class="xref py py-class docutils literal"><span class="pre">django.test.testcases.TestCase</span></tt></p>
 <dl class="docutils">
 <dt>Test para Administración de usuarios, pruebas realizadas:</dt>
 <dd><ul class="first last simple">
@@ -245,80 +150,58 @@ campos necesarios para la creación de un usuario en el sistema.</p>
 </ul>
 </dd>
 </dl>
-<dl class="attribute">
-<dt id="administrarUsuarios.tests.TestAdministrarUsuarios.pw_admin">
-<tt class="descname">pw_admin</tt><em class="property"> = 'admin'</em><a class="headerlink" href="#administrarUsuarios.tests.TestAdministrarUsuarios.pw_admin" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="attribute">
-<dt id="administrarUsuarios.tests.TestAdministrarUsuarios.pw_new_admin">
-<tt class="descname">pw_new_admin</tt><em class="property"> = '123456'</em><a class="headerlink" href="#administrarUsuarios.tests.TestAdministrarUsuarios.pw_new_admin" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
 <dl class="method">
 <dt id="administrarUsuarios.tests.TestAdministrarUsuarios.setUp">
-<tt class="descname">setUp</tt><big>(</big><big>)</big><a class="headerlink" href="#administrarUsuarios.tests.TestAdministrarUsuarios.setUp" title="Permalink to this definition">¶</a></dt>
-<dd><p>Crea el usuario &#8216;admin&#8217; con contraseña &#8216;admin&#8217;</p>
+<tt class="descname">setUp</tt><big>(</big><big>)</big><a class="headerlink" href="#administrarUsuarios.tests.TestAdministrarUsuarios.setUp" title="Enlazar permanentemente con esta definición">¶</a></dt>
+<dd><p><em>Crea el usuario &#8216;admin&#8217; con contraseña &#8216;admin&#8217;.</em></p>
 </dd></dl>
 
 <dl class="method">
 <dt id="administrarUsuarios.tests.TestAdministrarUsuarios.test_CustomUserCreationForm_response">
-<tt class="descname">test_CustomUserCreationForm_response</tt><big>(</big><big>)</big><a class="headerlink" href="#administrarUsuarios.tests.TestAdministrarUsuarios.test_CustomUserCreationForm_response" title="Permalink to this definition">¶</a></dt>
-<dd><p>Test para el formulario de  creación de usuarios en el sistema</p>
+<tt class="descname">test_CustomUserCreationForm_response</tt><big>(</big><big>)</big><a class="headerlink" href="#administrarUsuarios.tests.TestAdministrarUsuarios.test_CustomUserCreationForm_response" title="Enlazar permanentemente con esta definición">¶</a></dt>
+<dd><p><em>Test para el formulario de  creación de usuarios en el sistema.</em></p>
 </dd></dl>
 
 <dl class="method">
 <dt id="administrarUsuarios.tests.TestAdministrarUsuarios.test_changePass_response">
-<tt class="descname">test_changePass_response</tt><big>(</big><big>)</big><a class="headerlink" href="#administrarUsuarios.tests.TestAdministrarUsuarios.test_changePass_response" title="Permalink to this definition">¶</a></dt>
-<dd><p>Test del Logeo del usuario &#8216;admin&#8217; y posterior modificación de la contraseña.</p>
+<tt class="descname">test_changePass_response</tt><big>(</big><big>)</big><a class="headerlink" href="#administrarUsuarios.tests.TestAdministrarUsuarios.test_changePass_response" title="Enlazar permanentemente con esta definición">¶</a></dt>
+<dd><p><em>Test del Logeo del usuario &#8216;admin&#8217; y posterior modificación de la contraseña.</em></p>
 </dd></dl>
 
 <dl class="method">
 <dt id="administrarUsuarios.tests.TestAdministrarUsuarios.test_changeUser_response">
-<tt class="descname">test_changeUser_response</tt><big>(</big><big>)</big><a class="headerlink" href="#administrarUsuarios.tests.TestAdministrarUsuarios.test_changeUser_response" title="Permalink to this definition">¶</a></dt>
-<dd><p>Test para la vista de modificación de usuarios en el sistema</p>
+<tt class="descname">test_changeUser_response</tt><big>(</big><big>)</big><a class="headerlink" href="#administrarUsuarios.tests.TestAdministrarUsuarios.test_changeUser_response" title="Enlazar permanentemente con esta definición">¶</a></dt>
+<dd><p><em>Test para la vista de modificación de usuarios en el sistema.</em></p>
 </dd></dl>
 
 <dl class="method">
 <dt id="administrarUsuarios.tests.TestAdministrarUsuarios.test_createUser_response">
-<tt class="descname">test_createUser_response</tt><big>(</big><big>)</big><a class="headerlink" href="#administrarUsuarios.tests.TestAdministrarUsuarios.test_createUser_response" title="Permalink to this definition">¶</a></dt>
-<dd><p>Test para la vista de creación de usuarios en el sistema</p>
-</dd></dl>
-
-<dl class="attribute">
-<dt id="administrarUsuarios.tests.TestAdministrarUsuarios.un_admin">
-<tt class="descname">un_admin</tt><em class="property"> = 'admin'</em><a class="headerlink" href="#administrarUsuarios.tests.TestAdministrarUsuarios.un_admin" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-</dd></dl>
-
-<dl class="class">
-<dt id="administrarUsuarios.tests.UsuarioFactory">
-<em class="property">class </em><tt class="descclassname">administrarUsuarios.tests.</tt><tt class="descname">UsuarioFactory</tt><a class="headerlink" href="#administrarUsuarios.tests.UsuarioFactory" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">factory.django.DjangoModelFactory</span></tt></p>
-<dl class="attribute">
-<dt id="administrarUsuarios.tests.UsuarioFactory.FACTORY_FOR">
-<tt class="descname">FACTORY_FOR</tt><a class="headerlink" href="#administrarUsuarios.tests.UsuarioFactory.FACTORY_FOR" title="Permalink to this definition">¶</a></dt>
-<dd><p>alias of <tt class="xref py py-class docutils literal"><span class="pre">Usuario</span></tt></p>
+<tt class="descname">test_createUser_response</tt><big>(</big><big>)</big><a class="headerlink" href="#administrarUsuarios.tests.TestAdministrarUsuarios.test_createUser_response" title="Enlazar permanentemente con esta definición">¶</a></dt>
+<dd><p><em>Test para la vista de creación de usuarios en el sistema.</em></p>
 </dd></dl>
 
 </dd></dl>
 
 </div>
 <div class="section" id="module-administrarUsuarios.views">
-<span id="administrarusuarios-views-module"></span><h2>administrarUsuarios.views module<a class="headerlink" href="#module-administrarUsuarios.views" title="Permalink to this headline">¶</a></h2>
+<span id="views"></span><h2>views<a class="headerlink" href="#module-administrarUsuarios.views" title="Enlazar permanentemente con este título">¶</a></h2>
 <dl class="function">
 <dt id="administrarUsuarios.views.changeAnyUser">
-<tt class="descclassname">administrarUsuarios.views.</tt><tt class="descname">changeAnyUser</tt><big>(</big><em>request</em>, <em>id_usuario</em><big>)</big><a class="headerlink" href="#administrarUsuarios.views.changeAnyUser" title="Permalink to this definition">¶</a></dt>
-<dd><p>Vista para la modificacion de usuarios en el sistema.
-Función válida solo para el usuario con rol de Administrador.</p>
+<tt class="descclassname">administrarUsuarios.views.</tt><tt class="descname">changeAnyUser</tt><big>(</big><em>request</em>, <em>id_usuario</em><big>)</big><a class="headerlink" href="#administrarUsuarios.views.changeAnyUser" title="Enlazar permanentemente con esta definición">¶</a></dt>
+<dd><p><em>Vista para la modificacion de usuarios en el sistema.
+Función válida solo para el usuario con rol de Administrador.</em></p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Param:</th><td class="field-body">HttpRequest necesario para modificar los datos de usuario</td>
+<tr class="field-odd field"><th class="field-name">Parámetros:</th><td class="field-body"><ul class="first simple">
+<li><strong>request</strong> &#8211; HttpRequest necesario para modificar los datos de usuario, es la solicitud de la acción.</li>
+<li><strong>id_usuario</strong> &#8211; Identificador del usuario el cual se desea modificar.</li>
+</ul>
+</td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">Proporciona la pagina changeanyuser.html con el formulario correspondiente</td>
+<tr class="field-even field"><th class="field-name">Devuelve:</th><td class="field-body"><p class="first last">Proporciona la pagina <tt class="docutils literal"><span class="pre">changeanyuser.html</span></tt> con el formulario correspondiente.</p>
+</td>
 </tr>
 </tbody>
 </table>
@@ -326,16 +209,16 @@ Función válida solo para el usuario con rol de Administrador.</p>
 
 <dl class="function">
 <dt id="administrarUsuarios.views.changePass">
-<tt class="descclassname">administrarUsuarios.views.</tt><tt class="descname">changePass</tt><big>(</big><em>request</em>, <em>*args</em>, <em>**kwargs</em><big>)</big><a class="headerlink" href="#administrarUsuarios.views.changePass" title="Permalink to this definition">¶</a></dt>
-<dd><p>Vista para la modificación de contrasena  del usuario.
-Modificación de los datos propios del usuario actual.</p>
+<tt class="descclassname">administrarUsuarios.views.</tt><tt class="descname">changePass</tt><big>(</big><em>request</em>, <em>*args</em>, <em>**kwargs</em><big>)</big><a class="headerlink" href="#administrarUsuarios.views.changePass" title="Enlazar permanentemente con esta definición">¶</a></dt>
+<dd><p><em>Vista para la modificación de contrasena  del usuario.
+Modificación de los datos propios del usuario actual.</em></p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Param:</th><td class="field-body">HttpRequest necesario para modificar la contrasena del usuario</td>
+<tr class="field-odd field"><th class="field-name">Parámetros:</th><td class="field-body"><strong>request</strong> &#8211; HttpRequest necesario para modificar la contrasena del usuario, es la solicitud de la acción.</td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">Proporciona la pagina changePass.html con el formulario correspondiente</td>
+<tr class="field-even field"><th class="field-name">Devuelve:</th><td class="field-body">Proporciona la pagina <tt class="docutils literal"><span class="pre">changePass.html</span></tt> con el formulario correspondiente.</td>
 </tr>
 </tbody>
 </table>
@@ -343,16 +226,33 @@ Modificación de los datos propios del usuario actual.</p>
 
 <dl class="function">
 <dt id="administrarUsuarios.views.changeUser">
-<tt class="descclassname">administrarUsuarios.views.</tt><tt class="descname">changeUser</tt><big>(</big><em>request</em>, <em>*args</em>, <em>**kwargs</em><big>)</big><a class="headerlink" href="#administrarUsuarios.views.changeUser" title="Permalink to this definition">¶</a></dt>
-<dd><p>Vista para la modificacion de datos del usuario actual en el sistema.
-Modificación de los datos propios del usuario actual.</p>
+<tt class="descclassname">administrarUsuarios.views.</tt><tt class="descname">changeUser</tt><big>(</big><em>request</em>, <em>*args</em>, <em>**kwargs</em><big>)</big><a class="headerlink" href="#administrarUsuarios.views.changeUser" title="Enlazar permanentemente con esta definición">¶</a></dt>
+<dd><p><em>Vista para la modificacion de datos del usuario actual en el sistema.
+Modificación de los datos propios del usuario actual.</em></p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Param:</th><td class="field-body">HttpRequest necesario para modificar los datos de usuario</td>
+<tr class="field-odd field"><th class="field-name">Parámetros:</th><td class="field-body"><strong>request</strong> &#8211; HttpRequest necesario para modificar los datos de usuario, es la solicitud de la acción.</td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">Proporciona la pagina changeuser.html con el formulario correspondiente</td>
+<tr class="field-even field"><th class="field-name">Devuelve:</th><td class="field-body">Proporciona la pagina <tt class="docutils literal"><span class="pre">changeuser.html</span></tt> con el formulario correspondiente</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="administrarUsuarios.views.changeUser2">
+<tt class="descclassname">administrarUsuarios.views.</tt><tt class="descname">changeUser2</tt><big>(</big><em>request</em>, <em>*args</em>, <em>**kwargs</em><big>)</big><a class="headerlink" href="#administrarUsuarios.views.changeUser2" title="Enlazar permanentemente con esta definición">¶</a></dt>
+<dd><p><em>Vista para la modificacion de datos del usuario actual en el sistema.
+Modificación de los datos propios del usuario actual.</em></p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parámetros:</th><td class="field-body"><strong>request</strong> &#8211; HttpRequest necesario para modificar los datos de usuario, es la solicitud de la acción.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Devuelve:</th><td class="field-body">Proporciona la pagina <tt class="docutils literal"><span class="pre">changeuser1.html</span></tt> con el formulario correspondiente.</td>
 </tr>
 </tbody>
 </table>
@@ -360,15 +260,15 @@ Modificación de los datos propios del usuario actual.</p>
 
 <dl class="function">
 <dt id="administrarUsuarios.views.createUser">
-<tt class="descclassname">administrarUsuarios.views.</tt><tt class="descname">createUser</tt><big>(</big><em>request</em>, <em>*args</em>, <em>**kwargs</em><big>)</big><a class="headerlink" href="#administrarUsuarios.views.createUser" title="Permalink to this definition">¶</a></dt>
-<dd><p>Vista para la creacion de usuarios en el sistema.</p>
+<tt class="descclassname">administrarUsuarios.views.</tt><tt class="descname">createUser</tt><big>(</big><em>request</em>, <em>*args</em>, <em>**kwargs</em><big>)</big><a class="headerlink" href="#administrarUsuarios.views.createUser" title="Enlazar permanentemente con esta definición">¶</a></dt>
+<dd><p><em>Vista para la creación de usuarios en el sistema.</em></p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Param:</th><td class="field-body">HttpRequest</td>
+<tr class="field-odd field"><th class="field-name">Parámetros:</th><td class="field-body"><strong>request</strong> &#8211; HttpRequest con los datos de la sesion del usuario actual, es la solicitud de la acción.</td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">Proporciona la pagina createuser.html con el formulario correspondiente:</td>
+<tr class="field-even field"><th class="field-name">Devuelve:</th><td class="field-body">Proporciona la pagina <tt class="docutils literal"><span class="pre">createuser.html</span></tt> con el formulario correspondiente</td>
 </tr>
 </tbody>
 </table>
@@ -376,23 +276,20 @@ Modificación de los datos propios del usuario actual.</p>
 
 <dl class="function">
 <dt id="administrarUsuarios.views.userList">
-<tt class="descclassname">administrarUsuarios.views.</tt><tt class="descname">userList</tt><big>(</big><em>request</em>, <em>*args</em>, <em>**kwargs</em><big>)</big><a class="headerlink" href="#administrarUsuarios.views.userList" title="Permalink to this definition">¶</a></dt>
-<dd><p>Vista para listar los usuarios existentes en el sistema.</p>
+<tt class="descclassname">administrarUsuarios.views.</tt><tt class="descname">userList</tt><big>(</big><em>request</em>, <em>*args</em>, <em>**kwargs</em><big>)</big><a class="headerlink" href="#administrarUsuarios.views.userList" title="Enlazar permanentemente con esta definición">¶</a></dt>
+<dd><p><em>Vista para listar los usuarios existentes en el sistema.</em></p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Param:</th><td class="field-body">HttpRequest necesario para listar los usuarios</td>
+<tr class="field-odd field"><th class="field-name">Parámetros:</th><td class="field-body"><strong>request</strong> &#8211; HttpRequest necesario para listar los usuarios, es la solicitud de la acción.</td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">Proporciona la pagina userlist.html con la lista respectiva de los usuarios existentes en el sistema</td>
+<tr class="field-even field"><th class="field-name">Devuelve:</th><td class="field-body">Proporciona la pagina <tt class="docutils literal"><span class="pre">userlist.html</span></tt> con la lista respectiva de los usuarios existentes en el sistema.</td>
 </tr>
 </tbody>
 </table>
 </dd></dl>
 
-</div>
-<div class="section" id="module-administrarUsuarios">
-<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-administrarUsuarios" title="Permalink to this headline">¶</a></h2>
 </div>
 </div>
 
@@ -400,23 +297,70 @@ Modificación de los datos propios del usuario actual.</p>
           </div>
         </div>
       </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+            <p class="logo"><a href="index.html">
+              <img class="logo" src="_static/logoZARpm.jpg" alt="Logo"/>
+            </a></p>
+  <h3><a href="index.html">Tabla de Contenidos</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Usuarios</a><ul>
+<li><a class="reference internal" href="#module-administrarUsuarios.forms">forms</a></li>
+<li><a class="reference internal" href="#module-administrarUsuarios.tests">tests</a></li>
+<li><a class="reference internal" href="#module-administrarUsuarios.views">views</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Tema anterior</h4>
+  <p class="topless"><a href="autenticacion.html"
+                        title="capítulo anterior">Autenticacion</a></p>
+  <h4>Próximo tema</h4>
+  <p class="topless"><a href="administrarRolesPermisos.html"
+                        title="próximo capítulo">RolesPermisos</a></p>
+  <h3>Esta página</h3>
+  <ul class="this-page-menu">
+    <li><a href="_sources/administrarUsuarios.txt"
+           rel="nofollow">Mostrar el código</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Búsqueda rápida</h3>
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Ir a" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Introduzca los términos de búsqueda o un nombre de módulo, clase o función.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
       <div class="clearer"></div>
     </div>
     <div class="related">
-      <h3>Navigation</h3>
+      <h3>Navegación</h3>
       <ul>
         <li class="right" style="margin-right: 10px">
-          <a href="genindex.html" title="General Index"
-             >index</a></li>
+          <a href="genindex.html" title="Índice General"
+             >índice</a></li>
         <li class="right" >
-          <a href="py-modindex.html" title="Python Module Index"
-             >modules</a> |</li>
-        <li><a href="index.html">ZARpm 0.1 documentation</a> &raquo;</li> 
+          <a href="py-modindex.html" title="Índice de Módulos Python"
+             >módulos</a> |</li>
+        <li class="right" >
+          <a href="administrarRolesPermisos.html" title="RolesPermisos"
+             >siguiente</a> |</li>
+        <li class="right" >
+          <a href="autenticacion.html" title="Autenticacion"
+             >anterior</a> |</li>
+        <li><a href="index.html">ZARpm - Documentation</a> &raquo;</li> 
       </ul>
     </div>
     <div class="footer">
         &copy; Copyright 2014, Augusto Amarilla, Gerardo Ramos y Saúl Zalimben.
-      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2.2.
+      Creado con <a href="http://sphinx-doc.org/">Sphinx</a> 1.2.2.
     </div>
   </body>
 </html>

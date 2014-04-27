@@ -1,46 +1,31 @@
-administrarFases package
-========================
+Fases
+=======================
 
-Submodules
-----------
-
-administrarFases.forms module
+forms
 -----------------------------
 
 .. automodule:: administrarFases.forms
     :members:
-    :undoc-members:
     :show-inheritance:
 
-administrarFases.models module
+
+models
 ------------------------------
 
 .. automodule:: administrarFases.models
     :members:
-    :undoc-members:
     :show-inheritance:
 
-administrarFases.tests module
+tests
 -----------------------------
 
 .. automodule:: administrarFases.tests
     :members:
-    :undoc-members:
     :show-inheritance:
 
-administrarFases.views module
+views
 -----------------------------
 
 .. automodule:: administrarFases.views
     :members:
-    :undoc-members:
-    :show-inheritance:
-
-
-Module contents
----------------
-
-.. automodule:: administrarFases
-    :members:
-    :undoc-members:
     :show-inheritance:
