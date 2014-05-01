@@ -15,79 +15,97 @@ logger = logging.getLogger(__name__)
 @login_required()
 def createItemType(request, id_fase):
     """
-    Vista para la creación de tipos de ítems en el sistema.
-    Opción válida para usuarios con los roles correspondientes.
+    *Vista para la creación de tipos de ítems en el sistema.
+    Opción válida para usuarios con los roles correspondientes.*
 
-    :param: Recibe la petición request y el identificador de la fase de tal manera a identificar la fase a la cual pertencera el nuevo tipo de item creado.
-    :return: Crea el tipo de ítem dentro de la fase especificada y luego regresa al menu principal
+    :param request: HttpRequest necesario para crear los tipos de ítems dentro de alguna fase, es la solicitud de la acción.
+    :param id_fase: Identificador de la fase dentro del proyecto, a la cual se le vincularán los tipos de ítems.
+    :param args: Argumentos para el modelo ``TipoItem``.
+    :param kwargs: Keyword Arguments para la el modelo ``TipoItem``.
+    :return: Proporciona la pagina ``createtypeitem.html`` con el formulario correspondiente.
+            Crea el tipo de ítem dentro de la fase especificada y luego regresa al menu principal
     """
+
     phase = Fase.objects.get(pk=id_fase)
-    project = Proyecto.objects.get(pk=phase.proyecto)
+    project = Proyecto.objects.get(pk=phase.proyecto.id)
     if request.method == 'POST':
         form = NewItemTypeForm(request.POST)
         if form.is_valid():
             tipoitem = form.save(commit=False)
-            tipoitem.perteneceFase = id_fase
+            tipoitem.pertenece_fase = phase
             tipoitem.save()
-            logger.info('El usuario ' + request.user.username + ' ha creado el tipo de ítem: ' +
-                        form["nombre"].value() + ' dentro de la fase: ' + project.nombre + '->' + phase.nombre)
-            return HttpResponseRedirect('/base/')
+            logger.info('El usuario ' + request.user.username + ' ha creado el tipo de item: ' +
+                        tipoitem.nombre + ' dentro de la fase: ' + project.nombre + '->' + phase.nombre)
+            return HttpResponseRedirect('/itemtypelist/')
     else:
         form = NewItemTypeForm()
     return render_to_response('tipo_item/createitemtype.html', {'form': form}, context_instance=RequestContext(request))
 
 
 @login_required()
-def changeItemTypeForm(request, id_tipoitem):
+def changeItemType(request, id_tipoitem):
     """
-    Vista para la modificacion de un tipo de ítem dentro del sistema.
-    Opción válida para usuarios con los roles correspondientes.
+    *Vista para la modificacion de un tipo de ítem dentro del sistema.
+    Opción válida para usuarios con los roles correspondientes.*
 
-    :param: Recibe la petición request y el identificador del tipo de item, de manera a identificar el tipo de ítem el cual deseamos modificar.
-    :return: Modifica el tipo de ítem y luego regresa al menu principal
+    :param request: HttpRequest necesario para modificar los tipos de ítems dentro de alguna fase, es la solicitud de la acción.
+    :param id_tipoitem: Identificador del tipo de ítem dentro de la fase, a la cual se le vincularán los tipos de ítems.
+    :param args: Argumentos para el modelo ``TipoItem``.
+    :param kwargs: Keyword Arguments para la el modelo ``TipoItem``.
+    :return: Proporciona la pagina ``changetypeitem.html`` con el formulario correspondiente.
+            Modifica el tipo de ítem dentro de la fase especificada y luego regresa al menu principal
     """
+
     itemtype = TipoItem.objects.get(pk=id_tipoitem)
-    phase = Fase.objects.get(pk=itemtype.perteneceFase)
-    project = Proyecto.objects.get(pk=phase.proyecto)
+    phase = Fase.objects.get(pk=itemtype.pertenece_fase.id)
+    project = Proyecto.objects.get(pk=phase.proyecto.id)
     if request.method == 'POST':
-        form = changeItemTypeForm(request.POST, instance=itemtype)
+        form = ChangeItemTypeForm(request.POST, instance=itemtype)
         if form.is_valid():
             form.save()
             logger.info('El usuario ' + request.user.username + ' ha modificado el tipo de ítem TI-' +
                         id_tipoitem + ' dentro del proyecto ' + project.nombre + '->' + phase.nombre)
-            return HttpResponseRedirect('/base/')
+            return HttpResponseRedirect('/main/')
     else:
-        form = changeItemTypeForm(instance=itemtype)
-    return render_to_response('tipo_item/changeitemtype.html', {'form': form}, context_instance=RequestContext(request))
+        form = ChangeItemTypeForm(instance=itemtype)
+    return render_to_response('tipo_item/changeitemtype.html', {'form': form, 'itemtype': itemtype}, context_instance=RequestContext(request))
 
 
 def deleteItemType(request, id_tipoitem):
     """
-    Vista para la eliminación de un tipo de ítem existente en el sistema.
+    *Vista para la eliminación de un tipo de ítem existente en el sistema.*
 
-    :param: Recibe la petición request y el identificador del tipo de ítem el cual deseamos eliminar.
-    :return: Elimina el tipo de ítem especificado  y luego regresa al menu principal
+    :param request: HttpRequest necesario para eliminar los tipos de ítems dentro de alguna fase, es la solicitud de la acción.
+    :param id_tipoitem: Identificador del tipo de ítem dentro de la fase, que se desea eliminar.
+    :return: Elimina el tipo de ítem dentro de la fase especificada y luego regresa al menu principal.
     """
     itemtype = TipoItem.objects.get(pk=id_tipoitem)
-    phase = Fase.objects.get(pk=itemtype.perteneceFase)
+    phase = Fase.objects.get(pk=itemtype.pertenece_fase)
     project = Proyecto.objects.get(pk=phase.proyecto)
+    itemtype_copy = itemtype
+    itemtype.delete()
     logger.info(
         'El usuario {0} ha eliminado el tipo de ítem {1} dentro del proyecto {2}->{3}'.format(request.user.username,
-                                                                                              itemtype.nombre,
+                                                                                              itemtype_copy.nombre,
                                                                                               project.nombre,
                                                                                               phase.nombre))
-    itemtype.delete()
-    return render(request, "base.html", )
+
+    return render(request, "tipo_item/itemtypelist.html", )
 
 
 @login_required
 def itemtypeList(request, id_fase):
     """
-    Vista para la listar todos los tipos de ítem pertenecientes a alguna fase .
-    Opción válida para usuarios con los roles correspondientes.
+    *Vista para la listar todos los tipos de ítem pertenecientes a alguna fase.*
 
-    :param: Recibe la petición request y el identificador de la fase, para listar todos los tipos de ítems pertenecientes a dicha fase
-    :return: Lista todos los tipos de ítems pertenecientes a la fase especificada
+    *Opción válida para usuarios con los roles correspondientes.*
+
+    :param request: HttpRequest necesario para visualizar los tipos de ítems dentro de alguna fase, es la solicitud de la acción.
+    :param id_fase: Identificador de la fase, a la cual pertenecen los tipos de ítems.
+    :param args: Argumentos para el modelo ``TipoItem``.
+    :param kwargs: Keyword Arguments para la el modelo ``TipoItem``.
+    :return: Proporciona la pagina ``itemtypelist.html`` con la lista de tipos de ítem que perteneces a la fase especificada.
     """
-    itemtype = TipoItem.objects.filter(perteneceFase=id_fase)
-    return render(request, "tipo_item/itemtypelist.html", {'itemtype': itemtype}, )
+
+    itemtype = TipoItem.objects.filter(pertenece_fase=id_fase)
+    return render(request, "tipo_item/itemtypelist.html", {'itemtype': itemtype})

@@ -45,6 +45,7 @@ INSTALLED_APPS = (
     'administrarProyectos',
     'administrarFases',
     'administrarRolesPermisos',
+    'administrarTipoItem',
 )
 
 MIDDLEWARE_CLASSES = (

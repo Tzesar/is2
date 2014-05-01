@@ -14,7 +14,6 @@ class NewPhaseForm(forms.ModelForm):
     :param args: Argumentos para el modelo ``ModelForm``.
     :param kwargs: Keyword Arguments para la el modelo ``ModelForm``.
 
-
     ::
 
         class Meta:

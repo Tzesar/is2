@@ -5,13 +5,11 @@ from administrarFases.models import Fase
 
 class TipoItem(models.Model):
     """
-    Modelo para la clase fase, en el cual se encuentras todos los atributos de un tipo de ítem:
-        + Codigo: Identificador Único dentro del Sistema
-        + Nombre: Nombre del tipo de ítem
-        + perteneceFase: Identificador de la fase a la cual se encuentra asociada
+    *Modelo para la clase fase, en el cual se encuentras todos los atributos de un* ``tipo de ítem``:
+        + *Nombre*: Nombre del tipo de ítem
+        + *perteneceFase*: Identificador de la fase a la cual se encuentra asociada
     """
 
-    codigo = models.CharField(max_length=2, default='TI')
     nombre = models.CharField(max_length=100)
     pertenece_fase = models.ForeignKey(Fase)
 
