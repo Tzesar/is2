@@ -7,8 +7,8 @@
 
 {% block title %}Usuarios del Sistema{% endblock %}
 
+{% block padTop %}{% endblock %}
 {% block panelCentral %}
-    {% block padTop %}{% endblock %}
     <div class="panel-heading">
         <h1 style="display: inline-block">Usuarios</h1>
         <span class="glyphicon glyphicon-search disable" id="searchIcon" style="font-size: x-large; padding-left: 1em"></span>
@@ -46,9 +46,11 @@
             </table>
         </div>
     </div>
+{% endblock panelCentral%}
+{% block botonesBottom %}
     <a href='/main/' class="btn btn-lg btn-warning" role="button">Atrás</a>
     <a href='/createuser/' class="btn btn-lg btn-success" role="button">Nuevo Usuario</a>
-{% endblock panelCentral%}
+{% endblock botonesBottom %}
 {% block jsAdicional %}
     <script src="{% static "bootstrap/js/bootstrap-switch.min.js" %}"></script>
     <script src="{% static "bootstrap/js/jquery.cookie.js" %}"></script>

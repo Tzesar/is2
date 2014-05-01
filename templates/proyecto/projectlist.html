@@ -5,15 +5,28 @@
 {% block title %}Proyecto en el Sistema{% endblock %}
 {% block pageName %}Proyectos{% endblock %}
 
-{% block mainBody %}
-    <div class="container col-lg-offset-1 col-lg-10 col-xs-12" style="padding-top: 2%">
-        <div class="panel panel-default" style="padding-top: 2%; padding-left: 2%; padding-right: 2%; padding-bottom: 2%">
-            <div class="panel panel-default">
-                <div class="panel-heading"><h1>Proyectos</h1></div>
-                {% render_table proyectos %}
-            </div>
-            <a href="{% url 'autenticacion.views.main' %}" class="btn btn-warning">Atrás</a>
-            <a href="{% url 'administrarProyectos.views.createProject' %}" class="btn btn-success">Proyecto Nuevo</a>
-        </div>
+{#{% block mainBody %}#}
+{#    <div class="container col-lg-offset-1 col-lg-10 col-xs-12" style="padding-top: 2%">#}
+{#        <div class="panel panel-default" style="padding-top: 2%; padding-left: 2%; padding-right: 2%; padding-bottom: 2%">#}
+{#            <div class="panel panel-default">#}
+{#                <div class="panel-heading"><h1>Proyectos</h1></div>#}
+{#                {% render_table proyectos %}#}
+{#            </div>#}
+{#            <a href="{% url 'autenticacion.views.main' %}" class="btn btn-warning">Atrás</a>#}
+{#            <a href="{% url 'administrarProyectos.views.createProject' %}" class="btn btn-success">Proyecto Nuevo</a>#}
+{#        </div>#}
+{#    </div>#}
+{#{% endblock %}#}
+
+{% block padTop %}{% endblock padTop %}
+{% block panelCentral %}
+    <div class="panel-heading"><h1>Proyectos</h1></div>
+    <div class="panel-body">
+        {% render_table proyectos %}
     </div>
-{% endblock %}
+
+{% endblock panelCentral %}
+{% block botonesBottom %}
+    <a href="{% url 'autenticacion.views.main' %}" class="btn btn-lg btn-warning">Atrás</a>
+    <a href="{% url 'administrarProyectos.views.createProject' %}" class="btn btn-lg btn-success">Proyecto Nuevo</a>
+{% endblock botonesBottom %}

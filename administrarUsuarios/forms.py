@@ -8,7 +8,7 @@ import floppyforms as forms2
 from autenticacion.models import Usuario
 
 
-class CustomUserCreationForm(forms.ModelForm):
+class CustomUserCreationForm(forms2.ModelForm):
     """
     Formulario para la creación de usuarios, especificar el nombre de usuario y la contraseña del nuevo usuario.
 
@@ -23,25 +23,33 @@ class CustomUserCreationForm(forms.ModelForm):
         'password_mismatch': _("The two password fields didn't match."),
     }
 
-    username = forms.RegexField(label=_("Username"), max_length=30,
+    username = forms2.RegexField(
+        label=_("Username"), max_length=30,
         regex=r'^[\w.@+-]+$',
-        help_text=_("Required. 30 characters or fewer. Letters, digits and "
-                      "@/./+/-/_ only."),
+        help_text=_("Required. 30 characters or fewer. Letters, digits and ""@/./+/-/_ only."),
         error_messages={
-            'invalid': _("This value may contain only letters, numbers and "
-                         "@/./+/-/_ characters.")})
-    password1 = forms.CharField(
-        label=_("Password"),
-        widget=forms.PasswordInput)
+            'invalid': _("This value may contain only letters, numbers and ""@/./+/-/_ characters.")},
+        widget=forms2.TextInput(attrs={'class': 'form-control', }),
+    )
 
-    password2 = forms.CharField(
+    password1 = forms2.CharField(
+        label=_("Password"),
+        widget=forms2.PasswordInput(attrs={'class': 'form-control', }),
+    )
+
+    password2 = forms2.CharField(
         label=_("Password confirmation"),
-        widget=forms.PasswordInput,
-        help_text=_("Enter the same password as above, for verification."))
+        help_text=_("Enter the same password as above, for verification."),
+        widget=forms2.PasswordInput(attrs={'class': 'form-control', }),
+    )
 
     class Meta:
         model = Usuario
-        fields = ("username",)
+        fields = ('username', )
+        exclude = ('first_name', 'last_name', 'email', 'telefono', )
+        widgets = {
+            'username': forms2.TextInput(attrs={'class': 'form-control', }),
+        }
 
     def clean_username(self):
         # Since User.username is unique, this check is redundant,
@@ -127,6 +135,19 @@ class CambiarUsuarioForm(forms2.ModelForm):
             'telefono': forms2.TextInput(attrs={'class': 'form-control', }),
         }
 
+    def __init__(self, *args, **kwargs):
+        super(CambiarUsuarioForm, self).__init__(*args, **kwargs)
+        f = self.fields.get('user_permissions', None)
+        if f is not None:
+            f.queryset = f.queryset.select_related('content_type')
+
+    def clean_password(self):
+        # Regardless of what the user provides, return the initial value.
+        # This is done here, rather than on the field, because the
+        # field does not have access to the initial value
+        return self.initial["password"]
+
+
 class CustomPasswordChangeForm(SetPasswordForm):
     """
     Formulario que permite a los usuarios cambiar la contraseña verificando con la contraseña anterior.
@@ -152,6 +173,7 @@ class CustomPasswordChangeForm(SetPasswordForm):
             )
         return old_password
 
+
 CustomPasswordChangeForm_fields = SortedDict([
     (k, CustomPasswordChangeForm.base_fields[k])
-        for k in ['old_password', 'new_password1', 'new_password2']])
+    for k in ['old_password', 'new_password1', 'new_password2']])

@@ -1,5 +1,6 @@
 {% extends 'base.html' %}
 {% load staticfiles %}
+{% load floppyforms %}
 
     {% block title %}Crear Usuario{% endblock %}
     {% block mainBody %}
@@ -19,9 +20,10 @@
                     </div>
                     <form action="" class="form-signin" role="form" method="post">
                         {% csrf_token %}
-                        <input name="username" type="text" class="form-control" placeholder="Usuario" required autofocus>
-                        <input name="password1" type="password" class="form-control" placeholder="Ingrese la contraseña" required>
-                        <input name="password2" type="password" class="form-control" placeholder="Re-ingrese la contraseña" required>
+                        {% form form using "formsLayouts/div.html" %}
+{#                        <input name="username" type="text" class="form-control" placeholder="Usuario" required autofocus>#}
+{#                        <input name="password1" type="password" class="form-control" placeholder="Ingrese la contraseña" required>#}
+{#                        <input name="password2" type="password" class="form-control" placeholder="Re-ingrese la contraseña" required>#}
                         <a href='/userlist/' class="btn btn-lg btn-warning btn-lg" role="button">Atrás</a>
                         <button class="btn btn-lg btn-success" type="submit">Crear</button>
                     </form>

@@ -29,7 +29,6 @@ class Proyecto(models.Model):
     fecha_inicio = models.DateField(help_text='Fecha de inicio del Proyecto', null=True)
     fecha_fin = models.DateField(help_text='Fecha estimada de finalizacion', null=True)
     estado = models.CharField(max_length=3, choices=opciones_estado, default='PEN', help_text='Estado del proyecto')
-    usuarios_asociados = models.ManyToManyField(Usuario, null=True, blank=True)
     observaciones = models.TextField(max_length=140, null=True)
 
     def __unicode__(self):

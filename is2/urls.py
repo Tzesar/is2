@@ -6,9 +6,10 @@ from django.conf.urls import patterns, url
 from django.contrib import admin
 from django.contrib.auth.views import logout_then_login
 from autenticacion.views import main, myLogin
-from administrarUsuarios.views import createUser, changeUser, userList, changePass, changeAnyUser, changeUser2
+from administrarUsuarios.views import createUser, changeUser, userList, userListJson, changePass, changeAnyUser
 from zar.views import about, contact
-from administrarProyectos.views import createProject, changeProject, projectList, workProject, setUserToProject, viewSetUserProject
+from administrarProyectos.views import createProject, changeProject, projectList, workProject, setUserToProject,\
+    viewSetUserProject
 from administrarFases.views import changePhase, createPhase, phaseList, deletePhase
 from administrarRolesPermisos.views import createRole, roleList, changeRole, deleteRole
 
@@ -22,9 +23,9 @@ urlpatterns = patterns('',
                        url(r'^about/$', about, name="about"),
                        url(r'^createuser/$', createUser, name="createuser"),
                        url(r'^changeuser/$', changeUser, name="changeuser"),
-                       url(r'^changeuser2/$', changeUser2, name="changeuser2"),
                        url(r'^changeanyuser/(?P<id_usuario>\d+)$', changeAnyUser, name="changeanyuser"),
                        url(r'^userlist/$', userList, name="userlist"),
+                       url(r'^userlistjson/(?P<tipoUsuario>[A-Z]{2})$', userListJson, name="userlistjson"),
                        url(r'^changepass/$', changePass, name="changepass"),
                        url(r'^contact/$', contact),
                        url(r'^createproject/$', createProject),
