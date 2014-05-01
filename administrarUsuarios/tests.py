@@ -28,10 +28,10 @@ class UsuarioFactory(factory.DjangoModelFactory):
 class TestAdministrarUsuarios(TestCase):
     """
     Test para Administración de usuarios, pruebas realizadas:
-        + CustomUserCreationForm: Formulario para la creación de usuarios en el sistema
-        + ChangePass: Prueba de vista y modificación de la contraseña del usuario actual.
-        + ChangeUser: Prueba de vista y modificación de los atributos del usuario actual.
-        + CreateUser: Prueba de Vista y creación de un nuevo usuario en el sistema.
+        + *CustomUserCreationForm:* Formulario para la creación de usuarios en el sistema
+        + *ChangePass:* Prueba de vista y modificación de la contraseña del usuario actual.
+        + *ChangeUser:* Prueba de vista y modificación de los atributos del usuario actual.
+        + *CreateUser:* Prueba de Vista y creación de un nuevo usuario en el sistema.
 
     """
     un_admin = 'admin'

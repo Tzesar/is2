@@ -65,6 +65,18 @@
 <em>definido del cual filtramos los campos de tal manera a que solo se habiliten los
 campos disponibles para la modificación de un proyecto en el sistema.</em></p>
 <p>Opción válida solo para usuarios con rol de <tt class="docutils literal"><span class="pre">Administrador</span></tt>.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parámetros:</th><td class="field-body"><ul class="first last simple">
+<li><strong>args</strong> &#8211; Argumentos para el modelo base <tt class="docutils literal"><span class="pre">ModelForm</span></tt>.</li>
+<li><strong>kwargs</strong> &#8211; Keyword Arguments para la función <tt class="docutils literal"><span class="pre">ModelForm</span></tt>.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
 <div class="highlight-python"><div class="highlight"><pre><span class="k">class</span> <span class="nc">Meta</span><span class="p">:</span>
     <span class="n">model</span> <span class="o">=</span> <span class="n">Proyecto</span>
     <span class="n">fields</span> <span class="o">=</span> <span class="p">(</span><span class="s">&#39;nombre&#39;</span><span class="p">,</span> <span class="s">&#39;lider_proyecto&#39;</span><span class="p">,</span> <span class="s">&#39;estado&#39;</span><span class="p">,</span> <span class="s">&#39;descripcion&#39;</span><span class="p">,)</span>
@@ -80,6 +92,18 @@ campos disponibles para la modificación de un proyecto en el sistema.</em></p>
 <em>definido del cual filtramos los campos de tal manera a que solo se habiliten los
 campos necesarios para la creación de un proyecto en el sistema.</em></p>
 <p>Opción válida solo para usuarios con rol de <tt class="docutils literal"><span class="pre">Administrador</span></tt>.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parámetros:</th><td class="field-body"><ul class="first last simple">
+<li><strong>args</strong> &#8211; Argumentos para el modelo base <tt class="docutils literal"><span class="pre">ModelForm</span></tt>.</li>
+<li><strong>kwargs</strong> &#8211; Keyword Arguments para la función <tt class="docutils literal"><span class="pre">ModelForm</span></tt>.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
 <div class="highlight-python"><div class="highlight"><pre><span class="k">class</span> <span class="nc">Meta</span><span class="p">:</span>
     <span class="n">model</span> <span class="o">=</span> <span class="n">Proyecto</span>
     <span class="n">fields</span> <span class="o">=</span> <span class="p">(</span><span class="s">&#39;nombre&#39;</span><span class="p">,</span> <span class="s">&#39;lider_proyecto&#39;</span><span class="p">,</span> <span class="s">&#39;descripcion&#39;</span><span class="p">,)</span>
@@ -92,6 +116,18 @@ campos necesarios para la creación de un proyecto en el sistema.</em></p>
 <em class="property">class </em><tt class="descclassname">administrarProyectos.forms.</tt><tt class="descname">setUserToProjectForm</tt><big>(</big><em>*args</em>, <em>**kwargs</em><big>)</big><a class="headerlink" href="#administrarProyectos.forms.setUserToProjectForm" title="Enlazar permanentemente con esta definición">¶</a></dt>
 <dd><p>Clases base: <tt class="xref py py-class docutils literal"><span class="pre">django.forms.models.ModelForm</span></tt></p>
 <p><em>Formulario para vincular usuarios a un proyecto</em></p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parámetros:</th><td class="field-body"><ul class="first last simple">
+<li><strong>args</strong> &#8211; Argumentos para el modelo base <tt class="docutils literal"><span class="pre">ModelForm</span></tt>.</li>
+<li><strong>kwargs</strong> &#8211; Keyword Arguments para el modelo <tt class="docutils literal"><span class="pre">ModelForm</span></tt>.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 </div>
@@ -102,12 +138,13 @@ campos necesarios para la creación de un proyecto en el sistema.</em></p>
 <em class="property">class </em><tt class="descclassname">administrarProyectos.models.</tt><tt class="descname">Proyecto</tt><big>(</big><em>*args</em>, <em>**kwargs</em><big>)</big><a class="headerlink" href="#administrarProyectos.models.Proyecto" title="Enlazar permanentemente con esta definición">¶</a></dt>
 <dd><p>Clases base: <tt class="xref py py-class docutils literal"><span class="pre">django.db.models.base.Model</span></tt></p>
 <dl class="docutils">
-<dt><em>Modelo para la clase ``Proyecto``, en el cual se encuentras todos los atributos de un proyecto:</em></dt>
+<dt><em>Modelo para la clase</em> <tt class="docutils literal"><span class="pre">Proyecto</span></tt> <em>, en el cual se encuentras todos los atributos de un proyecto:</em></dt>
 <dd><ul class="first last simple">
 <li><em>Codigo</em>: Identificador Único dentro del Sistema</li>
 <li><em>Nombre</em>: Nombre del Proyecto</li>
 <li><em>Líder de Proyecto</em>: Usuario responsable del Proyecto</li>
 <li><em>Descripción</em>: Breve reseña del proyecto</li>
+<li><em>Fecha de Creación</em>: Fecha de creación del proyecto</li>
 <li><em>Fecha de Inicio</em>: Fecha de inicio del proyecto</li>
 <li><em>Fecha de Fin</em>: Fecha estimada de finalización del proyecto</li>
 <li><em>Estado</em>: Los estados posibles del Proyecto. Por default: PEN(Pendiente)</li>
@@ -115,6 +152,18 @@ campos necesarios para la creación de un proyecto en el sistema.</em></p>
 </ul>
 </dd>
 </dl>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parámetros:</th><td class="field-body"><ul class="first last simple">
+<li><strong>args</strong> &#8211; Argumentos para el modelo <tt class="docutils literal"><span class="pre">Model</span></tt>.</li>
+<li><strong>kwargs</strong> &#8211; Keyword Arguments para la el modelo <tt class="docutils literal"><span class="pre">Model</span></tt>.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 <dl class="class">
@@ -135,6 +184,18 @@ campos necesarios para la creación de un proyecto en el sistema.</em></p>
     <span class="n">unique_together</span> <span class="o">=</span> <span class="p">((</span><span class="s">&#39;cod_proyecto&#39;</span><span class="p">,</span> <span class="s">&#39;cod_usuario&#39;</span><span class="p">),)</span>
 </pre></div>
 </div>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parámetros:</th><td class="field-body"><ul class="first last simple">
+<li><strong>args</strong> &#8211; Argumentos para el modelo <tt class="docutils literal"><span class="pre">Model</span></tt>.</li>
+<li><strong>kwargs</strong> &#8211; Keyword Arguments para la el modelo <tt class="docutils literal"><span class="pre">Model</span></tt>.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 </div>
@@ -145,6 +206,18 @@ campos necesarios para la creación de un proyecto en el sistema.</em></p>
 <em class="property">class </em><tt class="descclassname">administrarProyectos.tables.</tt><tt class="descname">ProyectoTabla</tt><big>(</big><em>*args</em>, <em>**kwargs</em><big>)</big><a class="headerlink" href="#administrarProyectos.tables.ProyectoTabla" title="Enlazar permanentemente con esta definición">¶</a></dt>
 <dd><p>Clases base: <tt class="xref py py-class docutils literal"><span class="pre">django_tables2.tables.Table</span></tt></p>
 <p><em>Tabla personalizada para el desarrollo de proyectos en el sistema.</em></p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parámetros:</th><td class="field-body"><ul class="first last simple">
+<li><strong>args</strong> &#8211; Argumentos para el modelo <tt class="docutils literal"><span class="pre">Table</span></tt>.</li>
+<li><strong>kwargs</strong> &#8211; Keyword Arguments para la el modelo <tt class="docutils literal"><span class="pre">Table</span></tt>.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 <dl class="class">
@@ -152,6 +225,18 @@ campos necesarios para la creación de un proyecto en el sistema.</em></p>
 <em class="property">class </em><tt class="descclassname">administrarProyectos.tables.</tt><tt class="descname">ProyectoTablaAdmin</tt><big>(</big><em>*args</em>, <em>**kwargs</em><big>)</big><a class="headerlink" href="#administrarProyectos.tables.ProyectoTablaAdmin" title="Enlazar permanentemente con esta definición">¶</a></dt>
 <dd><p>Clases base: <tt class="xref py py-class docutils literal"><span class="pre">django_tables2.tables.Table</span></tt></p>
 <p><em>Tabla personalizada para la modificación de proyectos en el sistema.</em></p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parámetros:</th><td class="field-body"><ul class="first last simple">
+<li><strong>args</strong> &#8211; Argumentos para el modelo <tt class="docutils literal"><span class="pre">Table</span></tt>.</li>
+<li><strong>kwargs</strong> &#8211; Keyword Arguments para la el modelo <tt class="docutils literal"><span class="pre">Table</span></tt>.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 </div>
@@ -162,9 +247,9 @@ campos necesarios para la creación de un proyecto en el sistema.</em></p>
 <em class="property">class </em><tt class="descclassname">administrarProyectos.tests.</tt><tt class="descname">TestAdministrarProjectos</tt><big>(</big><em>methodName='runTest'</em><big>)</big><a class="headerlink" href="#administrarProyectos.tests.TestAdministrarProjectos" title="Enlazar permanentemente con esta definición">¶</a></dt>
 <dd><p>Clases base: <tt class="xref py py-class docutils literal"><span class="pre">django.test.testcases.TestCase</span></tt></p>
 <dl class="docutils">
-<dt><a href="#id1"><span class="problematic" id="id2">*</span></a>Test para Administración de usuarios, pruebas realizadas:</dt>
+<dt><em>Test para Administración de usuarios, pruebas realizadas:</em></dt>
 <dd><ul class="first last simple">
-<li><em>ChangeProject</em>: Test de vista y modificación de los atributos de un proyecto en el sistema.*</li>
+<li><em>ChangeProject</em>: Test de vista y modificación de los atributos de un proyecto en el sistema.</li>
 <li><em>CreateProject</em>: Test de Vista y creación de un nuevo proyecto en el sistema.</li>
 </ul>
 </dd>
@@ -201,10 +286,16 @@ Opción válida para usuarios con rol de Administrador.</em></p>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parámetros:</th><td class="field-body"><strong>request</strong> &#8211; HttpRequest necesario para modificar proyectos, es la solicitud de la acción.</td>
+<tr class="field-odd field"><th class="field-name">Parámetros:</th><td class="field-body"><ul class="first simple">
+<li><strong>request</strong> &#8211; HttpRequest necesario para modificar proyectos, es la solicitud de la acción.</li>
+<li><strong>args</strong> &#8211; Argumentos para el modelo <tt class="docutils literal"><span class="pre">Proyecto</span></tt>.</li>
+<li><strong>kwargs</strong> &#8211; Keyword Arguments para la el modelo <tt class="docutils literal"><span class="pre">Proyecto</span></tt>.</li>
+</ul>
+</td>
 </tr>
-<tr class="field-even field"><th class="field-name">Devuelve:</th><td class="field-body">Proporciona la pagina <tt class="docutils literal"><span class="pre">changeproject.html</span></tt> con el formulario correspondiente
-Modifica el proyecto y luego regresa al menu principal</td>
+<tr class="field-even field"><th class="field-name">Devuelve:</th><td class="field-body"><p class="first last">Proporciona la pagina <tt class="docutils literal"><span class="pre">changeproject.html</span></tt> con el formulario correspondiente
+Modifica el proyecto y luego regresa al menu principal</p>
+</td>
 </tr>
 </tbody>
 </table>
@@ -219,10 +310,16 @@ Opción válida para usuarios con rol de ``Administrador``.</em></p>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parámetros:</th><td class="field-body"><strong>request</strong> &#8211; HttpRequest necesario para crear proyectos, es la solicitud de la acción.</td>
+<tr class="field-odd field"><th class="field-name">Parámetros:</th><td class="field-body"><ul class="first simple">
+<li><strong>request</strong> &#8211; HttpRequest necesario para crear proyectos, es la solicitud de la acción.</li>
+<li><strong>args</strong> &#8211; Argumentos para el modelo <tt class="docutils literal"><span class="pre">Proyecto</span></tt>.</li>
+<li><strong>kwargs</strong> &#8211; Keyword Arguments para la el modelo <tt class="docutils literal"><span class="pre">Proyecto</span></tt>.</li>
+</ul>
+</td>
 </tr>
-<tr class="field-even field"><th class="field-name">Devuelve:</th><td class="field-body">Proporciona la pagina <tt class="docutils literal"><span class="pre">createproject.html</span></tt> con el formulario correspondiente
-Crea el proyecto en el sistema regresando al menu principal</td>
+<tr class="field-even field"><th class="field-name">Devuelve:</th><td class="field-body"><p class="first last">Proporciona la pagina <tt class="docutils literal"><span class="pre">createproject.html</span></tt> con el formulario correspondiente
+Crea el proyecto en el sistema regresando al menu principal</p>
+</td>
 </tr>
 </tbody>
 </table>
@@ -237,9 +334,15 @@ Opción válida para usuarios con los roles correspondientes.</em></p>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parámetros:</th><td class="field-body"><strong>request</strong> &#8211; HttpRequest necesario para visualizar los proyectos, es la solicitud de la acción.</td>
+<tr class="field-odd field"><th class="field-name">Parámetros:</th><td class="field-body"><ul class="first simple">
+<li><strong>request</strong> &#8211; HttpRequest necesario para visualizar los proyectos, es la solicitud de la acción.</li>
+<li><strong>args</strong> &#8211; Argumentos para el modelo <tt class="docutils literal"><span class="pre">Proyecto</span></tt>.</li>
+<li><strong>kwargs</strong> &#8211; Keyword Arguments para la el modelo <tt class="docutils literal"><span class="pre">Proyecto</span></tt>.</li>
+</ul>
+</td>
 </tr>
-<tr class="field-even field"><th class="field-name">Devuelve:</th><td class="field-body">Proporciona la pagina <tt class="docutils literal"><span class="pre">projectlist.html</span></tt> con la lista de todos los proyectos existentes en el sistema</td>
+<tr class="field-even field"><th class="field-name">Devuelve:</th><td class="field-body"><p class="first last">Proporciona la pagina <tt class="docutils literal"><span class="pre">projectlist.html</span></tt> con la lista de todos los proyectos existentes en el sistema</p>
+</td>
 </tr>
 </tbody>
 </table>

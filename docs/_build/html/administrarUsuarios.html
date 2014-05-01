@@ -65,6 +65,18 @@
 campos disponibles para la modificación de un usuario en el sistema./n
 Formulario para modificar usuarios propuesto por Django y personalizado para el proyecto ZARpm. Utiliza el modelo
 personalizado Usuario extendido del modelo User.</em></p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parámetros:</th><td class="field-body"><ul class="first last simple">
+<li><strong>args</strong> &#8211; Argumentos para el modelo <tt class="docutils literal"><span class="pre">ModelForm</span></tt>.</li>
+<li><strong>kwargs</strong> &#8211; Keyword Arguments para el modelo <tt class="docutils literal"><span class="pre">ModelForm</span></tt>.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
 <div class="highlight-python"><div class="highlight"><pre><span class="k">class</span> <span class="nc">Meta</span><span class="p">:</span>
     <span class="n">model</span> <span class="o">=</span> <span class="n">Usuario</span>
     <span class="n">fields</span> <span class="o">=</span> <span class="p">(</span><span class="s">&#39;first_name&#39;</span><span class="p">,</span> <span class="s">&#39;last_name&#39;</span><span class="p">,</span> <span class="s">&#39;email&#39;</span><span class="p">,</span> <span class="s">&#39;telefono&#39;</span><span class="p">,)</span>
@@ -79,6 +91,18 @@ personalizado Usuario extendido del modelo User.</em></p>
 <dd><p>Clases base: <tt class="xref py py-class docutils literal"><span class="pre">django.contrib.auth.forms.SetPasswordForm</span></tt></p>
 <p><em>Formulario que permite a los usuarios cambiar la contraseña confirmando con la contraseña anterior.
 Utiliza el modelo personalizado</em>  <tt class="docutils literal"><span class="pre">Usuario</span></tt>.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parámetros:</th><td class="field-body"><ul class="first last simple">
+<li><strong>args</strong> &#8211; Argumentos para el modelo <tt class="docutils literal"><span class="pre">SetPasswordForm</span></tt>.</li>
+<li><strong>kwargs</strong> &#8211; Keyword Arguments para el modelo <tt class="docutils literal"><span class="pre">SetPasswordForm</span></tt>.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
 <dl class="method">
 <dt id="administrarUsuarios.forms.CustomPasswordChangeForm.clean_old_password">
 <tt class="descname">clean_old_password</tt><big>(</big><big>)</big><a class="headerlink" href="#administrarUsuarios.forms.CustomPasswordChangeForm.clean_old_password" title="Enlazar permanentemente con esta definición">¶</a></dt>
@@ -96,6 +120,18 @@ se realizará ningún cambio en la contraseña.</em></p>
 campos disponibles para la modificación de un usuario en el sistema.
 Formulario para modificar usuarios propuesto por Django y personalizado para el proyecto ZARpm. Utiliza el modelo
 personalizado Usuario extendido del modelos User.</em></p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parámetros:</th><td class="field-body"><ul class="first last simple">
+<li><strong>args</strong> &#8211; Argumentos para el modelo <tt class="docutils literal"><span class="pre">ModelForm</span></tt>.</li>
+<li><strong>kwargs</strong> &#8211; Keyword Arguments para el modelo <tt class="docutils literal"><span class="pre">ModelForm</span></tt>.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
 <div class="highlight-python"><div class="highlight"><pre><span class="k">class</span> <span class="nc">Meta</span><span class="p">:</span>
     <span class="n">model</span> <span class="o">=</span> <span class="n">Usuario</span>
     <span class="n">fields</span> <span class="o">=</span> <span class="p">(</span><span class="s">&#39;first_name&#39;</span><span class="p">,</span> <span class="s">&#39;last_name&#39;</span><span class="p">,</span> <span class="s">&#39;email&#39;</span><span class="p">,</span> <span class="s">&#39;telefono&#39;</span><span class="p">,)</span>
@@ -112,6 +148,18 @@ personalizado Usuario extendido del modelos User.</em></p>
 campos necesarios para la creación de un usuario en el sistema.
 Formulario para la creación usuarios por Django y personalizado para el proyecto ZARpm. Utiliza el modelo
 personalizado Usuario extendido del modelos User.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parámetros:</th><td class="field-body"><ul class="first last simple">
+<li><strong>args</strong> &#8211; Argumentos para el modelo <tt class="docutils literal"><span class="pre">ModelForm</span></tt>.</li>
+<li><strong>kwargs</strong> &#8211; Keyword Arguments para el modelo <tt class="docutils literal"><span class="pre">ModelForm</span></tt>.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
 <div class="highlight-python"><div class="highlight"><pre><span class="k">class</span> <span class="nc">Meta</span><span class="p">:</span>
     <span class="n">model</span> <span class="o">=</span> <span class="n">Usuario</span>
     <span class="n">fields</span> <span class="o">=</span> <span class="p">(</span><span class="s">&quot;username&quot;</span><span class="p">,)</span>
@@ -121,7 +169,7 @@ personalizado Usuario extendido del modelos User.</p>
 <dt id="administrarUsuarios.forms.CustomUserCreationForm.clean_password2">
 <tt class="descname">clean_password2</tt><big>(</big><big>)</big><a class="headerlink" href="#administrarUsuarios.forms.CustomUserCreationForm.clean_password2" title="Enlazar permanentemente con esta definición">¶</a></dt>
 <dd><p><em>Función responsable de confirmar la contraseña ingresada por el usuario, de tal manera que las contraseñas
-coincidan.``Contraseña1 == Contraseña2</em></p>
+coincidan.</em> <tt class="docutils literal"><span class="pre">Contraseña1</span> <span class="pre">==</span> <span class="pre">Contraseña2</span></tt></p>
 </dd></dl>
 
 <dl class="method">
@@ -143,10 +191,10 @@ creará el usuario.</em></p>
 <dl class="docutils">
 <dt>Test para Administración de usuarios, pruebas realizadas:</dt>
 <dd><ul class="first last simple">
-<li>CustomUserCreationForm: Formulario para la creación de usuarios en el sistema</li>
-<li>ChangePass: Prueba de vista y modificación de la contraseña del usuario actual.</li>
-<li>ChangeUser: Prueba de vista y modificación de los atributos del usuario actual.</li>
-<li>CreateUser: Prueba de Vista y creación de un nuevo usuario en el sistema.</li>
+<li><em>CustomUserCreationForm:</em> Formulario para la creación de usuarios en el sistema</li>
+<li><em>ChangePass:</em> Prueba de vista y modificación de la contraseña del usuario actual.</li>
+<li><em>ChangeUser:</em> Prueba de vista y modificación de los atributos del usuario actual.</li>
+<li><em>CreateUser:</em> Prueba de Vista y creación de un nuevo usuario en el sistema.</li>
 </ul>
 </dd>
 </dl>
@@ -216,9 +264,15 @@ Modificación de los datos propios del usuario actual.</em></p>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parámetros:</th><td class="field-body"><strong>request</strong> &#8211; HttpRequest necesario para modificar la contrasena del usuario, es la solicitud de la acción.</td>
+<tr class="field-odd field"><th class="field-name">Parámetros:</th><td class="field-body"><ul class="first simple">
+<li><strong>request</strong> &#8211; HttpRequest necesario para modificar la contrasena del usuario, es la solicitud de la acción.</li>
+<li><strong>args</strong> &#8211; Argumentos para el modelo <tt class="docutils literal"><span class="pre">AbstractBaseUser</span></tt>.</li>
+<li><strong>kwargs</strong> &#8211; Keyword Arguments para la el modelo <tt class="docutils literal"><span class="pre">AbstractBaseUser</span></tt>.</li>
+</ul>
+</td>
 </tr>
-<tr class="field-even field"><th class="field-name">Devuelve:</th><td class="field-body">Proporciona la pagina <tt class="docutils literal"><span class="pre">changePass.html</span></tt> con el formulario correspondiente.</td>
+<tr class="field-even field"><th class="field-name">Devuelve:</th><td class="field-body"><p class="first last">Proporciona la pagina <tt class="docutils literal"><span class="pre">changePass.html</span></tt> con el formulario correspondiente.</p>
+</td>
 </tr>
 </tbody>
 </table>
@@ -233,9 +287,15 @@ Modificación de los datos propios del usuario actual.</em></p>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parámetros:</th><td class="field-body"><strong>request</strong> &#8211; HttpRequest necesario para modificar los datos de usuario, es la solicitud de la acción.</td>
+<tr class="field-odd field"><th class="field-name">Parámetros:</th><td class="field-body"><ul class="first simple">
+<li><strong>request</strong> &#8211; HttpRequest necesario para modificar los datos de usuario, es la solicitud de la acción.</li>
+<li><strong>args</strong> &#8211; Argumentos para el modelo <tt class="docutils literal"><span class="pre">AbstractBaseUser</span></tt>.</li>
+<li><strong>kwargs</strong> &#8211; Keyword Arguments para la el modelo <tt class="docutils literal"><span class="pre">AbstractBaseUser</span></tt>.</li>
+</ul>
+</td>
 </tr>
-<tr class="field-even field"><th class="field-name">Devuelve:</th><td class="field-body">Proporciona la pagina <tt class="docutils literal"><span class="pre">changeuser.html</span></tt> con el formulario correspondiente</td>
+<tr class="field-even field"><th class="field-name">Devuelve:</th><td class="field-body"><p class="first last">Proporciona la pagina <tt class="docutils literal"><span class="pre">changeuser.html</span></tt> con el formulario correspondiente</p>
+</td>
 </tr>
 </tbody>
 </table>
@@ -250,9 +310,15 @@ Modificación de los datos propios del usuario actual.</em></p>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parámetros:</th><td class="field-body"><strong>request</strong> &#8211; HttpRequest necesario para modificar los datos de usuario, es la solicitud de la acción.</td>
+<tr class="field-odd field"><th class="field-name">Parámetros:</th><td class="field-body"><ul class="first simple">
+<li><strong>request</strong> &#8211; HttpRequest necesario para modificar los datos de usuario, es la solicitud de la acción.</li>
+<li><strong>args</strong> &#8211; Argumentos para el modelo <tt class="docutils literal"><span class="pre">AbstractBaseUser</span></tt>.</li>
+<li><strong>kwargs</strong> &#8211; Keyword Arguments para la el modelo <tt class="docutils literal"><span class="pre">AbstractBaseUser</span></tt>.</li>
+</ul>
+</td>
 </tr>
-<tr class="field-even field"><th class="field-name">Devuelve:</th><td class="field-body">Proporciona la pagina <tt class="docutils literal"><span class="pre">changeuser1.html</span></tt> con el formulario correspondiente.</td>
+<tr class="field-even field"><th class="field-name">Devuelve:</th><td class="field-body"><p class="first last">Proporciona la pagina <tt class="docutils literal"><span class="pre">changeuser1.html</span></tt> con el formulario correspondiente.</p>
+</td>
 </tr>
 </tbody>
 </table>
@@ -266,9 +332,15 @@ Modificación de los datos propios del usuario actual.</em></p>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parámetros:</th><td class="field-body"><strong>request</strong> &#8211; HttpRequest con los datos de la sesion del usuario actual, es la solicitud de la acción.</td>
+<tr class="field-odd field"><th class="field-name">Parámetros:</th><td class="field-body"><ul class="first simple">
+<li><strong>request</strong> &#8211; HttpRequest con los datos de la sesion del usuario actual, es la solicitud de la acción.</li>
+<li><strong>args</strong> &#8211; Argumentos para el modelo <tt class="docutils literal"><span class="pre">AbstractBaseUser</span></tt>.</li>
+<li><strong>kwargs</strong> &#8211; Keyword Arguments para la el modelo <tt class="docutils literal"><span class="pre">AbstractBaseUser</span></tt>.</li>
+</ul>
+</td>
 </tr>
-<tr class="field-even field"><th class="field-name">Devuelve:</th><td class="field-body">Proporciona la pagina <tt class="docutils literal"><span class="pre">createuser.html</span></tt> con el formulario correspondiente</td>
+<tr class="field-even field"><th class="field-name">Devuelve:</th><td class="field-body"><p class="first last">Proporciona la pagina <tt class="docutils literal"><span class="pre">createuser.html</span></tt> con el formulario correspondiente</p>
+</td>
 </tr>
 </tbody>
 </table>
@@ -282,9 +354,15 @@ Modificación de los datos propios del usuario actual.</em></p>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parámetros:</th><td class="field-body"><strong>request</strong> &#8211; HttpRequest necesario para listar los usuarios, es la solicitud de la acción.</td>
+<tr class="field-odd field"><th class="field-name">Parámetros:</th><td class="field-body"><ul class="first simple">
+<li><strong>request</strong> &#8211; HttpRequest necesario para listar los usuarios, es la solicitud de la acción.</li>
+<li><strong>args</strong> &#8211; Argumentos para el modelo <tt class="docutils literal"><span class="pre">AbstractBaseUser</span></tt>.</li>
+<li><strong>kwargs</strong> &#8211; Keyword Arguments para la el modelo <tt class="docutils literal"><span class="pre">AbstractBaseUser</span></tt>.</li>
+</ul>
+</td>
 </tr>
-<tr class="field-even field"><th class="field-name">Devuelve:</th><td class="field-body">Proporciona la pagina <tt class="docutils literal"><span class="pre">userlist.html</span></tt> con la lista respectiva de los usuarios existentes en el sistema.</td>
+<tr class="field-even field"><th class="field-name">Devuelve:</th><td class="field-body"><p class="first last">Proporciona la pagina <tt class="docutils literal"><span class="pre">userlist.html</span></tt> con la lista respectiva de los usuarios existentes en el sistema.</p>
+</td>
 </tr>
 </tbody>
 </table>

@@ -15,6 +15,9 @@ class NewProjectForm(ModelForm):
 
     Opción válida solo para usuarios con rol de ``Administrador``.
 
+    :param args: Argumentos para el modelo base ``ModelForm``.
+    :param kwargs: Keyword Arguments para la función ``ModelForm``.
+
     ::
 
         class Meta:
@@ -40,6 +43,9 @@ class ChangeProjectForm(forms.ModelForm):
 
     Opción válida solo para usuarios con rol de ``Administrador``.
 
+    :param args: Argumentos para el modelo base ``ModelForm``.
+    :param kwargs: Keyword Arguments para la función ``ModelForm``.
+
     ::
 
         class Meta:
@@ -62,6 +68,9 @@ class ChangeProjectForm(forms.ModelForm):
 class setUserToProjectForm(forms.ModelForm):
     """
     *Formulario para vincular usuarios a un proyecto*
+
+    :param args: Argumentos para el modelo base ``ModelForm``.
+    :param kwargs: Keyword Arguments para el modelo ``ModelForm``.
     """
     user = Usuario.objects.all()
     cod_usuario = str(forms.ModelChoiceField(widget=forms.CheckboxSelectMultiple, queryset=user,

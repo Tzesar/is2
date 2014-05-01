@@ -13,14 +13,19 @@ from django.contrib.auth.models import AbstractBaseUser, UserManager, SiteProfil
 
 class AbstractUser(AbstractBaseUser):
     """
-    *Clase Abstracta que posse todas las funciones a ser implementadas por el modelo Usuario,
-    sin los permisos de administrador. El cual tiene como base el modelo* ``AbstractBaseUser``.
+    *Clase Abstracta que posse todas las funciones a ser implementadas por el modelo Usuario,*
+    *sin los permisos de administrador. El cual tiene como base el modelo* ``AbstractBaseUser``.
+
+
+    :param args: Argumentos para el modelo ``AbstractBaseUser``.
+    :param kwargs: Keyword Arguments para el modelo ``AbstractBaseUser``.
     ::
 
         class Meta:
             verbose_name = 'user'
             verbose_name_plural = 'users'
-            abstract = True``
+            abstract = True
+
     """
     username = models.CharField('username', max_length=30, unique=True,
         help_text='Requerido: Como máximo 30 caracteres. Letras, números y '
@@ -107,6 +112,9 @@ class Usuario(AbstractUser):
     """
     *Extension de la clase User de Django. Extiende del modelo definido* ``AbstractUser``
     *Agrega los campos telefono y otros.*
+
+    :param args: Argumentos para el modelo ``AbstractUser``.
+    :param kwargs: Keyword Arguments para el modelo ``AbstractUser``.
     """
     telefono = models.CharField(max_length=20, blank=True)
 

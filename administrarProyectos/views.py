@@ -23,6 +23,8 @@ def createProject(request):
     Opción válida para usuarios con rol de ``Administrador``.*
 
     :param request: HttpRequest necesario para crear proyectos, es la solicitud de la acción.
+    :param args: Argumentos para el modelo ``Proyecto``.
+    :param kwargs: Keyword Arguments para la el modelo ``Proyecto``.
     :return: Proporciona la pagina ``createproject.html`` con el formulario correspondiente
              Crea el proyecto en el sistema regresando al menu principal
     """
@@ -45,6 +47,8 @@ def changeProject(request, id_proyecto):
     Opción válida para usuarios con rol de Administrador.*
 
     :param request: HttpRequest necesario para modificar proyectos, es la solicitud de la acción.
+    :param args: Argumentos para el modelo ``Proyecto``.
+    :param kwargs: Keyword Arguments para la el modelo ``Proyecto``.
     :return: Proporciona la pagina ``changeproject.html`` con el formulario correspondiente
              Modifica el proyecto y luego regresa al menu principal
     """
@@ -69,6 +73,8 @@ def projectList(request):
     Opción válida para usuarios con los roles correspondientes.*
 
     :param request: HttpRequest necesario para visualizar los proyectos, es la solicitud de la acción.
+    :param args: Argumentos para el modelo ``Proyecto``.
+    :param kwargs: Keyword Arguments para la el modelo ``Proyecto``.
     :return: Proporciona la pagina ``projectlist.html`` con la lista de todos los proyectos existentes en el sistema
     """
     proyectos = ProyectoTablaAdmin( Proyecto.objects.all() )
@@ -119,7 +125,6 @@ def workProject(request, id_proyecto):
     """
     *Vista para el trabajo sobre un proyecto dentro del sistema.
     Opción válida para usuarios asociados a un proyecto, ya sea como ``Líder de Proyecto`` o como participante.*
-
 
     :param request: HttpRequest necesario para visualizar el área de trabajo de los usuarios en un proyectos, es la solicitud de la acción.
     :param id_proyecto: Identificador del proyecto dentro del sistema.

@@ -6,17 +6,21 @@ from administrarFases.models import Fase
 
 class NewPhaseForm(forms.ModelForm):
     """
-    *Formulario para la creación de nuevas fases en el sistema. Utilizamos el modelo de ``Fase`` definido,
-    del cual filtramos los campos de tal manera a que solo se habiliten los
-    campos necesarios para la creación de una fase en el proyecto.
-    Opción válida solo para usuarios con roles correspondientes.* 
+    *Formulario para la creación de nuevas fases en el sistema. Utilizamos el modelo de* ``Fase``
+    *definido,del cual filtramos los campos de tal manera a que solo se habiliten los *
+    *campos necesarios para la creación de una fase en el proyecto.*
+    *Opción válida solo para usuarios con roles correspondientes.*
+
+    :param args: Argumentos para el modelo ``ModelForm``.
+    :param kwargs: Keyword Arguments para la el modelo ``ModelForm``.
+
 
     ::
 
         class Meta:
-        model = Fase
-        fields = ('nombre', 'descripcion',)
-        exclude = ('proyecto',)
+            model = Fase
+            fields = ('nombre', 'descripcion',)
+            exclude = ('proyecto',)
 
     """
 
@@ -30,11 +34,14 @@ class NewPhaseForm(forms.ModelForm):
 
 class ChangePhaseForm(forms.ModelForm):
     """
-    *Formulario para la modificacion de proyectos creados en el sistema. Utilizamos el modelo de ``Fase``
-    definido del cual filtramos los campos de tal manera a que solo se habiliten los
-    campos disponibles para la modificación de una fase en el proyecto.*
+    *Formulario para la modificacion de proyectos creados en el sistema. Utilizamos el modelo de* ``Fase``
+    *definido del cual filtramos los campos de tal manera a que solo se habiliten los*
+    *campos disponibles para la modificación de una fase en el proyecto.*
 
     *Opción válida solo para usuarios con los roles correspondientes.*
+
+    :param args: Argumentos para el modelo ``ModelForm``.
+    :param kwargs: Keyword Arguments para la el modelo ``ModelForm``.
 
     ::
 

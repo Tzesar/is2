@@ -28,8 +28,8 @@ class UsuarioFactory(factory.DjangoModelFactory):
 
 class TestAdministrarProjectos(TestCase):
     """
-    *Test para Administración de usuarios, pruebas realizadas:
-        + *ChangeProject*: Test de vista y modificación de los atributos de un proyecto en el sistema.*
+    *Test para Administración de usuarios, pruebas realizadas:*
+        + *ChangeProject*: Test de vista y modificación de los atributos de un proyecto en el sistema.
         + *CreateProject*: Test de Vista y creación de un nuevo proyecto en el sistema.
     """
     un_admin = 'admin'

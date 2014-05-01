@@ -34,6 +34,8 @@ def base(request):
     *Vista para la plantilla base.html*
 
     :param request: HttpRequest con los datos de la sesion del usuario actual.
+    :param args: Argumentos para la funcion.
+    :param kwargs: Keyword Arguments para la funcion.
     :return: Template base.html. Los demas templates heredan de este la estructura y los estilos.
     """
     return render(request, 'base.html')
@@ -43,7 +45,9 @@ def main(request):
     """
     *Vista para la plantilla main.html*
 
-    :param: HttpRequest con los datos de la sesion del usuario actual.
+    :param request: HttpRequest con los datos de la sesion del usuario actual.
+    :param args: Argumentos para la funcion.
+    :param kwargs: Keyword Arguments para la funcion.
     :return: Template mainAdmin.html para el Administrador y mainAnyUser.html para los demas usuarios.
     """
 

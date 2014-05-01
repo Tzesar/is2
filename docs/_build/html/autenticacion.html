@@ -61,12 +61,24 @@
 <dt id="autenticacion.models.AbstractUser">
 <em class="property">class </em><tt class="descclassname">autenticacion.models.</tt><tt class="descname">AbstractUser</tt><big>(</big><em>*args</em>, <em>**kwargs</em><big>)</big><a class="headerlink" href="#autenticacion.models.AbstractUser" title="Enlazar permanentemente con esta definición">¶</a></dt>
 <dd><p>Clases base: <tt class="xref py py-class docutils literal"><span class="pre">django.contrib.auth.models.AbstractBaseUser</span></tt></p>
-<p><em>Clase Abstracta que posse todas las funciones a ser implementadas por el modelo Usuario,
-sin los permisos de administrador. El cual tiene como base el modelo</em> <tt class="docutils literal"><span class="pre">AbstractBaseUser</span></tt>.</p>
-<div class="highlight-python"><div class="highlight"><pre>class Meta:
-    verbose_name = &#39;user&#39;
-    verbose_name_plural = &#39;users&#39;
-    abstract = True``
+<p><em>Clase Abstracta que posse todas las funciones a ser implementadas por el modelo Usuario,</em>
+<em>sin los permisos de administrador. El cual tiene como base el modelo</em> <tt class="docutils literal"><span class="pre">AbstractBaseUser</span></tt>.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parámetros:</th><td class="field-body"><ul class="first last simple">
+<li><strong>args</strong> &#8211; Argumentos para el modelo <tt class="docutils literal"><span class="pre">AbstractBaseUser</span></tt>.</li>
+<li><strong>kwargs</strong> &#8211; Keyword Arguments para el modelo <tt class="docutils literal"><span class="pre">AbstractBaseUser</span></tt>.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<div class="highlight-python"><div class="highlight"><pre><span class="k">class</span> <span class="nc">Meta</span><span class="p">:</span>
+    <span class="n">verbose_name</span> <span class="o">=</span> <span class="s">&#39;user&#39;</span>
+    <span class="n">verbose_name_plural</span> <span class="o">=</span> <span class="s">&#39;users&#39;</span>
+    <span class="n">abstract</span> <span class="o">=</span> <span class="bp">True</span>
 </pre></div>
 </div>
 <dl class="method">
@@ -102,6 +114,18 @@ Retorna el primer nombre del usuario.</p>
 <dd><p>Clases base: <a class="reference internal" href="#autenticacion.models.AbstractUser" title="autenticacion.models.AbstractUser"><tt class="xref py py-class docutils literal"><span class="pre">autenticacion.models.AbstractUser</span></tt></a></p>
 <p><em>Extension de la clase User de Django. Extiende del modelo definido</em> <tt class="docutils literal"><span class="pre">AbstractUser</span></tt>
 <em>Agrega los campos telefono y otros.</em></p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parámetros:</th><td class="field-body"><ul class="first last simple">
+<li><strong>args</strong> &#8211; Argumentos para el modelo <tt class="docutils literal"><span class="pre">AbstractUser</span></tt>.</li>
+<li><strong>kwargs</strong> &#8211; Keyword Arguments para el modelo <tt class="docutils literal"><span class="pre">AbstractUser</span></tt>.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 </div>
@@ -155,9 +179,15 @@ Retorna el primer nombre del usuario.</p>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parámetros:</th><td class="field-body"><strong>request</strong> &#8211; HttpRequest con los datos de la sesion del usuario actual.</td>
+<tr class="field-odd field"><th class="field-name">Parámetros:</th><td class="field-body"><ul class="first simple">
+<li><strong>request</strong> &#8211; HttpRequest con los datos de la sesion del usuario actual.</li>
+<li><strong>args</strong> &#8211; Argumentos para la funcion.</li>
+<li><strong>kwargs</strong> &#8211; Keyword Arguments para la funcion.</li>
+</ul>
+</td>
 </tr>
-<tr class="field-even field"><th class="field-name">Devuelve:</th><td class="field-body">Template base.html. Los demas templates heredan de este la estructura y los estilos.</td>
+<tr class="field-even field"><th class="field-name">Devuelve:</th><td class="field-body"><p class="first last">Template base.html. Los demas templates heredan de este la estructura y los estilos.</p>
+</td>
 </tr>
 </tbody>
 </table>
@@ -171,9 +201,15 @@ Retorna el primer nombre del usuario.</p>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Param:</th><td class="field-body">HttpRequest con los datos de la sesion del usuario actual.</td>
+<tr class="field-odd field"><th class="field-name">Parámetros:</th><td class="field-body"><ul class="first simple">
+<li><strong>request</strong> &#8211; HttpRequest con los datos de la sesion del usuario actual.</li>
+<li><strong>args</strong> &#8211; Argumentos para la funcion.</li>
+<li><strong>kwargs</strong> &#8211; Keyword Arguments para la funcion.</li>
+</ul>
+</td>
 </tr>
-<tr class="field-even field"><th class="field-name">Devuelve:</th><td class="field-body">Template mainAdmin.html para el Administrador y mainAnyUser.html para los demas usuarios.</td>
+<tr class="field-even field"><th class="field-name">Devuelve:</th><td class="field-body"><p class="first last">Template mainAdmin.html para el Administrador y mainAnyUser.html para los demas usuarios.</p>
+</td>
 </tr>
 </tbody>
 </table>

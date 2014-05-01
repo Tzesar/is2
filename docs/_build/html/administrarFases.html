@@ -61,10 +61,22 @@
 <dt id="administrarFases.forms.ChangePhaseForm">
 <em class="property">class </em><tt class="descclassname">administrarFases.forms.</tt><tt class="descname">ChangePhaseForm</tt><big>(</big><em>*args</em>, <em>**kwargs</em><big>)</big><a class="headerlink" href="#administrarFases.forms.ChangePhaseForm" title="Enlazar permanentemente con esta definición">¶</a></dt>
 <dd><p>Clases base: <tt class="xref py py-class docutils literal"><span class="pre">django.forms.models.ModelForm</span></tt></p>
-<p><em>Formulario para la modificacion de proyectos creados en el sistema. Utilizamos el modelo de ``Fase``
-definido del cual filtramos los campos de tal manera a que solo se habiliten los
-campos disponibles para la modificación de una fase en el proyecto.</em></p>
+<p><em>Formulario para la modificacion de proyectos creados en el sistema. Utilizamos el modelo de</em> <tt class="docutils literal"><span class="pre">Fase</span></tt>
+<em>definido del cual filtramos los campos de tal manera a que solo se habiliten los</em>
+<em>campos disponibles para la modificación de una fase en el proyecto.</em></p>
 <p><em>Opción válida solo para usuarios con los roles correspondientes.</em></p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parámetros:</th><td class="field-body"><ul class="first last simple">
+<li><strong>args</strong> &#8211; Argumentos para el modelo <tt class="docutils literal"><span class="pre">ModelForm</span></tt>.</li>
+<li><strong>kwargs</strong> &#8211; Keyword Arguments para la el modelo <tt class="docutils literal"><span class="pre">ModelForm</span></tt>.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
 <div class="highlight-python"><div class="highlight"><pre><span class="k">class</span> <span class="nc">Meta</span><span class="p">:</span>
     <span class="n">model</span> <span class="o">=</span> <span class="n">Fase</span>
     <span class="n">fields</span> <span class="o">=</span> <span class="p">(</span><span class="s">&#39;nombre&#39;</span><span class="p">,</span> <span class="s">&#39;estado&#39;</span><span class="p">,</span> <span class="s">&#39;descripcion&#39;</span><span class="p">,)</span>
@@ -76,14 +88,26 @@ campos disponibles para la modificación de una fase en el proyecto.</em></p>
 <dt id="administrarFases.forms.NewPhaseForm">
 <em class="property">class </em><tt class="descclassname">administrarFases.forms.</tt><tt class="descname">NewPhaseForm</tt><big>(</big><em>*args</em>, <em>**kwargs</em><big>)</big><a class="headerlink" href="#administrarFases.forms.NewPhaseForm" title="Enlazar permanentemente con esta definición">¶</a></dt>
 <dd><p>Clases base: <tt class="xref py py-class docutils literal"><span class="pre">django.forms.models.ModelForm</span></tt></p>
-<p><em>Formulario para la creación de nuevas fases en el sistema. Utilizamos el modelo de ``Fase`` definido,
-del cual filtramos los campos de tal manera a que solo se habiliten los
-campos necesarios para la creación de una fase en el proyecto.
-Opción válida solo para usuarios con roles correspondientes.</em></p>
-<div class="highlight-python"><div class="highlight"><pre>class Meta:
-model = Fase
-fields = (&#39;nombre&#39;, &#39;descripcion&#39;,)
-exclude = (&#39;proyecto&#39;,)
+<p><em>Formulario para la creación de nuevas fases en el sistema. Utilizamos el modelo de</em> <tt class="docutils literal"><span class="pre">Fase</span></tt>
+<em>definido,del cual filtramos los campos de tal manera a que solo se habiliten los *
+*campos necesarios para la creación de una fase en el proyecto.</em>
+<em>Opción válida solo para usuarios con roles correspondientes.</em></p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parámetros:</th><td class="field-body"><ul class="first last simple">
+<li><strong>args</strong> &#8211; Argumentos para el modelo <tt class="docutils literal"><span class="pre">ModelForm</span></tt>.</li>
+<li><strong>kwargs</strong> &#8211; Keyword Arguments para la el modelo <tt class="docutils literal"><span class="pre">ModelForm</span></tt>.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<div class="highlight-python"><div class="highlight"><pre><span class="k">class</span> <span class="nc">Meta</span><span class="p">:</span>
+    <span class="n">model</span> <span class="o">=</span> <span class="n">Fase</span>
+    <span class="n">fields</span> <span class="o">=</span> <span class="p">(</span><span class="s">&#39;nombre&#39;</span><span class="p">,</span> <span class="s">&#39;descripcion&#39;</span><span class="p">,)</span>
+    <span class="n">exclude</span> <span class="o">=</span> <span class="p">(</span><span class="s">&#39;proyecto&#39;</span><span class="p">,)</span>
 </pre></div>
 </div>
 </dd></dl>
@@ -106,6 +130,18 @@ exclude = (&#39;proyecto&#39;,)
 </ul>
 </dd>
 </dl>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parámetros:</th><td class="field-body"><ul class="first last simple">
+<li><strong>args</strong> &#8211; Argumentos para el modelo <tt class="docutils literal"><span class="pre">Model</span></tt>.</li>
+<li><strong>kwargs</strong> &#8211; Keyword Arguments para la el modelo <tt class="docutils literal"><span class="pre">Model</span></tt>.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 </div>
@@ -116,36 +152,36 @@ exclude = (&#39;proyecto&#39;,)
 <em class="property">class </em><tt class="descclassname">administrarFases.tests.</tt><tt class="descname">TestAdministrarFases</tt><big>(</big><em>methodName='runTest'</em><big>)</big><a class="headerlink" href="#administrarFases.tests.TestAdministrarFases" title="Enlazar permanentemente con esta definición">¶</a></dt>
 <dd><p>Clases base: <tt class="xref py py-class docutils literal"><span class="pre">django.test.testcases.TestCase</span></tt></p>
 <dl class="docutils">
-<dt>Test para Administración de usuarios, pruebas realizadas:</dt>
+<dt><em>Test para Administración de usuarios, pruebas realizadas:</em></dt>
 <dd><ul class="first last simple">
-<li>ChangePhase: Test de vista y modificación de los atributos de una fase en el sistema.</li>
-<li>CreatePhase: Test de Vista y creación de una nueva fase en el sistema.</li>
-<li>DeletePhase: Test de vista y eliminación de una fase en el sistema</li>
+<li><em>ChangePhase</em>: Test de vista y modificación de los atributos de una fase en el sistema.</li>
+<li><em>CreatePhase</em>: Test de Vista y creación de una nueva fase en el sistema.</li>
+<li><em>DeletePhase</em>: Test de vista y eliminación de una fase en el sistema</li>
 </ul>
 </dd>
 </dl>
 <dl class="method">
 <dt id="administrarFases.tests.TestAdministrarFases.setUp">
 <tt class="descname">setUp</tt><big>(</big><big>)</big><a class="headerlink" href="#administrarFases.tests.TestAdministrarFases.setUp" title="Enlazar permanentemente con esta definición">¶</a></dt>
-<dd><p>Crea el usuario &#8216;admin&#8217; con contraseña &#8216;admin&#8217; para las pruebas.</p>
+<dd><p><em>Crea el usuario &#8216;admin&#8217; con contraseña &#8216;admin&#8217; para las pruebas.</em></p>
 </dd></dl>
 
 <dl class="method">
 <dt id="administrarFases.tests.TestAdministrarFases.test_changePhase_response">
 <tt class="descname">test_changePhase_response</tt><big>(</big><big>)</big><a class="headerlink" href="#administrarFases.tests.TestAdministrarFases.test_changePhase_response" title="Enlazar permanentemente con esta definición">¶</a></dt>
-<dd><p>Test para la vista de modificacion de fases en el sistema</p>
+<dd><p><em>Test para la vista de modificacion de fases en el sistema.</em></p>
 </dd></dl>
 
 <dl class="method">
 <dt id="administrarFases.tests.TestAdministrarFases.test_createPhase_response">
 <tt class="descname">test_createPhase_response</tt><big>(</big><big>)</big><a class="headerlink" href="#administrarFases.tests.TestAdministrarFases.test_createPhase_response" title="Enlazar permanentemente con esta definición">¶</a></dt>
-<dd><p>Test para la vista de creacion de proyectos en el sistema</p>
+<dd><p><em>Test para la vista de creacion de proyectos en el sistema</em></p>
 </dd></dl>
 
 <dl class="method">
 <dt id="administrarFases.tests.TestAdministrarFases.test_deletePhase_response">
 <tt class="descname">test_deletePhase_response</tt><big>(</big><big>)</big><a class="headerlink" href="#administrarFases.tests.TestAdministrarFases.test_deletePhase_response" title="Enlazar permanentemente con esta definición">¶</a></dt>
-<dd><p>Test para la vista de eliminacion de una fase en el sistema</p>
+<dd><p><em>Test para la vista de eliminacion de una fase en el sistema.</em></p>
 </dd></dl>
 
 </dd></dl>
@@ -165,6 +201,8 @@ Opción válida para usuarios con los roles correspondientes.</em></p>
 <tr class="field-odd field"><th class="field-name">Parámetros:</th><td class="field-body"><ul class="first simple">
 <li><strong>request</strong> &#8211; HttpRequest necesario para modificar la fase, es la solicitud de la acción.</li>
 <li><strong>id_fase</strong> &#8211; Identificador de la fase dentro del sistema la cual se desea modificar.</li>
+<li><strong>args</strong> &#8211; Argumentos para el modelo <tt class="docutils literal"><span class="pre">Fase</span></tt>.</li>
+<li><strong>kwargs</strong> &#8211; Keyword Arguments para la el modelo <tt class="docutils literal"><span class="pre">Fase</span></tt>.</li>
 </ul>
 </td>
 </tr>
@@ -188,6 +226,8 @@ Opción válida para usuarios con los roles correspondientes.</em></p>
 <tr class="field-odd field"><th class="field-name">Parámetros:</th><td class="field-body"><ul class="first simple">
 <li><strong>request</strong> &#8211; HttpRequest necesario para crear fases dentro de los proyectos, es la solicitud de la acción.</li>
 <li><strong>id_proyecto</strong> &#8211; Identificador del proyecto dentro del sistema al cual se le vincularán las fases creadas.</li>
+<li><strong>args</strong> &#8211; Argumentos para el modelo <tt class="docutils literal"><span class="pre">Fase</span></tt>.</li>
+<li><strong>kwargs</strong> &#8211; Keyword Arguments para la el modelo <tt class="docutils literal"><span class="pre">Fase</span></tt>.</li>
 </ul>
 </td>
 </tr>
@@ -214,7 +254,7 @@ Opción válida para usuarios con los roles correspondientes.</em></p>
 </ul>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">Devuelve:</th><td class="field-body"><p class="first last">Elimina la fase especifica  y luego regresa al menu de fases</p>
+<tr class="field-even field"><th class="field-name">Devuelve:</th><td class="field-body"><p class="first last">Elimina la fase especifica  y luego regresa al menu de fases.</p>
 </td>
 </tr>
 </tbody>
@@ -229,7 +269,7 @@ Opción válida para usuarios con los roles correspondientes.</em></p>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parámetros:</th><td class="field-body"><strong>fase</strong> &#8211; Recibe la instancia de la fase que se eliminará.</td>
+<tr class="field-odd field"><th class="field-name">Parámetros:</th><td class="field-body"><strong>phase</strong> &#8211; Recibe la instancia de la fase que se eliminará.</td>
 </tr>
 <tr class="field-even field"><th class="field-name">Devuelve:</th><td class="field-body">Los permisos vinculados son eliminados correctamente.</td>
 </tr>
@@ -270,6 +310,8 @@ Opción válida para usuarios con los roles correspondientes.</em></p>
 <tr class="field-odd field"><th class="field-name">Parámetros:</th><td class="field-body"><ul class="first simple">
 <li><strong>request</strong> &#8211; HttpRequest necesario para visualizar las fases dentro de los proyectos, es la solicitud de la acción.</li>
 <li><strong>id_proyecto</strong> &#8211; Identificador del proyecto dentro del sistema.</li>
+<li><strong>args</strong> &#8211; Argumentos para el modelo <tt class="docutils literal"><span class="pre">Fase</span></tt>.</li>
+<li><strong>kwargs</strong> &#8211; Keyword Arguments para la el modelo <tt class="docutils literal"><span class="pre">Fase</span></tt>.</li>
 </ul>
 </td>
 </tr>

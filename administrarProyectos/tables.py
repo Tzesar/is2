@@ -8,6 +8,9 @@ from administrarProyectos.models import Proyecto
 class ProyectoTablaAdmin(tables.Table):
     """
     *Tabla personalizada para la modificación de proyectos en el sistema.*
+
+    :param args: Argumentos para el modelo ``Table``.
+    :param kwargs: Keyword Arguments para la el modelo ``Table``.
     """
 
     modificar = tables.Column(verbose_name='Ver', orderable=False, empty_values=())
@@ -30,6 +33,9 @@ class ProyectoTablaAdmin(tables.Table):
 class ProyectoTabla(tables.Table):
     """
     *Tabla personalizada para el desarrollo de proyectos en el sistema.*
+
+    :param args: Argumentos para el modelo ``Table``.
+    :param kwargs: Keyword Arguments para la el modelo ``Table``.
     """
 
     modificar = tables.Column(verbose_name='Ver', orderable=False, empty_values=())

@@ -22,6 +22,8 @@ def createPhase(request, id_proyecto):
 
     :param request: HttpRequest necesario para crear fases dentro de los proyectos, es la solicitud de la acción.
     :param id_proyecto: Identificador del proyecto dentro del sistema al cual se le vincularán las fases creadas.
+    :param args: Argumentos para el modelo ``Fase``.
+    :param kwargs: Keyword Arguments para la el modelo ``Fase``.
     :return: Proporciona la pagina ``createphase.html`` con el formulario correspondiente.
             Crea la fase dentro del proyecto especificando y luego regresa al menu principal
     """
@@ -117,6 +119,8 @@ def changePhase(request, id_fase):
 
     :param request: HttpRequest necesario para modificar la fase, es la solicitud de la acción.
     :param id_fase: Identificador de la fase dentro del sistema la cual se desea modificar.
+    :param args: Argumentos para el modelo ``Fase``.
+    :param kwargs: Keyword Arguments para la el modelo ``Fase``.
     :return: Proporciona la pagina ``changephase.html`` con el formulario correspondiente.
              Modifica la fase especifica  y luego regresa al menu principal
     """
@@ -168,7 +172,7 @@ def eliminarPermisos(phase):
     """
     *Vista para la eliminacion de permisos correspondientes a la fase*
 
-    :param fase: Recibe la instancia de la fase que se eliminará.
+    :param phase: Recibe la instancia de la fase que se eliminará.
     :return: Los permisos vinculados son eliminados correctamente.
     """
     perm_list = PermisoFase.objects.filter(fase=phase)
@@ -185,6 +189,8 @@ def phaseList(request, id_proyecto):
 
     :param request: HttpRequest necesario para visualizar las fases dentro de los proyectos, es la solicitud de la acción.
     :param id_proyecto: Identificador del proyecto dentro del sistema.
+    :param args: Argumentos para el modelo ``Fase``.
+    :param kwargs: Keyword Arguments para la el modelo ``Fase``.
     :return: Proporciona la pagina ``phaselist.html`` con la lista todas las fases pertenecientes al proyecto especificado
     """
     project = Proyecto.objects.get(pk=id_proyecto)

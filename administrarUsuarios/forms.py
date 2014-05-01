@@ -15,6 +15,9 @@ class CustomUserCreationForm(forms.ModelForm):
     Formulario para la creación usuarios por Django y personalizado para el proyecto ZARpm. Utiliza el modelo
     personalizado Usuario extendido del modelos User.
 
+    :param args: Argumentos para el modelo ``ModelForm``.
+    :param kwargs: Keyword Arguments para el modelo ``ModelForm``.
+
     ::
 
         class Meta:
@@ -68,7 +71,7 @@ class CustomUserCreationForm(forms.ModelForm):
     def clean_password2(self):
         """
         *Función responsable de confirmar la contraseña ingresada por el usuario, de tal manera que las contraseñas
-        coincidan.``Contraseña1 == Contraseña2*
+        coincidan.* ``Contraseña1 == Contraseña2``
         """
         password1 = self.cleaned_data.get("password1")
         password2 = self.cleaned_data.get("password2")
@@ -96,6 +99,9 @@ class CustomUserChangeForm(forms.ModelForm):
     campos disponibles para la modificación de un usuario en el sistema.
     Formulario para modificar usuarios propuesto por Django y personalizado para el proyecto ZARpm. Utiliza el modelo
     personalizado Usuario extendido del modelos User.*
+
+    :param args: Argumentos para el modelo ``ModelForm``.
+    :param kwargs: Keyword Arguments para el modelo ``ModelForm``.
 
     ::
 
@@ -132,6 +138,8 @@ class CambiarUsuarioForm(forms2.ModelForm):
     Formulario para modificar usuarios propuesto por Django y personalizado para el proyecto ZARpm. Utiliza el modelo
     personalizado Usuario extendido del modelo User.*
 
+    :param args: Argumentos para el modelo ``ModelForm``.
+    :param kwargs: Keyword Arguments para el modelo ``ModelForm``.
 
     ::
 
@@ -163,6 +171,9 @@ class CustomPasswordChangeForm(SetPasswordForm):
     """
     *Formulario que permite a los usuarios cambiar la contraseña confirmando con la contraseña anterior.
     Utiliza el modelo personalizado*  ``Usuario``.
+
+    :param args: Argumentos para el modelo ``SetPasswordForm``.
+    :param kwargs: Keyword Arguments para el modelo ``SetPasswordForm``.
 
     """
     error_messages = dict(SetPasswordForm.error_messages, **{

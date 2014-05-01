@@ -17,6 +17,8 @@ def createUser(request):
     *Vista para la creación de usuarios en el sistema.*
 
     :param request: HttpRequest con los datos de la sesion del usuario actual, es la solicitud de la acción.
+    :param args: Argumentos para el modelo ``AbstractBaseUser``.
+    :param kwargs: Keyword Arguments para la el modelo ``AbstractBaseUser``.
     :return: Proporciona la pagina ``createuser.html`` con el formulario correspondiente
 
     """
@@ -39,6 +41,8 @@ def changeUser(request):
     Modificación de los datos propios del usuario actual.*
 
     :param request: HttpRequest necesario para modificar los datos de usuario, es la solicitud de la acción.
+    :param args: Argumentos para el modelo ``AbstractBaseUser``.
+    :param kwargs: Keyword Arguments para la el modelo ``AbstractBaseUser``.
     :return:  Proporciona la pagina ``changeuser.html`` con el formulario correspondiente
     """
     if request.method == 'POST':
@@ -59,6 +63,8 @@ def changeUser2(request):
     Modificación de los datos propios del usuario actual.*
 
     :param request: HttpRequest necesario para modificar los datos de usuario, es la solicitud de la acción.
+    :param args: Argumentos para el modelo ``AbstractBaseUser``.
+    :param kwargs: Keyword Arguments para la el modelo ``AbstractBaseUser``.
     :return:  Proporciona la pagina ``changeuser1.html`` con el formulario correspondiente.
     """
     if request.method == 'POST':
@@ -80,6 +86,8 @@ def changePass(request):
     Modificación de los datos propios del usuario actual.*
 
     :param request: HttpRequest necesario para modificar la contrasena del usuario, es la solicitud de la acción.
+    :param args: Argumentos para el modelo ``AbstractBaseUser``.
+    :param kwargs: Keyword Arguments para la el modelo ``AbstractBaseUser``.
     :return:  Proporciona la pagina ``changePass.html`` con el formulario correspondiente.
     """
 
@@ -100,6 +108,8 @@ def userList(request):
     *Vista para listar los usuarios existentes en el sistema.*
 
     :param request: HttpRequest necesario para listar los usuarios, es la solicitud de la acción.
+    :param args: Argumentos para el modelo ``AbstractBaseUser``.
+    :param kwargs: Keyword Arguments para la el modelo ``AbstractBaseUser``.
     :return:  Proporciona la pagina ``userlist.html`` con la lista respectiva de los usuarios existentes en el sistema.
     """
     if request.method == 'GET':

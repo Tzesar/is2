@@ -11,6 +11,10 @@ class Fase(models.Model):
         + *Descripción*: Breve reseña del proyecto
         + *Estado*: Los estados posibles del Proyecto. Por default: PEN(Pendiente)
         + *Proyecto*: Instancia del proyecto a la cual pertenece la fase
+
+    :param args: Argumentos para el modelo ``Model``.
+    :param kwargs: Keyword Arguments para la el modelo ``Model``.
+
     """
     opciones_estado = (
         ('PEN', 'Pendiente'),
