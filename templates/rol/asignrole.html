@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
 {% load staticfiles %}
 
-    {% block title %}Vincular Usuarios a Proyectos{% endblock %}
+    {% block title %}ASignación del Rol {{ rol.nombre }}{% endblock %}
     {% block mainBody %}
         {% if form.errors %}
             <div class="container-fluid">
@@ -15,15 +15,13 @@
             <div class="panel panel-default">
                 <div class="panel-body">
                     <div class="container-fluid">
-                        <h2 class="intro"><span class="glyphicon glyphicon-off"></span> {{ project.nombre }} - Version Model  <br><small> Vincular Usuarios a Proyecto - ZARpm</small></h2>
+                        <h2 class="intro"><span class="glyphicon glyphicon-off"></span> {{ project.nombre }}<br><small> Asignacion del rol {{ rol.nombre }} - ZARpm</small></h2>
                     </div>
                     <form action="" class="form-signin" role="form" method="post">
                         {% csrf_token %}
                             <table> {{ form.as_table }} </table>
                             <p class="text-center">
-                                <a href='/main/' class="btn btn-lg btn-gray btn-lg" role="button">Lista Proyectos</a>
-                                <a href='{% url 'administrarFases.views.phaseList' project.id %}' class="btn btn-lg btn-gray btn-lg" role="button">Lista Fases</a>
-                                <a href='{% url 'administrarFases.views.createPhase' project.id %}' class='btn btn-lg btn-gray btn-lg' role="button">Añadir Fases</a>
+                                <a href='/rolelist/{{ project.id }}' class="btn btn-lg btn-gray btn-lg" role="button">Descartar Cambios</a>
                                 <button class="btn btn-lg btn-gray btn-lg" type="submit">Guardar cambios</button>
                             </p>
                     </form>

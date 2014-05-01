@@ -31,10 +31,20 @@ def createProject(request):
             form.save()
             logger.info('El usuario ' + request.user.username + ' ha creado el proyecto: ' +
                         form["nombre"].value() + ' dentro del sistema')
+
+            vincularLider(form["nombre"].value(), form["lider_proyecto"].value())
+
             return HttpResponseRedirect('/main/')
     else:
         form = NewProjectForm()
     return render(request, 'proyecto/createproject.html', {'user': request.user, 'form': form})
+
+
+def vincularLider(nombre_proyecto, lider_code):
+    project = Proyecto.objects.get(nombre=nombre_proyecto)
+    lider = Usuario.objects.get(pk=lider_code)
+    vinculo = UsuariosVinculadosProyectos(cod_usuario=lider, cod_proyecto=project, habilitado=True)
+    vinculo.save()
 
 
 @login_required()
@@ -81,24 +91,33 @@ def setUserToProject(request, id_proyecto):
     Acción solo realizada por los usuarios con rol de líder de proyecto
     """
     project = Proyecto.objects.get(pk=id_proyecto)
+
+    u = UsuariosVinculadosProyectos.objects.filter(cod_proyecto=project)
+    #print u
+    usersInProject = u.values_list('cod_usuario', flat=True)
+    #print usersInProject
+
     if request.method == 'POST':
         form = setUserToProjectForm(request.POST)
+        form.fields['cod_usuario'].queryset = Usuario.objects.exclude(pk__in=usersInProject)
         if form.is_valid():
             usertoproject = form.save(commit=False)
             usertoproject.cod_proyecto = project
             usertoproject.save()
-            return HttpResponseRedirect('/projectlist/')
+            return HttpResponseRedirect('/main/')
     else:
         form = setUserToProjectForm(instance=project)
-    return render('proyecto/setusertoproject.html', {'form': form, 'project': project, 'user': request.user},)
+        form.fields['cod_usuario'].queryset = Usuario.objects.exclude(pk__in=usersInProject)
+    return render(request, 'proyecto/setusertoproject.html', {'form': form, 'project': project, 'user': request.user},)
 
 
 def viewSetUserProject(request, id_proyecto):
     """
     Vista para visualizar usuarios que se encuentren vinculados a un proyecto
     """
-    userproject = UsuariosVinculadosProyectos.objects.filter(cod_proyecto=id_proyecto)
+
     project = Proyecto.objects.get(pk=id_proyecto)
+    userproject = UsuariosVinculadosProyectos.objects.filter(cod_proyecto=id_proyecto)
 
     return render(request, "proyecto/usersetproject.html", {'project': project, 'userproject': userproject},
                   context_instance=RequestContext(request))

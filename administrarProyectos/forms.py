@@ -47,9 +47,8 @@ class setUserToProjectForm(forms.ModelForm):
     """
     Formulario para vincular usuarios a un proyecto
     """
-    user = Usuario.objects.all()
-    cod_usuario = str(forms.ModelChoiceField(widget=forms.CheckboxSelectMultiple, queryset=user,
-                                         label='Usuarios Vinculados', required=True, ))
+    cod_usuario = str(forms.ModelChoiceField(widget=forms.CheckboxSelectMultiple, queryset=Usuario.objects.all(),
+                                         label='Usuarios Disponibles', required=True, ))
 
     class Meta:
         model = UsuariosVinculadosProyectos
