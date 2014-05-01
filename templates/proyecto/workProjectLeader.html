@@ -4,7 +4,8 @@
     {% block title %}Modificar Proyecto{% endblock %}
     {% block errorBlock %}
     {% endblock errorBlock %}
-    {% block panelCentral %}{% block padTop %}{% endblock padTop %}
+    {% block padTop %}{% endblock padTop %}
+    {% block panelCentral %}
         <div class="panel-heading">
             <h1 class="text-info" style="display: inline-block">Información sobre el proyecto: {{ proyecto.nombre|capfirst }}</h1>
         </div>
@@ -63,5 +64,7 @@
 {#                <a href="{% url 'administrarRolesPermisos.views.createRole' proyecto.id %}" class="btn btn-success">Nuevo Rol</a>#}
             </div>
         </div>
-        <a href="{% url 'autenticacion.views.main' %}" class="btn btn-lg btn-warning btn-lg" role="button">Atrás</a>
     {% endblock panelCentral %}>
+    {% block botonesBottom %}
+        <a href="{% url 'autenticacion.views.main' %}" class="btn btn-lg btn-warning btn-lg" role="button">Atrás</a>
+    {% endblock botonesBottom %}

@@ -52,7 +52,7 @@ def main(request):
     else:
         # proyectos = Proyecto.objects.filter(lider_proyecto=request.user, usuarios_asociados__in=[request.user, ])
 
-        proyectos = ProyectoTabla(Proyecto.objects.filter(lider_proyecto=request.user) | Proyecto.objects.filter(usuarios_asociados__in=[request.user, ]))
+        proyectos = ProyectoTabla(Proyecto.objects.filter(lider_proyecto=request.user) | Proyecto.objects.filter(usuariosvinculadosproyectos__in=[request.user, ]))
         RequestConfig(request, paginate={"per_page": 25}).configure(proyectos)
 
         return render(request, 'mainAnyUser.html', {'user': request.user, 'proyectos': proyectos})

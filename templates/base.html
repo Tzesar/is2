@@ -42,7 +42,16 @@
                         </div>
                     </div>
                 </nav>
-            {% endblock %}
+            {% endblock navbar %}
+            <div class="container">
+            {% block breadcrumbs %}
+                <ol class="breadcrumb">
+                    <li><a href="#">Home</a></li>
+                    <li><a href="#">Library</a></li>
+                    <li class="active">Data</li>
+                </ol>
+            {% endblock breadcrumbs %}
+            </div>
             {% block mainBody %}
                 {% block errorBlock %}{% endblock errorBlock %}
                 <div class="container col-lg-offset-1 col-lg-10 col-xs-12" style="padding-top: 2%; padding-bottom: inherit">
