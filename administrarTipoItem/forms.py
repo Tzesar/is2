@@ -1,13 +1,24 @@
 #encoding=utf-8
 from django.forms import ModelForm
-from administrarTipoItem.models import TipoItem, AtributosItem
+from administrarTipoItem.models import TipoItem
 from django import forms
 
 
 class NewItemTypeForm(forms.ModelForm):
     """
-    Formulario para la creación de tipos de ítems en el sistema.
-    Opción válida solo para usuarios con roles correspondientes.
+    *Formulario para la creación de tipos de ítems en el sistema.
+    Opción válida solo para usuarios con roles correspondientes.*
+
+    :param args: Argumentos para el modelo base ``ModelForm``.
+    :param kwargs: Keyword Arguments para la función ``ModelForm``.
+
+    ::
+
+            class Meta:
+                model = TipoItem
+                fields = ('nombre', )
+                exclude = ('perteneFase',)
+
     """
 
     class Meta:
@@ -18,8 +29,18 @@ class NewItemTypeForm(forms.ModelForm):
 
 class ChangeItemTypeForm(forms.ModelForm):
     """
-    Formulario para la modificacion de tipos de ítems creados en el sistema.
-    Opción válida solo para usuarios con rol de Administrador.
+    *Formulario para la modificacion de tipos de ítems creados en el sistema.
+    Opción válida solo para usuarios con rol de Administrador.*
+
+    :param args: Argumentos para el modelo base ``ModelForm``.
+    :param kwargs: Keyword Arguments para la función ``ModelForm``.
+
+    ::
+
+        class Meta:
+            model = TipoItem
+            fields = ('nombre',)
+
     """
 
     class Meta:

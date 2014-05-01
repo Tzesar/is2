@@ -21,7 +21,7 @@
                         {% for itemtype in itemtype %}
                             <tr>
                                 <td>{{ itemtype.id }}</td>
-                                <td><a href='{% url 'administrarTipoItem.views.changeItemType' itemtype.id %}'>{{itemtype.nombre}}</a></td>
+                                <td>{{itemtype.nombre}}</td>
                             </tr>
                         {% endfor %}
                     </tbody>

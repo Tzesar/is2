@@ -6,15 +6,15 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>autenticacion package &mdash; ZARpm 0.1 documentation</title>
+    <title>Autenticacion &mdash; ZARpm - Documentation</title>
     
-    <link rel="stylesheet" href="_static/sphinxdoc.css" type="text/css" />
+    <link rel="stylesheet" href="_static/nature.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    './',
-        VERSION:     '0.1',
+        VERSION:     '1.0',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -23,312 +23,207 @@
     <script type="text/javascript" src="_static/jquery.js"></script>
     <script type="text/javascript" src="_static/underscore.js"></script>
     <script type="text/javascript" src="_static/doctools.js"></script>
-    <link rel="top" title="ZARpm 0.1 documentation" href="index.html" /> 
+    <link rel="shortcut icon" href="_static/favicon.ico"/>
+    <link rel="top" title="ZARpm - Documentation" href="index.html" />
+    <link rel="next" title="Usuarios" href="administrarUsuarios.html" />
+    <link rel="prev" title="Contenidos:" href="index.html" /> 
   </head>
   <body>
     <div class="related">
-      <h3>Navigation</h3>
+      <h3>Navegación</h3>
       <ul>
         <li class="right" style="margin-right: 10px">
-          <a href="genindex.html" title="General Index"
-             accesskey="I">index</a></li>
+          <a href="genindex.html" title="Índice General"
+             accesskey="I">índice</a></li>
         <li class="right" >
-          <a href="py-modindex.html" title="Python Module Index"
-             >modules</a> |</li>
-        <li><a href="index.html">ZARpm 0.1 documentation</a> &raquo;</li> 
+          <a href="py-modindex.html" title="Índice de Módulos Python"
+             >módulos</a> |</li>
+        <li class="right" >
+          <a href="administrarUsuarios.html" title="Usuarios"
+             accesskey="N">siguiente</a> |</li>
+        <li class="right" >
+          <a href="index.html" title="Contenidos:"
+             accesskey="P">anterior</a> |</li>
+        <li><a href="index.html">ZARpm - Documentation</a> &raquo;</li> 
       </ul>
-    </div>
-      <div class="sphinxsidebar">
-        <div class="sphinxsidebarwrapper">
-  <h3><a href="index.html">Table Of Contents</a></h3>
-  <ul>
-<li><a class="reference internal" href="#">autenticacion package</a><ul>
-<li><a class="reference internal" href="#submodules">Submodules</a></li>
-<li><a class="reference internal" href="#autenticacion-models-module">autenticacion.models module</a></li>
-<li><a class="reference internal" href="#module-autenticacion.tests">autenticacion.tests module</a></li>
-<li><a class="reference internal" href="#module-autenticacion.views">autenticacion.views module</a></li>
-<li><a class="reference internal" href="#module-autenticacion">Module contents</a></li>
-</ul>
-</li>
-</ul>
-
-  <h3>This Page</h3>
-  <ul class="this-page-menu">
-    <li><a href="_sources/autenticacion.txt"
-           rel="nofollow">Show Source</a></li>
-  </ul>
-<div id="searchbox" style="display: none">
-  <h3>Quick search</h3>
-    <form class="search" action="search.html" method="get">
-      <input type="text" name="q" />
-      <input type="submit" value="Go" />
-      <input type="hidden" name="check_keywords" value="yes" />
-      <input type="hidden" name="area" value="default" />
-    </form>
-    <p class="searchtip" style="font-size: 90%">
-    Enter search terms or a module, class or function name.
-    </p>
-</div>
-<script type="text/javascript">$('#searchbox').show(0);</script>
-        </div>
-      </div>
+    </div>  
 
     <div class="document">
       <div class="documentwrapper">
         <div class="bodywrapper">
           <div class="body">
             
-  <div class="section" id="autenticacion-package">
-<h1>autenticacion package<a class="headerlink" href="#autenticacion-package" title="Permalink to this headline">¶</a></h1>
-<div class="section" id="submodules">
-<h2>Submodules<a class="headerlink" href="#submodules" title="Permalink to this headline">¶</a></h2>
-</div>
-<div class="section" id="autenticacion-models-module">
-<h2>autenticacion.models module<a class="headerlink" href="#autenticacion-models-module" title="Permalink to this headline">¶</a></h2>
-<span class="target" id="module-autenticacion.models"></span><dl class="class">
-<dt id="autenticacion.models.AbstractUser">
-<em class="property">class </em><tt class="descclassname">autenticacion.models.</tt><tt class="descname">AbstractUser</tt><big>(</big><em>*args</em>, <em>**kwargs</em><big>)</big><a class="headerlink" href="#autenticacion.models.AbstractUser" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">django.contrib.auth.models.AbstractBaseUser</span></tt></p>
-<p>An abstract base class implementing a fully featured User model without
-admin-compliant permissions.</p>
-<p>Username, password and email are required. Other fields are optional.</p>
+  <div class="section" id="autenticacion">
+<h1>Autenticacion<a class="headerlink" href="#autenticacion" title="Enlazar permanentemente con este título">¶</a></h1>
+<div class="section" id="module-autenticacion.models">
+<span id="models"></span><h2>models<a class="headerlink" href="#module-autenticacion.models" title="Enlazar permanentemente con este título">¶</a></h2>
 <dl class="class">
-<dt id="autenticacion.models.AbstractUser.Meta">
-<em class="property">class </em><tt class="descname">Meta</tt><a class="headerlink" href="#autenticacion.models.AbstractUser.Meta" title="Permalink to this definition">¶</a></dt>
-<dd><dl class="attribute">
-<dt id="autenticacion.models.AbstractUser.Meta.abstract">
-<tt class="descname">abstract</tt><em class="property"> = False</em><a class="headerlink" href="#autenticacion.models.AbstractUser.Meta.abstract" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="attribute">
-<dt id="autenticacion.models.AbstractUser.Meta.verbose_name">
-<tt class="descname">verbose_name</tt><em class="property"> = 'user'</em><a class="headerlink" href="#autenticacion.models.AbstractUser.Meta.verbose_name" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="attribute">
-<dt id="autenticacion.models.AbstractUser.Meta.verbose_name_plural">
-<tt class="descname">verbose_name_plural</tt><em class="property"> = 'users'</em><a class="headerlink" href="#autenticacion.models.AbstractUser.Meta.verbose_name_plural" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-</dd></dl>
-
-<dl class="attribute">
-<dt id="autenticacion.models.AbstractUser.REQUIRED_FIELDS">
-<tt class="descclassname">AbstractUser.</tt><tt class="descname">REQUIRED_FIELDS</tt><em class="property"> = ['email']</em><a class="headerlink" href="#autenticacion.models.AbstractUser.REQUIRED_FIELDS" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="attribute">
-<dt id="autenticacion.models.AbstractUser.USERNAME_FIELD">
-<tt class="descclassname">AbstractUser.</tt><tt class="descname">USERNAME_FIELD</tt><em class="property"> = 'username'</em><a class="headerlink" href="#autenticacion.models.AbstractUser.USERNAME_FIELD" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
+<dt id="autenticacion.models.AbstractUser">
+<em class="property">class </em><tt class="descclassname">autenticacion.models.</tt><tt class="descname">AbstractUser</tt><big>(</big><em>*args</em>, <em>**kwargs</em><big>)</big><a class="headerlink" href="#autenticacion.models.AbstractUser" title="Enlazar permanentemente con esta definición">¶</a></dt>
+<dd><p>Clases base: <tt class="xref py py-class docutils literal"><span class="pre">django.contrib.auth.models.AbstractBaseUser</span></tt></p>
+<p><em>Clase Abstracta que posse todas las funciones a ser implementadas por el modelo Usuario,</em>
+<em>sin los permisos de administrador. El cual tiene como base el modelo</em> <tt class="docutils literal"><span class="pre">AbstractBaseUser</span></tt>.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parámetros:</th><td class="field-body"><ul class="first last simple">
+<li><strong>args</strong> &#8211; Argumentos para el modelo <tt class="docutils literal"><span class="pre">AbstractBaseUser</span></tt>.</li>
+<li><strong>kwargs</strong> &#8211; Keyword Arguments para el modelo <tt class="docutils literal"><span class="pre">AbstractBaseUser</span></tt>.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<div class="highlight-python"><div class="highlight"><pre><span class="k">class</span> <span class="nc">Meta</span><span class="p">:</span>
+    <span class="n">verbose_name</span> <span class="o">=</span> <span class="s">&#39;user&#39;</span>
+    <span class="n">verbose_name_plural</span> <span class="o">=</span> <span class="s">&#39;users&#39;</span>
+    <span class="n">abstract</span> <span class="o">=</span> <span class="bp">True</span>
+</pre></div>
+</div>
 <dl class="method">
 <dt id="autenticacion.models.AbstractUser.email_user">
-<tt class="descclassname">AbstractUser.</tt><tt class="descname">email_user</tt><big>(</big><em>subject</em>, <em>message</em>, <em>from_email=None</em><big>)</big><a class="headerlink" href="#autenticacion.models.AbstractUser.email_user" title="Permalink to this definition">¶</a></dt>
-<dd><p>Sends an email to this User.</p>
+<tt class="descname">email_user</tt><big>(</big><em>subject</em>, <em>message</em>, <em>from_email=None</em><big>)</big><a class="headerlink" href="#autenticacion.models.AbstractUser.email_user" title="Enlazar permanentemente con esta definición">¶</a></dt>
+<dd><p>Envia un email al usuario.</p>
 </dd></dl>
-
-<dl class="method">
-<dt id="autenticacion.models.AbstractUser.get_absolute_url">
-<tt class="descclassname">AbstractUser.</tt><tt class="descname">get_absolute_url</tt><big>(</big><big>)</big><a class="headerlink" href="#autenticacion.models.AbstractUser.get_absolute_url" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
 
 <dl class="method">
 <dt id="autenticacion.models.AbstractUser.get_full_name">
-<tt class="descclassname">AbstractUser.</tt><tt class="descname">get_full_name</tt><big>(</big><big>)</big><a class="headerlink" href="#autenticacion.models.AbstractUser.get_full_name" title="Permalink to this definition">¶</a></dt>
-<dd><p>Returns the first_name plus the last_name, with a space in between.</p>
+<tt class="descname">get_full_name</tt><big>(</big><big>)</big><a class="headerlink" href="#autenticacion.models.AbstractUser.get_full_name" title="Enlazar permanentemente con esta definición">¶</a></dt>
+<dd><p>Retorna el nombre completo del usuario.</p>
 </dd></dl>
 
 <dl class="method">
-<dt id="autenticacion.models.AbstractUser.get_next_by_date_joined">
-<tt class="descclassname">AbstractUser.</tt><tt class="descname">get_next_by_date_joined</tt><big>(</big><em>*moreargs</em>, <em>**morekwargs</em><big>)</big><a class="headerlink" href="#autenticacion.models.AbstractUser.get_next_by_date_joined" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="method">
-<dt id="autenticacion.models.AbstractUser.get_next_by_last_login">
-<tt class="descclassname">AbstractUser.</tt><tt class="descname">get_next_by_last_login</tt><big>(</big><em>*moreargs</em>, <em>**morekwargs</em><big>)</big><a class="headerlink" href="#autenticacion.models.AbstractUser.get_next_by_last_login" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="method">
-<dt id="autenticacion.models.AbstractUser.get_previous_by_date_joined">
-<tt class="descclassname">AbstractUser.</tt><tt class="descname">get_previous_by_date_joined</tt><big>(</big><em>*moreargs</em>, <em>**morekwargs</em><big>)</big><a class="headerlink" href="#autenticacion.models.AbstractUser.get_previous_by_date_joined" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="method">
-<dt id="autenticacion.models.AbstractUser.get_previous_by_last_login">
-<tt class="descclassname">AbstractUser.</tt><tt class="descname">get_previous_by_last_login</tt><big>(</big><em>*moreargs</em>, <em>**morekwargs</em><big>)</big><a class="headerlink" href="#autenticacion.models.AbstractUser.get_previous_by_last_login" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="method">
 <dt id="autenticacion.models.AbstractUser.get_profile">
-<tt class="descclassname">AbstractUser.</tt><tt class="descname">get_profile</tt><big>(</big><big>)</big><a class="headerlink" href="#autenticacion.models.AbstractUser.get_profile" title="Permalink to this definition">¶</a></dt>
-<dd><p>Returns site-specific profile for this user. Raises
-SiteProfileNotAvailable if this site does not allow profiles.</p>
+<tt class="descname">get_profile</tt><big>(</big><big>)</big><a class="headerlink" href="#autenticacion.models.AbstractUser.get_profile" title="Enlazar permanentemente con esta definición">¶</a></dt>
+<dd><p>Retorna el perfil del usuario.</p>
 </dd></dl>
 
 <dl class="method">
 <dt id="autenticacion.models.AbstractUser.get_short_name">
-<tt class="descclassname">AbstractUser.</tt><tt class="descname">get_short_name</tt><big>(</big><big>)</big><a class="headerlink" href="#autenticacion.models.AbstractUser.get_short_name" title="Permalink to this definition">¶</a></dt>
-<dd><p>Returns the short name for the user.</p>
+<tt class="descname">get_short_name</tt><big>(</big><big>)</big><a class="headerlink" href="#autenticacion.models.AbstractUser.get_short_name" title="Enlazar permanentemente con esta definición">¶</a></dt>
+<dd><p>&#8221;
+Retorna el primer nombre del usuario.</p>
 </dd></dl>
 
 </dd></dl>
 
 <dl class="class">
 <dt id="autenticacion.models.Usuario">
-<em class="property">class </em><tt class="descclassname">autenticacion.models.</tt><tt class="descname">Usuario</tt><big>(</big><em>*args</em>, <em>**kwargs</em><big>)</big><a class="headerlink" href="#autenticacion.models.Usuario" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <a class="reference internal" href="#autenticacion.models.AbstractUser" title="autenticacion.models.AbstractUser"><tt class="xref py py-class docutils literal"><span class="pre">autenticacion.models.AbstractUser</span></tt></a></p>
-<p>Extension de la clase User de Django. Agrega los campos telefono y otros.</p>
-<dl class="exception">
-<dt id="autenticacion.models.Usuario.DoesNotExist">
-<em class="property">exception </em><tt class="descname">DoesNotExist</tt><a class="headerlink" href="#autenticacion.models.Usuario.DoesNotExist" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">django.core.exceptions.ObjectDoesNotExist</span></tt></p>
-</dd></dl>
-
-<dl class="attribute">
-<dt id="autenticacion.models.Usuario.Lider">
-<tt class="descclassname">Usuario.</tt><tt class="descname">Lider</tt><a class="headerlink" href="#autenticacion.models.Usuario.Lider" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="exception">
-<dt id="autenticacion.models.Usuario.MultipleObjectsReturned">
-<em class="property">exception </em><tt class="descclassname">Usuario.</tt><tt class="descname">MultipleObjectsReturned</tt><a class="headerlink" href="#autenticacion.models.Usuario.MultipleObjectsReturned" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">django.core.exceptions.MultipleObjectsReturned</span></tt></p>
-</dd></dl>
-
-<dl class="method">
-<dt id="autenticacion.models.Usuario.get_absolute_url">
-<tt class="descclassname">Usuario.</tt><tt class="descname">get_absolute_url</tt><big>(</big><em>*moreargs</em>, <em>**morekwargs</em><big>)</big><a class="headerlink" href="#autenticacion.models.Usuario.get_absolute_url" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="method">
-<dt id="autenticacion.models.Usuario.get_next_by_date_joined">
-<tt class="descclassname">Usuario.</tt><tt class="descname">get_next_by_date_joined</tt><big>(</big><em>*moreargs</em>, <em>**morekwargs</em><big>)</big><a class="headerlink" href="#autenticacion.models.Usuario.get_next_by_date_joined" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="method">
-<dt id="autenticacion.models.Usuario.get_next_by_last_login">
-<tt class="descclassname">Usuario.</tt><tt class="descname">get_next_by_last_login</tt><big>(</big><em>*moreargs</em>, <em>**morekwargs</em><big>)</big><a class="headerlink" href="#autenticacion.models.Usuario.get_next_by_last_login" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="method">
-<dt id="autenticacion.models.Usuario.get_previous_by_date_joined">
-<tt class="descclassname">Usuario.</tt><tt class="descname">get_previous_by_date_joined</tt><big>(</big><em>*moreargs</em>, <em>**morekwargs</em><big>)</big><a class="headerlink" href="#autenticacion.models.Usuario.get_previous_by_date_joined" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="method">
-<dt id="autenticacion.models.Usuario.get_previous_by_last_login">
-<tt class="descclassname">Usuario.</tt><tt class="descname">get_previous_by_last_login</tt><big>(</big><em>*moreargs</em>, <em>**morekwargs</em><big>)</big><a class="headerlink" href="#autenticacion.models.Usuario.get_previous_by_last_login" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="attribute">
-<dt id="autenticacion.models.Usuario.logentry_set">
-<tt class="descclassname">Usuario.</tt><tt class="descname">logentry_set</tt><a class="headerlink" href="#autenticacion.models.Usuario.logentry_set" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="attribute">
-<dt id="autenticacion.models.Usuario.objects">
-<tt class="descclassname">Usuario.</tt><tt class="descname">objects</tt><em class="property"> = &lt;django.contrib.auth.models.UserManager object at 0xa5b896c&gt;</em><a class="headerlink" href="#autenticacion.models.Usuario.objects" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="attribute">
-<dt id="autenticacion.models.Usuario.proyecto_set">
-<tt class="descclassname">Usuario.</tt><tt class="descname">proyecto_set</tt><a class="headerlink" href="#autenticacion.models.Usuario.proyecto_set" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="attribute">
-<dt id="autenticacion.models.Usuario.usuariosvinculadosproyectos_set">
-<tt class="descclassname">Usuario.</tt><tt class="descname">usuariosvinculadosproyectos_set</tt><a class="headerlink" href="#autenticacion.models.Usuario.usuariosvinculadosproyectos_set" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
+<em class="property">class </em><tt class="descclassname">autenticacion.models.</tt><tt class="descname">Usuario</tt><big>(</big><em>*args</em>, <em>**kwargs</em><big>)</big><a class="headerlink" href="#autenticacion.models.Usuario" title="Enlazar permanentemente con esta definición">¶</a></dt>
+<dd><p>Clases base: <a class="reference internal" href="#autenticacion.models.AbstractUser" title="autenticacion.models.AbstractUser"><tt class="xref py py-class docutils literal"><span class="pre">autenticacion.models.AbstractUser</span></tt></a></p>
+<p><em>Extension de la clase User de Django. Extiende del modelo definido</em> <tt class="docutils literal"><span class="pre">AbstractUser</span></tt>
+<em>Agrega los campos telefono y otros.</em></p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parámetros:</th><td class="field-body"><ul class="first last simple">
+<li><strong>args</strong> &#8211; Argumentos para el modelo <tt class="docutils literal"><span class="pre">AbstractUser</span></tt>.</li>
+<li><strong>kwargs</strong> &#8211; Keyword Arguments para el modelo <tt class="docutils literal"><span class="pre">AbstractUser</span></tt>.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 </div>
 <div class="section" id="module-autenticacion.tests">
-<span id="autenticacion-tests-module"></span><h2>autenticacion.tests module<a class="headerlink" href="#module-autenticacion.tests" title="Permalink to this headline">¶</a></h2>
+<span id="tests"></span><h2>tests<a class="headerlink" href="#module-autenticacion.tests" title="Enlazar permanentemente con este título">¶</a></h2>
 <dl class="class">
 <dt id="autenticacion.tests.TestAutenticacionViewsMyLogin">
-<em class="property">class </em><tt class="descclassname">autenticacion.tests.</tt><tt class="descname">TestAutenticacionViewsMyLogin</tt><big>(</big><em>methodName='runTest'</em><big>)</big><a class="headerlink" href="#autenticacion.tests.TestAutenticacionViewsMyLogin" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">django.test.testcases.TestCase</span></tt></p>
+<em class="property">class </em><tt class="descclassname">autenticacion.tests.</tt><tt class="descname">TestAutenticacionViewsMyLogin</tt><big>(</big><em>methodName='runTest'</em><big>)</big><a class="headerlink" href="#autenticacion.tests.TestAutenticacionViewsMyLogin" title="Enlazar permanentemente con esta definición">¶</a></dt>
+<dd><p>Clases base: <tt class="xref py py-class docutils literal"><span class="pre">django.test.testcases.TestCase</span></tt></p>
 <p>Prueba para la vista autenticacion.views.myLogin.</p>
-<dl class="attribute">
-<dt id="autenticacion.tests.TestAutenticacionViewsMyLogin.pw_admin">
-<tt class="descname">pw_admin</tt><em class="property"> = 'admin'</em><a class="headerlink" href="#autenticacion.tests.TestAutenticacionViewsMyLogin.pw_admin" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="attribute">
-<dt id="autenticacion.tests.TestAutenticacionViewsMyLogin.pw_unknown_user">
-<tt class="descname">pw_unknown_user</tt><em class="property"> = 'cualquiera'</em><a class="headerlink" href="#autenticacion.tests.TestAutenticacionViewsMyLogin.pw_unknown_user" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
 <dl class="method">
 <dt id="autenticacion.tests.TestAutenticacionViewsMyLogin.setUp">
-<tt class="descname">setUp</tt><big>(</big><big>)</big><a class="headerlink" href="#autenticacion.tests.TestAutenticacionViewsMyLogin.setUp" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">setUp</tt><big>(</big><big>)</big><a class="headerlink" href="#autenticacion.tests.TestAutenticacionViewsMyLogin.setUp" title="Enlazar permanentemente con esta definición">¶</a></dt>
 <dd><p>Crea el usuario &#8216;admin&#8217; con contrasena &#8216;admin&#8217;</p>
 </dd></dl>
 
 <dl class="method">
 <dt id="autenticacion.tests.TestAutenticacionViewsMyLogin.test_login_admin">
-<tt class="descname">test_login_admin</tt><big>(</big><big>)</big><a class="headerlink" href="#autenticacion.tests.TestAutenticacionViewsMyLogin.test_login_admin" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">test_login_admin</tt><big>(</big><big>)</big><a class="headerlink" href="#autenticacion.tests.TestAutenticacionViewsMyLogin.test_login_admin" title="Enlazar permanentemente con esta definición">¶</a></dt>
 <dd><p>Prueba del Logeo del usuario &#8216;admin&#8217;</p>
 </dd></dl>
 
 <dl class="method">
 <dt id="autenticacion.tests.TestAutenticacionViewsMyLogin.test_login_response">
-<tt class="descname">test_login_response</tt><big>(</big><big>)</big><a class="headerlink" href="#autenticacion.tests.TestAutenticacionViewsMyLogin.test_login_response" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">test_login_response</tt><big>(</big><big>)</big><a class="headerlink" href="#autenticacion.tests.TestAutenticacionViewsMyLogin.test_login_response" title="Enlazar permanentemente con esta definición">¶</a></dt>
 <dd><p>Prueba de la respuesta de la vista &#8216;/login/&#8217;</p>
 </dd></dl>
 
 <dl class="method">
 <dt id="autenticacion.tests.TestAutenticacionViewsMyLogin.test_login_unknown_user">
-<tt class="descname">test_login_unknown_user</tt><big>(</big><big>)</big><a class="headerlink" href="#autenticacion.tests.TestAutenticacionViewsMyLogin.test_login_unknown_user" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">test_login_unknown_user</tt><big>(</big><big>)</big><a class="headerlink" href="#autenticacion.tests.TestAutenticacionViewsMyLogin.test_login_unknown_user" title="Enlazar permanentemente con esta definición">¶</a></dt>
 <dd><p>Prueba del Logeo de un usuario no registrado</p>
 </dd></dl>
 
 <dl class="method">
 <dt id="autenticacion.tests.TestAutenticacionViewsMyLogin.test_root_response">
-<tt class="descname">test_root_response</tt><big>(</big><big>)</big><a class="headerlink" href="#autenticacion.tests.TestAutenticacionViewsMyLogin.test_root_response" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">test_root_response</tt><big>(</big><big>)</big><a class="headerlink" href="#autenticacion.tests.TestAutenticacionViewsMyLogin.test_root_response" title="Enlazar permanentemente con esta definición">¶</a></dt>
 <dd><p>Prueba de la respuesta de la vista &#8216;&#8217; root</p>
-</dd></dl>
-
-<dl class="attribute">
-<dt id="autenticacion.tests.TestAutenticacionViewsMyLogin.un_admin">
-<tt class="descname">un_admin</tt><em class="property"> = 'xadmin'</em><a class="headerlink" href="#autenticacion.tests.TestAutenticacionViewsMyLogin.un_admin" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="attribute">
-<dt id="autenticacion.tests.TestAutenticacionViewsMyLogin.un_unknown_user">
-<tt class="descname">un_unknown_user</tt><em class="property"> = 'cualquiera'</em><a class="headerlink" href="#autenticacion.tests.TestAutenticacionViewsMyLogin.un_unknown_user" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-</dd></dl>
-
-<dl class="class">
-<dt id="autenticacion.tests.UsuarioFactory">
-<em class="property">class </em><tt class="descclassname">autenticacion.tests.</tt><tt class="descname">UsuarioFactory</tt><a class="headerlink" href="#autenticacion.tests.UsuarioFactory" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">factory.django.DjangoModelFactory</span></tt></p>
-<dl class="attribute">
-<dt id="autenticacion.tests.UsuarioFactory.FACTORY_FOR">
-<tt class="descname">FACTORY_FOR</tt><a class="headerlink" href="#autenticacion.tests.UsuarioFactory.FACTORY_FOR" title="Permalink to this definition">¶</a></dt>
-<dd><p>alias of <tt class="xref py py-class docutils literal"><span class="pre">Usuario</span></tt></p>
 </dd></dl>
 
 </dd></dl>
 
 </div>
 <div class="section" id="module-autenticacion.views">
-<span id="autenticacion-views-module"></span><h2>autenticacion.views module<a class="headerlink" href="#module-autenticacion.views" title="Permalink to this headline">¶</a></h2>
+<span id="views"></span><h2>views<a class="headerlink" href="#module-autenticacion.views" title="Enlazar permanentemente con este título">¶</a></h2>
 <dl class="function">
-<dt id="autenticacion.views.base">
-<tt class="descclassname">autenticacion.views.</tt><tt class="descname">base</tt><big>(</big><em>request</em>, <em>*args</em>, <em>**kwargs</em><big>)</big><a class="headerlink" href="#autenticacion.views.base" title="Permalink to this definition">¶</a></dt>
-<dd><p>Vista para la plantilla base.html</p>
+<dt id="autenticacion.views.UserResetPassword">
+<tt class="descclassname">autenticacion.views.</tt><tt class="descname">UserResetPassword</tt><big>(</big><em>request</em><big>)</big><a class="headerlink" href="#autenticacion.views.UserResetPassword" title="Enlazar permanentemente con esta definición">¶</a></dt>
+<dd><p><em>Vista para la función de re-establecer la contraseña de un usuario vía correo electrónico</em></p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>request</strong> &#8211; HttpRequest con los datos de la sesion del usuario actual.</td>
+<tr class="field-odd field"><th class="field-name">Parámetros:</th><td class="field-body"><strong>request</strong> &#8211; HttpRequest con los datos para la petición formal de reestablecer la contraseña.</td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">Template base.html. Los demas templates heredan de este la estructura y los estilos.</td>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="autenticacion.views.base">
+<tt class="descclassname">autenticacion.views.</tt><tt class="descname">base</tt><big>(</big><em>request</em>, <em>*args</em>, <em>**kwargs</em><big>)</big><a class="headerlink" href="#autenticacion.views.base" title="Enlazar permanentemente con esta definición">¶</a></dt>
+<dd><p><em>Vista para la plantilla</em> <tt class="docutils literal"><span class="pre">base.html</span></tt></p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parámetros:</th><td class="field-body"><ul class="first simple">
+<li><strong>request</strong> &#8211; HttpRequest con los datos de la sesion del usuario actual.</li>
+<li><strong>args</strong> &#8211; Argumentos para la funcion.</li>
+<li><strong>kwargs</strong> &#8211; Keyword Arguments para la funcion.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Devuelve:</th><td class="field-body"><p class="first last">Template base.html. Los demas templates heredan de este la estructura y los estilos.</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="autenticacion.views.main">
+<tt class="descclassname">autenticacion.views.</tt><tt class="descname">main</tt><big>(</big><em>request</em>, <em>*args</em>, <em>**kwargs</em><big>)</big><a class="headerlink" href="#autenticacion.views.main" title="Enlazar permanentemente con esta definición">¶</a></dt>
+<dd><p><em>Vista para la plantilla</em> <tt class="docutils literal"><span class="pre">main.html</span></tt></p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parámetros:</th><td class="field-body"><ul class="first simple">
+<li><strong>request</strong> &#8211; HttpRequest con los datos de la sesion del usuario actual.</li>
+<li><strong>args</strong> &#8211; Argumentos para la funcion.</li>
+<li><strong>kwargs</strong> &#8211; Keyword Arguments para la funcion.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Devuelve:</th><td class="field-body"><p class="first last">Template mainAdmin.html para el Administrador y mainAnyUser.html para los demas usuarios.</p>
+</td>
 </tr>
 </tbody>
 </table>
@@ -336,21 +231,20 @@ SiteProfileNotAvailable if this site does not allow profiles.</p>
 
 <dl class="function">
 <dt id="autenticacion.views.myLogin">
-<tt class="descclassname">autenticacion.views.</tt><tt class="descname">myLogin</tt><big>(</big><em>request</em>, <em>*args</em>, <em>**kwargs</em><big>)</big><a class="headerlink" href="#autenticacion.views.myLogin" title="Permalink to this definition">¶</a></dt>
-<dd><blockquote>
-<div>Establece el tiempo de vida de la sesion.</div></blockquote>
+<tt class="descclassname">autenticacion.views.</tt><tt class="descname">myLogin</tt><big>(</big><em>request</em>, <em>*args</em>, <em>**kwargs</em><big>)</big><a class="headerlink" href="#autenticacion.views.myLogin" title="Enlazar permanentemente con esta definición">¶</a></dt>
+<dd><p><em>Establece el tiempo de vida de la sesión.</em></p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<tr class="field-odd field"><th class="field-name">Parámetros:</th><td class="field-body"><ul class="first simple">
 <li><strong>request</strong> &#8211; HttpRequest con el contenido de la pagina actual.</li>
 <li><strong>args</strong> &#8211; Argumentos para la funcion contrib.auth.views.login.</li>
 <li><strong>kwargs</strong> &#8211; Keyword Arguments para la funcion contrib.auth.views.login.</li>
 </ul>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">Retorna el resultado de la funcion contrib.auth.views.login.</p>
+<tr class="field-even field"><th class="field-name">Devuelve:</th><td class="field-body"><p class="first last">Retorna el resultado de la funcion contrib.auth.views.login.</p>
 </td>
 </tr>
 </tbody>
@@ -358,32 +252,76 @@ SiteProfileNotAvailable if this site does not allow profiles.</p>
 </dd></dl>
 
 </div>
-<div class="section" id="module-autenticacion">
-<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-autenticacion" title="Permalink to this headline">¶</a></h2>
-</div>
 </div>
 
 
           </div>
         </div>
       </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+            <p class="logo"><a href="index.html">
+              <img class="logo" src="_static/logoZARpm.jpg" alt="Logo"/>
+            </a></p>
+  <h3><a href="index.html">Tabla de Contenidos</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Autenticacion</a><ul>
+<li><a class="reference internal" href="#module-autenticacion.models">models</a></li>
+<li><a class="reference internal" href="#module-autenticacion.tests">tests</a></li>
+<li><a class="reference internal" href="#module-autenticacion.views">views</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Tema anterior</h4>
+  <p class="topless"><a href="index.html"
+                        title="capítulo anterior">Contenidos:</a></p>
+  <h4>Próximo tema</h4>
+  <p class="topless"><a href="administrarUsuarios.html"
+                        title="próximo capítulo">Usuarios</a></p>
+  <h3>Esta página</h3>
+  <ul class="this-page-menu">
+    <li><a href="_sources/autenticacion.txt"
+           rel="nofollow">Mostrar el código</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Búsqueda rápida</h3>
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Ir a" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Introduzca los términos de búsqueda o un nombre de módulo, clase o función.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
       <div class="clearer"></div>
     </div>
     <div class="related">
-      <h3>Navigation</h3>
+      <h3>Navegación</h3>
       <ul>
         <li class="right" style="margin-right: 10px">
-          <a href="genindex.html" title="General Index"
-             >index</a></li>
+          <a href="genindex.html" title="Índice General"
+             >índice</a></li>
         <li class="right" >
-          <a href="py-modindex.html" title="Python Module Index"
-             >modules</a> |</li>
-        <li><a href="index.html">ZARpm 0.1 documentation</a> &raquo;</li> 
+          <a href="py-modindex.html" title="Índice de Módulos Python"
+             >módulos</a> |</li>
+        <li class="right" >
+          <a href="administrarUsuarios.html" title="Usuarios"
+             >siguiente</a> |</li>
+        <li class="right" >
+          <a href="index.html" title="Contenidos:"
+             >anterior</a> |</li>
+        <li><a href="index.html">ZARpm - Documentation</a> &raquo;</li> 
       </ul>
     </div>
     <div class="footer">
         &copy; Copyright 2014, Augusto Amarilla, Gerardo Ramos y Saúl Zalimben.
-      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2.2.
+      Creado con <a href="http://sphinx-doc.org/">Sphinx</a> 1.2.2.
     </div>
   </body>
 </html>

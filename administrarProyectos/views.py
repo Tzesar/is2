@@ -19,11 +19,14 @@ logger = logging.getLogger(__name__)
 @login_required()
 def createProject(request):
     """
-    Vista para la creación de proyectos en el sistema.
-    Opción válida para usuarios con rol de Administrador.
+    *Vista para la creación de proyectos en el sistema.
+    Opción válida para usuarios con rol de ``Administrador``.*
 
-    :param: Recibe la petición request
-    :return: Crea el proyecto en el sistema regresando al menu principal
+    :param request: HttpRequest necesario para crear proyectos, es la solicitud de la acción.
+    :param args: Argumentos para el modelo ``Proyecto``.
+    :param kwargs: Keyword Arguments para la el modelo ``Proyecto``.
+    :return: Proporciona la pagina ``createproject.html`` con el formulario correspondiente
+             Crea el proyecto en el sistema regresando al menu principal
     """
     if request.method == 'POST':
         form = NewProjectForm(request.POST)
@@ -50,11 +53,14 @@ def vincularLider(nombre_proyecto, lider_code):
 @login_required()
 def changeProject(request, id_proyecto):
     """
-    Vista para la modificacion de un proyecto dentro del sistema.
-    Opción válida para usuarios con rol de Administrador.
+    *Vista para la modificación de un proyecto dentro del sistema.
+    Opción válida para usuarios con rol de Administrador.*
 
-    :param: Recibe la petición request y el identificador del proyecto el cual vamos a modificar
-    :return: Modifica el proyecto y luego regresa al menu principal
+    :param request: HttpRequest necesario para modificar proyectos, es la solicitud de la acción.
+    :param args: Argumentos para el modelo ``Proyecto``.
+    :param kwargs: Keyword Arguments para la el modelo ``Proyecto``.
+    :return: Proporciona la pagina ``changeproject.html`` con el formulario correspondiente
+             Modifica el proyecto y luego regresa al menu principal
     """
     project = Proyecto.objects.get(pk=id_proyecto)
     users = Usuario.objects.filter(is_active=True)
@@ -73,11 +79,13 @@ def changeProject(request, id_proyecto):
 @login_required
 def projectList(request):
     """
-    Vista para listar todos los proyectos dentro del sistema.
-    Opción válida para usuarios con los roles correspondientes.
+    *Vista para listar todos los proyectos dentro del sistema.
+    Opción válida para usuarios con los roles correspondientes.*
 
-    :param: Recibe la petición request
-    :return: Lista todos los proyectos existentes en el sistema
+    :param request: HttpRequest necesario para visualizar los proyectos, es la solicitud de la acción.
+    :param args: Argumentos para el modelo ``Proyecto``.
+    :param kwargs: Keyword Arguments para la el modelo ``Proyecto``.
+    :return: Proporciona la pagina ``projectlist.html`` con la lista de todos los proyectos existentes en el sistema
     """
     proyectos = ProyectoTablaAdmin( Proyecto.objects.all() )
     RequestConfig(request, paginate={"per_page": 25}).configure(proyectos)
@@ -86,9 +94,13 @@ def projectList(request):
 
 def setUserToProject(request, id_proyecto):
     """
-    Vista para vincular usuarios a un proyecto existente.
+    *Vista para vincular usuarios a un proyecto existente.
+    Acción solo realizada por los usuarios con rol de ``Líder de proyecto``*
 
-    Acción solo realizada por los usuarios con rol de líder de proyecto
+    :param request: HttpRequest necesario para vincular los usuarios a proyectos, es la solicitud de la acción.
+    :param id_proyecto: Identificador del proyecto dentro del sistema al cual se le vincularán usuarios para su desarrollo.
+    :return: Proporciona la pagina ``setusertoproject.html`` con la lista de todos los usuarios existentes en el sistema para listar al proyecto
+            Usuarios vinculados correctamente al proyecto.
     """
     project = Proyecto.objects.get(pk=id_proyecto)
 
@@ -113,7 +125,12 @@ def setUserToProject(request, id_proyecto):
 
 def viewSetUserProject(request, id_proyecto):
     """
-    Vista para visualizar usuarios que se encuentren vinculados a un proyecto
+    *Vista para visualizar usuarios que se encuentren vinculados a un proyecto*
+
+    :param request: HttpRequest necesario para visualizar los usuarios a proyectos, es la solicitud de la acción.
+    :param id_proyecto: Identificador del proyecto dentro del sistema.
+    :return: Proporciona la pagina ``usersetproject.html`` con la lista de todos los usuarios vinculados al proyecto
+             Lista de los usuarios vinculados correctamente al proyecto.
     """
 
     project = Proyecto.objects.get(pk=id_proyecto)
@@ -125,11 +142,13 @@ def viewSetUserProject(request, id_proyecto):
 @login_required()
 def workProject(request, id_proyecto):
     """
-    Vista para el trabajo sobre un proyecto dentro del sistema.
-    Opción válida para usuarios asociados a un proyecto, ya sea como Lider o como participante.
+    *Vista para el trabajo sobre un proyecto dentro del sistema.
+    Opción válida para usuarios asociados a un proyecto, ya sea como ``Líder de Proyecto`` o como participante.*
 
-    :param: Recibe la petición request y el identificador del proyecto en el cual vamos a trabajar
-    :return: Vista para el trabajo sobre el proyecto
+    :param request: HttpRequest necesario para visualizar el área de trabajo de los usuarios en un proyectos, es la solicitud de la acción.
+    :param id_proyecto: Identificador del proyecto dentro del sistema.
+    :return: Proporciona la pagina ``workProject.html``, página dedica al desarrollo del proyecto.
+             Vista para el desarrollo del proyecto
     """
 
     proyecto = Proyecto.objects.get(id=id_proyecto)

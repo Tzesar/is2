@@ -7,7 +7,7 @@ https://docs.djangoproject.com/en/1.6/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/1.6/ref/settings/
 """
-
+#encoding:utf-8
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 import os
 
@@ -45,6 +45,7 @@ INSTALLED_APPS = (
     'administrarProyectos',
     'administrarFases',
     'administrarRolesPermisos',
+    'administrarTipoItem',
 )
 
 MIDDLEWARE_CLASSES = (
@@ -114,11 +115,17 @@ LOGIN_REDIRECT_URL = '/main/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'is2/', 'static/')
 MEDIA_URL = '/media/'
 
-#encoding:utf-8
+
+EMAIL_USE_TLS = True
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_PORT = 587
+EMAIL_HOST_USER = 'admitres03'
+EMAIL_HOST_PASSWORD = 'administracion3'
+DEFAULT_FROM_EMAIL = 'admitres03@gmail.com'
 
 LOGGING = {
     'version': 1,
-    'disable_existing_loggers': True,
+    'disable_existing_loggers': False,
     'formatters': {
         'verbose': {
             'format': "[%(asctime)s] %(levelname)s %(message)s",

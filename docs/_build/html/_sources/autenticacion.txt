@@ -1,38 +1,24 @@
-autenticacion package
+Autenticacion 
 =====================
 
-Submodules
-----------
-
-autenticacion.models module
+models 
 ---------------------------
 
 .. automodule:: autenticacion.models
     :members:
-    :undoc-members:
     :show-inheritance:
 
-autenticacion.tests module
+tests 
 --------------------------
 
 .. automodule:: autenticacion.tests
     :members:
-    :undoc-members:
     :show-inheritance:
 
-autenticacion.views module
+views 
 --------------------------
 
 .. automodule:: autenticacion.views
     :members:
-    :undoc-members:
     :show-inheritance:
 
-
-Module contents
----------------
-
-.. automodule:: autenticacion
-    :members:
-    :undoc-members:
-    :show-inheritance:

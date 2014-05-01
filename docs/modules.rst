@@ -1,4 +1,4 @@
-Packages
+========
 ========
 
 .. toctree::
@@ -6,6 +6,7 @@ Packages
 
    administrarFases
    administrarProyectos
+   administrarRolesPermisos
    administrarTipoItem
    administrarUsuarios
    autenticacion

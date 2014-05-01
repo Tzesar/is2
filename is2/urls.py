@@ -5,6 +5,7 @@ Descripcion de las diferentes URLs utilizadas en el proyecto ZAPpm
 from django.conf.urls import patterns, url
 from django.contrib import admin
 from django.contrib.auth.views import logout_then_login
+from administrarTipoItem.views import createItemType, deleteItemType, itemtypeList, changeItemType
 from autenticacion.views import main, myLogin
 from administrarUsuarios.views import createUser, changeUser, userList, changePass, changeAnyUser, changeUser2
 from zar.views import about, contact
@@ -41,5 +42,17 @@ urlpatterns = patterns('',
                        url(r'^rolelist/(?P<id_proyecto>\d+)$', roleList, name="rolelist"),
                        url(r'^changerole/(?P<id_proyecto>\d+)/(?P<id_rol>\d+)$', changeRole, name="rolelist"),
                        url(r'^deleterole/(?P<id_proyecto>\d+)/(?P<id_rol>\d+)$', deleteRole),
+                       url(r'^createitemtype/(?P<id_fase>\d+)$', createItemType),
+                       url(r'^changeitemtype/(?P<id_tipoitem>\d+)$', changeItemType),
+                       url(r'^itemtypelist/(?P<id_fase>\d+)$', itemtypeList),
+                       url(r'^deleteitemtype/(?P<id_tipoitem>\d+)$', deleteItemType),
+                       url(r'^forgot_password/$', 'django.contrib.auth.views.password_reset', {'template_name':'autenticacion/forgot_password.html',\
+                               'post_reset_redirect' : 'registration/password_reset_done'}, name="reset_password"),
+                       url(r'^forgot_password/registration/password_reset_done/$', 'django.contrib.auth.views.password_reset_done'),
+                       url(r'^password_reset_confirm/(?P<uidb64>[0-9A-Za-z]+)-(?P<token>.+)/$',
+                           'django.contrib.auth.views.password_reset_confirm', {'post_reset_redirect': 'registration/password_reset_complete'}),
+                       url(r'^/password_reset_complete/$', 'django.contrib.auth.views.password_reset_complete'),
+                       )
+
                        url(r'^asignrole/(?P<id_proyecto>\d+)/(?P<id_rol>\d+)$', asignRole),
                        )
