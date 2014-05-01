@@ -1,7 +1,7 @@
 #encoding:utf-8
 from __future__ import unicode_literals
 from django import forms
-from django.contrib.auth.forms import SetPasswordForm
+from django.contrib.auth.forms import SetPasswordForm, PasswordResetForm
 from django.utils.datastructures import SortedDict
 from django.utils.translation import ugettext_lazy as _
 import floppyforms as forms2
@@ -206,6 +206,4 @@ class CustomPasswordChangeForm(SetPasswordForm):
 CustomPasswordChangeForm_fields = SortedDict([
     (k, CustomPasswordChangeForm.base_fields[k])
         for k in ['old_password', 'new_password1', 'new_password2']])
-
-
 

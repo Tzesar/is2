@@ -1,16 +1,19 @@
+#uncoding:utf-8
+
 from django.http import HttpResponseRedirect
 from django.core.urlresolvers import reverse
 from django.shortcuts import render
 from django.contrib.auth.decorators import login_required
-from django.contrib.auth.views import login
+from django.contrib.auth.views import login, password_reset
 from django_tables2 import RequestConfig
 from administrarProyectos.models import Proyecto
 from administrarProyectos.tables import ProyectoTabla
+from is2.settings import DEFAULT_FROM_EMAIL
 
 
 def myLogin(request, *args, **kwargs):
     """
-    *Establece el tiempo de vida de la sesion.*
+    *Establece el tiempo de vida de la sesión.*
 
     :param request: HttpRequest con el contenido de la pagina actual.
     :param args: Argumentos para la funcion contrib.auth.views.login.
@@ -31,7 +34,7 @@ def myLogin(request, *args, **kwargs):
 @login_required
 def base(request):
     """
-    *Vista para la plantilla base.html*
+    *Vista para la plantilla* ``base.html``
 
     :param request: HttpRequest con los datos de la sesion del usuario actual.
     :param args: Argumentos para la funcion.
@@ -43,7 +46,7 @@ def base(request):
 @login_required
 def main(request):
     """
-    *Vista para la plantilla main.html*
+    *Vista para la plantilla* ``main.html``
 
     :param request: HttpRequest con los datos de la sesion del usuario actual.
     :param args: Argumentos para la funcion.
@@ -60,3 +63,16 @@ def main(request):
         RequestConfig(request, paginate={"per_page": 25}).configure(proyectos)
 
         return render(request, 'mainAnyUser.html', {'user': request.user, 'proyectos': proyectos})
+
+
+def UserResetPassword(request):
+    """
+    *Vista para la función de re-establecer la contraseña de un usuario vía correo electrónico*
+
+    :param request: HttpRequest con los datos para la petición formal de reestablecer la contraseña.
+    """
+    if request.method == 'POST':
+        return password_reset(request, from_email=DEFAULT_FROM_EMAIL)
+    else:
+        return render(request, 'autenticacion/forgot_password.html')
+
