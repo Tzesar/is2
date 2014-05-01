@@ -23,6 +23,8 @@
                             <p class="text-center">
                                 <a href='{% url 'administrarFases.views.phaseList' project.id %}' class="btn btn-lg btn-gray btn-lg" role="button">Lista Fases</a>
                                 <a href='{% url 'administrarFases.views.deletePhase' phase.id %}' class="btn btn-lg btn-gray btn-lg" role="button">Eliminar Fase</a>
+                                <a href='{% url 'administrarTipoItem.views.createItemType' phase.id %}' class="btn btn-lg btn-gray btn-lg" role="button">Añadir Tipo de Item</a>
+                                <a href='{% url 'administrarTipoItem.views.itemtypeList' phase.id %}' class="btn btn-lg btn-gray btn-lg" role="button">Lista de Tipo de Item</a>
                                 <button class="btn btn-lg btn-gray btn-lg" type="submit">Guardar cambios</button>
                             </p>
                     </form>

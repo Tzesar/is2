@@ -1,17 +1,26 @@
 #encoding=utf-8
-from django.forms import ModelForm
-from administrarFases.models import Fase
 from django import forms
-from administrarProyectos.models import Proyecto
+
+from administrarFases.models import Fase
 
 
 class NewPhaseForm(forms.ModelForm):
     """
-    Formulario para la creación de nuevas fases en el sistema.
-    Opción válida solo para usuarios con roles correspondientes.
+    *Formulario para la creación de nuevas fases en el sistema. Utilizamos el modelo de* ``Fase``
+    *definido,del cual filtramos los campos de tal manera a que solo se habiliten los *
+    *campos necesarios para la creación de una fase en el proyecto.*
+    *Opción válida solo para usuarios con roles correspondientes.*
 
-    Utilizamos el Modelo de Fase definido del cual filtramos los campos de tal manera a que solo se habiliten los
-    campos necesarios para la creación de una fase en el proyecto.
+    :param args: Argumentos para el modelo ``ModelForm``.
+    :param kwargs: Keyword Arguments para la el modelo ``ModelForm``.
+
+    ::
+
+        class Meta:
+            model = Fase
+            fields = ('nombre', 'descripcion',)
+            exclude = ('proyecto',)
+
     """
 
     class Meta:
@@ -19,15 +28,25 @@ class NewPhaseForm(forms.ModelForm):
         fields = ('nombre', 'descripcion',)
         exclude = ('proyecto',)
 
+    def __init__(self, *args, **kwargs):
+        super(NewPhaseForm, self).__init__(*args, **kwargs)
 
 class ChangePhaseForm(forms.ModelForm):
     """
-    Formulario para la modificacion de proyectos creados en el sistema.
+    *Formulario para la modificacion de proyectos creados en el sistema. Utilizamos el modelo de* ``Fase``
+    *definido del cual filtramos los campos de tal manera a que solo se habiliten los*
+    *campos disponibles para la modificación de una fase en el proyecto.*
 
-    Opción válida solo para usuarios con rol de Administrador.
+    *Opción válida solo para usuarios con los roles correspondientes.*
 
-    Utilizamos el Modelo de Fase definido del cual filtramos los campos de tal manera a que solo se habiliten los
-    campos disponibles para la modificación de una fase en el proyecto.
+    :param args: Argumentos para el modelo ``ModelForm``.
+    :param kwargs: Keyword Arguments para la el modelo ``ModelForm``.
+
+    ::
+
+        class Meta:
+            model = Fase
+            fields = ('nombre', 'estado', 'descripcion',)
 
     """
 

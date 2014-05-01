@@ -1,6 +1,7 @@
 #encoding=utf-8
 from django.forms import ModelForm
 from administrarRolesPermisos.models import RolFase
+#from autenticacion.models import Usuario
 from django import forms
 
 
@@ -37,3 +38,13 @@ class ChangeRoleForm(forms.ModelForm):
         f = self.fields.get('user_permissions', None)
         if f is not None:
             f.queryset = f.queryset.select_related('content_type')
+
+
+class AsignRoleForm(forms.ModelForm):
+
+    roles_usuarios = forms.ModelMultipleChoiceField(queryset=RolFase.objects.none(), widget=forms.CheckboxSelectMultiple,
+                                                    required=True, label='Usuarios del Proyecto')
+
+    class Meta:
+        model = RolFase
+        fields = ('roles_usuarios',)

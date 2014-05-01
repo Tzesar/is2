@@ -14,10 +14,13 @@ logger = logging.getLogger(__name__)
 @login_required
 def createUser(request):
     """
-    Vista para la creacion de usuarios en el sistema.
+    *Vista para la creación de usuarios en el sistema.*
 
-    :param request: HttpRequest
-    :return: Proporciona la pagina createuser.html con el formulario correspondiente:
+    :param request: HttpRequest con los datos de la sesion del usuario actual, es la solicitud de la acción.
+    :param args: Argumentos para el modelo ``AbstractBaseUser``.
+    :param kwargs: Keyword Arguments para la el modelo ``AbstractBaseUser``.
+    :return: Proporciona la pagina ``createuser.html`` con el formulario correspondiente
+
     """
     if request.method == 'POST':
         form = CustomUserCreationForm(request.POST)
@@ -34,11 +37,13 @@ def createUser(request):
 @login_required()
 def changeUser(request):
     """
-    Vista para la modificacion de datos del usuario actual en el sistema.
-    Modificación de los datos propios del usuario actual.
+    *Vista para la modificacion de datos del usuario actual en el sistema.
+    Modificación de los datos propios del usuario actual.*
 
-    :param request: HttpRequest necesario para modificar los datos de usuario
-    :return:  Proporciona la pagina changeuser1.html con el formulario correspondiente
+    :param request: HttpRequest necesario para modificar los datos de usuario, es la solicitud de la acción.
+    :param args: Argumentos para el modelo ``AbstractBaseUser``.
+    :param kwargs: Keyword Arguments para la el modelo ``AbstractBaseUser``.
+    :return:  Proporciona la pagina ``changeuser.html`` con el formulario correspondiente
     """
     if request.method == 'POST':
         postdata = request.POST.copy()
@@ -55,11 +60,13 @@ def changeUser(request):
 @login_required()
 def changePass(request):
     """
-    Vista para la modificación de contrasena  del usuario.
-    Modificación de los datos propios del usuario actual.
+    *Vista para la modificación de contrasena  del usuario.
+    Modificación de los datos propios del usuario actual.*
 
-    :param request: HttpRequest necesario para modificar la contrasena del usuario
-    :return:  Proporciona la pagina changePass.html con el formulario correspondiente
+    :param request: HttpRequest necesario para modificar la contrasena del usuario, es la solicitud de la acción.
+    :param args: Argumentos para el modelo ``AbstractBaseUser``.
+    :param kwargs: Keyword Arguments para la el modelo ``AbstractBaseUser``.
+    :return:  Proporciona la pagina ``changePass.html`` con el formulario correspondiente.
     """
 
     if request.method == 'POST':
@@ -76,10 +83,12 @@ def changePass(request):
 @login_required
 def userList(request):
     """
-    Vista para listar los usuarios existentes en el sistema.
+    *Vista para listar los usuarios existentes en el sistema.*
 
-    :param: HttpRequest necesario para listar los usuarios
-    :return:  Proporciona la pagina userlist.html con la lista respectiva de los usuarios existentes en el sistema
+    :param request: HttpRequest necesario para listar los usuarios, es la solicitud de la acción.
+    :param args: Argumentos para el modelo ``AbstractBaseUser``.
+    :param kwargs: Keyword Arguments para la el modelo ``AbstractBaseUser``.
+    :return:  Proporciona la pagina ``userlist.html`` con la lista respectiva de los usuarios existentes en el sistema.
     """
     if request.method == 'GET':
         usuarios = Usuario.objects.all().order_by('id')
@@ -118,11 +127,12 @@ def userList(request):
 
 def changeAnyUser(request, id_usuario):
     """
-    Vista para la modificacion de usuarios en el sistema.
-    Función válida solo para el usuario con rol de Administrador.
+    *Vista para la modificacion de usuarios en el sistema.
+    Función válida solo para el usuario con rol de Administrador.*
 
-    :param request: HttpRequest necesario para modificar los datos de usuario
-    :return:  Proporciona la pagina changeanyuser.html con el formulario correspondiente
+    :param request: HttpRequest necesario para modificar los datos de usuario, es la solicitud de la acción.
+    :param id_usuario: Identificador del usuario el cual se desea modificar.
+    :return:  Proporciona la pagina ``changeanyuser.html`` con el formulario correspondiente.
     """
     usuarios = Usuario.objects.get(pk=id_usuario)
     if request.method == 'POST':

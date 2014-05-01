@@ -28,23 +28,23 @@ class UsuarioFactory(factory.DjangoModelFactory):
 
 class TestAdministrarProjectos(TestCase):
     """
-    Test para Administración de usuarios, pruebas realizadas:
-        + ChangeProject: Test de vista y modificación de los atributos de un proyecto en el sistema.
-        + CreateProject: Test de Vista y creación de un nuevo proyecto en el sistema.
+    *Test para Administración de usuarios, pruebas realizadas:*
+        + *ChangeProject*: Test de vista y modificación de los atributos de un proyecto en el sistema.
+        + *CreateProject*: Test de Vista y creación de un nuevo proyecto en el sistema.
     """
-    un_admin = 'xadmin'
+    un_admin = 'admin'
     pw_admin = 'admin'
 
     def setUp(self):
         """
-        Crea el usuario 'admin' con contraseña 'admin' para las pruebas.
+        *Crea el usuario 'admin' con contraseña 'admin' para las pruebas.*
         """
         UsuarioFactory.create()
         self.factory = RequestFactory()
 
     def test_createProject_response(self):
         """
-        Test para la vista de creacion de proyectos en el sistema
+        *Test para la vista de creacion de proyectos en el sistema*
         """
         print '\nInicio - Prueba: createProject'
         self.user = Usuario.objects.get(username='admin')
@@ -61,7 +61,7 @@ class TestAdministrarProjectos(TestCase):
 
     def test_changeProject_response(self):
         """
-        Test para la vista de modificacion de proyectos en el sistema
+        *Test para la vista de modificacion de proyectos en el sistema*
         """
         print '\nInicio - Prueba: changeProject'
         self.user = Usuario.objects.get(username='admin')

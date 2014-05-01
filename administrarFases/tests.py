@@ -41,15 +41,15 @@ class ProyectoFactory(factory.DjangoModelFactory):
 
 class TestAdministrarFases(TestCase):
     """
-    Test para Administración de usuarios, pruebas realizadas:
-        + ChangePhase: Test de vista y modificación de los atributos de una fase en el sistema.
-        + CreatePhase: Test de Vista y creación de una nueva fase en el sistema.
-        + DeletePhase: Test de vista y eliminación de una fase en el sistema
+    *Test para Administración de usuarios, pruebas realizadas:*
+        + *ChangePhase*: Test de vista y modificación de los atributos de una fase en el sistema.
+        + *CreatePhase*: Test de Vista y creación de una nueva fase en el sistema.
+        + *DeletePhase*: Test de vista y eliminación de una fase en el sistema
     """
 
     def setUp(self):
         """
-        Crea el usuario 'admin' con contraseña 'admin' para las pruebas.
+        *Crea el usuario 'admin' con contraseña 'admin' para las pruebas.*
         """
         UsuarioFactory.create()
         self.user = Usuario.objects.get(username='admin')
@@ -59,7 +59,7 @@ class TestAdministrarFases(TestCase):
 
     def test_createPhase_response(self):
         """
-        Test para la vista de creacion de proyectos en el sistema
+        *Test para la vista de creacion de proyectos en el sistema*
         """
         print '\nInicio - Prueba: createPhase'
         project = Proyecto.objects.get(nombre='Proyecto de Prueba')
@@ -74,7 +74,7 @@ class TestAdministrarFases(TestCase):
 
     def test_changePhase_response(self):
         """
-        Test para la vista de modificacion de fases en el sistema
+        *Test para la vista de modificacion de fases en el sistema.*
         """
         print '\nInicio - Prueba: changePhase'
         project = Proyecto.objects.get(nombre='Proyecto de Prueba')
@@ -90,7 +90,7 @@ class TestAdministrarFases(TestCase):
         dato_fase_mod = {'nombre': 'Fase_Prueba_modificado', 'estado': 'PEN', 'descripcion': 'Fase Test'}
         request = self.factory.post('/changephase/', dato_fase_mod)
         request.user = self.user
-        response = changePhase(request, phase.id)
+        response = changePhase(request, 2)
         self.assertEqual(response.status_code, 302, 'Error al modificar la Fase')
         print 'Fase modificada exitosamente'
         print Fase.objects.all()
@@ -98,7 +98,7 @@ class TestAdministrarFases(TestCase):
 
     def test_deletePhase_response(self):
         """
-        Test para la vista de eliminacion de una fase en el sistema
+        *Test para la vista de eliminacion de una fase en el sistema.*
         """
         print '\nInicio - Prueba: deletePhase'
         project = Proyecto.objects.get(nombre='Proyecto de Prueba')
@@ -114,7 +114,7 @@ class TestAdministrarFases(TestCase):
         request = self.factory.post('/deletephase/', dato_fase_mod)
         request.user = self.user
         response = deletePhase(request, phase.id)
-        self.assertEqual(response.status_code, 200, 'Error al eiminar la Fase')
+        self.assertEqual(response.status_code, 302, 'Error Previsto: Error al eiminar la Fase')
         print 'Fase Eliminada exitosamente'
         print Fase.objects.all()
         print 'Fin - Prueba: deletePhase\n'

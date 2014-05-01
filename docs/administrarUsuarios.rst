@@ -1,38 +1,24 @@
-administrarUsuarios package
+Usuarios 
 ===========================
 
-Submodules
-----------
-
-administrarUsuarios.forms module
+forms 
 --------------------------------
 
 .. automodule:: administrarUsuarios.forms
     :members:
-    :undoc-members:
     :show-inheritance:
 
-administrarUsuarios.tests module
+tests 
 --------------------------------
 
 .. automodule:: administrarUsuarios.tests
     :members:
-    :undoc-members:
     :show-inheritance:
 
-administrarUsuarios.views module
+
+views 
 --------------------------------
 
 .. automodule:: administrarUsuarios.views
     :members:
-    :undoc-members:
-    :show-inheritance:
-
-
-Module contents
----------------
-
-.. automodule:: administrarUsuarios
-    :members:
-    :undoc-members:
     :show-inheritance:

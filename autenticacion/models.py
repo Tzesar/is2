@@ -13,10 +13,19 @@ from django.contrib.auth.models import AbstractBaseUser, UserManager, SiteProfil
 
 class AbstractUser(AbstractBaseUser):
     """
-    An abstract base class implementing a fully featured User model without
-    admin-compliant permissions.
+    *Clase Abstracta que posse todas las funciones a ser implementadas por el modelo Usuario,*
+    *sin los permisos de administrador. El cual tiene como base el modelo* ``AbstractBaseUser``.
 
-    Username, password and email are required. Other fields are optional.
+
+    :param args: Argumentos para el modelo ``AbstractBaseUser``.
+    :param kwargs: Keyword Arguments para el modelo ``AbstractBaseUser``.
+    ::
+
+        class Meta:
+            verbose_name = 'user'
+            verbose_name_plural = 'users'
+            abstract = True
+
     """
     username = models.CharField('username', max_length=30, unique=True,
         help_text='Requerido: Como máximo 30 caracteres. Letras, números y '
@@ -50,25 +59,26 @@ class AbstractUser(AbstractBaseUser):
 
     def get_full_name(self):
         """
-        Returns the first_name plus the last_name, with a space in between.
+        Retorna el nombre completo del usuario.
         """
         full_name = '%s %s' % (self.first_name, self.last_name)
         return full_name.strip()
 
     def get_short_name(self):
-        "Returns the short name for the user."
+        """"
+        Retorna el primer nombre del usuario.
+        """
         return self.first_name
 
     def email_user(self, subject, message, from_email=None):
         """
-        Sends an email to this User.
+        Envia un email al usuario.
         """
         send_mail(subject, message, from_email, [self.email])
 
     def get_profile(self):
         """
-        Returns site-specific profile for this user. Raises
-        SiteProfileNotAvailable if this site does not allow profiles.
+        Retorna el perfil del usuario.
         """
         warnings.warn("The use of AUTH_PROFILE_MODULE to define user profiles has been deprecated.",
             DeprecationWarning, stacklevel=2)
@@ -99,7 +109,12 @@ class AbstractUser(AbstractBaseUser):
 
 
 class Usuario(AbstractUser):
-    """ Extension de la clase User de Django. Agrega los campos telefono y otros.
+    """
+    *Extension de la clase User de Django. Extiende del modelo definido* ``AbstractUser``
+    *Agrega los campos telefono y otros.*
+
+    :param args: Argumentos para el modelo ``AbstractUser``.
+    :param kwargs: Keyword Arguments para el modelo ``AbstractUser``.
     """
     telefono = models.CharField(max_length=20, blank=True)
 
