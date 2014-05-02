@@ -7,11 +7,13 @@ import json
 from administrarUsuarios.forms import CustomUserChangeForm, CustomUserCreationForm, CambiarUsuarioForm
 from autenticacion.models import Usuario
 import logging
+from administrarRolesPermisos.decorators import admin_requerido
 
 logger = logging.getLogger(__name__)
 
 
 @login_required
+@admin_requerido
 def createUser(request):
     """
     *Vista para la creación de usuarios en el sistema.*
@@ -34,30 +36,32 @@ def createUser(request):
     return render(request, "usuario/createuser.html", {'form': form, })
 
 
+# TODO: eliminar esta vista luego
+
+# @login_required()
+# def changeUser(request):
+#     """
+#     *Vista para la modificacion de datos del usuario actual en el sistema.
+#     Modificación de los datos propios del usuario actual.*
+#
+#     :param request: HttpRequest necesario para modificar los datos de usuario, es la solicitud de la acción.
+#     :param args: Argumentos para el modelo ``AbstractBaseUser``.
+#     :param kwargs: Keyword Arguments para la el modelo ``AbstractBaseUser``.
+#     :return:  Proporciona la pagina ``changeuser.html`` con el formulario correspondiente
+#     """
+#     if request.method == 'POST':
+#         postdata = request.POST.copy()
+#         form = CustomUserChangeForm(postdata, instance=request.user)
+#         if form.is_valid():
+#             form.save()
+#             logger.info('El usuario ' + request.user.username + ' ha modificado sus datos personales dentro del sistema')
+#             return HttpResponseRedirect("/userlist/")
+#     else:
+#         form = CustomUserChangeForm(instance=request.user)
+#     return render(request, "usuario/changeuser.html", {'form': form, 'user': request.user})
+
 @login_required()
 def changeUser(request):
-    """
-    *Vista para la modificacion de datos del usuario actual en el sistema.
-    Modificación de los datos propios del usuario actual.*
-
-    :param request: HttpRequest necesario para modificar los datos de usuario, es la solicitud de la acción.
-    :param args: Argumentos para el modelo ``AbstractBaseUser``.
-    :param kwargs: Keyword Arguments para la el modelo ``AbstractBaseUser``.
-    :return:  Proporciona la pagina ``changeuser.html`` con el formulario correspondiente
-    """
-    if request.method == 'POST':
-        postdata = request.POST.copy()
-        form = CustomUserChangeForm(postdata, instance=request.user)
-        if form.is_valid():
-            form.save()
-            logger.info('El usuario ' + request.user.username + ' ha modificado sus datos personales dentro del sistema')
-            return HttpResponseRedirect("/userlist/")
-    else:
-        form = CustomUserChangeForm(instance=request.user)
-    return render(request, "usuario/changeuser.html", {'form': form, 'user': request.user})
-
-@login_required()
-def changeUser2(request):
     """
     *Vista para la modificacion de datos del usuario actual en el sistema.
     Modificación de los datos propios del usuario actual.*
@@ -76,7 +80,7 @@ def changeUser2(request):
             return HttpResponseRedirect("/userlist/")
     else:
         myform = CambiarUsuarioForm(instance=request.user)
-    return render(request, "usuario/changeuser1.html", {'myform': myform, 'user': request.user})
+    return render(request, "usuario/changeuser.html", {'myform': myform, 'user': request.user})
 
 
 @login_required()
@@ -103,6 +107,7 @@ def changePass(request):
 
 
 @login_required
+@admin_requerido
 def userList(request):
     """
     *Vista para listar los usuarios existentes en el sistema.*
@@ -147,6 +152,8 @@ def userList(request):
         return HttpResponse(json.dumps(responseDict), mimetype='application/javascript')
 
 
+@login_required()
+@admin_requerido
 def changeAnyUser(request, id_usuario):
     """
     *Vista para la modificacion de usuarios en el sistema.

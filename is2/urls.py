@@ -7,11 +7,11 @@ from django.contrib import admin
 from django.contrib.auth.views import logout_then_login
 from administrarTipoItem.views import createItemType, deleteItemType, itemtypeList, changeItemType
 from autenticacion.views import main, myLogin
-from administrarUsuarios.views import createUser, changeUser, userList, changePass, changeAnyUser, changeUser2
+from administrarUsuarios.views import createUser, changeUser, userList, changePass, changeAnyUser
 from zar.views import about, contact
 from administrarProyectos.views import createProject, changeProject, projectList, workProject, setUserToProject, viewSetUserProject
 from administrarFases.views import changePhase, createPhase, phaseList, deletePhase
-from administrarRolesPermisos   .views import createRole, roleList, changeRole, deleteRole, asignRole
+from administrarRolesPermisos.views import createRole, roleList, changeRole, deleteRole, asignRole, accesoDenegado
 
 admin.autodiscover()
 
@@ -23,7 +23,6 @@ urlpatterns = patterns('',
                        url(r'^about/$', about, name="about"),
                        url(r'^createuser/$', createUser, name="createuser"),
                        url(r'^changeuser/$', changeUser, name="changeuser"),
-                       url(r'^changeuser2/$', changeUser2, name="changeuser2"),
                        url(r'^changeanyuser/(?P<id_usuario>\d+)$', changeAnyUser, name="changeanyuser"),
                        url(r'^userlist/$', userList, name="userlist"),
                        url(r'^changepass/$', changePass, name="changepass"),
@@ -52,7 +51,6 @@ urlpatterns = patterns('',
                        url(r'^password_reset_confirm/(?P<uidb64>[0-9A-Za-z]+)-(?P<token>.+)/$',
                            'django.contrib.auth.views.password_reset_confirm', {'post_reset_redirect': 'registration/password_reset_complete'}),
                        url(r'^/password_reset_complete/$', 'django.contrib.auth.views.password_reset_complete'),
-                       )
-
                        url(r'^asignrole/(?P<id_proyecto>\d+)/(?P<id_rol>\d+)$', asignRole),
+                       url(r'^acceso_denegado/(?P<id_error>\d+)$', accesoDenegado, name="acceso_denegado"),
                        )

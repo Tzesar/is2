@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+
+{% block title %}ACCESO DENEGADO!{% endblock %}
+
+{% block navbar %}{% endblock navbar %}
+
+{% block panelCentral %} {% block padTop %}{% endblock padTop %}
+
+
+    <div class="panel-heading">
+        <h1 class="text-info" style="display: inline-block">ACCESO DENEGADO!</h1>
+    </div>
+
+    <div class="panel-body">
+        <p>Lo sentimos. Usted no posee permisos para acceder a este módulo.</p>
+        <p>Ante cualquier duda respecto a este problema, póngase en contacto con su Administrador.</p>
+        <p>Muchas Gracias!</p>
+        <br>
+        <p><i><b>Motivo del Error:</b> {% block motivoError %} ... {% endblock motivoError %}</i></p>
+        <br>
+
+        <a href="{% url "main" %}" class="btn btn-group-sm btn-danger ">Volver a la página principal</a>
+    </div>
+
+{% endblock panelCentral %}

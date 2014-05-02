@@ -10,6 +10,7 @@ from administrarProyectos.tables import ProyectoTablaAdmin
 from administrarFases.models import Fase
 from administrarRolesPermisos.models import RolGeneral, RolFase
 from autenticacion.models import Usuario
+from administrarRolesPermisos.decorators import *
 
 import logging
 
@@ -17,6 +18,7 @@ logger = logging.getLogger(__name__)
 
 
 @login_required()
+@admin_requerido
 def createProject(request):
     """
     *Vista para la creación de proyectos en el sistema.
@@ -51,6 +53,7 @@ def vincularLider(nombre_proyecto, lider_code):
 
 
 @login_required()
+@admin_requerido
 def changeProject(request, id_proyecto):
     """
     *Vista para la modificación de un proyecto dentro del sistema.
@@ -76,7 +79,8 @@ def changeProject(request, id_proyecto):
     return render(request, 'proyecto/changeproject.html', {'user': request.user, 'form': form, 'project': project, 'users': users})
 
 
-@login_required
+@login_required()
+@admin_requerido
 def projectList(request):
     """
     *Vista para listar todos los proyectos dentro del sistema.
@@ -92,6 +96,8 @@ def projectList(request):
     return render(request, "proyecto/projectlist.html", {'user': request.user, 'proyectos': proyectos}, )
 
 
+@login_required()
+@lider_requerido
 def setUserToProject(request, id_proyecto):
     """
     *Vista para vincular usuarios a un proyecto existente.
@@ -123,6 +129,8 @@ def setUserToProject(request, id_proyecto):
     return render(request, 'proyecto/setusertoproject.html', {'form': form, 'project': project, 'user': request.user},)
 
 
+# TODO: eliminar luego si es necesario
+@login_required()
 def viewSetUserProject(request, id_proyecto):
     """
     *Vista para visualizar usuarios que se encuentren vinculados a un proyecto*
@@ -138,6 +146,7 @@ def viewSetUserProject(request, id_proyecto):
 
     return render(request, "proyecto/usersetproject.html", {'project': project, 'userproject': userproject},
                   context_instance=RequestContext(request))
+
 
 @login_required()
 def workProject(request, id_proyecto):

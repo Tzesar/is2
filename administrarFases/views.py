@@ -10,11 +10,13 @@ from administrarProyectos.models import Proyecto
 from administrarFases.models import Fase
 from administrarRolesPermisos.models import PermisoFase
 import logging
+from administrarRolesPermisos.decorators import *
 
 logger = logging.getLogger(__name__)
 
 
 @login_required()
+@lider_requerido
 def createPhase(request, id_proyecto):
     """
     *Vista para la creación de fases en el sistema.
@@ -112,6 +114,7 @@ def generarPermisosFase(project, fase):
 
 
 @login_required()
+@lider_requerido2
 def changePhase(request, id_fase):
     """
     *Vista para la modificacion de una fase dentro del sistema.
@@ -146,6 +149,8 @@ def changePhase(request, id_fase):
                               context_instance=RequestContext(request))
 
 
+@login_required
+@lider_requerido2
 def deletePhase(request, id_fase):
     """
     *Vista para la eliminación de una fase dentro del sistema.
@@ -182,6 +187,7 @@ def eliminarPermisos(phase):
 
 
 @login_required
+@lider_requerido
 def phaseList(request, id_proyecto):
     """
     *Vista para la listar todas las fases dentro de algún proyecto.

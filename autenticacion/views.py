@@ -11,6 +11,7 @@ from administrarProyectos.tables import ProyectoTabla
 from is2.settings import DEFAULT_FROM_EMAIL
 
 
+
 def myLogin(request, *args, **kwargs):
     """
     *Establece el tiempo de vida de la sesión.*
@@ -57,8 +58,6 @@ def main(request):
     if request.user.is_superuser:
         return render(request, 'mainAdmin.html', {'user': request.user})
     else:
-        # proyectos = Proyecto.objects.filter(lider_proyecto=request.user, usuarios_asociados__in=[request.user, ])
-
         proyectos = ProyectoTabla(Proyecto.objects.filter(lider_proyecto=request.user) | Proyecto.objects.filter(usuarios_asociados__in=[request.user, ]))
         RequestConfig(request, paginate={"per_page": 25}).configure(proyectos)
 
