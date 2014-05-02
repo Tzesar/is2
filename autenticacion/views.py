@@ -6,7 +6,7 @@ from django.shortcuts import render
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.views import login, password_reset
 from django_tables2 import RequestConfig
-from administrarProyectos.models import Proyecto
+from administrarProyectos.models import Proyecto, UsuariosVinculadosProyectos
 from administrarProyectos.tables import ProyectoTabla
 from is2.settings import DEFAULT_FROM_EMAIL
 
@@ -58,7 +58,11 @@ def main(request):
     if request.user.is_superuser:
         return render(request, 'mainAdmin.html', {'user': request.user})
     else:
-        proyectos = ProyectoTabla(Proyecto.objects.filter(lider_proyecto=request.user) | Proyecto.objects.filter(usuarios_asociados__in=[request.user, ]))
+        # proyectos = Proyecto.objects.filter(lider_proyecto=request.user, usuarios_asociados__in=[request.user, ])
+
+        #proyectos = ProyectoTabla(Proyecto.objects.filter(usuariosvinculadosproyectos__in=[request.user]))
+        u = UsuariosVinculadosProyectos.objects.filter(cod_usuario=request.user.id).values_list('cod_proyecto', flat=True)
+        proyectos = ProyectoTabla(Proyecto.objects.filter(pk__in=u))
         RequestConfig(request, paginate={"per_page": 25}).configure(proyectos)
 
         return render(request, 'mainAnyUser.html', {'user': request.user, 'proyectos': proyectos})

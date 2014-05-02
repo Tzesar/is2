@@ -2,7 +2,7 @@
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponseRedirect
 from django.template import RequestContext
-from django.shortcuts import render_to_response, render
+from django.shortcuts import render
 from django_tables2 import RequestConfig
 from administrarProyectos.forms import NewProjectForm, ChangeProjectForm, setUserToProjectForm
 from administrarProyectos.models import Proyecto, UsuariosVinculadosProyectos
@@ -65,8 +65,9 @@ def changeProject(request, id_proyecto):
     :return: Proporciona la pagina ``changeproject.html`` con el formulario correspondiente
              Modifica el proyecto y luego regresa al menu principal
     """
+    # TODO: Agregar referencia a los autores de autocomplete.js
+
     project = Proyecto.objects.get(pk=id_proyecto)
-    users = Usuario.objects.filter(is_active=True)
     if request.method == 'POST':
         form = ChangeProjectForm(request.POST, instance=project)
         if form.is_valid():
@@ -76,7 +77,8 @@ def changeProject(request, id_proyecto):
             return HttpResponseRedirect('/projectlist/')
     else:
         form = ChangeProjectForm(instance=project)
-    return render(request, 'proyecto/changeproject.html', {'user': request.user, 'form': form, 'project': project, 'users': users})
+    return render(request, 'proyecto/changeproject.html',
+                  {'user': request.user, 'form': form, 'project': project})
 
 
 @login_required()
@@ -111,9 +113,7 @@ def setUserToProject(request, id_proyecto):
     project = Proyecto.objects.get(pk=id_proyecto)
 
     u = UsuariosVinculadosProyectos.objects.filter(cod_proyecto=project)
-    #print u
     usersInProject = u.values_list('cod_usuario', flat=True)
-    #print usersInProject
 
     if request.method == 'POST':
         form = setUserToProjectForm(request.POST)
@@ -126,7 +126,7 @@ def setUserToProject(request, id_proyecto):
     else:
         form = setUserToProjectForm(instance=project)
         form.fields['cod_usuario'].queryset = Usuario.objects.exclude(pk__in=usersInProject)
-    return render(request, 'proyecto/setusertoproject.html', {'form': form, 'project': project, 'user': request.user},)
+    return render(request, 'proyecto/setUserToProject.html', {'form': form, 'project': project, 'user': request.user},)
 
 
 # TODO: eliminar luego si es necesario
@@ -144,8 +144,8 @@ def viewSetUserProject(request, id_proyecto):
     project = Proyecto.objects.get(pk=id_proyecto)
     userproject = UsuariosVinculadosProyectos.objects.filter(cod_proyecto=id_proyecto)
 
-    return render(request, "proyecto/usersetproject.html", {'project': project, 'userproject': userproject},
-                  context_instance=RequestContext(request))
+    return render(request, "proyecto/usersetproject.html",
+                  {'project': project, 'userproject': userproject, 'user': request.user},)
 
 
 @login_required()
@@ -164,12 +164,12 @@ def workProject(request, id_proyecto):
     usuario = request.user
 
     if usuario == proyecto.lider_proyecto:
-        fases = Fase.objects.none()
-        rolesFases = RolFase.objects.filter(proyecto__pk=id_proyecto)
+        fases = proyecto.fase_set.all().order_by('id')
+        rolesFases = RolFase.objects.filter(proyecto=proyecto)
         rolesGenerales = RolGeneral.objects.filter(proyecto__pk=id_proyecto)
-        usuariosAsociados = UsuariosVinculadosProyectos.objects.filter(cod_proyecto=id_proyecto)
+        usuariosAsociados = proyecto.usuariosvinculadosproyectos_set.all()
         return render(request, 'proyecto/workProjectLeader.html', {'user': request.user, 'proyecto': proyecto,
-                                                                   'fases': fases, 'rolesFases': rolesFases,
+                                                                   'fases': fases, 'roles': rolesFases,
                                                                    'rolesGenerales': rolesGenerales,
                                                                    'usuariosAsociados': usuariosAsociados})
     else:

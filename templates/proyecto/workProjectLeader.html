@@ -4,49 +4,81 @@
     {% block title %}Modificar Proyecto{% endblock %}
     {% block errorBlock %}
     {% endblock errorBlock %}
-    {% block panelCentral %}{% block padTop %}{% endblock padTop %}
+    {% block padTop %}{% endblock padTop %}
+    {% block panelCentral %}
         <div class="panel-heading">
             <h1 class="text-info" style="display: inline-block">Información sobre el proyecto: {{ proyecto.nombre|capfirst }}</h1>
         </div>
         <div class="panel-body">
             <div class="col-lg-4 col-md-4 col-sm-4">
-                <div class="list-group">
-                    {% if fases %}
-                        {% for fase in fases %}
-                            <a href="{% url 'administrarFases.views.changePhase' fase.id %}" class="list-group-item">{{ fase.nombre }}</a>
-                        {% endfor %}
-                    {% else %}
-                        <a class="list-group-item list-group-item-warning">El proyecto no tiene fases asociadas.</a>
-                    {% endif %}
+                <div class="panel panel-default">
+                    <div class="panel-heading" style="">
+                        <span style="padding-right: 55%">Lista de Fases</span>
+                        <a href="{% url 'administrarFases.views.createPhase' proyecto.id %}"
+                           data-toggle="tooltip" title="Agregar Fase"
+                           class="btn btn-sm btn-success" id="tooltip"><span class="glyphicon glyphicon-plus"></span></a>
+                    </div>
+                    <div class="list-group">
+                        {% if fases %}
+                            {% for fase in fases %}
+                                {% if fase.estado == 'PEN' %}
+                                    <div class="list-group-item">
+                                        <a href="{% url 'administrarFases.views.changePhase' fase.id %}">
+                                            <span>{{ fase.nombre }}</span></a>
+                                        <span style="padding-right: 77%"></span>
+                                        <a href="{% url 'administrarFases.views.deletePhase' fase.id %}">
+                                            <span class="glyphicon glyphicon-minus-sign"></span></a>
+                                    </div>
+                                {% else %}
+                                    {{ fase.nombre }}
+                                {% endif %}
+                            {% endfor %}
+                        {% else %}
+                            <a class="list-group-item list-group-item-warning">El proyecto no tiene fases asociadas.</a>
+                        {% endif %}
+                    </div>
                 </div>
-                <a href="{% url 'administrarFases.views.createPhase' proyecto.id %}" class="btn btn-success">Nueva Fase</a>
             </div>
             <div class="col-lg-4 col-md-4 col-sm-4">
-                <div class="list-group">
-                    {% if roles %}
-                        {% for rol in rolesFases %}
-                            <a href="{% url 'administrarRolesPermisos.views.changeRole' proyecto.id rol.id %}" class="list-group-item">{{ rol.nombre }}</a>
-                        {% endfor %}
-                        {% for rol in rolesGenerales %}
-                            <a href="{% url 'administrarRolesPermisos.views.changeRole' proyecto.id rol.id %}" class="list-group-item">{{ rol.nombre }}</a>
-                        {% endfor %}
-                    {% else %}
-                        <a class="list-group-item list-group-item-warning disabled">El proyecto no tiene roles asociados.</a>
-                    {% endif %}
+                <div class="panel panel-default">
+                    <div class="panel-heading" style="">
+                        <span style="padding-right: 55%">Lista de Roles</span>
+                        <a href="{% url 'administrarRolesPermisos.views.createRole' proyecto.id %}"
+                           data-toggle="tooltip" title="Agregar Rol"
+                           class="btn btn-sm btn-success" id="tooltip"><span class="glyphicon glyphicon-plus"></span></a>
+                    </div>
+                    <div class="list-group">
+                        {% if roles %}
+                            {% for rol in roles %}
+                                <div class="list-group-item">
+                                    <a href="{% url 'administrarRolesPermisos.views.changeRole' proyecto.id rol.id %}">
+                                        {{ rol.nombre }}</a>
+                                    <span style="padding-right: 77%"></span>
+                                    <a href="{% url 'administrarRolesPermisos.views.deleteRole' proyecto.id rol.id %}">
+                                        <span class="glyphicon glyphicon-minus-sign"></span></a>
+                                </div>
+                            {% endfor %}
+                        {% else %}
+                            <a class="list-group-item list-group-item-warning disabled">El proyecto no tiene roles asociados.</a>
+                        {% endif %}
+                    </div>
                 </div>
-                <a href="{% url 'administrarRolesPermisos.views.createRole' proyecto.id %}" class="btn btn-success">Nuevo Rol</a>
             </div>
             <div class="col-lg-4 col-md-4 col-sm-4">
                 <table class="table table-condensed">
                     <thead>
                         <tr>
-                            <th>Miembros del proyecto</th>
+                            <th><span style="padding-right: 35%">Miembros del proyecto</span>
+                                <a href="{% url 'administrarProyectos.views.setUserToProject' proyecto.id %}"
+                                   data-toggle="tooltip" title="Agregar Miembro"
+                                   class="btn btn-sm btn-success" id="tooltip"><span class="glyphicon glyphicon-plus"></span></a>
+                            </th>
                         </tr>
                     </thead>
                     <tbody>
                         {% for usuario in usuariosAsociados %}
                             <tr {% if not usuario.habilitado %} class="alert-danger" {% endif %}>
-                                <td>{{ usuario.cod_usuario.get_full_name }}</td>
+                                <td>[{{ usuario.cod_usuario.username }}] - {{ usuario.cod_usuario.get_full_name }}</td>
                             </tr>
                         {% endfor %}
                     </tbody>
@@ -63,5 +95,10 @@
 {#                <a href="{% url 'administrarRolesPermisos.views.createRole' proyecto.id %}" class="btn btn-success">Nuevo Rol</a>#}
             </div>
         </div>
-        <a href="{% url 'autenticacion.views.main' %}" class="btn btn-lg btn-warning btn-lg" role="button">Atrás</a>
     {% endblock panelCentral %}>
+    {% block botonesBottom %}
+        <a href="{% url 'autenticacion.views.main' %}" class="btn btn-lg btn-warning btn-lg" role="button">Atrás</a>
+    {% endblock botonesBottom %}
+    {% block jsAdicional %}
+        <script src="{% static "bootstrap/js/tooltips.js" %}"></script>
+    {% endblock jsAdicional %}

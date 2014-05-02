@@ -8,7 +8,7 @@ import floppyforms as forms2
 from autenticacion.models import Usuario
 
 
-class CustomUserCreationForm(forms.ModelForm):
+class CustomUserCreationForm(forms2.ModelForm):
     """
     *Formulario para la creación de usuarios.Utilizamos el modelo* ``Usuario`` del cual filtramos los campos de tal manera a que solo se habiliten los
     campos necesarios para la creación de un usuario en el sistema.
@@ -30,25 +30,33 @@ class CustomUserCreationForm(forms.ModelForm):
         'password_mismatch': ("Las contraseñas no coinciden."),
     }
 
-    username = forms.RegexField(label=_("Username"), max_length=30,
+    username = forms2.RegexField(
+        label=_("Username"), max_length=30,
         regex=r'^[\w.@+-]+$',
-        help_text=_("Required. 30 characters or fewer. Letters, digits and "
-                      "@/./+/-/_ only."),
+        help_text=_("Required. 30 characters or fewer. Letters, digits and ""@/./+/-/_ only."),
         error_messages={
-            'invalid': _("This value may contain only letters, numbers and "
-                         "@/./+/-/_ characters.")})
-    password1 = forms.CharField(
-        label=_("Password"),
-        widget=forms.PasswordInput)
+            'invalid': _("This value may contain only letters, numbers and ""@/./+/-/_ characters.")},
+        widget=forms2.TextInput(attrs={'class': 'form-control', }),
+    )
 
-    password2 = forms.CharField(
+    password1 = forms2.CharField(
+        label=_("Password"),
+        widget=forms2.PasswordInput(attrs={'class': 'form-control', }),
+    )
+
+    password2 = forms2.CharField(
         label=_("Password confirmation"),
-        widget=forms.PasswordInput,
-        help_text=_("Enter the same password as above, for verification."))
+        help_text=_("Enter the same password as above, for verification."),
+        widget=forms2.PasswordInput(attrs={'class': 'form-control', }),
+    )
 
     class Meta:
         model = Usuario
-        fields = ("username",)
+        fields = ('username', )
+        exclude = ('first_name', 'last_name', 'email', 'telefono', )
+        widgets = {
+            'username': forms2.TextInput(attrs={'class': 'form-control', }),
+        }
 
     def clean_username(self):
         """
@@ -203,7 +211,7 @@ class CustomPasswordChangeForm(SetPasswordForm):
             )
         return old_password
 
+
 CustomPasswordChangeForm_fields = SortedDict([
     (k, CustomPasswordChangeForm.base_fields[k])
         for k in ['old_password', 'new_password1', 'new_password2']])
-

@@ -1,13 +1,17 @@
 {% extends 'base.html' %}
 {% load staticfiles %}
 
+    {% block cssAdicional %}
+        <link href="{% static "bootstrap/css/autocomplete.css" %}" rel="stylesheet">
+    {% endblock cssAdicional %}
+
     {% block title %}Modificar Proyecto{% endblock %}
     {% block errorBlock %}
         {% if form.errors %}
             <div class="container-fluid">
                 <div class="alert alert-danger alert-dismissable">
                     <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
-                    Los datos ingresados son erróneos.
+                    Los datos ingresados son erróneos.{{ form.errors }}
                 </div>
             </div>
         {% endif %}
@@ -25,17 +29,17 @@
                             <input value="{{ project.nombre }}" name="nombre" id="id_nombre" class="form-control"
                                    type="text" placeholder="Nombre del proyecto">
                         </div>
-                        <div class="form-group">
+                        <div class="form-group" style="position: relative">
                             <label for="id_lider_proyecto">Lider de Proyecto</label>
-                            <select id="id_lider_proyecto" class="form-control" name="lider_proyecto">
-                                <option value>----------</option>
-                                {% for usuario in users %}
-                                    <option value="{{ usuario.pk }}" {% if form.lider_proyecto.value == usuario.id %}
-                                            selected="selected" {% endif %}>{{ usuario.username|capfirst }}</option>
-                                {% endfor %}
-                            </select>
+                            <input value="{{ project.lider_proyecto }}" id="autocomplete" class="form-control" type="text"
+                                   style="position: absolute; z-index: 2; background: transparent" autocomplete="off"/>
+                            <input value="{{ project.lider_proyecto }}" id="autocomplete-hint" disabled="disabled"
+                                   class="form-control" type="text"
+                                   style="position: absolute; color: #CCC; background: transparent; z-index: 1"/>
+                            <input value="{{ project.lider_proyecto }}" name="lider_proyecto" id="id_lider_proyecto"
+                                   class="form-control" type="hidden"/>
                         </div>
-                        <div class="form-group">
+                        <div class="form-group" style="margin-top: 15%">
                             <label for="id_estado">Estado</label>
                             <select id="id_estado" class="form-control" name="estado">
                                 {% for choice in form.estado.field.widget.choices %}
@@ -59,4 +63,8 @@
 {#                   class='btn btn-lg btn-info btn-lg disabled' role="button">Añadir Fases</a>#}
             </div>
         </div>
-    {% endblock panelCentral %}>
+    {% endblock panelCentral %}
+    {% block jsAdicional %}
+        <script src="{% static "bootstrap/js/jquery.autocomplete.min.js" %}"></script>
+        <script src="{% static "bootstrap/js/autocomplete.js" %}"></script>
+    {% endblock jsAdicional %}

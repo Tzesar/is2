@@ -33,8 +33,8 @@ class AbstractUser(AbstractBaseUser):
         validators=[
             validators.RegexValidator(re.compile('^[\w.@+-]+$'), 'Ingrese un nombre de usuario válido.', 'inválido')
         ])
-    first_name = models.CharField('nombre', max_length=30, blank=True)
-    last_name = models.CharField('apellido', max_length=30, blank=True)
+    first_name = models.CharField('nombre', max_length=30, blank=True, default='Desco')
+    last_name = models.CharField('apellido', max_length=30, blank=True, default='Nocido')
     email = models.EmailField('email', blank=True)
     is_staff = models.BooleanField('staff status', default=False,
         help_text='Designates whether the user can log into this admin '

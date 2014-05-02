@@ -4,7 +4,8 @@
     {% block title %}Modificar Proyecto{% endblock %}
     {% block errorBlock %}
     {% endblock errorBlock %}
-    {% block panelCentral %}{% block padTop %}{% endblock padTop %}
+    {% block padTop %}{% endblock padTop %}
+    {% block panelCentral %}
         <div class="panel-heading">
             <h1 class="text-info" style="display: inline-block">Información sobre el proyecto: {{ project.nombre|capfirst }}</h1>
         </div>

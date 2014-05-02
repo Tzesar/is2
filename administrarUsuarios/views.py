@@ -1,7 +1,7 @@
 #encoding:utf-8
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.forms import PasswordChangeForm
-from django.shortcuts import render, RequestContext, get_object_or_404, render_to_response
+from django.shortcuts import render
 from django.http import HttpResponseRedirect, HttpResponse
 import json
 from administrarUsuarios.forms import CustomUserChangeForm, CustomUserCreationForm, CambiarUsuarioForm
@@ -32,7 +32,7 @@ def createUser(request):
                         form["username"].value() + ' dentro del sistema')
             return HttpResponseRedirect("/userlist/")
     else:
-        form = CustomUserChangeForm()
+        form = CustomUserCreationForm()
     return render(request, "usuario/createuser.html", {'form': form, })
 
 
@@ -59,7 +59,7 @@ def createUser(request):
 #     else:
 #         form = CustomUserChangeForm(instance=request.user)
 #     return render(request, "usuario/changeuser.html", {'form': form, 'user': request.user})
-
+    
 @login_required()
 def changeUser(request):
     """
@@ -69,18 +69,18 @@ def changeUser(request):
     :param request: HttpRequest necesario para modificar los datos de usuario, es la solicitud de la acción.
     :param args: Argumentos para el modelo ``AbstractBaseUser``.
     :param kwargs: Keyword Arguments para la el modelo ``AbstractBaseUser``.
-    :return:  Proporciona la pagina ``changeuser1.html`` con el formulario correspondiente.
+    :return:  Proporciona la pagina ``changeuser.html`` con el formulario correspondiente
     """
     if request.method == 'POST':
         postdata = request.POST.copy()
-        myform = CambiarUsuarioForm(postdata, instance=request.user)
-        if myform.is_valid():
-            myform.save()
+        userForm = CambiarUsuarioForm(postdata, instance=request.user)
+        if userForm.is_valid():
+            userForm.save()
             logger.info('El usuario ' + request.user.username + ' ha modificado sus datos personales dentro del sistema')
-            return HttpResponseRedirect("/userlist/")
+            return HttpResponseRedirect("/main/")
     else:
-        myform = CambiarUsuarioForm(instance=request.user)
-    return render(request, "usuario/changeuser.html", {'myform': myform, 'user': request.user})
+        userForm = CambiarUsuarioForm(instance=request.user)
+    return render(request, "usuario/changeuser.html", {'userForm': userForm, 'user': request.user})
 
 
 @login_required()
@@ -100,7 +100,7 @@ def changePass(request):
         if form.is_valid():
             form.save()
             logger.info('El usuario ' + request.user.username + ' ha modificado su contrasena dentro del sistema')
-            return HttpResponseRedirect("/userlist/")
+            return HttpResponseRedirect("/changeuser/")
     else:
         form = PasswordChangeForm(user=request.user)
     return render(request, "usuario/changepass.html", {'form': form, 'user': request.user}, )
@@ -175,3 +175,34 @@ def changeAnyUser(request, id_usuario):
     else:
         form = CustomUserChangeForm(instance=usuarios)
     return render(request, "usuario/changeanyuser.html", {'form': form, 'usuario': usuarios, 'user': request.user}, )
+
+
+def userListJson(request, tipoUsuario):
+    """
+    No es una vista, retorna la lista de usuarios activos dentro del sistema en formato JSON dependiendo del tipo que
+    se solicita.
+
+    :param request: HTTPRequest con datos para mantener la seguridad.
+    :return: Lista de usuarios con estado activo en formato JSON
+    """
+
+    if tipoUsuario == 'LP':
+        query = request.GET['query']
+        usuarios = Usuario.objects.filter(is_active=True, is_superuser=False, username__contains=query).values_list('username', 'pk').order_by('username')
+
+
+    # Crea una lista del objeto usuarios
+    usuariosList = list(usuarios)
+    suggestions = []
+
+    for usuario in usuariosList:
+        v, d = usuario
+        suggestions.append({'value': v, 'data': d})
+
+    # Crear diccionario con los nombres de usuarios
+    respuesta = dict(suggestions=suggestions, query="Unit")
+
+    # TODO: Alguna prueba de seguridad
+    respuestaJSON = json.dumps(respuesta)
+
+    return HttpResponse(respuestaJSON, mimetype='application/json')

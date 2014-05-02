@@ -7,9 +7,10 @@ from django.contrib import admin
 from django.contrib.auth.views import logout_then_login
 from administrarTipoItem.views import createItemType, deleteItemType, itemtypeList, changeItemType
 from autenticacion.views import main, myLogin
-from administrarUsuarios.views import createUser, changeUser, userList, changePass, changeAnyUser
+from administrarUsuarios.views import createUser, changeUser, userList, userListJson, changePass, changeAnyUser
 from zar.views import about, contact
-from administrarProyectos.views import createProject, changeProject, projectList, workProject, setUserToProject, viewSetUserProject
+from administrarProyectos.views import createProject, changeProject, projectList, workProject, setUserToProject,\
+    viewSetUserProject
 from administrarFases.views import changePhase, createPhase, phaseList, deletePhase
 from administrarRolesPermisos.views import createRole, roleList, changeRole, deleteRole, asignRole, accesoDenegado
 
@@ -25,6 +26,7 @@ urlpatterns = patterns('',
                        url(r'^changeuser/$', changeUser, name="changeuser"),
                        url(r'^changeanyuser/(?P<id_usuario>\d+)$', changeAnyUser, name="changeanyuser"),
                        url(r'^userlist/$', userList, name="userlist"),
+                       url(r'^userlistjson/(?P<tipoUsuario>[A-Z]{2})$', userListJson, name="userlistjson"),
                        url(r'^changepass/$', changePass, name="changepass"),
                        url(r'^contact/$', contact),
                        url(r'^createproject/$', createProject),
