@@ -53,7 +53,5 @@ urlpatterns = patterns('',
                        url(r'^password_reset_confirm/(?P<uidb64>[0-9A-Za-z]+)-(?P<token>.+)/$',
                            'django.contrib.auth.views.password_reset_confirm', {'post_reset_redirect': 'registration/password_reset_complete'}),
                        url(r'^/password_reset_complete/$', 'django.contrib.auth.views.password_reset_complete'),
-                       )
-
                        url(r'^asignrole/(?P<id_proyecto>\d+)/(?P<id_rol>\d+)$', asignRole),
                        )

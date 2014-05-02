@@ -107,9 +107,7 @@ def setUserToProject(request, id_proyecto):
     project = Proyecto.objects.get(pk=id_proyecto)
 
     u = UsuariosVinculadosProyectos.objects.filter(cod_proyecto=project)
-    #print u
     usersInProject = u.values_list('cod_usuario', flat=True)
-    #print usersInProject
 
     if request.method == 'POST':
         form = setUserToProjectForm(request.POST)
@@ -122,7 +120,7 @@ def setUserToProject(request, id_proyecto):
     else:
         form = setUserToProjectForm(instance=project)
         form.fields['cod_usuario'].queryset = Usuario.objects.exclude(pk__in=usersInProject)
-    return render(request, 'proyecto/setusertoproject.html', {'form': form, 'project': project, 'user': request.user},)
+    return render(request, 'proyecto/setUserToProject.html', {'form': form, 'project': project, 'user': request.user},)
 
 
 def viewSetUserProject(request, id_proyecto):
@@ -157,12 +155,12 @@ def workProject(request, id_proyecto):
     usuario = request.user
 
     if usuario == proyecto.lider_proyecto:
-        fases = proyecto.fase_set.all()
-        rolesFases = RolFase.objects.filter(proyecto__pk=id_proyecto)
+        fases = proyecto.fase_set.all().order_by('id')
+        rolesFases = RolFase.objects.filter(proyecto=proyecto)
         rolesGenerales = RolGeneral.objects.filter(proyecto__pk=id_proyecto)
         usuariosAsociados = proyecto.usuariosvinculadosproyectos_set.all()
         return render(request, 'proyecto/workProjectLeader.html', {'user': request.user, 'proyecto': proyecto,
-                                                                   'fases': fases, 'rolesFases': rolesFases,
+                                                                   'fases': fases, 'roles': rolesFases,
                                                                    'rolesGenerales': rolesGenerales,
                                                                    'usuariosAsociados': usuariosAsociados})
     else:

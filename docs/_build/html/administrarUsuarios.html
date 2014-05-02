@@ -25,7 +25,7 @@
     <script type="text/javascript" src="_static/doctools.js"></script>
     <link rel="shortcut icon" href="_static/favicon.ico"/>
     <link rel="top" title="ZARpm - Documentation" href="index.html" />
-    <link rel="next" title="RolesPermisos" href="administrarRolesPermisos.html" />
+    <link rel="next" title="administrarRolesPermisos package" href="administrarRolesPermisos.html" />
     <link rel="prev" title="Autenticacion" href="autenticacion.html" /> 
   </head>
   <body>
@@ -39,7 +39,7 @@
           <a href="py-modindex.html" title="Índice de Módulos Python"
              >módulos</a> |</li>
         <li class="right" >
-          <a href="administrarRolesPermisos.html" title="RolesPermisos"
+          <a href="administrarRolesPermisos.html" title="administrarRolesPermisos package"
              accesskey="N">siguiente</a> |</li>
         <li class="right" >
           <a href="autenticacion.html" title="Autenticacion"
@@ -143,7 +143,7 @@ personalizado Usuario extendido del modelos User.</em></p>
 <dl class="class">
 <dt id="administrarUsuarios.forms.CustomUserCreationForm">
 <em class="property">class </em><tt class="descclassname">administrarUsuarios.forms.</tt><tt class="descname">CustomUserCreationForm</tt><big>(</big><em>*args</em>, <em>**kwargs</em><big>)</big><a class="headerlink" href="#administrarUsuarios.forms.CustomUserCreationForm" title="Enlazar permanentemente con esta definición">¶</a></dt>
-<dd><p>Clases base: <tt class="xref py py-class docutils literal"><span class="pre">django.forms.models.ModelForm</span></tt></p>
+<dd><p>Clases base: <tt class="xref py py-class docutils literal"><span class="pre">floppyforms.models.ModelForm</span></tt></p>
 <p><em>Formulario para la creación de usuarios.Utilizamos el modelo</em> <tt class="docutils literal"><span class="pre">Usuario</span></tt> del cual filtramos los campos de tal manera a que solo se habiliten los
 campos necesarios para la creación de un usuario en el sistema.
 Formulario para la creación usuarios por Django y personalizado para el proyecto ZARpm. Utiliza el modelo
@@ -302,29 +302,6 @@ Modificación de los datos propios del usuario actual.</em></p>
 </dd></dl>
 
 <dl class="function">
-<dt id="administrarUsuarios.views.changeUser2">
-<tt class="descclassname">administrarUsuarios.views.</tt><tt class="descname">changeUser2</tt><big>(</big><em>request</em>, <em>*args</em>, <em>**kwargs</em><big>)</big><a class="headerlink" href="#administrarUsuarios.views.changeUser2" title="Enlazar permanentemente con esta definición">¶</a></dt>
-<dd><p><em>Vista para la modificacion de datos del usuario actual en el sistema.
-Modificación de los datos propios del usuario actual.</em></p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parámetros:</th><td class="field-body"><ul class="first simple">
-<li><strong>request</strong> &#8211; HttpRequest necesario para modificar los datos de usuario, es la solicitud de la acción.</li>
-<li><strong>args</strong> &#8211; Argumentos para el modelo <tt class="docutils literal"><span class="pre">AbstractBaseUser</span></tt>.</li>
-<li><strong>kwargs</strong> &#8211; Keyword Arguments para la el modelo <tt class="docutils literal"><span class="pre">AbstractBaseUser</span></tt>.</li>
-</ul>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Devuelve:</th><td class="field-body"><p class="first last">Proporciona la pagina <tt class="docutils literal"><span class="pre">changeuser1.html</span></tt> con el formulario correspondiente.</p>
-</td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
-<dl class="function">
 <dt id="administrarUsuarios.views.createUser">
 <tt class="descclassname">administrarUsuarios.views.</tt><tt class="descname">createUser</tt><big>(</big><em>request</em>, <em>*args</em>, <em>**kwargs</em><big>)</big><a class="headerlink" href="#administrarUsuarios.views.createUser" title="Enlazar permanentemente con esta definición">¶</a></dt>
 <dd><p><em>Vista para la creación de usuarios en el sistema.</em></p>
@@ -368,6 +345,23 @@ Modificación de los datos propios del usuario actual.</em></p>
 </table>
 </dd></dl>
 
+<dl class="function">
+<dt id="administrarUsuarios.views.userListJson">
+<tt class="descclassname">administrarUsuarios.views.</tt><tt class="descname">userListJson</tt><big>(</big><em>request</em>, <em>tipoUsuario</em><big>)</big><a class="headerlink" href="#administrarUsuarios.views.userListJson" title="Enlazar permanentemente con esta definición">¶</a></dt>
+<dd><p>No es una vista, retorna la lista de usuarios activos dentro del sistema en formato JSON dependiendo del tipo que
+se solicita.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parámetros:</th><td class="field-body"><strong>request</strong> &#8211; HTTPRequest con datos para mantener la seguridad.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Devuelve:</th><td class="field-body">Lista de usuarios con estado activo en formato JSON</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
 </div>
 </div>
 
@@ -395,7 +389,7 @@ Modificación de los datos propios del usuario actual.</em></p>
                         title="capítulo anterior">Autenticacion</a></p>
   <h4>Próximo tema</h4>
   <p class="topless"><a href="administrarRolesPermisos.html"
-                        title="próximo capítulo">RolesPermisos</a></p>
+                        title="próximo capítulo">administrarRolesPermisos package</a></p>
   <h3>Esta página</h3>
   <ul class="this-page-menu">
     <li><a href="_sources/administrarUsuarios.txt"
@@ -428,7 +422,7 @@ Modificación de los datos propios del usuario actual.</em></p>
           <a href="py-modindex.html" title="Índice de Módulos Python"
              >módulos</a> |</li>
         <li class="right" >
-          <a href="administrarRolesPermisos.html" title="RolesPermisos"
+          <a href="administrarRolesPermisos.html" title="administrarRolesPermisos package"
              >siguiente</a> |</li>
         <li class="right" >
           <a href="autenticacion.html" title="Autenticacion"

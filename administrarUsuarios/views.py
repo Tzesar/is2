@@ -47,14 +47,14 @@ def changeUser(request):
     """
     if request.method == 'POST':
         postdata = request.POST.copy()
-        myform = CambiarUsuarioForm(postdata, instance=request.user)
-        if myform.is_valid():
-            myform.save()
+        userForm = CambiarUsuarioForm(postdata, instance=request.user)
+        if userForm.is_valid():
+            userForm.save()
             logger.info('El usuario ' + request.user.username + ' ha modificado sus datos personales dentro del sistema')
-            return HttpResponseRedirect("/userlist/")
+            return HttpResponseRedirect("/main/")
     else:
-        myform = CambiarUsuarioForm(instance=request.user)
-    return render(request, "usuario/changeuser.html", {'myform': myform, 'user': request.user})
+        userForm = CambiarUsuarioForm(instance=request.user)
+    return render(request, "usuario/changeuser.html", {'userForm': userForm, 'user': request.user})
 
 
 @login_required()
@@ -74,7 +74,7 @@ def changePass(request):
         if form.is_valid():
             form.save()
             logger.info('El usuario ' + request.user.username + ' ha modificado su contrasena dentro del sistema')
-            return HttpResponseRedirect("/userlist/")
+            return HttpResponseRedirect("/changeuser/")
     else:
         form = PasswordChangeForm(user=request.user)
     return render(request, "usuario/changepass.html", {'form': form, 'user': request.user}, )

@@ -13,7 +13,8 @@
             </div>
         {% endif %}
     {% endblock errorBlock %}
-    {% block panelCentral %}{% block padTop %}{% endblock padTop %}
+    {% block padTop %}{% endblock padTop %}
+    {% block panelCentral %}
         <div class="panel-heading">
             <h1 class="text-info" style="display: inline-block">Datos personales</h1>
         </div>
@@ -21,23 +22,7 @@
             <div class="col-lg-4 col-md-4 col-sm-4">
                 <form role="form" method="post">
                     {% csrf_token %}
-                    {% form myform using "formsLayouts/div.html" %}
-{#                    <div class="form-group">#}
-{#                        <label for="id_first_name">Nombre</label>#}
-{#                        <input value="{{ user.first_name }}" name="first_name" id="id_first_name" class="form-control" type="text">#}
-{#                    </div>#}
-{#                    <div class="form-group">#}
-{#                        <label for="id_last_name">Apellido</label>#}
-{#                        <input value="{{ user.last_name }}" name="last_name" id="id_last_name" class="form-control" type="text">#}
-{#                    </div>#}
-{#                    <div class="form-group">#}
-{#                        <label for="id_email">Email</label>#}
-{#                        <input value="{{ user.email }}" name="email" id="id_email" class="form-control" type="email">#}
-{#                    </div>#}
-{#                    <div class="form-group">#}
-{#                        <label for="id_telefono">Telefono</label>#}
-{#                        <input value="{{ user.telefono }}" name="telefono" id="id_telefono" class="form-control" type="text">#}
-{#                    </div>#}
+                    {% form userForm using "formsLayouts/div.html" %}
                     <div class="form-group">
                         <a id="changePass" href="{% url 'changepass' %}" class="btn btn-lg btn-danger btn-block">Cambiar contraseña</a>
                     </div>
