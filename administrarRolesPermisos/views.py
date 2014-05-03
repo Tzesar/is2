@@ -119,6 +119,7 @@ def asignRole(request, id_proyecto, id_rol):
     return render(request, 'rol/asignrole.html', {'form': form, 'rol': rol, 'project': project, 'user': request.user})
 
 
+@login_required()
 def accesoDenegado(request, id_error):
     if id_error == str(1):
         return render(request, 'acceso_denegadoAdmin.html')
