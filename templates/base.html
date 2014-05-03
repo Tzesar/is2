@@ -43,15 +43,18 @@
                     </div>
                 </nav>
             {% endblock navbar %}
-            <div class="container">
-            {% block breadcrumbs %}
-                <ol class="breadcrumb">
-                    <li><a href="#">Home</a></li>
-                    <li><a href="#">Library</a></li>
-                    <li class="active">Data</li>
-                </ol>
-            {% endblock breadcrumbs %}
-            </div>
+            <nav>
+                {% block breadcrumbs %}
+                    <ol class="breadcrumb">
+                        <li class="col-sm-offset-1"></li>
+                        {% block breadContent %}
+                            <li><a href="#">Home</a></li>
+                            <li><a href="#">Library</a></li>
+                            <li class="active">Data</li>
+                        {% endblock breadContent %}
+                    </ol>
+                {% endblock breadcrumbs %}
+            </nav>
             {% block mainBody %}
                 {% block errorBlock %}{% endblock errorBlock %}
                 <div class="container col-lg-offset-1 col-lg-10 col-xs-12" style="padding-top: 2%; padding-bottom: inherit">

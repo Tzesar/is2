@@ -5,6 +5,11 @@
     <link href="{% static "bootstrap/css/bootstrap-switch.css" %}" rel="stylesheet">
 {% endblock %}
 
+{% block breadContent %}
+    <li><a href="{% url 'autenticacion.views.main' %}">Inicio</a></li>
+    <li class="active">Lista de Usuarios</li>
+{% endblock breadContent %}
+
 {% block title %}Usuarios del Sistema{% endblock %}
 
 {% block padTop %}{% endblock %}
@@ -37,7 +42,6 @@
                                 <input type="checkbox" name="usuario_activo" id="{{ user.id }}"
                                        data_user_id="{{ user.id }}" data_url="{% url 'userlist' %}"
                                        {% if user.is_active %} checked {% endif %} />
-                                {{ request.session.name }}
                             </td>
                             <td><a href="{% url 'changeanyuser' user.id %}" class="btn btn-info"><span class="glyphicon glyphicon-chevron-right"></span></a></td>
                         </tr>
@@ -52,6 +56,7 @@
     <a href='/createuser/' class="btn btn-lg btn-success" role="button">Nuevo Usuario</a>
 {% endblock botonesBottom %}
 {% block jsAdicional %}
+    <script src="{% static "bootstrap/js/tooltips.js" %}"></script>
     <script src="{% static "bootstrap/js/bootstrap-switch.min.js" %}"></script>
     <script src="{% static "bootstrap/js/jquery.cookie.js" %}"></script>
     <script src="{% static "bootstrap/js/jquery-ui-1.10.4.min.js" %}"></script>

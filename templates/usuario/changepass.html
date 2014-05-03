@@ -7,34 +7,47 @@
             <div class="container-fluid">
                 <div class="alert alert-danger alert-dismissable">
                     <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
-                    Los datos ingresados son erróneos.{{ form.errors }}
+                    {{ form.errors }}
                 </div>
             </div>
         {% endif %}
     {% endblock errorBlock %}
+
+    {% block breadcrumbs %}{% endblock breadcrumbs %}
+
     {% block padTop %}{% endblock padTop %}
     {% block panelCentral %}
         <div class="panel-heading">
             <h1 class="text-info" style="display: inline-block">Cambiar contraseña</h1>
         </div>
         <div class="panel-body">
-            <div class="col-lg-4 col-md-4 col-sm-4">
-                <form action="" role="form" method="post">
+            <div class="col-lg-5 col-md-5 col-sm-5">
+                <form class="form-horizontal" role="form" method="post">
                     {% csrf_token %}
-
                     <div class="form-group">
-                        <label for="id_old_password">Contraseña Antigua</label>
-                        <input class="form-control" id="id_old_password" type="password">
+                        <label for="id_old_password" class="col-sm-5 control-label">Contraseña Antigua</label>
+                        <div class="col-sm-7">
+                            <input class="form-control" id="id_old_password" name="old_password" type="password" placeholder="Contraseña Actual">
+                        </div>
                     </div>
-
-                    {{ form.as_table }}
-
+                    <div class="form-group">
+                        <label for="id_new_password1" class="col-sm-5 control-label">Contraseña Nueva</label>
+                        <div class="col-sm-7">
+                            <input class="form-control" id="id_new_password1" name="new_password1" type="password" placeholder="Una nueva contraseña">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="id_new_password2" class="col-sm-5 control-label">Confirmación</label>
+                        <div class="col-sm-7">
+                            <input class="form-control" id="id_new_password2" name="new_password2" type="password" placeholder="Repita la nueva contraseña">
+                        </div>
+                    </div>
                     <div class="btn-group btn-group-justified">
                         <div class="btn-group">
                             <a href="{% url 'changeuser' %}" class="btn btn-lg btn-warning" type="submit">Cancelar</a>
                         </div>
                         <div class="btn-group">
-                            <button class="btn btn-lg btn-danger" type="submit">Guardar Cambios</button>
+                            <button class="btn btn-lg btn-success" type="submit">Guardar Cambios</button>
                         </div>
                     </div>
                 </form>

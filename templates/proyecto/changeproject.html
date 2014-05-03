@@ -16,6 +16,13 @@
             </div>
         {% endif %}
     {% endblock errorBlock %}
+
+    {% block breadContent %}
+            <li><a href="{% url 'autenticacion.views.main' %}">Inicio</a></li>
+            <li><a href="{% url 'administrarProyectos.views.projectList' %}">Proyectos</a></li>
+            <li class="active">{{ project.nombre }}</li>
+    {% endblock breadContent %}
+
     {% block panelCentral %}{% block padTop %}{% endblock padTop %}
         <div class="panel-heading">
             <h1 class="text-info" style="display: inline-block">Información sobre el proyecto: {{ project.nombre|capfirst }}</h1>

@@ -4,22 +4,21 @@
     {% block title %}Modificar Proyecto{% endblock %}
     {% block errorBlock %}
     {% endblock errorBlock %}
+
+    {% block breadContent %}
+        <li><a href="{% url 'autenticacion.views.main' %}">Inicio</a></li>
+        <li class="active">Nou</li>
+    {% endblock breadContent %}
+
     {% block padTop %}{% endblock padTop %}
     {% block panelCentral %}
         <div class="panel-heading">
-            <h1 class="text-info" style="display: inline-block">Información sobre el proyecto: {{ project.nombre|capfirst }}</h1>
+            <h1 class="text-info" style="display: inline-block">
+                {# Información sobre el proyecto: {{ project.nombre|capfirst }}#}
+                Aún no
+            </h1>
         </div>
         <div class="panel-body">
-            <div class="col-lg-4 col-md-4 col-sm-4">
-                <h2 class="text-danger" style="display: inline-block">Sección en desarrollo</h2>
-            </div>
-            <div class="col-lg-offset-2 col-md-offset-2 col-sm-offset-2 col-lg-5 col-md-5 col-sm-5 visible-lg visible-md visible-sm">
-{#                <a href='/phaselist/' class="btn btn-lg btn-info btn-lg disabled" role="button">Lista Fases</a>#}
-{#                <a href='{% url 'administrarFases.views.createPhase' project.id %}'#}
-{#                   class='btn btn-lg btn-info btn-lg disabled' role="button">Añadir Fases</a>#}
-            </div>
+            <h1 class="text-danger" style="display: inline-block">Sección en desarrollo <span class="glyphicon glyphicon-warning-sign"></span></h1>
         </div>
     {% endblock panelCentral %}>
-
-
-#TODO: No se ven las fases, los roles ni los usuarios vinculados
