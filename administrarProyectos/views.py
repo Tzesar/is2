@@ -202,7 +202,9 @@ def workProject(request, id_proyecto):
         if usuario == proyecto.lider_proyecto:
             fases = proyecto.fase_set.all().order_by('id')
             rolesFases = RolFase.objects.filter(proyecto=proyecto).order_by('nombre')
-            usuariosAsociados = proyecto.usuariosvinculadosproyectos_set.all()
+
+            usuariosInactivos = Usuario.objects.filter(is_active=False).values_list('id', flat=True)
+            usuariosAsociados = proyecto.usuariosvinculadosproyectos_set.exclude(cod_usuario__in=usuariosInactivos)
             return render(request, 'proyecto/workProjectLeader.html', {'user': request.user, 'proyecto': proyecto,
                                                                        'fases': fases, 'roles': rolesFases,
                                                                        'usuariosAsociados': usuariosAsociados})
@@ -240,7 +242,6 @@ def workProject(request, id_proyecto):
         return HttpResponse(json.dumps(responseDict), mimetype='application/javascript')
 
     usuario.save()
-    # TODO: Deshabilitar al usuario de todos los proyectos a los que pertenece
 
     if xhr:
         responseDict = {'exito': True}
