@@ -11,6 +11,7 @@ from administrarProyectos.tables import ProyectoTabla
 from is2.settings import DEFAULT_FROM_EMAIL
 
 
+
 def myLogin(request, *args, **kwargs):
     """
     *Establece el tiempo de vida de la sesión.*

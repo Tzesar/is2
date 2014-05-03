@@ -7,8 +7,14 @@ from autenticacion.models import Usuario
 
 class Permiso(models.Model):
     """
-    Modelo que implementa la estructura basica de los permisos a ser provistos por el sistema
-    para los usuarios cuyo premiso no dependa de la fase del proyecto en la cual trabaja
+    *Modelo que implementa la estructura basica de la clase *``Permiso``*
+    para los usuarios cuyo premiso no dependa de la fase del proyecto en la cual trabaja*
+        + *code*: Identificador Único del permiso en el sistema
+        + *nombre*: Nombre del Permiso a ser mostrado
+        + *descripcion*: Breve descripción de las actividades que permite el permiso asociado
+
+    :param args: Argumentos para el modelo ``Model``.
+    :param kwargs: Keyword Arguments para la el modelo ``Model``.
     """
     code = models.CharField('code', max_length=20)
     nombre = models.CharField('nombre', max_length=50)
@@ -24,8 +30,11 @@ class Permiso(models.Model):
 
 class PermisoFase(models.Model):
     """
-    Modelo que implementa la estructura basica de los permisos a ser provistos por el sistema
-    para aquellos usuarios cuyo rol se aplique solamente a ciertas fases de un proyecto
+    *Modelo que implementa la estructura basica de la clase * ``Permiso`` * a ser provistos por el sistema.
+    para aquellos usuarios cuyo rol se aplique solamente a ciertas fases de un proyecto.*
+        + *code*:
+        + *nombre*:
+        + *descripcion*:
     """
     code = models.CharField('code', max_length=50)
     nombre = models.CharField('nombre', max_length=50)

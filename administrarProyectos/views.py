@@ -10,6 +10,7 @@ from administrarProyectos.tables import ProyectoTablaAdmin
 from administrarFases.models import Fase
 from administrarRolesPermisos.models import RolGeneral, RolFase
 from autenticacion.models import Usuario
+from administrarRolesPermisos.decorators import *
 
 import logging
 
@@ -17,6 +18,7 @@ logger = logging.getLogger(__name__)
 
 
 @login_required()
+@admin_requerido
 def createProject(request):
     """
     *Vista para la creación de proyectos en el sistema.
@@ -28,8 +30,12 @@ def createProject(request):
     :return: Proporciona la pagina ``createproject.html`` con el formulario correspondiente
              Crea el proyecto en el sistema regresando al menu principal
     """
+
+    admin = Usuario.objects.filter(is_superuser=True)
+
     if request.method == 'POST':
         form = NewProjectForm(request.POST)
+        form.fields["lider_proyecto"].queryset = Usuario.objects.exclude(pk__in=admin)
         if form.is_valid():
             form.save()
             logger.info('El usuario ' + request.user.username + ' ha creado el proyecto: ' +
@@ -40,6 +46,7 @@ def createProject(request):
             return HttpResponseRedirect('/main/')
     else:
         form = NewProjectForm()
+        form.fields["lider_proyecto"].queryset = Usuario.objects.exclude(pk__in=admin)
     return render(request, 'proyecto/createproject.html', {'user': request.user, 'form': form})
 
 
@@ -51,6 +58,7 @@ def vincularLider(nombre_proyecto, lider_code):
 
 
 @login_required()
+@admin_requerido
 def changeProject(request, id_proyecto):
     """
     *Vista para la modificación de un proyecto dentro del sistema.
@@ -78,7 +86,8 @@ def changeProject(request, id_proyecto):
                   {'user': request.user, 'form': form, 'project': project})
 
 
-@login_required
+@login_required()
+@admin_requerido
 def projectList(request):
     """
     *Vista para listar todos los proyectos dentro del sistema.
@@ -94,6 +103,8 @@ def projectList(request):
     return render(request, "proyecto/projectlist.html", {'user': request.user, 'proyectos': proyectos}, )
 
 
+@login_required()
+@lider_requerido
 def setUserToProject(request, id_proyecto):
     """
     *Vista para vincular usuarios a un proyecto existente.
@@ -111,7 +122,7 @@ def setUserToProject(request, id_proyecto):
 
     if request.method == 'POST':
         form = setUserToProjectForm(request.POST)
-        form.fields['cod_usuario'].queryset = Usuario.objects.exclude(pk__in=usersInProject)
+        form.fields['cod_usuario'].queryset = Usuario.objects.exclude(pk__in=usersInProject).filter(is_superuser=False)
         if form.is_valid():
             usertoproject = form.save(commit=False)
             usertoproject.cod_proyecto = project
@@ -119,10 +130,12 @@ def setUserToProject(request, id_proyecto):
             return HttpResponseRedirect('/main/')
     else:
         form = setUserToProjectForm(instance=project)
-        form.fields['cod_usuario'].queryset = Usuario.objects.exclude(pk__in=usersInProject)
+        form.fields['cod_usuario'].queryset = Usuario.objects.exclude(pk__in=usersInProject).filter(is_superuser=False)
     return render(request, 'proyecto/setUserToProject.html', {'form': form, 'project': project, 'user': request.user},)
 
 
+# TODO: eliminar luego si es necesario
+@login_required()
 def viewSetUserProject(request, id_proyecto):
     """
     *Vista para visualizar usuarios que se encuentren vinculados a un proyecto*
@@ -138,6 +151,7 @@ def viewSetUserProject(request, id_proyecto):
 
     return render(request, "proyecto/usersetproject.html",
                   {'project': project, 'userproject': userproject, 'user': request.user},)
+
 
 @login_required()
 def workProject(request, id_proyecto):

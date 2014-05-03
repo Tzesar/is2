@@ -25,6 +25,9 @@ class NewProjectForm(ModelForm):
             fields = ('nombre', 'lider_proyecto', 'descripcion',)
 
     """
+    lider_proyecto = str(forms.ModelChoiceField(widget=forms.CheckboxSelectMultiple, queryset=Usuario.objects.all(),
+                                                label='Líder de Proyecto', required=True, ))
+
 
     class Meta:
         model = Proyecto

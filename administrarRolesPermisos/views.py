@@ -7,6 +7,7 @@ from administrarProyectos.models import Proyecto
 from administrarFases.models import Fase
 from autenticacion.models import Usuario
 from administrarProyectos.models import UsuariosVinculadosProyectos
+from administrarRolesPermisos.decorators import *
 
 import logging
 
@@ -14,6 +15,7 @@ logger = logging.getLogger(__name__)
 
 
 @login_required
+@lider_requerido
 def createRole(request, id_proyecto):
     """
     Vista para la creacion de roles en un proyecto.
@@ -45,12 +47,16 @@ def createRole(request, id_proyecto):
     return render(request, "rol/createrole.html", {'form': form, 'project': project, })
 
 
+# TODO: eliminar si es necesario
 def roleList(request, id_proyecto):
     if request.method == 'GET':
         roles = RolFase.objects.filter(proyecto=id_proyecto).order_by('id')
         project = Proyecto.objects.get(pk=id_proyecto)
         return render(request, "rol/rolelist.html", {'roles': roles, 'project': project}, )
 
+
+@login_required
+@lider_requerido
 def changeRole(request, id_proyecto, id_rol):
     """
     Vista para la modificacion de un rol dentro de un proyecto
@@ -80,6 +86,8 @@ def changeRole(request, id_proyecto, id_rol):
     return render_to_response('rol/changerole.html', {'form': form, 'rol': rol, 'project': project}, context_instance=RequestContext(request))
 
 
+@login_required
+@lider_requerido
 def deleteRole(request, id_proyecto, id_rol):
     rol = RolFase.objects.get(pk=id_rol)
     proyecto = Proyecto.objects.get(pk=id_proyecto)
@@ -91,6 +99,8 @@ def deleteRole(request, id_proyecto, id_rol):
     return render(request, "rol/rolelist.html", { 'roles': roles, 'project': proyecto, })
 
 
+@login_required
+@lider_requerido
 def asignRole(request, id_proyecto, id_rol):
 
     rol = RolFase.objects.get(pk=id_rol)
@@ -113,3 +123,9 @@ def asignRole(request, id_proyecto, id_rol):
 
     return render_to_response('rol/asignrole.html', {'form': form, 'rol': rol, 'project': project}, context_instance=RequestContext(request))
 
+
+def accesoDenegado(request, id_error):
+    if id_error == str(1):
+        return render(request, 'acceso_denegadoAdmin.html')
+
+    return render(request, 'acceso_denegadoLider.html')

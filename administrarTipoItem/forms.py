@@ -1,13 +1,14 @@
 #encoding=utf-8
-from django.forms import ModelForm
-from administrarTipoItem.models import TipoItem
 from django import forms
+import floppyforms as forms2
+
+from administrarTipoItem.models import TipoItem, Atributo
 
 
 class NewItemTypeForm(forms.ModelForm):
     """
     *Formulario para la creación de tipos de ítems en el sistema.
-    Opción válida solo para usuarios con roles correspondientes.*
+    Opción válida solo para el usuario Líder de Proyecto.*
 
     :param args: Argumentos para el modelo base ``ModelForm``.
     :param kwargs: Keyword Arguments para la función ``ModelForm``.
@@ -16,15 +17,22 @@ class NewItemTypeForm(forms.ModelForm):
 
             class Meta:
                 model = TipoItem
-                fields = ('nombre', )
-                exclude = ('perteneFase',)
+                fields = ('nombre', 'descripcion',)
+                exclude = ('fase',)
 
     """
 
     class Meta:
         model = TipoItem
-        fields = ('nombre', )
-        exclude = ('perteneFase',)
+        fields = ('nombre', 'descripcion',)
+        exclude = ('fase',)
+        widgets = {
+            'nombre': forms2.TextInput(attrs={'class': 'form-control', }),
+            'descripcion': forms2.TextInput(attrs={'class': 'form-control', }),
+        }
+
+    def __init__(self, *args, **kwargs):
+        super(NewItemTypeForm, self).__init__(*args, **kwargs)
 
 
 class ChangeItemTypeForm(forms.ModelForm):
@@ -39,16 +47,70 @@ class ChangeItemTypeForm(forms.ModelForm):
 
         class Meta:
             model = TipoItem
-            fields = ('nombre',)
+            fields = ('nombre', 'descripcion',)
 
     """
 
     class Meta:
         model = TipoItem
-        fields = ('nombre',)
+        fields = ('nombre', 'descripcion',)
+        widgets = {
+            'nombre': forms2.TextInput(attrs={'class': 'form-control', }),
+            'descripcion': forms2.TextInput(attrs={'class': 'form-control', }),
+        }
 
     def __init__(self, *args, **kwargs):
         super(ChangeItemTypeForm, self).__init__(*args, **kwargs)
-        f = self.fields.get('user_permissions', None)
-        if f is not None:
-            f.queryset = f.queryset.select_related('content_type')
+
+
+class CreateAtributeForm(forms.ModelForm):
+    """
+    *Formulario para la creación de atributos del tipos de ítems en el sistema.
+    Opción válida solo para el usuario Líder de Proyecto.*
+
+    :param args: Argumentos para el modelo base ``ModelForm``.
+    :param kwargs: Keyword Arguments para la función ``ModelForm``.
+
+    """
+
+    class Meta:
+        model = Atributo
+        fields = ('nombre', 'tipo', 'descripcion',)
+        exclude = ('tipoDeItem',)
+        widgets = {
+            'nombre': forms2.TextInput(attrs={'class': 'form-control', }),
+            'tipo': forms2.Select(attrs={'class': 'form-control', }),
+            'descripcion': forms2.TextInput(attrs={'class': 'form-control', }),
+        }
+
+    def __init__(self, *args, **kwargs):
+        super(CreateAtributeForm, self).__init__(*args, **kwargs)
+
+
+class ChangeAtributeForm(forms.ModelForm):
+    """
+    *Formulario para la modificacion de tipos de ítems creados en el sistema.
+    Opción válida solo para usuarios con rol de Administrador.*
+
+    :param args: Argumentos para el modelo base ``ModelForm``.
+    :param kwargs: Keyword Arguments para la función ``ModelForm``.
+
+    ::
+
+        class Meta:
+            model = TipoItem
+            fields = ('nombre', 'descripcion',)
+
+    """
+
+    class Meta:
+        model = Atributo
+        fields = ('nombre', 'tipo', 'descripcion',)
+        widgets = {
+            'nombre': forms2.TextInput(attrs={'class': 'form-control', }),
+            'tipo': forms2.Select(attrs={'class': 'form-control', }),
+            'descripcion': forms2.TextInput(attrs={'class': 'form-control', }),
+        }
+
+    def __init__(self, *args, **kwargs):
+        super(ChangeAtributeForm, self).__init__(*args, **kwargs)
