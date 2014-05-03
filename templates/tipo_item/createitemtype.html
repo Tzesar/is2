@@ -3,7 +3,7 @@
 {% load floppyforms %}
 
     {% block title %}Crear Tipo de Ítem{% endblock %}
-    {% block mainBody %}
+    {% block errorBlock %}
         {% if form.errors %}
             <div class="container-fluid">
                 <div class="alert alert-danger alert-dismissable">
@@ -12,19 +12,28 @@
                 </div>
             </div>
         {% endif %}
-        <div class="container col-lg-4 col-md-4 col-sm-6 col-xs-12 col-lg-offset-4 col-md-offset-4 col-sm-offset-3">
-            <div class="panel panel-default">
-                <div class="panel-body">
-                    <div class="container-fluid">
-                        <h1 class="intro"><span class="glyphicon glyphicon-off"></span> Crear Tipo de Ítem <small>zarpm</small></h1>
-                    </div>
-                    <form action="" class="form-signin" role="form" method="post">
-                        {% csrf_token %}
-                        {% form form using "formsLayouts/div.html" %}
-                        <a href= "{% url 'workproject' project.id %}" class="btn btn-lg btn-warning btn-lg" role="button">Atrás</a>
-                        <button class="btn btn-lg btn-success" type="submit">Crear</button>
-                    </form>
-                </div>
+    {% endblock errorBlock %}
+
+    {% block breadContent %}
+        <li><a href="{% url 'autenticacion.views.main' %}">Inicio</a></li>
+        <li><a href="{% url 'administrarProyectos.views.workProject' project.id %}">{{ project.nombre }}</a></li>
+        <li><a href="{% url 'administrarFases.views.changePhase' fase.id %}">{{ fase.nombre }}</a></li>
+        <li class="active">Nuevo Tipo de Item</li>
+    {% endblock breadContent %}
+
+    {% block padTop %}{% endblock padTop %}
+    {% block panelCentral %}
+        <div class="panel-heading">
+            <h1 class="text-info" style="display: inline-block">Crear Tipo de Item</h1>
+        </div>
+        <div class="panel-body">
+            <div class="col-lg-4 col-md-4 col-sm-4">
+                <form action="" class="form-signin" role="form" method="post">
+                    {% csrf_token %}
+                    {% form form using "formsLayouts/div.html" %}
+                    <a href= "{% url 'administrarFases.views.changePhase' fase.id %}" class="btn btn-lg btn-warning btn-lg" role="button">Atrás</a>
+                    <button class="btn btn-lg btn-success" type="submit">Crear</button>
+                </form>
             </div>
         </div>
     {% endblock %}

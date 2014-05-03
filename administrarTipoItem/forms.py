@@ -5,7 +5,7 @@ import floppyforms as forms2
 from administrarTipoItem.models import TipoItem, Atributo
 
 
-class NewItemTypeForm(forms.ModelForm):
+class NewItemTypeForm(forms2.ModelForm):
     """
     *Formulario para la creación de tipos de ítems en el sistema.
     Opción válida solo para el usuario Líder de Proyecto.*
@@ -35,7 +35,7 @@ class NewItemTypeForm(forms.ModelForm):
         super(NewItemTypeForm, self).__init__(*args, **kwargs)
 
 
-class ChangeItemTypeForm(forms.ModelForm):
+class ChangeItemTypeForm(forms2.ModelForm):
     """
     *Formulario para la modificacion de tipos de ítems creados en el sistema.
     Opción válida solo para usuarios con rol de Administrador.*

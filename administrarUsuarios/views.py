@@ -150,14 +150,14 @@ def changeAnyUser(request, id_usuario):
     usuarios = Usuario.objects.get(pk=id_usuario)
     if request.method == 'POST':
         postdata = request.POST.copy()
-        form = CustomUserChangeForm(postdata, instance=usuarios)
+        form = CambiarUsuarioForm(postdata, instance=usuarios)
         if form.is_valid():
             form.save()
             logger.info('El usuario ' + request.user.username + ' ha modificado el usuario ' +
                         usuarios.username + ' dentro del sistema')
             return HttpResponseRedirect("/userlist/")
     else:
-        form = CustomUserChangeForm(instance=usuarios)
+        form = CambiarUsuarioForm(instance=usuarios)
     return render(request, "usuario/changeanyuser.html", {'form': form, 'usuario': usuarios, 'user': request.user}, )
 
 

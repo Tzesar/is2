@@ -45,7 +45,7 @@ def createItemType(request, id_fase):
             return HttpResponseRedirect('/changephase/' + str(phase.id))
     else:
         form = NewItemTypeForm()
-    return render(request, 'tipo_item/createitemtype.html', {'form': form, 'project': project}, context_instance=RequestContext(request))
+    return render(request, 'tipo_item/createitemtype.html', {'user': request.user, 'form': form, 'project': project, 'fase': phase})
 
 
 @login_required()
@@ -74,7 +74,7 @@ def changeItemType(request, id_tipoitem):
             return HttpResponseRedirect('/changeitemtype/' + str(id_tipoitem))
     else:
         form = ChangeItemTypeForm(instance=itemtype)
-    return render(request, 'tipo_item/changeitemtype.html', {'form': form, 'itemtype': itemtype, 'project': project, 'atributos': atributos, 'fase': phase}, context_instance=RequestContext(request))
+    return render(request, 'tipo_item/changeitemtype.html', {'user': request.user, 'form': form, 'itemtype': itemtype, 'project': project, 'atributos': atributos, 'fase': phase})
 
 
 @login_required()
@@ -146,7 +146,8 @@ def createAtribute(request, id_tipoitem):
             return HttpResponseRedirect('/changeitemtype/'+str(id_tipoitem))
     else:
         form = CreateAtributeForm()
-    return render(request, 'tipo_item/createatribute.html', {'form': form, 'project': project, 'itemtype': itemtype}, context_instance=RequestContext(request))
+    return render(request, 'tipo_item/createatribute.html', {'user': request.user, 'form': form, 'project': project,
+                                                             'itemtype': itemtype, 'fase': phase})
 
 
 @login_required()
@@ -176,7 +177,8 @@ def changeAtribute(request, id_atribute):
             return HttpResponseRedirect('/changeitemtype/' + str(itemtype.id))
     else:
         form = ChangeAtributeForm(instance=atribute)
-    return render(request, 'tipo_item/changeatribute.html', {'form': form, 'itemtype': itemtype, 'project': project, 'atributo': atribute}, context_instance=RequestContext(request))
+    return render(request, 'tipo_item/changeatribute.html', {'user': request.user, 'form': form, 'itemtype': itemtype,
+                                                             'project': project, 'atributo': atribute, 'fase': phase})
 
 
 @login_required()
