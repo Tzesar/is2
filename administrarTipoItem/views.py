@@ -12,7 +12,7 @@ from administrarTipoItem.forms import NewItemTypeForm, ChangeItemTypeForm, Creat
 from administrarTipoItem.models import TipoItem, Atributo
 from administrarFases.models import Fase
 from administrarProyectos.models import Proyecto
-from administrarRolesPermisos.decorators import lider_requerido2, lider_requerido3
+from administrarRolesPermisos.decorators import lider_requerido2, lider_requerido3, lider_requerido4
 
 
 logger = logging.getLogger(__name__)
@@ -150,6 +150,7 @@ def createAtribute(request, id_tipoitem):
 
 
 @login_required()
+@lider_requerido4
 def changeAtribute(request, id_atribute):
     """
     *Vista para la modificacion de un tipo de ítem dentro del sistema.
@@ -179,6 +180,7 @@ def changeAtribute(request, id_atribute):
 
 
 @login_required()
+@lider_requerido4
 def deleteAtribute(request, id_atribute):
     """
     *Vista para la eliminación de un tipo de ítem existente en el sistema.*
