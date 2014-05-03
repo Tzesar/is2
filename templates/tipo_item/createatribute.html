@@ -12,6 +12,14 @@
         </div>
     {% endif %}
 
+    {% block breadContent %}
+        <li><a href="{% url 'autenticacion.views.main' %}">Inicio</a></li>
+        <li><a href="{% url 'administrarProyectos.views.workProject' project.id %}">{{ project.nombre }}</a></li>
+        <li><a href="{% url 'administrarFases.views.changePhase' fase.id %}">{{ fase.nombre }}</a></li>
+        <li><a href="{% url 'administrarFases.views.changePhase' itemtype.id %}">{{ itemtype.nombre }}</a></li>
+        <li class="active">Nuevo Atributo</li>
+    {% endblock breadContent %}
+
     {% block panelCentral %}
         {% block padTop %}{% endblock padTop %}
          <div class="panel-heading">

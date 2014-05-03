@@ -84,8 +84,7 @@ def changeProject(request, id_proyecto):
             return HttpResponseRedirect('/projectlist/')
     else:
         form = ChangeProjectForm(instance=project)
-    return render(request, 'proyecto/changeproject.html',
-                  {'user': request.user, 'form': form, 'project': project})
+    return render(request, 'proyecto/changeproject.html', {'user': request.user, 'form': form, 'project': project})
 
 
 @login_required()
