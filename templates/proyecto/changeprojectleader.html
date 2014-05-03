@@ -64,6 +64,7 @@
 {#                            <textarea value="{{ project.descripcion }}" name="descripcion" id="id_descripcion"#}
 {#                                      class="form-control" placeholder="Breve descripción del proyecto" rows="10">{{ project.descripcion }}</textarea>#}
 {#                        </div>#}
+                        <input type="date" class="form-control" value="2014-10-25">
                         <a href="{% url 'administrarProyectos.views.workProject' project.id %}" class="btn btn-lg btn-warning btn-lg" role="button">Atrás</a>
                         <button class="btn btn-lg btn-success btn-lg" type="submit">Guardar cambios</button>
                 </form>

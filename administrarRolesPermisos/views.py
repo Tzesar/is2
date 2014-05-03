@@ -1,5 +1,6 @@
 #encoding:utf-8
 from django.contrib.auth.decorators import login_required
+from django.http import HttpResponseRedirect
 from django.shortcuts import render, RequestContext, render_to_response
 from administrarRolesPermisos.forms import NewRoleForm, ChangeRoleForm, AsignRoleForm
 from administrarRolesPermisos.models import RolFase, PermisoFase
@@ -36,10 +37,7 @@ def createRole(request, id_proyecto):
             form.save()
             logger.info('El usuario ' + request.user.username + ' ha creado el rol: ' +
                         form["nombre"].value() + ' en el proyecto' + project.nombre)
-
-            roles = RolFase.objects.filter(proyecto=id_proyecto).order_by('id')
-
-            return render(request, "rol/rolelist.html", {'roles': roles, 'project': project, })
+            return HttpResponseRedirect('/workproject/'+str(project.id))
     else:
         form = NewRoleForm()
         form.fields['permisos'].queryset = PermisoFase.objects.filter(fase__in=fases)
@@ -53,6 +51,7 @@ def roleList(request, id_proyecto):
         roles = RolFase.objects.filter(proyecto=id_proyecto).order_by('id')
         project = Proyecto.objects.get(pk=id_proyecto)
         return render(request, "rol/rolelist.html", {'roles': roles, 'project': project}, )
+
 
 
 @login_required
@@ -76,14 +75,12 @@ def changeRole(request, id_proyecto, id_rol):
             form.save()
             logger.info('El usuario ' + request.user.username + ' ha modificado el rol: ' +
                         form["nombre"].value())
-
-            roles = RolFase.objects.filter(proyecto=id_proyecto).order_by('id')
-            return render(request, "rol/rolelist.html", { 'roles': roles, 'project': project, })
+            return HttpResponseRedirect('/workproject/'+str(project.id))
     else:
         form = ChangeRoleForm(instance=rol)
         form.fields['permisos'].queryset = PermisoFase.objects.filter(fase__in=fases)
 
-    return render_to_response('rol/changerole.html', {'form': form, 'rol': rol, 'project': project}, context_instance=RequestContext(request))
+    return render(request, 'rol/changerole.html', {'form': form, 'rol': rol, 'project': project, 'user': request.user})
 
 
 @login_required
@@ -95,8 +92,7 @@ def deleteRole(request, id_proyecto, id_rol):
                         rol.nombre + ' dentro del proyecto: ' + proyecto.nombre)
     rol.delete()
 
-    roles = RolFase.objects.filter(proyecto=id_proyecto).order_by('id')
-    return render(request, "rol/rolelist.html", { 'roles': roles, 'project': proyecto, })
+    return HttpResponseRedirect('/workproject/'+str(proyecto.id))
 
 
 @login_required
@@ -115,13 +111,12 @@ def asignRole(request, id_proyecto, id_rol):
         if form.is_valid():
             form.save()
 
-            roles = RolFase.objects.filter(proyecto=id_proyecto).order_by('id')
-            return render(request, "rol/rolelist.html", { 'roles': roles, 'project': project, })
+            return HttpResponseRedirect('/workproject/'+str(project.id))
     else:
         form = AsignRoleForm(instance=rol)
         form.fields['roles_usuarios'].queryset = Usuario.objects.filter(pk__in=usuariosVinculados)
 
-    return render_to_response('rol/asignrole.html', {'form': form, 'rol': rol, 'project': project}, context_instance=RequestContext(request))
+    return render(request, 'rol/asignrole.html', {'form': form, 'rol': rol, 'project': project, 'user': request.user})
 
 
 def accesoDenegado(request, id_error):

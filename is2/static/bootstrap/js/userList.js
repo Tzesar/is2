@@ -2,9 +2,6 @@
 $("[name='usuario_activo']").bootstrapSwitch('onText', 'SI');
 $("[name='usuario_activo']").bootstrapSwitch('offText', 'NO');
 
-// Inicializa el tooltip del elemento searchHelp
-$('#searchHelp').tooltip()
-
 // Maneja los switches de activacion de un usuario
 $('input[name="usuario_activo"]').on('switchChange.bootstrapSwitch', function(state) {
     $(this).bootstrapSwitch('disabled', true);
@@ -32,9 +29,7 @@ $('input[name="usuario_activo"]').on('switchChange.bootstrapSwitch', function(st
         .done(function() {
             //alert("Done");
     })
-        .always(function(response) {
-            var userID = $(that).attr("data_user_id");
-            //alert(userID);
+        .always(function() {
             $(that).bootstrapSwitch('disabled', false);
     });
 });

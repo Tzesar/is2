@@ -44,7 +44,7 @@ def createPhase(request, id_proyecto):
             return HttpResponseRedirect('/workproject/'+str(project.id))
     else:
         form = NewPhaseForm()
-    return render_to_response('fase/createphase.html', {'form': form}, context_instance=RequestContext(request))
+    return render(request, 'fase/createphase.html', {'form': form, 'proyecto': project, 'user': request.user})
 
 
 def generarPermisosFase(project, fase):
@@ -145,7 +145,7 @@ def changePhase(request, id_fase):
             return HttpResponseRedirect('/workproject/'+str(project.id))
     else:
         form = ChangePhaseForm(instance=phase)
-    return render_to_response('fase/changephase.html', {'form': form, 'phase': phase, 'project': project},
+    return render(request, 'fase/changephase.html', {'phaseForm': form, 'phase': phase, 'project': project},
                               context_instance=RequestContext(request))
 
 
@@ -170,7 +170,7 @@ def deletePhase(request, id_fase):
                                                                                              phase_copy.nombre,
                                                                                              project.nombre))
 
-    return HttpResponseRedirect('/main/')
+    return HttpResponseRedirect('/workproject/'+str(project.id))
 
 
 def eliminarPermisos(phase):

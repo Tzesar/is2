@@ -1,18 +1,20 @@
 #encoding:utf-8
+import json
+import logging
+
 from django.contrib.auth.decorators import login_required
-from django.http import HttpResponseRedirect
-from django.template import RequestContext
+from django.http import HttpResponseRedirect, HttpResponse
 from django.shortcuts import render
 from django_tables2 import RequestConfig
-from administrarProyectos.forms import NewProjectForm, ChangeProjectForm, setUserToProjectForm
+from django.core.exceptions import ObjectDoesNotExist
+
+from administrarProyectos.forms import NewProjectForm, ChangeProjectForm, setUserToProjectForm, ChangeProjectLeaderForm
 from administrarProyectos.models import Proyecto, UsuariosVinculadosProyectos
 from administrarProyectos.tables import ProyectoTablaAdmin
-from administrarFases.models import Fase
-from administrarRolesPermisos.models import RolGeneral, RolFase
+from administrarRolesPermisos.models import RolFase
 from autenticacion.models import Usuario
 from administrarRolesPermisos.decorators import *
 
-import logging
 
 logger = logging.getLogger(__name__)
 
@@ -43,7 +45,7 @@ def createProject(request):
 
             vincularLider(form["nombre"].value(), form["lider_proyecto"].value())
 
-            return HttpResponseRedirect('/main/')
+            return HttpResponseRedirect('/projectlist/')
     else:
         form = NewProjectForm()
         form.fields["lider_proyecto"].queryset = Usuario.objects.exclude(pk__in=admin)
@@ -87,6 +89,34 @@ def changeProject(request, id_proyecto):
 
 
 @login_required()
+@lider_requerido
+def changeProjectLeader(request, id_proyecto):
+    """
+    *Vista para la modificación de un proyecto dentro del sistema.
+    Opción válida para usuarios con rol de Lider.*
+
+    :param request: HttpRequest necesario para modificar proyectos, es la solicitud de la acción.
+    :param args: Argumentos para el modelo ``Proyecto``.
+    :param kwargs: Keyword Arguments para la el modelo ``Proyecto``.
+    :return: Proporciona la pagina ``changeproject.html`` con el formulario correspondiente
+             Modifica el proyecto y luego regresa al menu principal
+    """
+
+    project = Proyecto.objects.get(pk=id_proyecto)
+    if request.method == 'POST':
+        form = ChangeProjectLeaderForm(request.POST, instance=project)
+        if form.is_valid():
+            form.save()
+            logger.info('El usuario ' + request.user.username + ' ha modificado el proyecto PR-' +
+                        id_proyecto + ' dentro del sistema')
+            return HttpResponseRedirect('/workproject/'+str(project.id))
+    else:
+        form = ChangeProjectLeaderForm(instance=project)
+
+    return render(request, 'proyecto/changeprojectleader.html', {'user': request.user, 'form': form, 'project': project})
+
+
+@login_required()
 @admin_requerido
 def projectList(request):
     """
@@ -127,7 +157,7 @@ def setUserToProject(request, id_proyecto):
             usertoproject = form.save(commit=False)
             usertoproject.cod_proyecto = project
             usertoproject.save()
-            return HttpResponseRedirect('/main/')
+            return HttpResponseRedirect('/workproject/' + str(project.id))
     else:
         form = setUserToProjectForm(instance=project)
         form.fields['cod_usuario'].queryset = Usuario.objects.exclude(pk__in=usersInProject).filter(is_superuser=False)
@@ -165,20 +195,55 @@ def workProject(request, id_proyecto):
              Vista para el desarrollo del proyecto
     """
 
-    proyecto = Proyecto.objects.get(id=id_proyecto)
-    usuario = request.user
+    # Esto sucede cuando se accede normalmente al template
+    if request.method == 'GET':
+        proyecto = Proyecto.objects.get(id=id_proyecto)
+        usuario = request.user
 
-    if usuario == proyecto.lider_proyecto:
-        fases = proyecto.fase_set.all().order_by('id')
-        rolesFases = RolFase.objects.filter(proyecto=proyecto)
-        rolesGenerales = RolGeneral.objects.filter(proyecto__pk=id_proyecto)
-        usuariosAsociados = proyecto.usuariosvinculadosproyectos_set.all()
-        return render(request, 'proyecto/workProjectLeader.html', {'user': request.user, 'proyecto': proyecto,
-                                                                   'fases': fases, 'roles': rolesFases,
-                                                                   'rolesGenerales': rolesGenerales,
-                                                                   'usuariosAsociados': usuariosAsociados})
+        if usuario == proyecto.lider_proyecto:
+            fases = proyecto.fase_set.all().order_by('id')
+            rolesFases = RolFase.objects.filter(proyecto=proyecto).order_by('nombre')
+            usuariosAsociados = proyecto.usuariosvinculadosproyectos_set.all()
+            return render(request, 'proyecto/workProjectLeader.html', {'user': request.user, 'proyecto': proyecto,
+                                                                       'fases': fases, 'roles': rolesFases,
+                                                                       'usuariosAsociados': usuariosAsociados})
+        else:
+            return render(request, 'proyecto/workProject.html', {'user': request.user, })
+
+    # Esto sucede cuando se modifica el estado de un usuario dentro del proyecto
+    #   cuando ajax envia una solicitud con el metodo POST
+
+    xhr = request.GET.has_key('xhr')
+
+    idUsuario = request.POST['usuarioModificado']
+    estadoNuevo = request.POST['estadoNuevo']
+
+    if idUsuario and estadoNuevo:
+        idUsuario = int(idUsuario)
+        if estadoNuevo == 'true':
+            estadoNuevo = True
+        else:
+            estadoNuevo = False
     else:
-        return render(request, 'proyecto/workProject.html', {'user': request.user, })
+        responseDict = {'exito': False}
+        return HttpResponse(json.dumps(responseDict), mimetype='application/javascript')
 
+    try:
+        usuario = UsuariosVinculadosProyectos.objects.get(cod_usuario=idUsuario)
+    except ObjectDoesNotExist:
+        responseDict = {'exito': False}
+        return HttpResponse(json.dumps(responseDict), mimetype='application/javascript')
 
+    if usuario:
+        usuario.habilitado = estadoNuevo
+    else:
+        responseDict = {'exito': False}
+        return HttpResponse(json.dumps(responseDict), mimetype='application/javascript')
+
+    usuario.save()
+    # TODO: Deshabilitar al usuario de todos los proyectos a los que pertenece
+
+    if xhr:
+        responseDict = {'exito': True}
+        return HttpResponse(json.dumps(responseDict), mimetype='application/javascript')
 

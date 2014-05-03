@@ -12,7 +12,7 @@ from autenticacion.views import main, myLogin
 from administrarUsuarios.views import createUser, changeUser, userList, userListJson, changePass, changeAnyUser
 from zar.views import about, contact
 from administrarProyectos.views import createProject, changeProject, projectList, workProject, setUserToProject,\
-    viewSetUserProject
+    viewSetUserProject, changeProjectLeader
 from administrarFases.views import changePhase, createPhase, phaseList, deletePhase
 from administrarRolesPermisos.views import createRole, roleList, changeRole, deleteRole, asignRole, accesoDenegado
 
@@ -33,6 +33,7 @@ urlpatterns = patterns('',
                        url(r'^contact/$', contact),
                        url(r'^createproject/$', createProject),
                        url(r'^changeproject/(?P<id_proyecto>\d+)$', changeProject, name='changeproject'),
+                       url(r'^changeprojectleader/(?P<id_proyecto>\d+)$', changeProjectLeader, name='changeprojectleader'),
                        url(r'^setusertoproject/(?P<id_proyecto>\d+)$', setUserToProject),
                        url(r'^usersetproject/(?P<id_proyecto>\d+)$', viewSetUserProject),
                        url(r'^projectlist/$', projectList, name='projectlist'),

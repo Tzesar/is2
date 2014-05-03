@@ -6,7 +6,6 @@ from autenticacion.models import Usuario
 class Proyecto(models.Model):
     """
     *Modelo para la clase* ``Proyecto`` *, en el cual se encuentras todos los atributos de un proyecto:*
-        + *Codigo*: Identificador Único dentro del Sistema
         + *Nombre*: Nombre del Proyecto
         + *Líder de Proyecto*: Usuario responsable del Proyecto
         + *Descripción*: Breve reseña del proyecto

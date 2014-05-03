@@ -1,10 +1,12 @@
 #encoding=utf-8
+
 from django import forms
+import floppyforms as forms2
 
 from administrarFases.models import Fase
 
 
-class NewPhaseForm(forms.ModelForm):
+class NewPhaseForm(forms2.ModelForm):
     """
     *Formulario para la creación de nuevas fases en el sistema. Utilizamos el modelo de* ``Fase``
     *definido,del cual filtramos los campos de tal manera a que solo se habiliten los *
@@ -27,11 +29,16 @@ class NewPhaseForm(forms.ModelForm):
         model = Fase
         fields = ('nombre', 'descripcion',)
         exclude = ('proyecto',)
+        widgets = {
+            'nombre': forms2.TextInput(attrs={'class': 'form-control', }),
+            'descripcion': forms2.Textarea(attrs={'class': 'form-control', }),
+        }
 
     def __init__(self, *args, **kwargs):
         super(NewPhaseForm, self).__init__(*args, **kwargs)
 
-class ChangePhaseForm(forms.ModelForm):
+
+class ChangePhaseForm(forms2.ModelForm):
     """
     *Formulario para la modificacion de proyectos creados en el sistema. Utilizamos el modelo de* ``Fase``
     *definido del cual filtramos los campos de tal manera a que solo se habiliten los*
@@ -53,6 +60,11 @@ class ChangePhaseForm(forms.ModelForm):
     class Meta:
         model = Fase
         fields = ('nombre', 'estado', 'descripcion',)
+        widgets = {
+            'nombre': forms2.TextInput(attrs={'class': 'form-control', }),
+            'estado': forms2.Select(attrs={'class': 'form-control', }),
+            'descripcion': forms2.Textarea(attrs={'class': 'form-control', }),
+        }
 
     def __init__(self, *args, **kwargs):
         super(ChangePhaseForm, self).__init__(*args, **kwargs)

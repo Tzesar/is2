@@ -1,36 +1,45 @@
 #encoding=utf-8
-from django.forms import ModelForm
-from administrarRolesPermisos.models import RolFase
-#from autenticacion.models import Usuario
+
 from django import forms
+import floppyforms as forms2
+
+from administrarRolesPermisos.models import RolFase
 
 
-class NewRoleForm(ModelForm):
+class NewRoleForm(forms2.ModelForm):
     """
     Formulario para la creación de nuevos roles en un proyecto.
     Opción válida solo para usuarios con rol Líder de Proyecto.
     """
 
-    permisos = forms.ModelMultipleChoiceField(queryset=RolFase.objects.all(), widget=forms.CheckboxSelectMultiple, required=True)
+    permisos = forms.ModelMultipleChoiceField(queryset=RolFase.objects.all(), widget=forms2.CheckboxSelectMultiple, required=True)
 
     class Meta:
         model = RolFase
         fields = ('nombre', 'descripcion', 'permisos',)
         exclude = ('proyecto',)
+        widgets = {
+            'nombre': forms2.TextInput(attrs={'class': 'form-control', }),
+            'descripcion': forms2.Textarea(attrs={'class': 'form-control', }),
+        }
 
 
-
-class ChangeRoleForm(forms.ModelForm):
+class ChangeRoleForm(forms2.ModelForm):
     """
     Formulario para la modificacion de proyectos creados en el sistema.
     Opción válida solo para usuarios con rol de Administrador.
     """
 
-    permisos = forms.ModelMultipleChoiceField(queryset=RolFase.objects.all(), widget=forms.CheckboxSelectMultiple, required=True)
+    permisos = forms.ModelMultipleChoiceField(queryset=RolFase.objects.all(), widget=forms2.CheckboxSelectMultiple, required=True)
 
     class Meta:
         model = RolFase
         fields = ('nombre', 'descripcion', 'permisos',)
+        exclude = ('proyecto',)
+        widgets = {
+            'nombre': forms2.TextInput(attrs={'class': 'form-control', }),
+            'descripcion': forms2.Textarea(attrs={'class': 'form-control', }),
+        }
 
 
     def __init__(self, *args, **kwargs):

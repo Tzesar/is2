@@ -1,4 +1,4 @@
-$('a[data-toggle="tooltip"]').tooltip({
+$('span[data-toggle="tooltip"]').tooltip({
     animated: 'fade',
     placement: 'top'
 });

@@ -39,30 +39,6 @@ def createUser(request):
     return render(request, "usuario/createuser.html", {'form': form, })
 
 
-# TODO: eliminar esta vista luego
-
-# @login_required()
-# def changeUser(request):
-#     """
-#     *Vista para la modificacion de datos del usuario actual en el sistema.
-#     Modificación de los datos propios del usuario actual.*
-#
-#     :param request: HttpRequest necesario para modificar los datos de usuario, es la solicitud de la acción.
-#     :param args: Argumentos para el modelo ``AbstractBaseUser``.
-#     :param kwargs: Keyword Arguments para la el modelo ``AbstractBaseUser``.
-#     :return:  Proporciona la pagina ``changeuser.html`` con el formulario correspondiente
-#     """
-#     if request.method == 'POST':
-#         postdata = request.POST.copy()
-#         form = CustomUserChangeForm(postdata, instance=request.user)
-#         if form.is_valid():
-#             form.save()
-#             logger.info('El usuario ' + request.user.username + ' ha modificado sus datos personales dentro del sistema')
-#             return HttpResponseRedirect("/userlist/")
-#     else:
-#         form = CustomUserChangeForm(instance=request.user)
-#     return render(request, "usuario/changeuser.html", {'form': form, 'user': request.user})
-    
 @login_required()
 def changeUser(request):
     """
@@ -120,9 +96,14 @@ def userList(request):
     :param kwargs: Keyword Arguments para la el modelo ``AbstractBaseUser``.
     :return:  Proporciona la pagina ``userlist.html`` con la lista respectiva de los usuarios existentes en el sistema.
     """
+
+    # Esto sucede cuando se accede normalmente al template
     if request.method == 'GET':
         usuarios = Usuario.objects.all().order_by('id')
         return render(request, "usuario/userList.html", {'user': request.user, 'usuarios': usuarios}, )
+
+    # Esto sucede cuando se modifica el estado de un usuario dentro del sistema
+    #   cuando ajax envia una solicitud con el metodo POST
 
     xhr = request.GET.has_key('xhr')
 
