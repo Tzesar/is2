@@ -17,8 +17,8 @@
     {% block breadContent %}
         <li><a href="{% url 'autenticacion.views.main' %}">Inicio</a></li>
         <li><a href="{% url 'administrarProyectos.views.workProject' project.id %}">{{ project.nombre }}</a></li>
-        <li><a href="{% url 'administrarFases.views.changePhase' fase.id %}">{{ fase.nombre }}</a></li>
-        <li class="active">Cambiar Tipo de Item: {{ itemtype.nombre }}</li>
+        <li><a href="{% url 'administrarFases.views.changePhase' fase.id %}">Fase: {{ fase.nombre }}</a></li>
+        <li class="active">Tipo de Ítem: {{ itemtype.nombre }}</li>
     {% endblock breadContent %}
 
     {% block padTop %}{% endblock padTop %}

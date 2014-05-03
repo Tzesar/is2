@@ -145,7 +145,7 @@ def changePhase(request, id_fase):
             return HttpResponseRedirect('/changephase/' + str(phase.id))
     else:
         form = ChangePhaseForm(instance=phase)
-    return render(request, 'fase/changephase.html', {'phaseForm': form, 'phase': phase, 'project': project, 'tiposItem': tiposDeItem},
+    return render(request, 'fase/changephase.html', {'phaseForm': form, 'phase': phase, 'project': project, 'tiposItem': tiposDeItem, 'user': request.user},
                               context_instance=RequestContext(request))
 
 

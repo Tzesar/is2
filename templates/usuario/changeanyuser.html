@@ -16,14 +16,14 @@
 
     {% block breadContent %}
         <li><a href="{% url 'autenticacion.views.main' %}">Inicio</a></li>
-        <li><a href="{% url 'administrarUsuarios.views.userList' %}">Lista de Usuarios</a></li>
-        <li class="active">{{ usuario.username }}</li>
+        <li><a href="{% url 'administrarUsuarios.views.userList' %}">Usuarios</a></li>
+        <li class="active">{{ usuario.username|capfirst }}</li>
     {% endblock breadContent %}
 
     {% block padTop %}{% endblock padTop %}
     {% block panelCentral %}
         <div class="panel-heading">
-            <h1 class="text-info" style="display: inline-block">Datos personales: {{ usuario.username }}</h1>
+            <h1 class="text-info" style="display: inline-block">Datos personales: {{ usuario.username|capfirst }}</h1>
         </div>
         <div class="panel-body">
             <div class="col-lg-4 col-md-4 col-sm-4">
