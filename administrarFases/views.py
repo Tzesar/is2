@@ -44,7 +44,7 @@ def createPhase(request, id_proyecto):
             return HttpResponseRedirect('/workproject/'+str(project.id))
     else:
         form = NewPhaseForm()
-    return render(request, 'fase/createphase.html', {'form': form, 'proyecto': project, 'user': request.user})
+    return render(request, 'fase/createphase.html', {'form': form, 'proyecto': project, 'user': request.user,})
 
 
 def generarPermisosFase(project, fase):
@@ -136,16 +136,16 @@ def changePhase(request, id_fase):
 
     phase = Fase.objects.get(pk=id_fase)
     project = Proyecto.objects.get(pk=phase.proyecto.id)
+    tiposDeItem = TipoItem.objects.filter(fase=phase)
     if request.method == 'POST':
         form = ChangePhaseForm(request.POST, instance=phase)
         if form.is_valid():
             form.save()
-            logger.info('El usuario ' + request.user.username + ' ha modificado la fase con codigo ' +phase.codigo + '-'
-                        + str(id_fase) + ' dentro del proyecto: ' + project.nombre)
-            return HttpResponseRedirect('/workproject/'+str(project.id))
+
+            return HttpResponseRedirect('/changephase/' + str(phase.id))
     else:
         form = ChangePhaseForm(instance=phase)
-    return render(request, 'fase/changephase.html', {'phaseForm': form, 'phase': phase, 'project': project},
+    return render(request, 'fase/changephase.html', {'phaseForm': form, 'phase': phase, 'project': project, 'tiposItem': tiposDeItem},
                               context_instance=RequestContext(request))
 
 
@@ -161,7 +161,16 @@ def deletePhase(request, id_fase):
     :return: Elimina la fase especifica  y luego regresa al menu de fases.
     """
     phase = Fase.objects.get(pk=id_fase)
+    tiposItem = TipoItem.objects.filter(fase=phase)
+
     eliminarPermisos(phase)
+
+    for ti in tiposItem:
+        attrs = Atributo.objects.filter(tipoDeItem=ti)
+        for attr in attrs:
+            attr.delete()
+        ti.delete()
+
     phase_copy = phase
     project = Proyecto.objects.get(pk=phase.proyecto.id)
     phase.delete()

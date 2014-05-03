@@ -21,13 +21,13 @@
 
     {% block breadContent %}
             <li><a href="{% url 'autenticacion.views.main' %}">Inicio</a></li>
-            <li><a href="{% url 'administrarProyectos.views.workProject' project.id %}">Área de trabajo</a></li>
-            <li class="active">{{ project.nombre }}</li>
+            <li><a href="{% url 'administrarProyectos.views.workProject' project.id %}">{{ project.nombre }}</a></li>
+            <li class="active">Settigs</li>
     {% endblock breadContent %}
 
     {% block panelCentral %}{% block padTop %}{% endblock padTop %}
         <div class="panel-heading">
-            <h1 class="text-info" style="display: inline-block">Información sobre el proyecto: {{ project.nombre|capfirst }}</h1>
+            <h1 class="text-info" style="display: inline-block">{{ project.nombre|capfirst }} - Settings</h1>
         </div>
         <div class="panel-body">
             <div class="col-lg-4 col-md-4 col-sm-4">
