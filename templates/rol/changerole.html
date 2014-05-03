@@ -18,13 +18,13 @@
     {% block breadContent %}
         <li><a href="{% url 'autenticacion.views.main' %}">Inicio</a></li>
         <li><a href="{% url 'administrarProyectos.views.workProject' project.id %}">{{ project.nombre }}</a></li>
-        <li class="active">Modificar Rol</li>
+        <li class="active">Rol: {{ rol.nombre }}</li>
     {% endblock breadContent %}
 
     {% block padTop %}{% endblock padTop %}
     {% block panelCentral %}
         <div class="panel-heading">
-            <h1 class="text-info" style="display: inline-block">Modificar Rol</h1>
+            <h1 class="text-info" style="display: inline-block">Rol: {{ rol.nombre }}</h1>
         </div>
         <div class="panel-body">
             <div class="col-lg-4 col-md-4 col-sm-4">

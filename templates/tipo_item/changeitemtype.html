@@ -17,8 +17,8 @@
     {% block breadContent %}
         <li><a href="{% url 'autenticacion.views.main' %}">Inicio</a></li>
         <li><a href="{% url 'administrarProyectos.views.workProject' project.id %}">{{ project.nombre }}</a></li>
-        <li><a href="{% url 'administrarFases.views.changePhase' fase.id %}">{{ fase.nombre }}</a></li>
-        <li class="active">Cambiar Tipo de Item: {{ itemtype.nombre }}</li>
+        <li><a href="{% url 'administrarFases.views.changePhase' fase.id %}">Fase: {{ fase.nombre }}</a></li>
+        <li class="active">Tipo de Ítem: {{ itemtype.nombre }}</li>
     {% endblock breadContent %}
 
     {% block padTop %}{% endblock padTop %}
@@ -27,7 +27,7 @@
             <h1 class="text-info" style="display: inline-block">Tipo de Ítem: {{ itemtype.nombre }} </h1>
         </div>
         <div class="panel-body">
-            <div class="col-lg-4 col-md-4 col-sm-4">
+            <div class="col-lg-5 col-md-5 col-sm-5">
                 <form role="form" method="post">
                     {% csrf_token %}
                     {% form form using "formsLayouts/div.html" %}
@@ -42,25 +42,38 @@
                 </form>
             </div>
 
-            <div class="col-lg-6 col-md-6 col-sm-6">
+            <div class="col-lg-6 col-md-6 col-sm-6 col-lg-offset-1 col-md-offset-1 col-sm-offset-1">
                 <div class="panel panel-default">
                     <div class="panel-heading" style="">
-                        <span style="padding-right: 55%">Lista de Atributos</span>
-                        <a href="{% url 'administrarTipoItem.views.createAtribute' itemtype.id %}"
-                           data-toggle="tooltip" title="Agregar Rol"
-                           class="text-success" style="font-size: 2em" id="tooltip">
-                            <span class="glyphicon glyphicon-plus-sign"></span>
-                        </a>
+                        <div class="row">
+                            <div class="col-sm-6" style="padding-top: 2%">
+                                <span>Atributos</span>
+                            </div>
+                            <div class="col-sm-6">
+                                <span class="pull-right" data-toggle="tooltip" title="Agregar Atributo" id="tooltip">
+                                    <a href="{% url 'administrarTipoItem.views.createAtribute' itemtype.id %}" class="text-success">
+                                        <span class="glyphicon glyphicon-plus-sign" style="font-size: 2em"></span>
+                                    </a>
+                                </span>
+                            </div>
+                        </div>
                     </div>
                     <div class="list-group">
                         {% if atributos %}
                             {% for attrib in atributos %}
                                 <div class="list-group-item">
-                                    <a href="{% url 'administrarTipoItem.views.changeAtribute' attrib.id %}">
-                                        {{ attrib.nombre }}</a>
-                                    <span style="padding-right: 77%"></span>
-                                    <a href="{% url 'administrarTipoItem.views.deleteAtribute' attrib.id %}">
-                                        <span class="glyphicon glyphicon-minus-sign"></span></a>
+                                    <div class="row">
+                                        <div class="col-sm-6">
+                                            <a href="{% url 'administrarTipoItem.views.changeAtribute' attrib.id %}">
+                                                {{ attrib.nombre }}</a>
+                                        </div>
+                                        <div class="col-sm-6">
+                                            <span class="pull-right" style="padding-right: 5%">
+                                                <a href="{% url 'administrarTipoItem.views.deleteAtribute' attrib.id %}">
+                                                    <span class="glyphicon glyphicon-minus-sign"></span></a>
+                                            </span>
+                                        </div>
+                                    </div>
                                 </div>
                             {% endfor %}
                         {% else %}

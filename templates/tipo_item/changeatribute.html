@@ -17,9 +17,9 @@
     {% block breadContent %}
         <li><a href="{% url 'autenticacion.views.main' %}">Inicio</a></li>
         <li><a href="{% url 'administrarProyectos.views.workProject' project.id %}">{{ project.nombre }}</a></li>
-        <li><a href="{% url 'administrarFases.views.changePhase' fase.id %}">{{ fase.nombre }}</a></li>
-        <li><a href="{% url 'administrarFases.views.changePhase' itemtype.id %}">{{ itemtype.nombre }}</a></li>
-        <li class="active">Modificar Atributo</li>
+        <li><a href="{% url 'administrarFases.views.changePhase' fase.id %}">Fase: {{ fase.nombre }}</a></li>
+        <li><a href="{% url 'administrarFases.views.changePhase' itemtype.id %}">Tipo de Ítem: {{ itemtype.nombre }}</a></li>
+        <li class="active">Atributo: {{ atributo.nombre }}</li>
     {% endblock breadContent %}
 
     {% block padTop %}{% endblock padTop %}

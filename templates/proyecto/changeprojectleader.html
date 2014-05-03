@@ -21,13 +21,13 @@
 
     {% block breadContent %}
             <li><a href="{% url 'autenticacion.views.main' %}">Inicio</a></li>
-            <li><a href="{% url 'administrarProyectos.views.workProject' project.id %}">Área de trabajo</a></li>
-            <li class="active">{{ project.nombre }}</li>
+            <li><a href="{% url 'administrarProyectos.views.workProject' project.id %}">{{ project.nombre }}</a></li>
+            <li class="active">Settings</li>
     {% endblock breadContent %}
 
     {% block panelCentral %}{% block padTop %}{% endblock padTop %}
         <div class="panel-heading">
-            <h1 class="text-info" style="display: inline-block">Información sobre el proyecto: {{ project.nombre|capfirst }}</h1>
+            <h1 class="text-info" style="display: inline-block">{{ project.nombre|capfirst }} - Settings</h1>
         </div>
         <div class="panel-body">
             <div class="col-lg-4 col-md-4 col-sm-4">
@@ -64,7 +64,7 @@
 {#                            <textarea value="{{ project.descripcion }}" name="descripcion" id="id_descripcion"#}
 {#                                      class="form-control" placeholder="Breve descripción del proyecto" rows="10">{{ project.descripcion }}</textarea>#}
 {#                        </div>#}
-                        <input type="date" class="form-control" value="2014-10-25">
+
                         <a href="{% url 'administrarProyectos.views.workProject' project.id %}" class="btn btn-lg btn-warning btn-lg" role="button">Atrás</a>
                         <button class="btn btn-lg btn-success btn-lg" type="submit">Guardar cambios</button>
                 </form>

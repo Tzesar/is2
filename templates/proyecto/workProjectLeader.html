@@ -20,7 +20,7 @@
     {% block padTop %}{% endblock padTop %}
     {% block panelCentral %}
         <div class="panel-heading">
-            <h1 class="text-info" style="display: inline-block">Información sobre el proyecto: {{ proyecto.nombre|capfirst }}</h1>
+            <h1 class="text-info" style="display: inline-block">Proyecto: {{ proyecto.nombre|capfirst }}</h1>
             <a href="{% url 'administrarProyectos.views.changeProjectLeader' proyecto.id %}">
                 <span class="glyphicon glyphicon-cog" style="font-size: 2em"></span>
             </a>
