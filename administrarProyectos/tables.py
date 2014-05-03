@@ -24,7 +24,7 @@ class ProyectoTablaAdmin(tables.Table):
         model = Proyecto
         attrs = {"class": "table table-hover"}
 
-        fields = ('codigo', 'nombre', 'lider_proyecto', 'fecha_creacion', 'estado', )
+        fields = ('nombre', 'lider_proyecto', 'fecha_creacion', 'estado', )
         exclude = ('descripcion', 'fecha_inicio', 'fecha_fin', 'observaciones', )
 
     def __init__(self, *args, **kwargs):
@@ -49,7 +49,7 @@ class ProyectoTabla(tables.Table):
         model = Proyecto
         attrs = {"class": "table table-hover"}
 
-        fields = ('codigo', 'nombre', 'lider_proyecto', 'fecha_creacion', 'estado', )
+        fields = ('nombre', 'lider_proyecto', 'fecha_creacion', 'estado', )
         exclude = ('pk', 'descripcion', 'fecha_inicio', 'fecha_fin', 'observaciones', )
 
     def __init__(self, *args, **kwargs):

@@ -125,7 +125,6 @@ def asignRole(request, id_proyecto, id_rol):
 
 
 def accesoDenegado(request, id_error):
-    print id_error
     if id_error == str(1):
         return render(request, 'acceso_denegadoAdmin.html')
 

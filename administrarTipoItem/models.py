@@ -5,62 +5,49 @@ from administrarFases.models import Fase
 
 class TipoItem(models.Model):
     """
-    *Modelo para la clase fase, en el cual se encuentras todos los atributos de un* ``tipo de ítem``:
+    *Modelo para la representación de la entidad ``Tipo de ítem`` asociada a una fase* :
         + *Nombre*: Nombre del tipo de ítem
-        + *perteneceFase*: Identificador de la fase a la cual se encuentra asociada
+        + *Fase*: Identificador de la fase a la cual se encuentra asociada
+        + *Descripción*: Breve descripción del propósito del tipo de ítem
     """
 
     nombre = models.CharField(max_length=100)
-    pertenece_fase = models.ForeignKey(Fase)
+    fase = models.ForeignKey(Fase)
+    descripcion = models.TextField(max_length=140)
 
     class Meta:
         verbose_name = 'TipoItem'
         verbose_name_plural = 'TipoItems'
-        unique_together = (('pertenece_fase', 'nombre'),)
+        unique_together = (('fase', 'nombre'),)
 
     def __unicode__(self):
         return self.nombre
 
-"""
-class AtributosItemInteger(models.Model):
-    Modelo para la clase fase, en el cual se encuentras todos los atributos de un tipo de ítem:
-        + Codigo: Identificador Único dentro del Sistema
-        + Nombre: Nombre del tipo de ítem
-        + Valor: Valor asociado al atributo del tipo Integer
-        + perteneceFase: Identificador de la fase a la cual se encuentra asociada
 
-    codigo = models.CharField(max_length=2, default='AT')
-    nombre = models.CharField(max_length=100, help_text='Nombre del Atributo')
-    valor = models.IntegerField(help_text='Valor del Atributo')
-    perteneceTipoItem = models.ForeignKey(TipoItem)
+class Atributo(models.Model):
+    """
+    *Modelo para representar a los *``Atributos`` *de un *``Tipo de Ítem`` :
+        + *Nombre*: Nombre descriptivo para el atributo
+        + *Tipo*: Tipo de dato al que corresponde el atributo
+        + *Tipo de Ítem*: Tipo de ítem al cual se encuentra asociado el atributo
+        + *Descripción*: Breve descripción del propósito del atributo
+    """
 
+    opciones_tipo = (
+        ('TXT', 'Texto'),
+        ('NUM', 'Numero'),
+        ('FIL', 'Archivo Externo'),
+        ('IMG', 'Imagen'), )
 
-class AtributosItemChar(models.Model):
+    nombre = models.CharField(max_length=100)
+    tipo = models.CharField(max_length=3, choices=opciones_tipo, help_text='Tipo', default='TXT')
+    tipoDeItem = models.ForeignKey(TipoItem)
+    descripcion = models.TextField(max_length=140)
 
-    Modelo para la clase fase, en el cual se encuentras todos los atributos de un tipo de ítem:
-        + Codigo: Identificador Único dentro del Sistema
-        + Nombre: Nombre del tipo de ítem
-        + Valor: Valor asociado al atributo del tipo Char
-        + perteneceFase: Identificador de la fase a la cual se encuentra asociada
+    class Meta:
+        verbose_name = 'Atributo'
+        verbose_name_plural = 'Atributos'
+        unique_together = (('tipoDeItem', 'nombre'),)
 
-
-    codigo = models.CharField(max_length=2, default='AT')
-    nombre = models.CharField(max_length=100, help_text='Nombre del Atributo')
-    valor = models.CharField(max_length=140, help_text='Valor del Atributo')
-    perteneceTipoItem = models.ForeignKey(TipoItem)
-
-
-class AtributosItemFile(models.Model):
-
-    Modelo para la clase fase, en el cual se encuentras todos los atributos de un tipo de ítem:
-        + Codigo: Identificador Único dentro del Sistema
-        + Nombre: Nombre del tipo de ítem
-        + Valor: Valor asociado al atributo del tipo File
-        + perteneceFase: Identificador de la fase a la cual se encuentra asociada
-
-
-    codigo = models.CharField(max_length=2, default='AT')
-    nombre = models.CharField(max_length=100, help_text='Nombre del Atributo')
-    valor = models.FileField(verbose_name='Añada el nuevo archivo',upload_to=)
-    perteneceTipoItem = models.ForeignKey(TipoItem)
-"""
+    def __unicode__(self):
+        return self.nombre

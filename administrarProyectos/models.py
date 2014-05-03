@@ -37,6 +37,7 @@ class Proyecto(models.Model):
     def __unicode__(self):
         return self.nombre
 
+
 class UsuariosVinculadosProyectos(models.Model):
     """
     *Modelo para los usuarios vinculados a algún proyecto dentro del sistema.*

@@ -1,10 +1,12 @@
 #encoding:utf-8
 from __future__ import unicode_literals
+
 from django import forms
-from django.contrib.auth.forms import SetPasswordForm, PasswordResetForm
+from django.contrib.auth.forms import SetPasswordForm
 from django.utils.datastructures import SortedDict
 from django.utils.translation import ugettext_lazy as _
 import floppyforms as forms2
+
 from autenticacion.models import Usuario
 
 

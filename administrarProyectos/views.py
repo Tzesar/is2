@@ -30,8 +30,12 @@ def createProject(request):
     :return: Proporciona la pagina ``createproject.html`` con el formulario correspondiente
              Crea el proyecto en el sistema regresando al menu principal
     """
+
+    admin = Usuario.objects.filter(is_superuser=True)
+
     if request.method == 'POST':
         form = NewProjectForm(request.POST)
+        form.fields["lider_proyecto"].queryset = Usuario.objects.exclude(pk__in=admin)
         if form.is_valid():
             form.save()
             logger.info('El usuario ' + request.user.username + ' ha creado el proyecto: ' +
@@ -42,6 +46,7 @@ def createProject(request):
             return HttpResponseRedirect('/main/')
     else:
         form = NewProjectForm()
+        form.fields["lider_proyecto"].queryset = Usuario.objects.exclude(pk__in=admin)
     return render(request, 'proyecto/createproject.html', {'user': request.user, 'form': form})
 
 
@@ -117,7 +122,7 @@ def setUserToProject(request, id_proyecto):
 
     if request.method == 'POST':
         form = setUserToProjectForm(request.POST)
-        form.fields['cod_usuario'].queryset = Usuario.objects.exclude(pk__in=usersInProject)
+        form.fields['cod_usuario'].queryset = Usuario.objects.exclude(pk__in=usersInProject).filter(is_superuser=False)
         if form.is_valid():
             usertoproject = form.save(commit=False)
             usertoproject.cod_proyecto = project
@@ -125,7 +130,7 @@ def setUserToProject(request, id_proyecto):
             return HttpResponseRedirect('/main/')
     else:
         form = setUserToProjectForm(instance=project)
-        form.fields['cod_usuario'].queryset = Usuario.objects.exclude(pk__in=usersInProject)
+        form.fields['cod_usuario'].queryset = Usuario.objects.exclude(pk__in=usersInProject).filter(is_superuser=False)
     return render(request, 'proyecto/setUserToProject.html', {'form': form, 'project': project, 'user': request.user},)
 
 

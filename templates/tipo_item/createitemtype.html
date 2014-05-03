@@ -1,7 +1,8 @@
 {% extends 'base.html' %}
 {% load staticfiles %}
+{% load floppyforms %}
 
-    {% block title %}Crear Tipo de Item{% endblock %}
+    {% block title %}Crear Tipo de Ítem{% endblock %}
     {% block mainBody %}
         {% if form.errors %}
             <div class="container-fluid">
@@ -15,15 +16,15 @@
             <div class="panel panel-default">
                 <div class="panel-body">
                     <div class="container-fluid">
-                        <h1 class="intro"><span class="glyphicon glyphicon-off"></span> Crear Tipo de Item <small>zarpm</small></h1>
+                        <h1 class="intro"><span class="glyphicon glyphicon-off"></span> Crear Tipo de Ítem <small>zarpm</small></h1>
                     </div>
                     <form action="" class="form-signin" role="form" method="post">
                         {% csrf_token %}
-                        <table> {{ form.as_table }} </table>
-                        <button class="btn btn-lg btn-gray btn-block" type="submit">Crear Tipo de Item</button>
-
+                        {% form form using "formsLayouts/div.html" %}
+                        <a href= "{% url 'workproject' project.id %}" class="btn btn-lg btn-warning btn-lg" role="button">Atrás</a>
+                        <button class="btn btn-lg btn-success" type="submit">Crear</button>
                     </form>
                 </div>
             </div>
         </div>
-    {% endblock %}>
+    {% endblock %}

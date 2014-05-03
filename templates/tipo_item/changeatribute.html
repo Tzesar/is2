@@ -1,0 +1,40 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+{% load floppyforms %}
+
+    {% block title %}Atributo - {{ atributo.nombre }}{% endblock %}
+    {% block errorBlock %}
+        {% if form.errors %}
+            <div class="container-fluid">
+                <div class="alert alert-danger alert-dismissable">
+                    <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+                    Los datos ingresados son erróneos.
+                </div>
+            </div>
+        {% endif %}
+    {% endblock errorBlock %}
+    {% block padTop %}{% endblock padTop %}
+    {% block panelCentral %}
+        <div class="panel-heading">
+            <h1 class="text-info" style="display: inline-block">Atributo: {{ atributo.nombre }}</h1>
+        </div>
+        <div class="panel-body">
+            <div class="col-lg-4 col-md-4 col-sm-4">
+                <form role="form" method="post">
+                    {% csrf_token %}
+                    {% form form using "formsLayouts/div.html" %}
+                    <div class="btn-group btn-group-justified">
+                        <div class="btn-group">
+                            <a href="{% url 'administrarTipoItem.views.changeItemType' itemtype.id %}" class="btn btn-lg btn-warning">Cancelar</a>
+                        </div>
+                        <div class="btn-group">
+                            <button class="btn btn-lg btn-success" type="submit">Guardar cambios</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="col-lg-offset-2 col-md-offset-2 col-sm-offset-2 col-lg-5 col-md-5 col-sm-5 visible-lg visible-md visible-sm">                    {# TODO Espacio utilizable despues de los campos requeridos, se puede mostrar cualquier informacion #}
+
+            </div>
+        </div>
+    {% endblock %}>

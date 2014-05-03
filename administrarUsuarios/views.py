@@ -1,13 +1,16 @@
 #encoding:utf-8
+import json
+import logging
+
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.forms import PasswordChangeForm
 from django.shortcuts import render
 from django.http import HttpResponseRedirect, HttpResponse
-import json
+
 from administrarUsuarios.forms import CustomUserChangeForm, CustomUserCreationForm, CambiarUsuarioForm
 from autenticacion.models import Usuario
-import logging
 from administrarRolesPermisos.decorators import admin_requerido
+
 
 logger = logging.getLogger(__name__)
 

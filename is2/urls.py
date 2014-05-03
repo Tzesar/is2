@@ -5,7 +5,9 @@ Descripcion de las diferentes URLs utilizadas en el proyecto ZAPpm
 from django.conf.urls import patterns, url
 from django.contrib import admin
 from django.contrib.auth.views import logout_then_login
-from administrarTipoItem.views import createItemType, deleteItemType, itemtypeList, changeItemType
+
+from administrarTipoItem.views import createItemType, deleteItemType, itemtypeList, changeItemType, changeAtribute,\
+    createAtribute, deleteAtribute
 from autenticacion.views import main, myLogin
 from administrarUsuarios.views import createUser, changeUser, userList, userListJson, changePass, changeAnyUser
 from zar.views import about, contact
@@ -55,4 +57,7 @@ urlpatterns = patterns('',
                        url(r'^/password_reset_complete/$', 'django.contrib.auth.views.password_reset_complete'),
                        url(r'^asignrole/(?P<id_proyecto>\d+)/(?P<id_rol>\d+)$', asignRole),
                        url(r'^acceso_denegado/(?P<id_error>\d+)$', accesoDenegado, name="acceso_denegado"),
+                       url(r'^createatribute/(?P<id_tipoitem>\d+)$', createAtribute),
+                       url(r'^changeatribute/(?P<id_atribute>\d+)$', changeAtribute),
+                       url(r'^deleteatribute/(?P<id_atribute>\d+)$', deleteAtribute),
                        )
