@@ -40,6 +40,7 @@ def createProject(request):
         form.fields["lider_proyecto"].queryset = Usuario.objects.exclude(pk__in=admin)
         if form.is_valid():
             form.save()
+
             logger.info('El usuario ' + request.user.username + ' ha creado el proyecto: ' +
                         form["nombre"].value() + ' dentro del sistema')
 
@@ -80,7 +81,7 @@ def changeProject(request, id_proyecto):
         if form.is_valid():
             form.save()
             logger.info('El usuario ' + request.user.username + ' ha modificado el proyecto PR-' +
-                        id_proyecto + ' dentro del sistema')
+                        id_proyecto + form["nombre"].value() + ' dentro del sistema')
             return HttpResponseRedirect('/projectlist/')
     else:
         form = ChangeProjectForm(instance=project)
@@ -106,8 +107,10 @@ def changeProjectLeader(request, id_proyecto):
         form = ChangeProjectLeaderForm(request.POST, instance=project)
         if form.is_valid():
             form.save()
-            logger.info('El usuario ' + request.user.username + ' ha modificado el proyecto PR-' +
-                        id_proyecto + ' dentro del sistema')
+
+            logger.info('El Lider de Proyecto ' + request.user.username + ' ha modificado el proyecto PR-' +
+                        id_proyecto + form["nombre"].value() + ' dentro del sistema')
+
             return HttpResponseRedirect('/workproject/'+str(project.id))
     else:
         form = ChangeProjectLeaderForm(instance=project)

@@ -1,38 +1,24 @@
-is2 package
-===========
+is2 
+====
 
-Submodules
-----------
 
-is2.settings module
+settings
 -------------------
 
 .. automodule:: is2.settings
     :members:
-    :undoc-members:
     :show-inheritance:
 
-is2.urls module
+urls
 ---------------
 
 .. automodule:: is2.urls
     :members:
-    :undoc-members:
     :show-inheritance:
 
-is2.wsgi module
+wsgi
 ---------------
 
 .. automodule:: is2.wsgi
     :members:
-    :undoc-members:
-    :show-inheritance:
-
-
-Module contents
----------------
-
-.. automodule:: is2
-    :members:
-    :undoc-members:
     :show-inheritance:

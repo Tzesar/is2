@@ -26,7 +26,7 @@ class TipoItem(models.Model):
 
 class Atributo(models.Model):
     """
-    *Modelo para representar a los *``Atributos`` *de un *``Tipo de Ítem`` :
+    * Modelo para representar a los* ``Atributos`` *de un * ``Tipo de Ítem`` :
         + *Nombre*: Nombre descriptivo para el atributo
         + *Tipo*: Tipo de dato al que corresponde el atributo
         + *Tipo de Ítem*: Tipo de ítem al cual se encuentra asociado el atributo

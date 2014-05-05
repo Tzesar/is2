@@ -50,6 +50,7 @@ def changeUser(request):
     :param kwargs: Keyword Arguments para la el modelo ``AbstractBaseUser``.
     :return:  Proporciona la pagina ``changeuser.html`` con el formulario correspondiente
     """
+
     if request.method == 'POST':
         postdata = request.POST.copy()
         userForm = CambiarUsuarioForm(postdata, instance=request.user)

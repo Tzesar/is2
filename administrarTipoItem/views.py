@@ -41,6 +41,8 @@ def createItemType(request, id_fase):
             tipoitem = form.save(commit=False)
             tipoitem.fase = phase
             tipoitem.save()
+            logger.info('El usuario {0} ha creado el tipo de ítem {1} dentro de la fase {2} en el proyecto: {3}'
+                        .format(request.user.username, form["nombre"].value(), phase.nombre, project.nombre))
 
             return HttpResponseRedirect('/changephase/' + str(phase.id))
     else:
@@ -71,7 +73,11 @@ def changeItemType(request, id_tipoitem):
         form = ChangeItemTypeForm(request.POST, instance=itemtype)
         if form.is_valid():
             form.save()
-            return HttpResponseRedirect('/changeitemtype/' + str(id_tipoitem))
+            logger.info('El usuario {0} ha modificado el tipo de item {1} la fase {2} dentro del proyecto: {3}'
+                        .format(request.user.username, itemtype.nombre, phase.nombre, project.nombre))
+
+            return HttpResponseRedirect('/changephase/' + str(phase.id))
+
     else:
         form = ChangeItemTypeForm(instance=itemtype)
     return render(request, 'tipo_item/changeitemtype.html', {'user': request.user, 'form': form, 'itemtype': itemtype, 'project': project, 'atributos': atributos, 'fase': phase})
@@ -95,6 +101,8 @@ def deleteItemType(request, id_tipoitem):
         attr.delete()
 
     itemtype.delete()
+    logger.info('El usuario {0} ha eliminado el tipo de ítem {1} de la fase {2} dentro del proyecto: {3}'
+                .format(request.user.username, itemtype.nombre, fase.nombre, fase.proyecto.nombre))
 
     return HttpResponseRedirect('/changephase/' + str(fase.id))
 
@@ -138,7 +146,7 @@ def importItemType(request, id_fase, id_itemtype):
 
     tipoItemExistente = TipoItem.objects.get(id=id_itemtype)
     tipoItemNuevo = TipoItem.objects.get(id=id_itemtype)
-    fase =  Fase.objects.get(id=id_fase)
+    fase = Fase.objects.get(id=id_fase)
 
     tipoItemNuevo.id = None
     tipoItemNuevo.fase = fase
@@ -148,6 +156,12 @@ def importItemType(request, id_fase, id_itemtype):
         atributo.id = None
         atributo.tipoDeItem = tipoItemNuevo
         atributo.save()
+
+    logger.info('El usuario {0} ha importado el tipo de ítem {1} de la fase {2} del proyecto {3} a la fase {4} del proyecto {5}'
+                .format(request.user.username, tipoItemExistente.nombre, tipoItemExistente.fase.nombre,
+                 tipoItemExistente.fase.proyecto.nombre, fase.nombre, fase.proyecto.nombre))
+
+
 
     return HttpResponseRedirect('/changeitemtype/' + str(tipoItemNuevo.id))
 
@@ -176,8 +190,11 @@ def createAtribute(request, id_tipoitem):
             atributo = form.save(commit=False)
             atributo.tipoDeItem = itemtype
             atributo.save()
+            logger.info('El usuario {0} ha creado el atributo {1} perteneciente al tipo de item: {2}'
+                        .format(request.user.username, atributo.nombre, itemtype.nombre))
 
-            return HttpResponseRedirect('/changeitemtype/'+str(id_tipoitem))
+
+        return HttpResponseRedirect('/changeitemtype/'+str(id_tipoitem))
     else:
         form = CreateAtributeForm()
     return render(request, 'tipo_item/createatribute.html', {'user': request.user, 'form': form, 'project': project,
@@ -207,7 +224,8 @@ def changeAtribute(request, id_atribute):
         form = ChangeAtributeForm(request.POST, instance=atribute)
         if form.is_valid():
             form.save()
-
+            logger.info('El usuario {0} ha modificado el atributo ATI- {1}:{2} perteneciente al tipo de ítem: {3}'
+                        .format(request.user.username, atribute.id, atribute.nombre, itemtype.nombre))
             return HttpResponseRedirect('/changeitemtype/' + str(itemtype.id))
     else:
         form = ChangeAtributeForm(instance=atribute)
@@ -228,5 +246,7 @@ def deleteAtribute(request, id_atribute):
     attr = Atributo.objects.get(pk=id_atribute)
     id_tipoItem = attr.tipoDeItem.id
     attr.delete()
-
+    logger = logging.getLogger(__name__)
+    logger.info('El usuario {0} ha eliminado el atributo {1} perteneciente al tipo de ítem: {2}'
+                        .format(request.user.username, attr.nombre, attr.tipoDeItem.nombre))
     return HttpResponseRedirect('/changeitemtype/' + str(id_tipoItem))

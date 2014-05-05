@@ -1,13 +1,19 @@
-"""
-Django settings for is2 project.
-
-For more information on this file, see
-https://docs.djangoproject.com/en/1.6/topics/settings/
-
-For the full list of settings and their values, see
-https://docs.djangoproject.com/en/1.6/ref/settings/
-"""
 #encoding:utf-8
+"""
+
+*Archivo de configuración para el proyecto* ``ZARpm``
+
+*Aquí se puede observar todas las configuraciones utilizadas para el desarrollo del proyecto.*
+
+Configuraciones Generales:
+    + Gestor de Base de Datos: Postgresql 9.1
+    + Gestor de Documentación: Sphinx
+    + Framework: Django 1.6
+    + Entorno de Desarrollo: Pycharm 3.1.1
+    + Servidor de Correos: smtp.gmail.com
+
+"""
+
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 import os
 
@@ -26,7 +32,6 @@ DEBUG = True
 TEMPLATE_DEBUG = True
 
 ALLOWED_HOSTS = ["0.0.0.0"]
-
 
 # Application definition
 
@@ -115,7 +120,6 @@ LOGIN_REDIRECT_URL = '/main/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'is2/', 'static/')
 MEDIA_URL = '/media/'
 
-
 EMAIL_USE_TLS = True
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_PORT = 587
@@ -124,7 +128,7 @@ EMAIL_HOST_PASSWORD = 'administracion3'
 DEFAULT_FROM_EMAIL = 'admitres03@gmail.com'
 
 DATE_INPUT_FORMATS = (
-    '%m/%d/%Y', '%m/%d/%y', # '2006-10-25', '10/25/2006', '10/25/06'
+    '%m/%d/%Y', '%m/%d/%y',             # '2006-10-25', '10/25/2006', '10/25/06'
     '%b %d %Y', '%b %d, %Y',            # 'Oct 25 2006', 'Oct 25, 2006'
     '%d %b %Y', '%d %b, %Y',            # '25 Oct 2006', '25 Oct, 2006'
     '%B %d %Y', '%B %d, %Y',            # 'October 25 2006', 'October 25, 2006'
@@ -201,7 +205,7 @@ LOGGING = {
             'handlers': ['tipo_item'],
             'level': 'INFO',
         },
-        'administrarRoles': {
+        'administrarRolesPermisos': {
             'handlers': ['rol'],
             'level': 'INFO',
         },
@@ -215,4 +219,3 @@ LOGGING = {
         },
     }
 }
-

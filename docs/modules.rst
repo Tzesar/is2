@@ -1,15 +1,17 @@
-========
-========
+.. ZARpm documentation toctree file
 
+   Modulos
+   ----------
+   
 .. toctree::
-   :maxdepth: 4
+   :maxdepth: 2
 
    administrarFases
    administrarProyectos
    administrarRolesPermisos
    administrarTipoItem
+   administrarItems
    administrarUsuarios
    autenticacion
    is2
-   manage
    zar

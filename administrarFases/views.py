@@ -29,6 +29,7 @@ def createPhase(request, id_proyecto):
     :return: Proporciona la pagina ``createphase.html`` con el formulario correspondiente.
             Crea la fase dentro del proyecto especificando y luego regresa al menu principal
     """
+
     project = Proyecto.objects.get(pk=id_proyecto)
     if request.method == 'POST':
         form = NewPhaseForm(request.POST, project)
@@ -36,6 +37,7 @@ def createPhase(request, id_proyecto):
             fase = form.save(commit=False)
             fase.proyecto = project
             fase.save()
+
             logger.info('El usuario ' + request.user.username + ' ha creado la fase ' +
                         form["nombre"].value() + ' dentro del proyecto ' + project.nombre)
 
@@ -142,7 +144,10 @@ def changePhase(request, id_fase):
         if form.is_valid():
             form.save()
 
-            return HttpResponseRedirect('/changephase/' + str(phase.id))
+            logger.info('El usuario ' + request.user.username + ' ha modificado la fase PH-' +
+                        id_fase + ': ' + form["nombre"].value() + ' dentro del proyecto' + project.nombre + 'en el sistema.')
+
+            return HttpResponseRedirect('/workproject/'+str(project.id))
     else:
         form = ChangePhaseForm(instance=phase)
     return render(request, 'fase/changephase.html', {'phaseForm': form, 'phase': phase, 'project': project, 'tiposItem': tiposDeItem, 'user': request.user},
@@ -160,6 +165,7 @@ def deletePhase(request, id_fase):
     :param id_fase: Identificador de la fase dentro del sistema la cual se desea eliminar.
     :return: Elimina la fase especifica  y luego regresa al menu de fases.
     """
+
     phase = Fase.objects.get(pk=id_fase)
     tiposItem = TipoItem.objects.filter(fase=phase)
 
@@ -174,8 +180,8 @@ def deletePhase(request, id_fase):
     phase_copy = phase
     project = Proyecto.objects.get(pk=phase.proyecto.id)
     phase.delete()
-    logger.info('El usuario {0} ha eliminado la fase {1}{2} dentro del proyecto: {3}'.format(request.user.username,
-                                                                                             phase_copy.proyecto,
+
+    logger.info('El usuario {0} ha eliminado la fase {1} dentro del proyecto: {2}'.format(request.user.username,
                                                                                              phase_copy.nombre,
                                                                                              project.nombre))
 
@@ -221,9 +227,13 @@ def importPhase(request, id_fase, id_proyecto_destino):
 
     phase = Fase.objects.get(pk=id_fase)
     phase.id = None
-    phase.nombre = phase.nombre+'copia'
     phase.proyecto = Proyecto.objects.get(pk=id_proyecto_destino)
     phase.save()
+    #TODO: Filtar las fases de tal manera que no aparezcan las que pertenecen al mismo proyecto
+    logger.info('El usuario {0} ha importado la fase {1} al proyecto destino: {3}'.format(request.user.username,
+                                                                                             phase.nombre,
+                                                                                             phase.proyecto.nombre))
+
 
 
     return HttpResponseRedirect('/changephase/' + str(phase.id))

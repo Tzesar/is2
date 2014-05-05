@@ -35,8 +35,8 @@ def createRole(request, id_proyecto):
             rol.proyecto = project
             rol.save()
             form.save()
-            logger.info('El usuario ' + request.user.username + ' ha creado el rol: ' +
-                        form["nombre"].value() + ' en el proyecto' + project.nombre)
+            logger.info('El usuario ' + request.user.username + ' ha creado el rol ' +
+                        form["nombre"].value() + ' en el proyecto ' + project.nombre)
             return HttpResponseRedirect('/workproject/'+str(project.id))
     else:
         form = NewRoleForm()
@@ -73,8 +73,8 @@ def changeRole(request, id_proyecto, id_rol):
         form.fields['permisos'].queryset = PermisoFase.objects.filter(fase__in=fases)
         if form.is_valid():
             form.save()
-            logger.info('El usuario ' + request.user.username + ' ha modificado el rol: ' +
-                        form["nombre"].value())
+            logger.info('El usuario ' + request.user.username + ' ha modificado el rol ROL-' + id_rol + ':' +
+                        form["nombre"].value() + ' dentro del proyecto ' + project.nombre)
             return HttpResponseRedirect('/workproject/'+str(project.id))
     else:
         form = ChangeRoleForm(instance=rol)

@@ -1,22 +1,10 @@
-zar package
+zar 
 ===========
 
-Submodules
-----------
-
-zar.views module
+zar.views 
 ----------------
 
 .. automodule:: zar.views
-    :members:
-    :undoc-members:
-    :show-inheritance:
-
-
-Module contents
----------------
-
-.. automodule:: zar
     :members:
     :undoc-members:
     :show-inheritance:
