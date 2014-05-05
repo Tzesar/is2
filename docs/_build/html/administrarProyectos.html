@@ -85,6 +85,33 @@ campos disponibles para la modificación de un proyecto en el sistema.</em></p>
 </dd></dl>
 
 <dl class="class">
+<dt id="administrarProyectos.forms.ChangeProjectLeaderForm">
+<em class="property">class </em><tt class="descclassname">administrarProyectos.forms.</tt><tt class="descname">ChangeProjectLeaderForm</tt><big>(</big><em>*args</em>, <em>**kwargs</em><big>)</big><a class="headerlink" href="#administrarProyectos.forms.ChangeProjectLeaderForm" title="Enlazar permanentemente con esta definición">¶</a></dt>
+<dd><p>Clases base: <tt class="xref py py-class docutils literal"><span class="pre">floppyforms.models.ModelForm</span></tt></p>
+<p><em>Formulario para la modificación de proyectos creados en el sistema.  Utilizamos el modelo de</em> <tt class="docutils literal"><span class="pre">Proyecto</span></tt>
+<em>definido del cual filtramos los campos de tal manera a que solo se habiliten los
+campos disponibles para la modificación de un proyecto en el sistema.</em></p>
+<p>Opción válida solo para usuarios con rol de <tt class="docutils literal"><span class="pre">Lider</span></tt>.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parámetros:</th><td class="field-body"><ul class="first last simple">
+<li><strong>args</strong> &#8211; Argumentos para el modelo base <tt class="docutils literal"><span class="pre">ModelForm</span></tt>.</li>
+<li><strong>kwargs</strong> &#8211; Keyword Arguments para la función <tt class="docutils literal"><span class="pre">ModelForm</span></tt>.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<div class="highlight-python"><div class="highlight"><pre><span class="k">class</span> <span class="nc">Meta</span><span class="p">:</span>
+    <span class="n">model</span> <span class="o">=</span> <span class="n">Proyecto</span>
+    <span class="n">fields</span> <span class="o">=</span> <span class="p">(</span><span class="s">&#39;nombre&#39;</span><span class="p">,</span> <span class="s">&#39;lider_proyecto&#39;</span><span class="p">,</span> <span class="s">&#39;estado&#39;</span><span class="p">,</span> <span class="s">&#39;descripcion&#39;</span><span class="p">,)</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="class">
 <dt id="administrarProyectos.forms.NewProjectForm">
 <em class="property">class </em><tt class="descclassname">administrarProyectos.forms.</tt><tt class="descname">NewProjectForm</tt><big>(</big><em>*args</em>, <em>**kwargs</em><big>)</big><a class="headerlink" href="#administrarProyectos.forms.NewProjectForm" title="Enlazar permanentemente con esta definición">¶</a></dt>
 <dd><p>Clases base: <tt class="xref py py-class docutils literal"><span class="pre">django.forms.models.ModelForm</span></tt></p>
@@ -114,7 +141,7 @@ campos necesarios para la creación de un proyecto en el sistema.</em></p>
 <dl class="class">
 <dt id="administrarProyectos.forms.setUserToProjectForm">
 <em class="property">class </em><tt class="descclassname">administrarProyectos.forms.</tt><tt class="descname">setUserToProjectForm</tt><big>(</big><em>*args</em>, <em>**kwargs</em><big>)</big><a class="headerlink" href="#administrarProyectos.forms.setUserToProjectForm" title="Enlazar permanentemente con esta definición">¶</a></dt>
-<dd><p>Clases base: <tt class="xref py py-class docutils literal"><span class="pre">django.forms.models.ModelForm</span></tt></p>
+<dd><p>Clases base: <tt class="xref py py-class docutils literal"><span class="pre">floppyforms.models.ModelForm</span></tt></p>
 <p><em>Formulario para vincular usuarios a un proyecto</em></p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -140,7 +167,6 @@ campos necesarios para la creación de un proyecto en el sistema.</em></p>
 <dl class="docutils">
 <dt><em>Modelo para la clase</em> <tt class="docutils literal"><span class="pre">Proyecto</span></tt> <em>, en el cual se encuentras todos los atributos de un proyecto:</em></dt>
 <dd><ul class="first last simple">
-<li><em>Codigo</em>: Identificador Único dentro del Sistema</li>
 <li><em>Nombre</em>: Nombre del Proyecto</li>
 <li><em>Líder de Proyecto</em>: Usuario responsable del Proyecto</li>
 <li><em>Descripción</em>: Breve reseña del proyecto</li>
@@ -278,102 +304,8 @@ campos necesarios para la creación de un proyecto en el sistema.</em></p>
 <div class="section" id="module-administrarProyectos.views">
 <span id="views"></span><h2>views<a class="headerlink" href="#module-administrarProyectos.views" title="Enlazar permanentemente con este título">¶</a></h2>
 <dl class="function">
-<dt id="administrarProyectos.views.changeProject">
-<tt class="descclassname">administrarProyectos.views.</tt><tt class="descname">changeProject</tt><big>(</big><em>request</em>, <em>*args</em>, <em>**kwargs</em><big>)</big><a class="headerlink" href="#administrarProyectos.views.changeProject" title="Enlazar permanentemente con esta definición">¶</a></dt>
-<dd><p><em>Vista para la modificación de un proyecto dentro del sistema.
-Opción válida para usuarios con rol de Administrador.</em></p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parámetros:</th><td class="field-body"><ul class="first simple">
-<li><strong>request</strong> &#8211; HttpRequest necesario para modificar proyectos, es la solicitud de la acción.</li>
-<li><strong>args</strong> &#8211; Argumentos para el modelo <tt class="docutils literal"><span class="pre">Proyecto</span></tt>.</li>
-<li><strong>kwargs</strong> &#8211; Keyword Arguments para la el modelo <tt class="docutils literal"><span class="pre">Proyecto</span></tt>.</li>
-</ul>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Devuelve:</th><td class="field-body"><p class="first last">Proporciona la pagina <tt class="docutils literal"><span class="pre">changeproject.html</span></tt> con el formulario correspondiente
-Modifica el proyecto y luego regresa al menu principal</p>
-</td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
-<dl class="function">
-<dt id="administrarProyectos.views.createProject">
-<tt class="descclassname">administrarProyectos.views.</tt><tt class="descname">createProject</tt><big>(</big><em>request</em>, <em>*args</em>, <em>**kwargs</em><big>)</big><a class="headerlink" href="#administrarProyectos.views.createProject" title="Enlazar permanentemente con esta definición">¶</a></dt>
-<dd><p><em>Vista para la creación de proyectos en el sistema.
-Opción válida para usuarios con rol de ``Administrador``.</em></p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parámetros:</th><td class="field-body"><ul class="first simple">
-<li><strong>request</strong> &#8211; HttpRequest necesario para crear proyectos, es la solicitud de la acción.</li>
-<li><strong>args</strong> &#8211; Argumentos para el modelo <tt class="docutils literal"><span class="pre">Proyecto</span></tt>.</li>
-<li><strong>kwargs</strong> &#8211; Keyword Arguments para la el modelo <tt class="docutils literal"><span class="pre">Proyecto</span></tt>.</li>
-</ul>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Devuelve:</th><td class="field-body"><p class="first last">Proporciona la pagina <tt class="docutils literal"><span class="pre">createproject.html</span></tt> con el formulario correspondiente
-Crea el proyecto en el sistema regresando al menu principal</p>
-</td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
-<dl class="function">
-<dt id="administrarProyectos.views.projectList">
-<tt class="descclassname">administrarProyectos.views.</tt><tt class="descname">projectList</tt><big>(</big><em>request</em>, <em>*args</em>, <em>**kwargs</em><big>)</big><a class="headerlink" href="#administrarProyectos.views.projectList" title="Enlazar permanentemente con esta definición">¶</a></dt>
-<dd><p><em>Vista para listar todos los proyectos dentro del sistema.
-Opción válida para usuarios con los roles correspondientes.</em></p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parámetros:</th><td class="field-body"><ul class="first simple">
-<li><strong>request</strong> &#8211; HttpRequest necesario para visualizar los proyectos, es la solicitud de la acción.</li>
-<li><strong>args</strong> &#8211; Argumentos para el modelo <tt class="docutils literal"><span class="pre">Proyecto</span></tt>.</li>
-<li><strong>kwargs</strong> &#8211; Keyword Arguments para la el modelo <tt class="docutils literal"><span class="pre">Proyecto</span></tt>.</li>
-</ul>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Devuelve:</th><td class="field-body"><p class="first last">Proporciona la pagina <tt class="docutils literal"><span class="pre">projectlist.html</span></tt> con la lista de todos los proyectos existentes en el sistema</p>
-</td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
-<dl class="function">
-<dt id="administrarProyectos.views.setUserToProject">
-<tt class="descclassname">administrarProyectos.views.</tt><tt class="descname">setUserToProject</tt><big>(</big><em>request</em>, <em>id_proyecto</em><big>)</big><a class="headerlink" href="#administrarProyectos.views.setUserToProject" title="Enlazar permanentemente con esta definición">¶</a></dt>
-<dd><p><em>Vista para vincular usuarios a un proyecto existente.
-Acción solo realizada por los usuarios con rol de ``Líder de proyecto``</em></p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parámetros:</th><td class="field-body"><ul class="first simple">
-<li><strong>request</strong> &#8211; HttpRequest necesario para vincular los usuarios a proyectos, es la solicitud de la acción.</li>
-<li><strong>id_proyecto</strong> &#8211; Identificador del proyecto dentro del sistema al cual se le vincularán usuarios para su desarrollo.</li>
-</ul>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Devuelve:</th><td class="field-body"><p class="first last">Proporciona la pagina <tt class="docutils literal"><span class="pre">setusertoproject.html</span></tt> con la lista de todos los usuarios existentes en el sistema para listar al proyecto
-Usuarios vinculados correctamente al proyecto.</p>
-</td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
-<dl class="function">
 <dt id="administrarProyectos.views.viewSetUserProject">
-<tt class="descclassname">administrarProyectos.views.</tt><tt class="descname">viewSetUserProject</tt><big>(</big><em>request</em>, <em>id_proyecto</em><big>)</big><a class="headerlink" href="#administrarProyectos.views.viewSetUserProject" title="Enlazar permanentemente con esta definición">¶</a></dt>
+<tt class="descclassname">administrarProyectos.views.</tt><tt class="descname">viewSetUserProject</tt><big>(</big><em>request</em>, <em>*args</em>, <em>**kwargs</em><big>)</big><a class="headerlink" href="#administrarProyectos.views.viewSetUserProject" title="Enlazar permanentemente con esta definición">¶</a></dt>
 <dd><p><em>Vista para visualizar usuarios que se encuentren vinculados a un proyecto</em></p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />

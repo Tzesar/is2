@@ -4,6 +4,12 @@
 {% block title %}Tipos de Item en la Fase {% endblock %}
 {% block pageName %}Proyectos{% endblock %}
 
+{% block breadContent %}
+    <li><a href="{% url 'autenticacion.views.main' %}">Inicio</a></li>
+    <li><a href="{% url 'administrarProyectos.views.workProject' project.id %}">{{ project.nombre }}</a></li>
+    <li class="active">Importar Tipo de Item</li>
+{% endblock breadContent %}
+
 {% block mainBody %}
     <div class="container col-lg-offset-1 col-lg-10 col-xs-12" style="padding-top: 2%">
         <div class="panel panel-default" style="padding-top: 2%; padding-left: 2%; padding-right: 2%">
@@ -13,15 +19,24 @@
                 <table class="table">
                     <thead>
                         <tr>
-                            <th>#</th>
                             <th>Nombre de Tipo de Item</th>
+                            <th>Proyecto</th>
+                            <th>Fase</th>
+                            <th>Atributos</th>
+                            <th></th>
                         </tr>
                     </thead>
                     <tbody>
-                        {% for itemtype in itemtype %}
+                        {% for itemtype in itemtypes %}
                             <tr>
-                                <td>{{ itemtype.id }}</td>
-                                <td>{{itemtype.nombre}}</td>
+                                <td>{{ itemtype.nombre }}</td>
+                                <td>{{ itemtype.fase.proyecto }}</td>
+                                <td>{{ itemtype.fase }}</td>
+                                <td>{% for attribute in itemtype.atributo_set.all %}
+                                        {{ attribute }},
+                                    {% endfor %}
+                                </td>
+                                <td><a class="btn btn-success" href="/importitemtype/{{ id_fase }}/{{ itemtype.id }}">Importar</a></td>
                             </tr>
                         {% endfor %}
                     </tbody>

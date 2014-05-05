@@ -38,6 +38,9 @@
                         <div class="btn-group">
                             <button class="btn btn-lg btn-success btn-block" type="submit">Crear Fase</button>
                         </div>
+                        <div class="btn-group">
+                            <a href="{% url 'administrarFases.views.phaseList' proyecto.id %}" class="btn btn-lg btn-danger" type="submit">Importar</a>
+                        </div>
                     </div>
                 </form>
             </div>

@@ -6,14 +6,14 @@ from django.conf.urls import patterns, url
 from django.contrib import admin
 from django.contrib.auth.views import logout_then_login
 
-from administrarTipoItem.views import createItemType, deleteItemType, itemtypeList, changeItemType, changeAtribute,\
-    createAtribute, deleteAtribute
+from administrarTipoItem.views import createItemType, deleteItemType, itemTypeList, changeItemType, changeAtribute,\
+    createAtribute, deleteAtribute, importItemType
 from autenticacion.views import main, myLogin
 from administrarUsuarios.views import createUser, changeUser, userList, userListJson, changePass, changeAnyUser
 from zar.views import about, contact
 from administrarProyectos.views import createProject, changeProject, projectList, workProject, setUserToProject,\
     viewSetUserProject, changeProjectLeader
-from administrarFases.views import changePhase, createPhase, phaseList, deletePhase
+from administrarFases.views import changePhase, createPhase, phaseList, deletePhase, importPhase
 from administrarRolesPermisos.views import createRole, roleList, changeRole, deleteRole, asignRole, accesoDenegado
 
 admin.autodiscover()
@@ -41,6 +41,7 @@ urlpatterns = patterns('',
                        url(r'^createphase/(?P<id_proyecto>\d+)$', createPhase),
                        url(r'^changephase/(?P<id_fase>\d+)$', changePhase),
                        url(r'^phaselist/(?P<id_proyecto>\d+)$', phaseList),
+                       url(r'^importphase/(?P<id_fase>\d+)/(?P<id_proyecto_destino>\d+)$', importPhase),
                        url(r'^deletephase/(?P<id_fase>\d+)$', deletePhase),
                        url(r'^createrole/(?P<id_proyecto>\d+)$', createRole),
                        url(r'^rolelist/(?P<id_proyecto>\d+)$', roleList, name="rolelist"),
@@ -48,7 +49,8 @@ urlpatterns = patterns('',
                        url(r'^deleterole/(?P<id_proyecto>\d+)/(?P<id_rol>\d+)$', deleteRole),
                        url(r'^createitemtype/(?P<id_fase>\d+)$', createItemType),
                        url(r'^changeitemtype/(?P<id_tipoitem>\d+)$', changeItemType),
-                       url(r'^itemtypelist/(?P<id_fase>\d+)$', itemtypeList),
+                       url(r'^itemtypelist/(?P<id_fase>\d+)$', itemTypeList),
+                       url(r'^importitemtype/(?P<id_fase>\d+)/(?P<id_itemtype>\d+)$', importItemType),
                        url(r'^deleteitemtype/(?P<id_tipoitem>\d+)$', deleteItemType),
                        url(r'^forgot_password/$', 'django.contrib.auth.views.password_reset', {'template_name':'autenticacion/forgot_password.html',\
                                'post_reset_redirect' : 'registration/password_reset_done'}, name="reset_password"),

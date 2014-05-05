@@ -101,7 +101,7 @@ def deleteItemType(request, id_tipoitem):
 
 @login_required
 @lider_requerido2
-def itemtypeList(request, id_fase):
+def itemTypeList(request, id_fase):
     """
     *Vista para la listar todos los tipos de ítem pertenecientes a alguna fase.*
 
@@ -114,8 +114,42 @@ def itemtypeList(request, id_fase):
     :return: Proporciona la pagina ``itemtypelist.html`` con la lista de tipos de ítem que perteneces a la fase especificada.
     """
 
-    itemtype = TipoItem.objects.filter(fase=id_fase)
-    return render(request, "tipo_item/itemtypelist.html", {'itemtype': itemtype})
+    itemtypes = TipoItem.objects.all()
+    fase = Fase.objects.get(pk=id_fase)
+    project = fase.proyecto
+    return render(request, "tipo_item/itemtypelist.html", {'user': request.user, 'itemtypes': itemtypes, 'id_fase': id_fase, 'project': project})
+
+
+@login_required
+@lider_requerido2
+def importItemType(request, id_fase, id_itemtype):
+    """
+    *Vista para la listar todos los tipos de ítem pertenecientes a alguna fase.*
+
+    *Opción válida para usuarios con los roles correspondientes.*
+
+    :param request: HttpRequest necesario para visualizar los tipos de ítems dentro de alguna fase, es la solicitud de la acción.
+    :param id_fase: Identificador de la fase, a la cual pertenecen los tipos de ítems.
+    :param args: Argumentos para el modelo ``TipoItem``.
+    :param kwargs: Keyword Arguments para la el modelo ``TipoItem``.
+    :return: Proporciona la pagina ``itemtypelist.html`` con la lista de tipos de ítem que perteneces a la fase especificada.
+    """
+
+
+    tipoItemExistente = TipoItem.objects.get(id=id_itemtype)
+    tipoItemNuevo = TipoItem.objects.get(id=id_itemtype)
+    fase =  Fase.objects.get(id=id_fase)
+
+    tipoItemNuevo.id = None
+    tipoItemNuevo.fase = fase
+    tipoItemNuevo.save()
+
+    for atributo in tipoItemExistente.atributo_set.all():
+        atributo.id = None
+        atributo.tipoDeItem = tipoItemNuevo
+        atributo.save()
+
+    return HttpResponseRedirect('/changeitemtype/' + str(tipoItemNuevo.id))
 
 
 @login_required()

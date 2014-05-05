@@ -29,7 +29,6 @@ class UsuarioFactory(factory.DjangoModelFactory):
 class ProyectoFactory(factory.DjangoModelFactory):
     FACTORY_FOR = Proyecto
 
-    codigo = 'PR'
     nombre = 'Proyecto de Prueba'
     lider_proyecto = Usuario.objects.get(pk='1')
     descripcion = 'Proyecto de Prueba para los Test'
@@ -62,6 +61,8 @@ class TestAdministrarFases(TestCase):
         *Test para la vista de creacion de proyectos en el sistema*
         """
         print '\nInicio - Prueba: createPhase'
+        login = self.client.login(username='admin', password='admin')
+        self.assertTrue(login)
         project = Proyecto.objects.get(nombre='Proyecto de Prueba')
         dato_fase = {'nombre': 'Fase_Prueba', 'descripcion': 'Fase Test'}
         request = self.factory.post('/createphase/', dato_fase)
@@ -77,8 +78,9 @@ class TestAdministrarFases(TestCase):
         *Test para la vista de modificacion de fases en el sistema.*
         """
         print '\nInicio - Prueba: changePhase'
+        login = self.client.login(username='admin', password='admin')
+        self.assertTrue(login)
         project = Proyecto.objects.get(nombre='Proyecto de Prueba')
-
         dato_fase = {'nombre': 'Fase_Prueba', 'descripcion': 'Fase Test'}
         request = self.factory.post('/createphase/', dato_fase)
         request.user = self.user
@@ -90,11 +92,26 @@ class TestAdministrarFases(TestCase):
         dato_fase_mod = {'nombre': 'Fase_Prueba_modificado', 'estado': 'PEN', 'descripcion': 'Fase Test'}
         request = self.factory.post('/changephase/', dato_fase_mod)
         request.user = self.user
-        response = changePhase(request, 2)
-        self.assertEqual(response.status_code, 302, 'Error al modificar la Fase')
+        response = changePhase(request, phase.id)
+
+        if response == None:
+            print 'Error Previsto: La fase especificada no existe\nPor favor verifique los datos ingresados'
+        else:
+            self.assertEqual(response.status_code, 302, 'Error al modificar la Fase')
+
         print 'Fase modificada exitosamente'
         print Fase.objects.all()
         print 'Fin - Prueba: changePhase\n'
+
+        print 'Inicio - Prueba: changePhase(ERROR PREVISTO)'
+        response = changePhase(request, 3)
+
+        if response == None:
+            print 'Error Previsto: La fase especificada no existe\nPor favor verifique los datos ingresados'
+
+        print 'Fin - Prueba: changePhase(ERROR PREVISTO)\n'
+
+
 
     def test_deletePhase_response(self):
         """

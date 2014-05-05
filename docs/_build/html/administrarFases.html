@@ -60,7 +60,7 @@
 <dl class="class">
 <dt id="administrarFases.forms.ChangePhaseForm">
 <em class="property">class </em><tt class="descclassname">administrarFases.forms.</tt><tt class="descname">ChangePhaseForm</tt><big>(</big><em>*args</em>, <em>**kwargs</em><big>)</big><a class="headerlink" href="#administrarFases.forms.ChangePhaseForm" title="Enlazar permanentemente con esta definición">¶</a></dt>
-<dd><p>Clases base: <tt class="xref py py-class docutils literal"><span class="pre">django.forms.models.ModelForm</span></tt></p>
+<dd><p>Clases base: <tt class="xref py py-class docutils literal"><span class="pre">floppyforms.models.ModelForm</span></tt></p>
 <p><em>Formulario para la modificacion de proyectos creados en el sistema. Utilizamos el modelo de</em> <tt class="docutils literal"><span class="pre">Fase</span></tt>
 <em>definido del cual filtramos los campos de tal manera a que solo se habiliten los</em>
 <em>campos disponibles para la modificación de una fase en el proyecto.</em></p>
@@ -87,7 +87,7 @@
 <dl class="class">
 <dt id="administrarFases.forms.NewPhaseForm">
 <em class="property">class </em><tt class="descclassname">administrarFases.forms.</tt><tt class="descname">NewPhaseForm</tt><big>(</big><em>*args</em>, <em>**kwargs</em><big>)</big><a class="headerlink" href="#administrarFases.forms.NewPhaseForm" title="Enlazar permanentemente con esta definición">¶</a></dt>
-<dd><p>Clases base: <tt class="xref py py-class docutils literal"><span class="pre">django.forms.models.ModelForm</span></tt></p>
+<dd><p>Clases base: <tt class="xref py py-class docutils literal"><span class="pre">floppyforms.models.ModelForm</span></tt></p>
 <p><em>Formulario para la creación de nuevas fases en el sistema. Utilizamos el modelo de</em> <tt class="docutils literal"><span class="pre">Fase</span></tt>
 <em>definido,del cual filtramos los campos de tal manera a que solo se habiliten los *
 *campos necesarios para la creación de una fase en el proyecto.</em>
@@ -190,78 +190,6 @@
 <div class="section" id="module-administrarFases.views">
 <span id="views"></span><h2>views<a class="headerlink" href="#module-administrarFases.views" title="Enlazar permanentemente con este título">¶</a></h2>
 <dl class="function">
-<dt id="administrarFases.views.changePhase">
-<tt class="descclassname">administrarFases.views.</tt><tt class="descname">changePhase</tt><big>(</big><em>request</em>, <em>*args</em>, <em>**kwargs</em><big>)</big><a class="headerlink" href="#administrarFases.views.changePhase" title="Enlazar permanentemente con esta definición">¶</a></dt>
-<dd><p><em>Vista para la modificacion de una fase dentro del sistema.
-Opción válida para usuarios con los roles correspondientes.</em></p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parámetros:</th><td class="field-body"><ul class="first simple">
-<li><strong>request</strong> &#8211; HttpRequest necesario para modificar la fase, es la solicitud de la acción.</li>
-<li><strong>id_fase</strong> &#8211; Identificador de la fase dentro del sistema la cual se desea modificar.</li>
-<li><strong>args</strong> &#8211; Argumentos para el modelo <tt class="docutils literal"><span class="pre">Fase</span></tt>.</li>
-<li><strong>kwargs</strong> &#8211; Keyword Arguments para la el modelo <tt class="docutils literal"><span class="pre">Fase</span></tt>.</li>
-</ul>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Devuelve:</th><td class="field-body"><p class="first last">Proporciona la pagina <tt class="docutils literal"><span class="pre">changephase.html</span></tt> con el formulario correspondiente.
-Modifica la fase especifica  y luego regresa al menu principal</p>
-</td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
-<dl class="function">
-<dt id="administrarFases.views.createPhase">
-<tt class="descclassname">administrarFases.views.</tt><tt class="descname">createPhase</tt><big>(</big><em>request</em>, <em>*args</em>, <em>**kwargs</em><big>)</big><a class="headerlink" href="#administrarFases.views.createPhase" title="Enlazar permanentemente con esta definición">¶</a></dt>
-<dd><p><em>Vista para la creación de fases en el sistema.
-Opción válida para usuarios con los roles correspondientes.</em></p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parámetros:</th><td class="field-body"><ul class="first simple">
-<li><strong>request</strong> &#8211; HttpRequest necesario para crear fases dentro de los proyectos, es la solicitud de la acción.</li>
-<li><strong>id_proyecto</strong> &#8211; Identificador del proyecto dentro del sistema al cual se le vincularán las fases creadas.</li>
-<li><strong>args</strong> &#8211; Argumentos para el modelo <tt class="docutils literal"><span class="pre">Fase</span></tt>.</li>
-<li><strong>kwargs</strong> &#8211; Keyword Arguments para la el modelo <tt class="docutils literal"><span class="pre">Fase</span></tt>.</li>
-</ul>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Devuelve:</th><td class="field-body"><p class="first last">Proporciona la pagina <tt class="docutils literal"><span class="pre">createphase.html</span></tt> con el formulario correspondiente.
-Crea la fase dentro del proyecto especificando y luego regresa al menu principal</p>
-</td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
-<dl class="function">
-<dt id="administrarFases.views.deletePhase">
-<tt class="descclassname">administrarFases.views.</tt><tt class="descname">deletePhase</tt><big>(</big><em>request</em>, <em>id_fase</em><big>)</big><a class="headerlink" href="#administrarFases.views.deletePhase" title="Enlazar permanentemente con esta definición">¶</a></dt>
-<dd><p><em>Vista para la eliminación de una fase dentro del sistema.
-Opción válida para usuarios con los roles correspondientes.</em></p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parámetros:</th><td class="field-body"><ul class="first simple">
-<li><strong>request</strong> &#8211; HttpRequest necesario para eliminar fases de un proyectos, es la solicitud de la acción.</li>
-<li><strong>id_fase</strong> &#8211; Identificador de la fase dentro del sistema la cual se desea eliminar.</li>
-</ul>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Devuelve:</th><td class="field-body"><p class="first last">Elimina la fase especifica  y luego regresa al menu de fases.</p>
-</td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
-<dl class="function">
 <dt id="administrarFases.views.eliminarPermisos">
 <tt class="descclassname">administrarFases.views.</tt><tt class="descname">eliminarPermisos</tt><big>(</big><em>phase</em><big>)</big><a class="headerlink" href="#administrarFases.views.eliminarPermisos" title="Enlazar permanentemente con esta definición">¶</a></dt>
 <dd><p><em>Vista para la eliminacion de permisos correspondientes a la fase</em></p>
@@ -299,27 +227,9 @@ Opción válida para usuarios con los roles correspondientes.</em></p>
 </dd></dl>
 
 <dl class="function">
-<dt id="administrarFases.views.phaseList">
-<tt class="descclassname">administrarFases.views.</tt><tt class="descname">phaseList</tt><big>(</big><em>request</em>, <em>*args</em>, <em>**kwargs</em><big>)</big><a class="headerlink" href="#administrarFases.views.phaseList" title="Enlazar permanentemente con esta definición">¶</a></dt>
-<dd><p><em>Vista para la listar todas las fases dentro de algún proyecto.
-Opción válida para usuarios con los roles correspondientes.</em></p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parámetros:</th><td class="field-body"><ul class="first simple">
-<li><strong>request</strong> &#8211; HttpRequest necesario para visualizar las fases dentro de los proyectos, es la solicitud de la acción.</li>
-<li><strong>id_proyecto</strong> &#8211; Identificador del proyecto dentro del sistema.</li>
-<li><strong>args</strong> &#8211; Argumentos para el modelo <tt class="docutils literal"><span class="pre">Fase</span></tt>.</li>
-<li><strong>kwargs</strong> &#8211; Keyword Arguments para la el modelo <tt class="docutils literal"><span class="pre">Fase</span></tt>.</li>
-</ul>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Devuelve:</th><td class="field-body"><p class="first last">Proporciona la pagina <tt class="docutils literal"><span class="pre">phaselist.html</span></tt> con la lista todas las fases pertenecientes al proyecto especificado</p>
-</td>
-</tr>
-</tbody>
-</table>
+<dt id="administrarFases.views.importPhase">
+<tt class="descclassname">administrarFases.views.</tt><tt class="descname">importPhase</tt><big>(</big><em>request</em>, <em>id_fase</em>, <em>id_proyecto_destino</em><big>)</big><a class="headerlink" href="#administrarFases.views.importPhase" title="Enlazar permanentemente con esta definición">¶</a></dt>
+<dd><p><em>Vista para la importación de un tipo de ítem a otra fase</em></p>
 </dd></dl>
 
 </div>

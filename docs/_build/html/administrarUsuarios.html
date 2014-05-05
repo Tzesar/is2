@@ -234,28 +234,6 @@ creará el usuario.</em></p>
 <div class="section" id="module-administrarUsuarios.views">
 <span id="views"></span><h2>views<a class="headerlink" href="#module-administrarUsuarios.views" title="Enlazar permanentemente con este título">¶</a></h2>
 <dl class="function">
-<dt id="administrarUsuarios.views.changeAnyUser">
-<tt class="descclassname">administrarUsuarios.views.</tt><tt class="descname">changeAnyUser</tt><big>(</big><em>request</em>, <em>id_usuario</em><big>)</big><a class="headerlink" href="#administrarUsuarios.views.changeAnyUser" title="Enlazar permanentemente con esta definición">¶</a></dt>
-<dd><p><em>Vista para la modificacion de usuarios en el sistema.
-Función válida solo para el usuario con rol de Administrador.</em></p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parámetros:</th><td class="field-body"><ul class="first simple">
-<li><strong>request</strong> &#8211; HttpRequest necesario para modificar los datos de usuario, es la solicitud de la acción.</li>
-<li><strong>id_usuario</strong> &#8211; Identificador del usuario el cual se desea modificar.</li>
-</ul>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Devuelve:</th><td class="field-body"><p class="first last">Proporciona la pagina <tt class="docutils literal"><span class="pre">changeanyuser.html</span></tt> con el formulario correspondiente.</p>
-</td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
-<dl class="function">
 <dt id="administrarUsuarios.views.changePass">
 <tt class="descclassname">administrarUsuarios.views.</tt><tt class="descname">changePass</tt><big>(</big><em>request</em>, <em>*args</em>, <em>**kwargs</em><big>)</big><a class="headerlink" href="#administrarUsuarios.views.changePass" title="Enlazar permanentemente con esta definición">¶</a></dt>
 <dd><p><em>Vista para la modificación de contrasena  del usuario.
@@ -295,50 +273,6 @@ Modificación de los datos propios del usuario actual.</em></p>
 </td>
 </tr>
 <tr class="field-even field"><th class="field-name">Devuelve:</th><td class="field-body"><p class="first last">Proporciona la pagina <tt class="docutils literal"><span class="pre">changeuser.html</span></tt> con el formulario correspondiente</p>
-</td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
-<dl class="function">
-<dt id="administrarUsuarios.views.createUser">
-<tt class="descclassname">administrarUsuarios.views.</tt><tt class="descname">createUser</tt><big>(</big><em>request</em>, <em>*args</em>, <em>**kwargs</em><big>)</big><a class="headerlink" href="#administrarUsuarios.views.createUser" title="Enlazar permanentemente con esta definición">¶</a></dt>
-<dd><p><em>Vista para la creación de usuarios en el sistema.</em></p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parámetros:</th><td class="field-body"><ul class="first simple">
-<li><strong>request</strong> &#8211; HttpRequest con los datos de la sesion del usuario actual, es la solicitud de la acción.</li>
-<li><strong>args</strong> &#8211; Argumentos para el modelo <tt class="docutils literal"><span class="pre">AbstractBaseUser</span></tt>.</li>
-<li><strong>kwargs</strong> &#8211; Keyword Arguments para la el modelo <tt class="docutils literal"><span class="pre">AbstractBaseUser</span></tt>.</li>
-</ul>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Devuelve:</th><td class="field-body"><p class="first last">Proporciona la pagina <tt class="docutils literal"><span class="pre">createuser.html</span></tt> con el formulario correspondiente</p>
-</td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
-<dl class="function">
-<dt id="administrarUsuarios.views.userList">
-<tt class="descclassname">administrarUsuarios.views.</tt><tt class="descname">userList</tt><big>(</big><em>request</em>, <em>*args</em>, <em>**kwargs</em><big>)</big><a class="headerlink" href="#administrarUsuarios.views.userList" title="Enlazar permanentemente con esta definición">¶</a></dt>
-<dd><p><em>Vista para listar los usuarios existentes en el sistema.</em></p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parámetros:</th><td class="field-body"><ul class="first simple">
-<li><strong>request</strong> &#8211; HttpRequest necesario para listar los usuarios, es la solicitud de la acción.</li>
-<li><strong>args</strong> &#8211; Argumentos para el modelo <tt class="docutils literal"><span class="pre">AbstractBaseUser</span></tt>.</li>
-<li><strong>kwargs</strong> &#8211; Keyword Arguments para la el modelo <tt class="docutils literal"><span class="pre">AbstractBaseUser</span></tt>.</li>
-</ul>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Devuelve:</th><td class="field-body"><p class="first last">Proporciona la pagina <tt class="docutils literal"><span class="pre">userlist.html</span></tt> con la lista respectiva de los usuarios existentes en el sistema.</p>
 </td>
 </tr>
 </tbody>
