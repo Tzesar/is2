@@ -118,6 +118,8 @@ def generarPermisosFase(project, fase):
     p.save()
 
 
+
+#TODO: Botones Iniciar Fase - Finalizar Fase
 @login_required()
 @lider_requerido2
 def changePhase(request, id_fase):

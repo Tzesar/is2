@@ -1,0 +1,14 @@
+Para poder ver el tema de la configuración deben instalar el theme Read The Docs.
+
+sudo pip intall sphinx-rtd-theme
+
+Y verificar que el archivo conf.py que se encuentra dentro de docs tenga las siguientes lineas:
+
+import sphinx_rtd_theme
+
+html_theme = "sphinx_rtd_theme"
+
+html_theme_path = [sphinx_rtd_theme.get_html_theme_path()]
+
+Eso es to-do. Debería funcionar sin problemas =D
+

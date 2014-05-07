@@ -1,5 +1,12 @@
-#!/usr/bin/env python
 #encoding:utf-8
+#!/usr/bin/env python
+"""
+*Es el código que permite interactuar con el proyecto Django.*
+
+*Contiene la especificación de la dirección del archivo de configuración del Proyecto ZARpm*
+"""
+
+
 import os
 import sys
 

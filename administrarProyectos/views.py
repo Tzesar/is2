@@ -186,6 +186,7 @@ def viewSetUserProject(request, id_proyecto):
 
 
 @login_required()
+#TODO: Botones Iniciar Proyecto - Finalizar Proyecto - Cancelar Proyecto
 def workProject(request, id_proyecto):
     """
     *Vista para el trabajo sobre un proyecto dentro del sistema.
