@@ -1,16 +1,14 @@
 #encoding:utf-8
-from django.contrib.auth.decorators import login_required
-from django.http import HttpResponseRedirect
-from django.template import RequestContext
-from django.shortcuts import render_to_response, render, get_object_or_404
-from django.utils.safestring import mark_safe
-from administrarFases.forms import NewPhaseForm, ChangePhaseForm
-from django.core.urlresolvers import reverse
-from administrarProyectos.models import Proyecto
-from administrarFases.models import Fase
-from administrarRolesPermisos.models import PermisoFase
 import logging
+
+from django.contrib.auth.decorators import login_required
+from django.template import RequestContext
+from django.shortcuts import render
+
+from administrarFases.forms import NewPhaseForm, ChangePhaseForm
 from administrarRolesPermisos.decorators import *
+from django.db import IntegrityError
+from administrarRolesPermisos.models import PermisoFase
 
 logger = logging.getLogger(__name__)
 
@@ -36,7 +34,12 @@ def createPhase(request, id_proyecto):
         if form.is_valid():
             fase = form.save(commit=False)
             fase.proyecto = project
-            fase.save()
+
+            try:
+                fase.save()
+            except IntegrityError as e:
+                return render(request, "keyduplicate_fase.html", {'project': project, "message": e.message },
+                  context_instance=RequestContext(request) )
 
             logger.info('El usuario ' + request.user.username + ' ha creado la fase ' +
                         form["nombre"].value() + ' dentro del proyecto ' + project.nombre)
@@ -181,9 +184,8 @@ def deletePhase(request, id_fase):
     project = Proyecto.objects.get(pk=phase.proyecto.id)
     phase.delete()
 
-    logger.info('El usuario {0} ha eliminado la fase {1} dentro del proyecto: {2}'.format(request.user.username,
-                                                                                             phase_copy.nombre,
-                                                                                             project.nombre))
+    logger.info('El usuario '+ request.user.username +' ha eliminado la fase '+ phase_copy.nombre +
+                ' dentro del proyecto: ' + project.nombre)
 
     return HttpResponseRedirect('/workproject/'+str(project.id))
 
@@ -200,7 +202,6 @@ def eliminarPermisos(phase):
         p.delete()
 
 
-
 @login_required
 @lider_requerido
 def phaseList(request, id_proyecto):
@@ -215,11 +216,17 @@ def phaseList(request, id_proyecto):
     :return: Proporciona la pagina ``phaselist.html`` con la lista todas las fases pertenecientes al proyecto especificado
     """
     project = Proyecto.objects.get(pk=id_proyecto)
-    phase = Fase.objects.filter(proyecto=id_proyecto)
-    return render(request, "fase/phaselist.html", {'phase': phase, 'project':project },
+    phase_actual_project = Fase.objects.filter(proyecto=id_proyecto)
+    phase_available = phase_actual_project.values_list('id', flat=True)
+
+    phase = Fase.objects.exclude(pk__in=phase_available)
+    return render(request, "fase/phaselist.html", {'phase': phase, 'project': project },
                   context_instance=RequestContext(request) )
 
 
+#TODO: No debería existir caso particular de importar multiples fases
+@login_required
+@lider_requerido
 def importPhase(request, id_fase, id_proyecto_destino):
     """
     *Vista para la importación de un tipo de ítem a otra fase*
@@ -228,12 +235,42 @@ def importPhase(request, id_fase, id_proyecto_destino):
     phase = Fase.objects.get(pk=id_fase)
     phase.id = None
     phase.proyecto = Proyecto.objects.get(pk=id_proyecto_destino)
-    phase.save()
-    #TODO: Filtar las fases de tal manera que no aparezcan las que pertenecen al mismo proyecto
-    logger.info('El usuario {0} ha importado la fase {1} al proyecto destino: {3}'.format(request.user.username,
-                                                                                             phase.nombre,
-                                                                                             phase.proyecto.nombre))
+    project = phase.proyecto
 
+    try:
+        phase.save()
+    except IntegrityError as e:
+        return render(request, "keyduplicate_fase.html", {'project': project, "message": e.message },
+          context_instance=RequestContext(request) )
+
+    logger.info('El usuario '+ request.user.username +' ha importado la fase '+  phase.nombre +
+                ' al proyecto destino: ' + phase.proyecto.nombre)
 
 
     return HttpResponseRedirect('/changephase/' + str(phase.id))
+
+
+#TODO: Revisar funcional pero ineficiente
+@login_required
+@lider_requerido
+def importMultiplePhase(request, id_fase, id_proyecto_destino):
+    """
+    *Vista para la importación de un tipo de ítem a otra fase*
+    """
+
+    phase = Fase.objects.get(pk=id_fase)
+    phase.id = None
+    phase.proyecto = Proyecto.objects.get(pk=id_proyecto_destino)
+    project = phase.proyecto
+
+    try:
+        phase.save()
+    except IntegrityError as e:
+        return render(request, "keyduplicate_fase.html", {'project': project, "message": e.message },
+          context_instance=RequestContext(request) )
+
+    logger.info('El usuario '+ request.user.username +' ha importado la fase '+  phase.nombre +
+                ' al proyecto destino: ' + phase.proyecto.nombre)
+
+
+    return HttpResponseRedirect('/phaselist/' + str(project.id))

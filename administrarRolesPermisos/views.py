@@ -1,16 +1,18 @@
 #encoding:utf-8
+import logging
+
 from django.contrib.auth.decorators import login_required
-from django.http import HttpResponseRedirect
-from django.shortcuts import render, RequestContext, render_to_response
+from django.shortcuts import render
+from django.template import RequestContext
+
 from administrarRolesPermisos.forms import NewRoleForm, ChangeRoleForm, AsignRoleForm
+
 from administrarRolesPermisos.models import RolFase, PermisoFase
-from administrarProyectos.models import Proyecto
-from administrarFases.models import Fase
 from autenticacion.models import Usuario
 from administrarProyectos.models import UsuariosVinculadosProyectos
 from administrarRolesPermisos.decorators import *
+from django.db import IntegrityError
 
-import logging
 
 logger = logging.getLogger(__name__)
 
@@ -33,8 +35,13 @@ def createRole(request, id_proyecto):
         if form.is_valid():
             rol = form.save(commit=False)
             rol.proyecto = project
-            rol.save()
-            form.save()
+
+            try:
+                rol.save()
+            except IntegrityError as e:
+                return render(request, "keyduplicate_rol.html", {'project': project, "message": e.message },
+                  context_instance=RequestContext(request) )
+
             logger.info('El usuario ' + request.user.username + ' ha creado el rol ' +
                         form["nombre"].value() + ' en el proyecto ' + project.nombre)
             return HttpResponseRedirect('/workproject/'+str(project.id))
@@ -73,8 +80,10 @@ def changeRole(request, id_proyecto, id_rol):
         form.fields['permisos'].queryset = PermisoFase.objects.filter(fase__in=fases)
         if form.is_valid():
             form.save()
+
             logger.info('El usuario ' + request.user.username + ' ha modificado el rol ROL-' + id_rol + ':' +
                         form["nombre"].value() + ' dentro del proyecto ' + project.nombre)
+
             return HttpResponseRedirect('/workproject/'+str(project.id))
     else:
         form = ChangeRoleForm(instance=rol)
@@ -88,8 +97,10 @@ def changeRole(request, id_proyecto, id_rol):
 def deleteRole(request, id_proyecto, id_rol):
     rol = RolFase.objects.get(pk=id_rol)
     proyecto = Proyecto.objects.get(pk=id_proyecto)
+
     logger.info('El usuario ' + request.user.username + ' ha eliminado el rol ' +
                         rol.nombre + ' dentro del proyecto: ' + proyecto.nombre)
+
     rol.delete()
 
     return HttpResponseRedirect('/workproject/'+str(proyecto.id))

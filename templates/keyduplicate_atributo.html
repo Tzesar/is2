@@ -1,0 +1,11 @@
+{% extends 'keyduplicate.html' %}
+{% load staticfiles %}
+
+{% block motivoError %}
+    El nombre de atributo especificado ya existe dentro del tipo de item.
+    Por favor verifique el nombre y vuelva a intentarlo.
+{% endblock motivoError %}
+
+{% block regresar %}
+     <a href="{% url 'administrarTipoItem.views.createAtribute' itemtype.id %}" class="btn btn-group-sm btn-danger ">Volver</a>
+{% endblock regresar %}

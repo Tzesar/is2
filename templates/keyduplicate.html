@@ -1,0 +1,35 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+
+{% block title %} ERROR {% endblock %}
+
+{% block navbar %}{% endblock navbar %}
+{% block breadcrumbs %}{% endblock breadcrumbs %}
+
+{% block panelCentral %} {% block padTop %}{% endblock padTop %}
+
+    <div class="panel-heading">
+        <h1 class="text-info" style="display: inline-block">ERROR</h1>
+    </div>
+
+    <div class="panel-body">
+
+        <div class="col-sm-9">
+            <br>
+            <p>Lo sentimos. Ha ocurrido un error durante la operación.</p>
+            <p>Ante cualquier duda respecto a este problema, póngase en contacto con su Administrador.</p>
+            <p>Muchas Gracias!</p>
+            <br>
+            <p><i><b>Motivo del Error:</b> {% block motivoError %} ... {% endblock motivoError %}</i></p>
+            <br>
+
+            {% block regresar %} ... {% endblock regresar %}
+        </div>
+
+        <div class="col-sm-3">
+            <img src="{% static "oops.jpg" %}" width=100% height=100% >
+        </div>
+
+    </div>
+
+{% endblock panelCentral %}

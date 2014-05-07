@@ -1,0 +1,11 @@
+{% extends 'keyduplicate.html' %}
+{% load staticfiles %}
+
+{% block motivoError %}
+    El nombre de rol especificado ya existe dentro del proyecto.
+    Por favor verifique el nombre y vuelva a intentarlo.
+{% endblock motivoError %}
+
+{% block regresar %}
+     <a href="{% url 'administrarRolesPermisos.views.createRole' project.id %}" class="btn btn-group-sm btn-danger ">Volver</a>
+{% endblock regresar %}

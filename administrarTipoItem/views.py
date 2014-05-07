@@ -2,17 +2,12 @@
 import logging
 
 from django.contrib.auth.decorators import login_required
-
-from django.http import HttpResponseRedirect
 from django.template import RequestContext
-from django.shortcuts import render_to_response, render
+from django.shortcuts import render
 
 from administrarTipoItem.forms import NewItemTypeForm, ChangeItemTypeForm, CreateAtributeForm, ChangeAtributeForm
-
-from administrarTipoItem.models import TipoItem, Atributo
-from administrarFases.models import Fase
-from administrarProyectos.models import Proyecto
-from administrarRolesPermisos.decorators import lider_requerido2, lider_requerido3, lider_requerido4
+from administrarRolesPermisos.decorators import *
+from django.db import IntegrityError
 
 
 logger = logging.getLogger(__name__)
@@ -40,9 +35,15 @@ def createItemType(request, id_fase):
         if form.is_valid():
             tipoitem = form.save(commit=False)
             tipoitem.fase = phase
-            tipoitem.save()
-            logger.info('El usuario {0} ha creado el tipo de ítem {1} dentro de la fase {2} en el proyecto: {3}'
-                        .format(request.user.username, form["nombre"].value(), phase.nombre, project.nombre))
+
+            try:
+                tipoitem.save()
+            except IntegrityError as e:
+                return render(request, "keyduplicate_tipoitem.html", {'phase': phase, "message": e.message},
+                  context_instance=RequestContext(request))
+
+            logger.info('El usuario '+ request.user.username +' ha creado el tipo de ítem '+ form["nombre"].value() +
+                        ' dentro de la fase '+ phase.nombre + ' en el proyecto: ' + project.nombre)
 
             return HttpResponseRedirect('/changephase/' + str(phase.id))
     else:
@@ -73,8 +74,8 @@ def changeItemType(request, id_tipoitem):
         form = ChangeItemTypeForm(request.POST, instance=itemtype)
         if form.is_valid():
             form.save()
-            logger.info('El usuario {0} ha modificado el tipo de item {1} la fase {2} dentro del proyecto: {3}'
-                        .format(request.user.username, itemtype.nombre, phase.nombre, project.nombre))
+            logger.info('El usuario '+ request.user.username +' ha modificado el tipo de item '+ itemtype.nombre +
+                        ' la fase '+ phase.nombre + ' dentro del proyecto: ' + project.nombre)
 
             return HttpResponseRedirect('/changephase/' + str(phase.id))
 
@@ -101,8 +102,8 @@ def deleteItemType(request, id_tipoitem):
         attr.delete()
 
     itemtype.delete()
-    logger.info('El usuario {0} ha eliminado el tipo de ítem {1} de la fase {2} dentro del proyecto: {3}'
-                .format(request.user.username, itemtype.nombre, fase.nombre, fase.proyecto.nombre))
+    logger.info('El usuario '+ request.user.username +' ha eliminado el tipo de ítem '+ itemtype.nombre +
+                ' de la fase '+ fase.nombre +' dentro del proyecto: ' + fase.proyecto.nombre )
 
     return HttpResponseRedirect('/changephase/' + str(fase.id))
 
@@ -122,7 +123,10 @@ def itemTypeList(request, id_fase):
     :return: Proporciona la pagina ``itemtypelist.html`` con la lista de tipos de ítem que perteneces a la fase especificada.
     """
 
-    itemtypes = TipoItem.objects.all()
+    itemtypes_phase = TipoItem.objects.filter(fase=id_fase)
+    itemtypes_available = itemtypes_phase.values_list('id', flat=True)
+    itemtypes = TipoItem.objects.exclude(pk__in=itemtypes_available)
+
     fase = Fase.objects.get(pk=id_fase)
     project = fase.proyecto
     return render(request, "tipo_item/itemtypelist.html", {'user': request.user, 'itemtypes': itemtypes, 'id_fase': id_fase, 'project': project})
@@ -150,16 +154,21 @@ def importItemType(request, id_fase, id_itemtype):
 
     tipoItemNuevo.id = None
     tipoItemNuevo.fase = fase
-    tipoItemNuevo.save()
+
+    try:
+        tipoItemNuevo.save()
+    except IntegrityError as e:
+        return render(request, "keyduplicate_tipoitem.html", { 'phase': fase , 'itemtype': tipoItemNuevo, "message": e.message},
+                  context_instance=RequestContext(request))
 
     for atributo in tipoItemExistente.atributo_set.all():
         atributo.id = None
         atributo.tipoDeItem = tipoItemNuevo
         atributo.save()
 
-    logger.info('El usuario {0} ha importado el tipo de ítem {1} de la fase {2} del proyecto {3} a la fase {4} del proyecto {5}'
-                .format(request.user.username, tipoItemExistente.nombre, tipoItemExistente.fase.nombre,
-                 tipoItemExistente.fase.proyecto.nombre, fase.nombre, fase.proyecto.nombre))
+    logger.info('El usuario '+request.user.username + ' ha importado el tipo de ítem ' +tipoItemExistente.nombre +
+                ' de la fase ' +tipoItemExistente.fase.nombre + ' del proyecto ' +tipoItemExistente.fase.proyecto.nombre+
+                ' a la fase' + fase.nombre +' del proyecto ' + fase.proyecto.nombre )
 
 
 
@@ -189,9 +198,15 @@ def createAtribute(request, id_tipoitem):
         if form.is_valid():
             atributo = form.save(commit=False)
             atributo.tipoDeItem = itemtype
-            atributo.save()
-            logger.info('El usuario {0} ha creado el atributo {1} perteneciente al tipo de item: {2}'
-                        .format(request.user.username, atributo.nombre, itemtype.nombre))
+
+            try:
+                atributo.save()
+            except IntegrityError as e:
+                return render(request, "keyduplicate_atributo.html", {'itemtype': itemtype, "message": e.message},
+                  context_instance=RequestContext(request))
+
+            logger.info('El usuario '+request.user.username+'  ha creado el atributo ' + atributo.nombre +
+                        ' perteneciente al tipo de item: '+ itemtype.nombre )
 
 
         return HttpResponseRedirect('/changeitemtype/'+str(id_tipoitem))
@@ -224,8 +239,10 @@ def changeAtribute(request, id_atribute):
         form = ChangeAtributeForm(request.POST, instance=atribute)
         if form.is_valid():
             form.save()
-            logger.info('El usuario {0} ha modificado el atributo ATI- {1}:{2} perteneciente al tipo de ítem: {3}'
-                        .format(request.user.username, atribute.id, atribute.nombre, itemtype.nombre))
+
+            logger.info('El usuario '+request.user.username+' ha modificado el atributo (ATI-' + atribute.id +') ' +
+                        atribute.nombre + ' perteneciente al tipo de ítem: ' + itemtype.nombre )
+
             return HttpResponseRedirect('/changeitemtype/' + str(itemtype.id))
     else:
         form = ChangeAtributeForm(instance=atribute)
@@ -246,7 +263,8 @@ def deleteAtribute(request, id_atribute):
     attr = Atributo.objects.get(pk=id_atribute)
     id_tipoItem = attr.tipoDeItem.id
     attr.delete()
-    logger = logging.getLogger(__name__)
-    logger.info('El usuario {0} ha eliminado el atributo {1} perteneciente al tipo de ítem: {2}'
-                        .format(request.user.username, attr.nombre, attr.tipoDeItem.nombre))
+
+    logger.info('El usuario '+ request.user.username +' ha eliminado el atributo '  + attr.nombre +
+                ' perteneciente al tipo de ítem: ' + attr.tipoDeItem.nombre )
+
     return HttpResponseRedirect('/changeitemtype/' + str(id_tipoItem))
