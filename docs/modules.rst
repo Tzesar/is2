@@ -15,3 +15,4 @@
    autenticacion
    is2
    zar
+   manage
