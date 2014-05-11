@@ -1,0 +1,43 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+{% load floppyforms %}
+
+    {% block title %}Modificar Fase{% endblock %}
+
+    {% block errorBlock %}
+        {% if form.errors %}
+            <div class="container-fluid">
+                <div class="alert alert-danger alert-dismissable">
+                    <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+                    {{ form.errors }}
+                </div>
+            </div>
+        {% endif %}
+    {% endblock errorBlock %}
+
+    {% block breadContent %}
+        <li><a href="{% url 'autenticacion.views.main' %}">Inicio</a></li>
+        <li><a href="{% url 'administrarProyectos.views.workProject' project.id %}">{{ project.nombre }}</a></li>
+        <li class="active">Fase: {{ phase.nombre }}</li>
+    {% endblock breadContent %}
+
+    {% block padTop %}{% endblock padTop %}
+    {% block panelCentral %}
+         <div class="panel-heading">
+            <h1 class="text-info" style="display: inline-block">Fase: {{ phase.nombre }}</h1>
+        </div>
+        <div class="panel-body">
+        <div>
+            <p><b>Descripcion:</b> <i> {{ phase.descripcion }} </i>
+            <p><b>Estado:</b> <i> {{ phase.get_estado_display }} </i>
+        </div>
+            <div class="col-lg-5 col-md-5 col-sm-5">
+                <div class="btn-group btn-group-justified">
+                    <div class="btn-group">
+                        <a href="{% url 'administrarProyectos.views.workProject' project.id %}" class="btn btn-lg btn-warning" type="submit">Volver al Proyecto</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {# TODO: Terminar xD #}
+    {% endblock panelCentral %}

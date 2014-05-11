@@ -1,11 +1,9 @@
 #encoding=utf-8
 from django.forms import ModelForm
 from django import forms
-from django.contrib.admin.widgets import AdminDateWidget
 import floppyforms as forms2
 
 from administrarProyectos.models import Proyecto, UsuariosVinculadosProyectos
-
 from autenticacion.models import Usuario
 
 
@@ -55,13 +53,13 @@ class ChangeProjectForm(forms.ModelForm):
 
         class Meta:
             model = Proyecto
-            fields = ('nombre', 'lider_proyecto', 'estado', 'descripcion',)
+            fields = ('nombre', 'lider_proyecto', 'descripcion',)
 
     """
 
     class Meta:
         model = Proyecto
-        fields = ('nombre', 'lider_proyecto', 'estado', 'descripcion',)
+        fields = ('nombre', 'lider_proyecto', 'descripcion',)
 
     def __init__(self, *args, **kwargs):
         super(ChangeProjectForm, self).__init__(*args, **kwargs)
@@ -85,16 +83,15 @@ class ChangeProjectLeaderForm(forms2.ModelForm):
 
         class Meta:
             model = Proyecto
-            fields = ('nombre', 'lider_proyecto', 'estado', 'descripcion',)
+            fields = ('nombre', 'lider_proyecto', 'descripcion',)
 
     """
 
     class Meta:
         model = Proyecto
-        fields = ('nombre', 'estado', 'fecha_inicio', 'fecha_fin', 'descripcion', 'observaciones')
+        fields = ('nombre', 'fecha_inicio', 'fecha_fin', 'descripcion', 'observaciones')
         widgets = {
             'nombre': forms2.TextInput(attrs={'class': 'form-control', }),
-            'estado': forms2.Select(attrs={'class': 'form-control', }),
             'fecha_inicio': forms2.DateInput(attrs={'class': 'form-control', }),
             'fecha_fin': forms2.DateInput(attrs={'class': 'form-control', }),
             'descripcion': forms2.Textarea(attrs={'class': 'form-control', }),
