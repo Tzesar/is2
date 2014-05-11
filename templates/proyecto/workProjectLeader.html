@@ -7,6 +7,19 @@
 
     {% block title %}Modificar Proyecto{% endblock %}
     {% block errorBlock %}
+           {% if error == 1 %}
+            <div class="container-fluid">
+                <div class="alert alert-danger alert-dismissable">
+                    <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+                    {{ message }}
+                </div>
+            {% elif error == 0 %}
+                <div class="alert alert-success alert-dismissable">
+                    <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+                    {{ message }}
+                </div>
+            </div>
+        {% endif %}
     {% endblock errorBlock %}
 
     {% block breadcrumbs %}
@@ -26,6 +39,11 @@
             </a>
         </div>
         <div class="panel-body">
+        <div>
+            <p><b>Descripción:</b> <i>{{ proyecto.descripcion }}</i></p>
+            <p><b>Estado:</b> <i> {{ proyecto.get_estado_display }} </i>
+            {# TODO: Mejorar visual (?) sin ideas #}
+        </div>
             <div class="col-lg-4 col-md-4 col-sm-4">
                 <div class="panel panel-default">
                     <div class="panel-heading" style="display: block">
@@ -167,6 +185,10 @@
     {% endblock panelCentral %}>
     {% block botonesBottom %}
         <a href="{% url 'autenticacion.views.main' %}" class="btn btn-lg btn-warning btn-lg" role="button">Atrás</a>
+        {% if proyecto.estado == 'PEN' %}
+            <a href="{% url 'administrarProyectos.views.startProject' proyecto.id %}" class="btn btn-lg btn-primary btn-lg" role="button">Iniciar</a>
+        {% endif %}
+        <a href='#' class="btn btn-lg btn-success btn-lg" role="button">Finalizar</a>
     {% endblock botonesBottom %}
     {% block jsAdicional %}
         <script src="{% static "bootstrap/js/tooltips.js" %}"></script>

@@ -3,8 +3,8 @@ from django.http.response import HttpResponseRedirect
 
 from administrarProyectos.models import Proyecto
 from administrarFases.models import Fase
+from accesoDenegado import accesoDenegado
 from administrarTipoItem.models import TipoItem, Atributo
-
 
 
 # def permisoFase_requerido(permiso):
@@ -35,7 +35,8 @@ def admin_requerido(f):
         """
         if request.user.is_superuser:
             return f(request, *args, **kwargs)
-        return HttpResponseRedirect('/acceso_denegado/1')
+        id_error = 1
+        return accesoDenegado(request, id_error)
     return decorator
 
 
@@ -54,7 +55,8 @@ def lider_requerido(f):
 
         if currentUser == lider:
             return f(request, id_proyecto, *args, **kwargs)
-        return HttpResponseRedirect('/acceso_denegado/2')
+        id_error = 2
+        return accesoDenegado(request, id_error)
     return decorator
 
 
@@ -73,7 +75,8 @@ def lider_requerido2(f):
 
         if currentUser == lider:
             return f(request, id_fase, *args, **kwargs)
-        return HttpResponseRedirect('/acceso_denegado/2')
+        id_error = 2
+        return accesoDenegado(request, id_error)
     return decorator
 
 
@@ -92,7 +95,8 @@ def lider_requerido3(f):
 
         if currentUser == lider:
             return f(request, id_tipoitem, *args, **kwargs)
-        return HttpResponseRedirect('/acceso_denegado/2')
+        id_error = 2
+        return accesoDenegado(request, id_error)
     return decorator
 
 
@@ -105,10 +109,12 @@ def lider_requerido4(f):
         :param kwargs:
         :return:
         """
+
         lider = Atributo.objects.get(pk=id_atribute).tipoDeItem.fase.proyecto.lider_proyecto
         currentUser = request.user
 
         if currentUser == lider:
             return f(request, id_atribute, *args, **kwargs)
-        return HttpResponseRedirect('/acceso_denegado/2')
+        id_error = 2
+        return accesoDenegado(request, id_error)
     return decorator
