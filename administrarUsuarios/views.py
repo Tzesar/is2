@@ -100,7 +100,7 @@ def userList(request):
 
     # Esto sucede cuando se accede normalmente al template
     if request.method == 'GET':
-        usuarios = Usuario.objects.all().order_by('id')
+        usuarios = Usuario.objects.all().exclude(is_superuser=True).order_by('id')
         return render(request, "usuario/userList.html", {'user': request.user, 'usuarios': usuarios}, )
 
     # Esto sucede cuando se modifica el estado de un usuario dentro del sistema

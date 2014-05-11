@@ -13,7 +13,7 @@ from administrarUsuarios.views import createUser, changeUser, userList, userList
 from zar.views import about, contact
 from administrarProyectos.views import createProject, changeProject, projectList, workProject, setUserToProject,\
     viewSetUserProject, changeProjectLeader
-from administrarFases.views import changePhase, createPhase, phaseList, deletePhase, importPhase, importMultiplePhase
+from administrarFases.views import changePhase, createPhase, phaseList, deletePhase, importPhase, importMultiplePhase, confirmar_eliminacion_fase
 from administrarRolesPermisos.views import createRole, roleList, changeRole, deleteRole, asignRole, accesoDenegado
 
 admin.autodiscover()
@@ -45,6 +45,7 @@ urlpatterns = patterns('',
                        url(r'^changephase/(?P<id_fase>\d+)$', changePhase),
                        url(r'^phaselist/(?P<id_proyecto>\d+)$', phaseList),
                        url(r'^importmultiplephase/(?P<id_fase>\d+)/(?P<id_proyecto_destino>\d+)$', importMultiplePhase),
+                       url(r'^deletephase_confirm/(?P<id_fase>\d+)$', confirmar_eliminacion_fase),
                        url(r'^deletephase/(?P<id_fase>\d+)$', deletePhase),
                        url(r'^createrole/(?P<id_proyecto>\d+)$', createRole),
 

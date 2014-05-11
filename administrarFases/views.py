@@ -4,6 +4,7 @@ import logging
 from django.contrib.auth.decorators import login_required
 from django.template import RequestContext
 from django.shortcuts import render
+from django.utils.html import format_html
 
 from administrarFases.forms import NewPhaseForm, ChangePhaseForm
 from administrarRolesPermisos.decorators import *
@@ -35,11 +36,15 @@ def createPhase(request, id_proyecto):
             fase = form.save(commit=False)
             fase.proyecto = project
 
+
             try:
                 fase.save()
-            except IntegrityError as e:
-                return render(request, "keyduplicate_fase.html", {'project': project, "message": e.message },
-                  context_instance=RequestContext(request) )
+            except IntegrityError:
+                err = format_html('<b><i>Datos Erróneos:</b></i><br>'
+                                  '<i>El nombre especificado de fase ya existe. Verifiquelo y vuelva a intentarlo</i>')
+                return render(request, "fase/createphase.html", {'form': form, 'user': request.user,
+                                                                 'proyecto': project, "error": err },
+                                                                  context_instance=RequestContext(request) )
 
             logger.info('El usuario ' + request.user.username + ' ha creado la fase ' +
                         form["nombre"].value() + ' dentro del proyecto ' + project.nombre)
@@ -49,7 +54,8 @@ def createPhase(request, id_proyecto):
             return HttpResponseRedirect('/workproject/'+str(project.id))
     else:
         form = NewPhaseForm()
-    return render(request, 'fase/createphase.html', {'form': form, 'proyecto': project, 'user': request.user,})
+    return render(request, 'fase/createphase.html', {'form': form, 'proyecto': project, 'user': request.user,
+                                                     'error': {} })
 
 
 def generarPermisosFase(project, fase):
@@ -159,8 +165,23 @@ def changePhase(request, id_fase):
                               context_instance=RequestContext(request))
 
 
-@login_required
+@login_required()
 @lider_requerido2
+def confirmar_eliminacion_fase(request, id_fase):
+    """
+    *Vista para la confirmar la eliminación definitiva de una fase del proyecto.
+    Opción válida para usuarios con los roles correspondientes.*
+
+    :param request: HttpRequest - Solicitud de eliminación.
+    :param id_fase: Identificador de la fase dentro del sistema la cual se desea eliminar.
+    :return: Elimina la fase especifica  y luego regresa al menu de fases.
+    """
+    faseAEliminar = Fase.objects.get(pk=id_fase)
+    tiposItem = TipoItem.objects.filter(fase=faseAEliminar)
+    return render(request, 'fase/confirmar_eliminacion.html', {'fase': faseAEliminar,
+                                                               'tipos': tiposItem},)
+
+@login_required
 def deletePhase(request, id_fase):
     """
     *Vista para la eliminación de una fase dentro del sistema.

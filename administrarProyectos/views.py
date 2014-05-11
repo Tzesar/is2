@@ -40,21 +40,23 @@ def createProject(request):
         form.fields["lider_proyecto"].queryset = Usuario.objects.exclude(pk__in=admin)
         if form.is_valid():
             form.save()
+            proyectoNuevo = Proyecto.objects.get(nombre=form["nombre"].value())
 
             logger.info('El usuario ' + request.user.username + ' ha creado el proyecto: ' +
-                        form["nombre"].value() + ' dentro del sistema')
+                        proyectoNuevo.nombre + ' dentro del sistema')
 
-            vincularLider(form["nombre"].value(), form["lider_proyecto"].value())
+            vincularLider(proyectoNuevo, form["lider_proyecto"].value())
 
-            return HttpResponseRedirect('/projectlist/')
+
+
+            return projectList(request, True, False, proyectoNuevo)
     else:
         form = NewProjectForm()
         form.fields["lider_proyecto"].queryset = Usuario.objects.exclude(pk__in=admin)
-    return render(request, 'proyecto/createproject.html', {'user': request.user, 'form': form})
+    return render(request, 'proyecto/createproject.html', {'user': request.user, 'form': form},)
 
 
-def vincularLider(nombre_proyecto, lider_code):
-    project = Proyecto.objects.get(nombre=nombre_proyecto)
+def vincularLider(project, lider_code):
     lider = Usuario.objects.get(pk=lider_code)
     vinculo = UsuariosVinculadosProyectos(cod_usuario=lider, cod_proyecto=project, habilitado=True)
     vinculo.save()
@@ -80,9 +82,11 @@ def changeProject(request, id_proyecto):
         form = ChangeProjectForm(request.POST, instance=project)
         if form.is_valid():
             form.save()
+            proyectoModificado = Proyecto.objects.get(nombre=form["nombre"].value())
             logger.info('El usuario ' + request.user.username + ' ha modificado el proyecto PR-' +
-                        id_proyecto + form["nombre"].value() + ' dentro del sistema')
-            return HttpResponseRedirect('/projectlist/')
+                        id_proyecto + proyectoModificado.nombre + ' dentro del sistema')
+
+            return projectList(request, False, True, proyectoModificado)
     else:
         form = ChangeProjectForm(instance=project)
     return render(request, 'proyecto/changeproject.html', {'user': request.user, 'form': form, 'project': project})
@@ -120,7 +124,7 @@ def changeProjectLeader(request, id_proyecto):
 
 @login_required()
 @admin_requerido
-def projectList(request):
+def projectList(request, exitoCrear=False, exitoModif=False, proyecto=None):
     """
     *Vista para listar todos los proyectos dentro del sistema.
     Opción válida para usuarios con los roles correspondientes.*
@@ -130,9 +134,10 @@ def projectList(request):
     :param kwargs: Keyword Arguments para la el modelo ``Proyecto``.
     :return: Proporciona la pagina ``projectlist.html`` con la lista de todos los proyectos existentes en el sistema
     """
-    proyectos = ProyectoTablaAdmin( Proyecto.objects.all() )
+    proyectos = ProyectoTablaAdmin( Proyecto.objects.all().order_by('nombre') )
     RequestConfig(request, paginate={"per_page": 25}).configure(proyectos)
-    return render(request, "proyecto/projectlist.html", {'user': request.user, 'proyectos': proyectos}, )
+    return render(request, "proyecto/projectlist.html", {'user': request.user, 'proyectos': proyectos, 'exitoCreacion': exitoCrear,
+                                                         'exitoModif': exitoModif, 'proyecto': proyecto,}, )
 
 
 @login_required()
