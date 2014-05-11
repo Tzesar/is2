@@ -124,7 +124,6 @@ def generarPermisosFase(project, fase):
     p.save()
 
 
-
 #TODO: Botones Iniciar Fase - Finalizar Fase
 @login_required()
 @lider_requerido2
@@ -294,6 +293,5 @@ def importMultiplePhase(request, id_fase, id_proyecto_destino):
 
     logger.info('El usuario '+ request.user.username +' ha importado la fase '+  phase.nombre +
                 ' al proyecto destino: ' + phase.proyecto.nombre)
-
 
     return HttpResponseRedirect('/phaselist/' + str(project.id))

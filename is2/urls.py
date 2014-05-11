@@ -15,6 +15,10 @@ from administrarProyectos.views import createProject, changeProject, projectList
     viewSetUserProject, changeProjectLeader
 from administrarFases.views import changePhase, createPhase, phaseList, deletePhase, importPhase, importMultiplePhase, confirmar_eliminacion_fase
 from administrarRolesPermisos.views import createRole, roleList, changeRole, deleteRole, asignRole, accesoDenegado
+    viewSetUserProject, changeProjectLeader, startProject, cancelProject
+from administrarFases.views import changePhase, createPhase, phaseList, deletePhase, importPhase, importMultiplePhase
+from administrarRolesPermisos.views import createRole, roleList, changeRole, deleteRole, asignRole
+from administrarItems.views import createItem, changeItem
 
 admin.autodiscover()
 
@@ -40,6 +44,8 @@ urlpatterns = patterns('',
                        url(r'^usersetproject/(?P<id_proyecto>\d+)$', viewSetUserProject),
                        url(r'^projectlist/$', projectList, name='projectlist'),
                        url(r'^workproject/(?P<id_proyecto>\d+)$', workProject, name='workproject'),
+                       url(r'^startproject/(?P<id_proyecto>\d+)$', startProject, name='startproject'),
+                       url(r'^cancelproject/(?P<id_proyecto>\d+)$', cancelProject, name='cancelproject'),
 
                        url(r'^createphase/(?P<id_proyecto>\d+)$', createPhase),
                        url(r'^changephase/(?P<id_fase>\d+)$', changePhase),
@@ -67,8 +73,11 @@ urlpatterns = patterns('',
                        url(r'^/password_reset_complete/$', 'django.contrib.auth.views.password_reset_complete'),
 
                        url(r'^asignrole/(?P<id_proyecto>\d+)/(?P<id_rol>\d+)$', asignRole),
-                       url(r'^acceso_denegado/(?P<id_error>\d+)$', accesoDenegado, name="acceso_denegado"),
                        url(r'^createatribute/(?P<id_tipoitem>\d+)$', createAtribute),
                        url(r'^changeatribute/(?P<id_atribute>\d+)$', changeAtribute),
                        url(r'^deleteatribute/(?P<id_atribute>\d+)$', deleteAtribute),
+
+                       url(r'^createitem/(?P<id_fase>\d+)$', createItem),
+                       url(r'^changeitem/(?P<id_item>\d+)$', changeItem),
+
                        )

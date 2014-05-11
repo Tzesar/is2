@@ -4,14 +4,13 @@ import logging
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render
 from django.template import RequestContext
+from django.db import IntegrityError
 
 from administrarRolesPermisos.forms import NewRoleForm, ChangeRoleForm, AsignRoleForm
-
 from administrarRolesPermisos.models import RolFase, PermisoFase
 from autenticacion.models import Usuario
 from administrarProyectos.models import UsuariosVinculadosProyectos
 from administrarRolesPermisos.decorators import *
-from django.db import IntegrityError
 
 
 logger = logging.getLogger(__name__)
@@ -128,11 +127,3 @@ def asignRole(request, id_proyecto, id_rol):
         form.fields['roles_usuarios'].queryset = Usuario.objects.filter(pk__in=usuariosVinculados)
 
     return render(request, 'rol/asignrole.html', {'form': form, 'rol': rol, 'project': project, 'user': request.user})
-
-
-@login_required()
-def accesoDenegado(request, id_error):
-    if id_error == str(1):
-        return render(request, 'acceso_denegadoAdmin.html')
-
-    return render(request, 'acceso_denegadoLider.html')

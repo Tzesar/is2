@@ -7,6 +7,7 @@ from django.http import HttpResponseRedirect, HttpResponse
 from django.shortcuts import render
 from django_tables2 import RequestConfig
 from django.core.exceptions import ObjectDoesNotExist
+from django.utils import timezone
 
 from administrarProyectos.forms import NewProjectForm, ChangeProjectForm, setUserToProjectForm, ChangeProjectLeaderForm
 from administrarProyectos.models import Proyecto, UsuariosVinculadosProyectos
@@ -189,9 +190,7 @@ def viewSetUserProject(request, id_proyecto):
     return render(request, "proyecto/usersetproject.html",
                   {'project': project, 'userproject': userproject, 'user': request.user},)
 
-
 @login_required()
-#TODO: Botones Iniciar Proyecto - Finalizar Proyecto - Cancelar Proyecto
 def workProject(request, id_proyecto):
     """
     *Vista para el trabajo sobre un proyecto dentro del sistema.
@@ -255,4 +254,113 @@ def workProject(request, id_proyecto):
     if xhr:
         responseDict = {'exito': True}
         return HttpResponse(json.dumps(responseDict), mimetype='application/javascript')
+
+@login_required()
+@lider_requerido
+def startProject(request, id_proyecto):
+    """
+    *Vista par inicar un proyecto*
+    """
+
+    proyecto = Proyecto.objects.get(pk=id_proyecto)
+    fases = proyecto.fase_set.all().order_by('id')
+    rolesFases = RolFase.objects.filter(proyecto=proyecto).order_by('nombre')
+
+    usuariosInactivos = Usuario.objects.filter(is_active=False).values_list('id', flat=True)
+    usuariosAsociados = proyecto.usuariosvinculadosproyectos_set.exclude(cod_usuario__in=usuariosInactivos)
+
+    if proyecto.estado != 'PEN':
+        message = 'No se puede Iniciar un proyecto que se encuentra en el estado: ' + proyecto.get_estado_display()
+        error = 1
+        return render(request, 'proyecto/workProjectLeader.html', {'user': request.user, 'proyecto': proyecto,
+                                                                       'fases': fases, 'roles': rolesFases,
+                                                                       'usuariosAsociados': usuariosAsociados,
+                                                                       'message': message, 'error': error})
+    else:
+        proyecto.estado = 'ACT'
+        proyecto.fecha_inicio = timezone.now()
+        proyecto.save()
+        message = 'El proyecto ha sido iniciado exitosamente.'
+        error = 0
+        return render(request, 'proyecto/workProjectLeader.html', {'user': request.user, 'proyecto': proyecto,
+                                                                       'fases': fases, 'roles': rolesFases,
+                                                                       'usuariosAsociados': usuariosAsociados,
+                                                                       'message': message, 'error': error})
+
+@login_required()
+@lider_requerido
+def cancelProject(request, id_proyecto):
+    """
+    *Vista para anular un proyecto*
+    """
+
+    proyecto = Proyecto.objects.get(pk=id_proyecto)
+    fases = proyecto.fase_set.all().order_by('id')
+    rolesFases = RolFase.objects.filter(proyecto=proyecto).order_by('nombre')
+
+    usuariosInactivos = Usuario.objects.filter(is_active=False).values_list('id', flat=True)
+    usuariosAsociados = proyecto.usuariosvinculadosproyectos_set.exclude(cod_usuario__in=usuariosInactivos)
+
+    #TODO: Insertar mensajes de exitos/fallos en el template
+    if proyecto.estado == 'ANU':
+        message = 'No se puede anular un proyecto que ya se encuentra anulado'
+        error = 1
+        return render(request, 'proyecto/workProjectLeader.html', {'user': request.user, 'proyecto': proyecto,
+                                                                       'fases': fases, 'roles': rolesFases,
+                                                                       'usuariosAsociados': usuariosAsociados,
+                                                                       'message': message, 'error': error})
+
+    elif proyecto.estado == 'FIN':
+        message = 'No se puede anular un proyecto que ya se encuentra finalizado'
+        error = 1
+        return render(request, 'proyecto/workProjectLeader.html', {'user': request.user, 'proyecto': proyecto,
+                                                                       'fases': fases, 'roles': rolesFases,
+                                                                       'usuariosAsociados': usuariosAsociados,
+                                                                       'message': message, 'error': error})
+
+    elif proyecto.estado == 'ACT':
+        message = 'No se puede anular un proyecto que se encuentra en estado ACTIVO. Favor comunicarse con el Administrador'
+        error = 1
+        return render(request, 'proyecto/workProjectLeader.html', {'user': request.user, 'proyecto': proyecto,
+                                                                       'fases': fases, 'roles': rolesFases,
+                                                                       'usuariosAsociados': usuariosAsociados,
+                                                                       'message': message, 'error': error})
+
+    else:
+        proyecto.estado = 'ANU'
+        proyecto.save()
+        error = 0
+        message = 'El proyecto ha sido anulado'
+        return render(request, 'proyecto/workProjectLeader.html', {'user': request.user, 'proyecto': proyecto,
+                                                                       'fases': fases, 'roles': rolesFases,
+                                                                       'usuariosAsociados': usuariosAsociados,
+                                                                       'message': message, 'error': error})
+
+
+@login_required()
+@lider_requerido
+def finProject(request, id_proyecto):
+    """
+    *Vista par inicar un proyecto*
+    """
+    project = Proyecto.objects.get(pk=id_proyecto)
+    #TODO: Insertar mensajes de exitos/fallos en el template
+    if project.estado == 'ANU':
+        return workProject(request, id_proyecto)
+    elif project.estado == 'PEN':
+        return workProject(request, id_proyecto)
+    elif project.estado == 'FIN':
+        return workProject(request, id_proyecto)
+    else:
+        project.estado = 'FIN'
+        #TODO: Revisar que todas las fases se encuentren en estado finalizado
+        fases = Fase.objects.filter(proyecto=id_proyecto)
+        for fase in fases:
+            if fase.estado != 'FIN':
+                #TODO: con mensaje de fallo al finalizar el proyecto, por que la fase.nombre no esta finalizada
+                return workProject(request, id_proyecto)
+
+        project.save()
+        return workProject(request, id_proyecto)
+
 

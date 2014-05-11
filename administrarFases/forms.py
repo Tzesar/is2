@@ -53,16 +53,15 @@ class ChangePhaseForm(forms2.ModelForm):
 
         class Meta:
             model = Fase
-            fields = ('nombre', 'estado', 'descripcion',)
+            fields = ('nombre', 'descripcion',)
 
     """
 
     class Meta:
         model = Fase
-        fields = ('nombre', 'estado', 'descripcion',)
+        fields = ('nombre', 'descripcion',)
         widgets = {
             'nombre': forms2.TextInput(attrs={'class': 'form-control', }),
-            'estado': forms2.Select(attrs={'class': 'form-control', }),
             'descripcion': forms2.Textarea(attrs={'class': 'form-control', }),
         }
 
