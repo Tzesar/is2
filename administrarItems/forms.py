@@ -1,5 +1,7 @@
 from django import forms
+from django.forms import ModelForm
 import floppyforms as forms2
+
 from administrarItems.models import ItemBase, campoFile, campoEntero, campoImagen, campoTextoCorto, campoTextoLargo
 from administrarTipoItem.models import TipoItem
 
@@ -73,28 +75,20 @@ class campoTextoLargoForm(forms.ModelForm):
         super(campoTextoLargoForm, self).__init__(*args, **kwargs)
 
 
-class campoFileForm(forms.ModelForm):
+class campoFileForm(ModelForm):
     """
     Este es el formulario para la creacion de campos de texto largos
     """
     class Meta:
         model = campoFile
-        fields = ('Archivo',)
-        widgets = {
-            'valor': forms2.FileInput(attrs={'class': 'form-control', })
-        }
-
-    def __init__(self, *args, **kwargs):
-        super(campoFileForm, self).__init__(*args, **kwargs)
+        fields = ('archivo',)
 
 
-class campoImagenForm(forms.ModelForm):
+class campoImagenForm(ModelForm):
     """
     Este es el formulario para la creacion de campos de texto largos
     """
     class Meta:
         model = campoImagen
-        fields = ('Imagen',)
+        fields = ('imagen',)
 
-    def __init__(self, *args, **kwargs):
-        super(campoImagenForm, self).__init__(*args, **kwargs)

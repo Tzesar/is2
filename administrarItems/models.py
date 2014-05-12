@@ -42,8 +42,8 @@ class campoEntero(models.Model):
     """
     item = models.ForeignKey(ItemBase)
     atributo = models.ForeignKey(Atributo)
-    valor = models.FloatField()
-    version = models.IntegerField()
+    valor = models.FloatField(verbose_name='Valor del dato numérico')
+    version = models.IntegerField(default=1)
 
 
 class campoTextoCorto(models.Model):
@@ -52,8 +52,8 @@ class campoTextoCorto(models.Model):
     """
     item = models.ForeignKey(ItemBase)
     atributo = models.ForeignKey(Atributo)
-    valor = models.CharField(max_length=140)
-    version = models.IntegerField()
+    valor = models.CharField(max_length=140, verbose_name='Texto')
+    version = models.IntegerField(default=1)
 
 
 class campoTextoLargo(models.Model):
@@ -62,7 +62,7 @@ class campoTextoLargo(models.Model):
     """
     item = models.ForeignKey(ItemBase)
     atributo = models.ForeignKey(Atributo)
-    valor = models.CharField(max_length=900)
+    valor = models.CharField(max_length=900, verbose_name='Texto')
     version = models.IntegerField()
 
 
@@ -72,7 +72,7 @@ class campoFile(models.Model):
     """
     item = models.ForeignKey(ItemBase)
     atributo = models.ForeignKey(TipoItem)
-    valor = models.FileField(name='Archivo', upload_to='archivos')
+    archivo = models.FileField(verbose_name='Archivo', upload_to='archivos')
     version = models.IntegerField()
 
 
@@ -82,5 +82,5 @@ class campoImagen(models.Model):
     """
     item = models.ForeignKey(ItemBase)
     atributo = models.ForeignKey(TipoItem)
-    valor = models.ImageField(name='Imagen', upload_to='archivos')
+    imagen = models.ImageField(verbose_name='Imagen', upload_to='archivos')
     version = models.IntegerField()
