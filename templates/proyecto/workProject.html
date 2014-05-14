@@ -1,24 +1,72 @@
 {% extends 'base.html' %}
 {% load staticfiles %}
 
-    {% block title %}Modificar Proyecto{% endblock %}
-    {% block errorBlock %}
-    {% endblock errorBlock %}
+    {% block title %}Proyecto: {{ proyecto.nombre }}{% endblock %}
+    {% block errorBlock %}{% endblock errorBlock %}
 
     {% block breadContent %}
         <li><a href="{% url 'autenticacion.views.main' %}">Inicio</a></li>
-        <li class="active">Nou</li>
+        <li class="active">{{ proyecto.nombre|capfirst }}</li>
     {% endblock breadContent %}
 
     {% block padTop %}{% endblock padTop %}
     {% block panelCentral %}
         <div class="panel-heading">
             <h1 class="text-info" style="display: inline-block">
-                {# Información sobre el proyecto: {{ project.nombre|capfirst }}#}
-                Aún no
+                {{ proyecto.nombre|capfirst }} - Área de Trabajo
             </h1>
         </div>
-        <div class="panel-body">
-            <h1 class="text-danger" style="display: inline-block">Sección en desarrollo <span class="glyphicon glyphicon-warning-sign"></span></h1>
+        <div class="list-group-item-info" style="padding-left: 2%; padding-top: 1%; padding-bottom: 1%">
+            <b>Descripción:</b> <i>{{ proyecto.descripcion }}</i><br>
+            <b>Estado:</b> <i> {{ proyecto.get_estado_display }} </i>
         </div>
-    {% endblock panelCentral %}>
+        {% if proyecto.estado == 'PEN' %}
+            <div class="panel-body">
+                <div class="col-sm-2 col-md-2 col-lg-2">
+                    <img class="media-object" src="{% static "waiting.jpg" %}" width="50%" height="50%" >
+
+                </div>
+                <div class="col-sm-10 col-md-10 col-lg-10">
+                    <p>
+                        <b><i>El proyecto aún no ha iniciado.</i></b>
+                        <br>Por este motivo, no se puede realizar ningún tipo de trabajo sobre el mismo.
+                        <br>
+                        <br>El inicio del mismo está estimado para: <i>{{ proyecto.fecha_inicio }}</i>
+                        <br>Para mas detalle, contacte al Líder del Proyecto: <i>{{ proyecto.lider_proyecto.get_full_name }}</i>
+                    </p>
+                </div>
+            </div>
+        {% else %}
+            <div class="panel-body">
+                {% for fase in fases %}
+                    {% if forloop.counter0|divisibleby:"3" %}
+                        <div class="row">
+                    {% endif %}
+                    <div class="col-sm-4 col-md-4 col-lg-4">
+                        <div class="panel {% if fase.estado == 'DES' %}panel-info
+                                          {% elif fase.estado == 'PEN' %}panel-warning
+                                          {% elif fase.estado == 'FIN' %}panel-success
+                                          {% else %}panel-danger{% endif %}">
+                            <div class="panel-heading">
+                                <b>Fase:</b> {{ fase.nombre|capfirst }}
+                            </div>
+                            <div class="panel-body">
+                                <i><u>Descripción</u></i>
+                                <p>{{ fase.descripcion }}</p>
+                                <i><u>Estado</u></i>
+                                <p>{{ fase.get_estado_display }}</p>
+                            </div>
+                            <div class="panel-heading">
+                                {% if fase.estado == 'DES' %}<a href="{% url 'administrarFases.views.workphase' fase.id %}" class="btn btn-success btn-sm">Gestionar Ítems</a>
+                                {% else %}<a href="#"class="btn btn-success btn-sm">Ver Ítems</a>{% endif %}
+                            </div>
+                        </div>
+                    </div>
+                    {% if forloop.last or forloop.counter|divisibleby:"3" %}
+                        </div>
+                    {% endif %}
+                {% endfor %}
+            </div>
+
+        {% endif %}
+    {% endblock panelCentral %}

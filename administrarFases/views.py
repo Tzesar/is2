@@ -10,6 +10,7 @@ from administrarFases.forms import NewPhaseForm, ChangePhaseForm
 from administrarRolesPermisos.decorators import *
 from django.db import IntegrityError
 from administrarRolesPermisos.models import PermisoFase
+from administrarItems.models import ItemBase, campoEntero, campoTextoCorto, campoTextoLargo, campoFile, campoImagen
 
 logger = logging.getLogger(__name__)
 
@@ -273,8 +274,7 @@ def importPhase(request, id_fase, id_proyecto_destino):
 
 
 #TODO: Revisar funcional pero ineficiente
-@login_required
-@lider_requerido
+
 def importMultiplePhase(request, id_fase, id_proyecto_destino):
     """
     *Vista para la importación de un tipo de ítem a otra fase*
@@ -295,3 +295,25 @@ def importMultiplePhase(request, id_fase, id_proyecto_destino):
                 ' al proyecto destino: ' + phase.proyecto.nombre)
 
     return HttpResponseRedirect('/phaselist/' + str(project.id))
+
+
+def workphase(request, id_fase):
+    """
+    *Vista para el trabajo sobre una fase de un proyecto.
+    Opción válida para usuarios asociados a un proyecto, con permisos de trabajo sobre items de la fase en cuestion*
+
+    :param request: HttpRequest necesario para visualizar el área de trabajo de los usuarios en la fase, es la solicitud de la acción.
+    :param id_fase: Identificador de la fase sobre la cual se trabaja.
+    :return: Proporciona la pagina ``workPhase.html``, página dedicada al desarrollo de la fase.
+             Vista para el desarrollo de fases
+    """
+
+    if request.method == 'GET':
+        faseTrabajo = Fase.objects.get(pk=id_fase)
+        proyectoTrabajo = faseTrabajo.proyecto
+        ti = TipoItem.objects.filter(fase=faseTrabajo)
+        itemsFase = ItemBase.objects.filter(tipoitem__in=ti)
+
+
+        return render(request, 'fase/workPhase.html', {'proyecto': proyectoTrabajo, 'fase': faseTrabajo,
+                                                       'listaItems': itemsFase, })

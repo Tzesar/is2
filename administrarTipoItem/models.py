@@ -34,7 +34,8 @@ class Atributo(models.Model):
     """
 
     opciones_tipo = (
-        ('TXT', 'Texto'),
+        ('TXT', 'Texto Largo'),
+        ('STR', 'Texto Corto'),
         ('NUM', 'Numero'),
         ('FIL', 'Archivo Externo'),
         ('IMG', 'Imagen'), )

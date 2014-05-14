@@ -206,9 +206,9 @@ def workProject(request, id_proyecto):
     if request.method == 'GET':
         proyecto = Proyecto.objects.get(id=id_proyecto)
         usuario = request.user
+        fases = proyecto.fase_set.all().order_by('id')
 
         if usuario == proyecto.lider_proyecto:
-            fases = proyecto.fase_set.all().order_by('id')
             rolesFases = RolFase.objects.filter(proyecto=proyecto).order_by('nombre')
 
             usuariosInactivos = Usuario.objects.filter(is_active=False).values_list('id', flat=True)
@@ -217,7 +217,7 @@ def workProject(request, id_proyecto):
                                                                        'fases': fases, 'roles': rolesFases,
                                                                        'usuariosAsociados': usuariosAsociados})
         else:
-            return render(request, 'proyecto/workProject.html', {'user': request.user, })
+            return render(request, 'proyecto/workProject.html', {'user': request.user, 'proyecto': proyecto, 'fases': fases, })
 
     # Esto sucede cuando se modifica el estado de un usuario dentro del proyecto
     #   cuando ajax envia una solicitud con el metodo POST

@@ -233,8 +233,8 @@ def changeAtribute(request, id_atribute):
         if form.is_valid():
             form.save()
 
-            logger.info('El usuario '+request.user.username+' ha modificado el atributo (ATI-' + atribute.id +') ' +
-                        atribute.nombre + ' perteneciente al tipo de ítem: ' + itemtype.nombre )
+            # logger.info('El usuario '+request.user.username+' ha modificado el atributo (ATI-' + atribute.id +') ' +
+            #             atribute.nombre + ' perteneciente al tipo de ítem: ' + itemtype.nombre )
 
             return HttpResponseRedirect('/changeitemtype/' + str(itemtype.id))
     else:

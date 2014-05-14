@@ -46,16 +46,8 @@
                             <input value="{{ project.lider_proyecto.id }}" name="lider_proyecto" id="id_lider_proyecto"
                                    class="form-control" type="hidden"/>
                         </div>
+
                         <div class="form-group" style="margin-top: 15%">
-                            <label for="id_estado">Estado</label>
-                            <select id="id_estado" class="form-control" name="estado">
-                                {% for choice in form.estado.field.widget.choices %}
-                                    <option value="{{ choice.0 }}" {% if choice.0 == usuario.estado %}
-                                            selected="selected" {% endif %}>{{ choice.1 }}</option>
-                                {% endfor %}
-                            </select>
-                        </div>
-                        <div class="form-group">
                             <label for="id_descripcion">Descripcion</label>
                             <textarea value="{{ project.descripcion }}" name="descripcion" id="id_descripcion"
                                       class="form-control" placeholder="Breve descripción del proyecto" rows="10">{{ project.descripcion }}</textarea>
