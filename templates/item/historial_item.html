@@ -1,0 +1,90 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+{% load floppyforms %}
+
+    {% block title %}Historial de Items{% endblock %}
+
+    {% block errorBlock %}
+        {% if exito == 0 %}
+            <div class="container-fluid">
+                <div class="alert alert-success alert-dismissable">
+                    <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+                    {{ message }}
+                    Versión Actual: {{ version.id }}
+                </div>
+            </div>
+        {% elif exito == 1 %}
+            <div class="container-fluid">
+                <div class="alert alert-danger alert-dismissable">
+                    <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+                    {{ message }}
+                </div>
+            </div>
+        {% endif %}
+    {% endblock errorBlock %}
+
+    {% block breadContent %}
+        <li><a href="{% url 'autenticacion.views.main' %}">Inicio</a></li>
+        <li><a href="{% url 'administrarProyectos.views.workProject' project.id %}">{{ proyecto.nombre }}</a></li>
+        <li><a href="#">{{ fase.nombre }}</a></li>
+        <li class="active">Item: {{ item.nombre }}</li>
+    {% endblock breadContent %}
+
+    {% block padTop %}{% endblock padTop %}
+    {% block mainBody %}
+    <div class="container col-lg-offset-1 col-lg-10 col-xs-12" style="padding-top: 2%">
+        <div class="panel panel-default" style="padding-top: 2%; padding-left: 2%; padding-right: 2%">
+            <div class="panel panel-default">
+                <!-- Default panel contents -->
+                <div class="panel-heading"><h1>Versions del Item {{ item.nombre }}</h1></div>
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <td>Nombre</td>
+                            <td>Tipo</td>
+                            <td>Descripcion</td>
+                            <td>Fecha</td>
+                            <td>Id en la tabla de versiones</td>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for versiones in lista_versiones %}
+                            <tr>
+                                <td>{{ versiones.field_dict.Nombre }}</td>
+                                <td>{{ versiones.field_dict.Tipo }}</td>
+                                <td>{{ versiones.field_dict.Descripcion}}</td>
+                                <td>{{ versiones.field_dict.Fecha }}</td>
+                                <td>{{ versiones.id }}</td>
+                                <td>
+                                    <div class="btn-group pull-right">
+                                        <a href="{% url "administrarFases.views.reversion_ItemBase"  item.id fase.id version.id %}" type="button" class="btn btn-danger">Recuperar esta version</a>
+                                    </div>
+                                 </td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            <div class="btn-group btn-group-justified">
+                <div class="col-lg-4 col-md-4 col-sm-4" >
+                    <div class="btn-group" style="padding-bottom: 5%">
+                        <a href="{% url 'administrarProyectos.views.workProject' project.id %}" class="btn btn-lg btn-success" type="submit">Finalizar</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+
+<table class="table table-striped">
+        <thead>
+
+        </thead>
+        <tbody>
+
+        </tbody>
+    </table>
+
+
+

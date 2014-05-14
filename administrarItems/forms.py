@@ -2,7 +2,7 @@ from django import forms
 from django.forms import ModelForm
 import floppyforms as forms2
 
-from administrarItems.models import ItemBase, campoFile, campoEntero, campoImagen, campoTextoCorto, campoTextoLargo
+from administrarItems.models import ItemBase, CampoFile, CampoNumero, CampoImagen, CampoTextoCorto, CampoTextoLargo
 from administrarTipoItem.models import TipoItem
 
 
@@ -16,7 +16,6 @@ class itemForm(forms.ModelForm):
     class Meta:
         model = ItemBase
         fields = ('nombre', 'complejidad', 'tiempo', 'costo', 'descripcion', 'tipoitem',)
-        exclude = ( 'itemrelacion', )
         widgets = {
             'nombre': forms2.TextInput(attrs={'class': 'form-control', }),
             'complejidad': forms2.NumberInput(attrs={'class': 'form-control'}, ),
@@ -35,7 +34,7 @@ class campoEnteroForm(forms.ModelForm):
     Este es el formulario para la creacion de campos enteros
     """
     class Meta:
-        model = campoEntero
+        model = CampoNumero
         fields = ('valor',)
         widgets = {
             'valor': forms2.NumberInput(attrs={'class': 'form-control', })
@@ -50,7 +49,7 @@ class campoTextoCortoForm(forms.ModelForm):
     Este es el formulario para la creacion de campos de texto cortos
     """
     class Meta:
-        model = campoTextoCorto
+        model = CampoTextoCorto
         fields = ('valor',)
         widgets = {
             'valor': forms2.TextInput(attrs={'class': 'form-control', })
@@ -65,7 +64,7 @@ class campoTextoLargoForm(forms.ModelForm):
     Este es el formulario para la creacion de campos de texto largos
     """
     class Meta:
-        model = campoTextoLargo
+        model = CampoTextoLargo
         fields = ('valor',)
         widgets = {
             'valor': forms2.TextInput(attrs={'class': 'form-control', })
@@ -75,20 +74,20 @@ class campoTextoLargoForm(forms.ModelForm):
         super(campoTextoLargoForm, self).__init__(*args, **kwargs)
 
 
-class campoFileForm(ModelForm):
+class campoFileForm(forms.ModelForm):
     """
     Este es el formulario para la creacion de campos de texto largos
     """
     class Meta:
-        model = campoFile
+        model = CampoFile
         fields = ('archivo',)
 
+    def __init__(self, *args, **kwargs):
+        super(campoFileForm, self).__init__(*args, **kwargs)
+        self.fields['archivo'].required = False
 
-class campoImagenForm(ModelForm):
-    """
-    Este es el formulario para la creacion de campos de texto largos
-    """
+
+class campoImagenForm(forms.ModelForm):
     class Meta:
-        model = campoImagen
+        model = CampoImagen
         fields = ('imagen',)
-
