@@ -18,7 +18,8 @@ from administrarRolesPermisos.views import createRole, roleList, changeRole, del
     viewSetUserProject, changeProjectLeader, startProject, cancelProject
 from administrarFases.views import changePhase, createPhase, phaseList, deletePhase, importPhase, importMultiplePhase
 from administrarRolesPermisos.views import createRole, roleList, changeRole, deleteRole, asignRole
-from administrarItems.views import createItem, changeItem
+from administrarItems.views import createItem, changeItem, completarEnteros, completarArchivo, \
+    completarImagen, completarTexto
 
 admin.autodiscover()
 
@@ -79,5 +80,8 @@ urlpatterns = patterns('',
 
                        url(r'^createitem/(?P<id_fase>\d+)$', createItem),
                        url(r'^changeitem/(?P<id_item>\d+)$', changeItem),
-
+                       url(r'^completarenteros/(?P<id_atributo>\d+)/(?P<id_item>\d+)$', completarEnteros),
+                       url(r'^completatexto/(?P<id_atributo>\d+)/(?P<id_item>\d+)$', completarTexto),
+                       url(r'^completararchivo/(?P<id_atributo>\d+)/(?P<id_item>\d+)$', completarArchivo),
+                       url(r'^completarimagen/(?P<id_atributo>\d+)/(?P<id_item>\d+)$', completarImagen),
                        )
