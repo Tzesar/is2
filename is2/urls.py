@@ -13,7 +13,8 @@ from administrarUsuarios.views import createUser, changeUser, userList, userList
 from zar.views import about, contact
 from administrarProyectos.views import createProject, changeProject, projectList, workProject, setUserToProject,\
     viewSetUserProject, changeProjectLeader, startProject, cancelProject
-from administrarFases.views import changePhase, createPhase, phaseList, deletePhase, importPhase, importMultiplePhase
+from administrarFases.views import changePhase, createPhase, phaseList, deletePhase, importPhase, importMultiplePhase,\
+    confirmar_eliminacion_fase, workphase
 from administrarRolesPermisos.views import createRole, roleList, changeRole, deleteRole, asignRole
 from administrarItems.views import createItem, changeItem, completarEnteros, completarArchivo, \
     completarImagen, completarTexto
@@ -49,8 +50,10 @@ urlpatterns = patterns('',
                        url(r'^changephase/(?P<id_fase>\d+)$', changePhase),
                        url(r'^phaselist/(?P<id_proyecto>\d+)$', phaseList),
                        url(r'^importmultiplephase/(?P<id_fase>\d+)/(?P<id_proyecto_destino>\d+)$', importMultiplePhase),
+                       url(r'^deletephase_confirm/(?P<id_fase>\d+)$', confirmar_eliminacion_fase),
                        url(r'^deletephase/(?P<id_fase>\d+)$', deletePhase),
                        url(r'^createrole/(?P<id_proyecto>\d+)$', createRole),
+                       url(r'^workphase/(?P<id_fase>\d+)$', workphase),
 
                        url(r'^rolelist/(?P<id_proyecto>\d+)$', roleList, name="rolelist"),
                        url(r'^changerole/(?P<id_proyecto>\d+)/(?P<id_rol>\d+)$', changeRole, name="rolelist"),

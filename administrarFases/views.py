@@ -4,11 +4,13 @@ import logging
 from django.contrib.auth.decorators import login_required
 from django.template import RequestContext
 from django.shortcuts import render
+from django.utils.html import format_html
 
 from administrarFases.forms import NewPhaseForm, ChangePhaseForm
 from administrarRolesPermisos.decorators import *
 from django.db import IntegrityError
 from administrarRolesPermisos.models import PermisoFase
+from administrarItems.models import ItemBase, campoEntero, campoTextoCorto, campoTextoLargo, campoFile, campoImagen
 
 logger = logging.getLogger(__name__)
 
@@ -35,11 +37,15 @@ def createPhase(request, id_proyecto):
             fase = form.save(commit=False)
             fase.proyecto = project
 
+
             try:
                 fase.save()
-            except IntegrityError as e:
-                return render(request, "keyduplicate_fase.html", {'project': project, "message": e.message },
-                  context_instance=RequestContext(request) )
+            except IntegrityError:
+                err = format_html('<b><i>Datos Erróneos:</b></i><br>'
+                                  '<i>El nombre especificado de fase ya existe. Verifiquelo y vuelva a intentarlo</i>')
+                return render(request, "fase/createphase.html", {'form': form, 'user': request.user,
+                                                                 'proyecto': project, "error": err },
+                                                                  context_instance=RequestContext(request) )
 
             logger.info('El usuario ' + request.user.username + ' ha creado la fase ' +
                         form["nombre"].value() + ' dentro del proyecto ' + project.nombre)
@@ -49,7 +55,8 @@ def createPhase(request, id_proyecto):
             return HttpResponseRedirect('/workproject/'+str(project.id))
     else:
         form = NewPhaseForm()
-    return render(request, 'fase/createphase.html', {'form': form, 'proyecto': project, 'user': request.user,})
+    return render(request, 'fase/createphase.html', {'form': form, 'proyecto': project, 'user': request.user,
+                                                     'error': {} })
 
 
 def generarPermisosFase(project, fase):
@@ -158,8 +165,23 @@ def changePhase(request, id_fase):
                               context_instance=RequestContext(request))
 
 
-@login_required
+@login_required()
 @lider_requerido2
+def confirmar_eliminacion_fase(request, id_fase):
+    """
+    *Vista para la confirmar la eliminación definitiva de una fase del proyecto.
+    Opción válida para usuarios con los roles correspondientes.*
+
+    :param request: HttpRequest - Solicitud de eliminación.
+    :param id_fase: Identificador de la fase dentro del sistema la cual se desea eliminar.
+    :return: Elimina la fase especifica  y luego regresa al menu de fases.
+    """
+    faseAEliminar = Fase.objects.get(pk=id_fase)
+    tiposItem = TipoItem.objects.filter(fase=faseAEliminar)
+    return render(request, 'fase/confirmar_eliminacion.html', {'fase': faseAEliminar,
+                                                               'tipos': tiposItem},)
+
+@login_required
 def deletePhase(request, id_fase):
     """
     *Vista para la eliminación de una fase dentro del sistema.
@@ -252,8 +274,7 @@ def importPhase(request, id_fase, id_proyecto_destino):
 
 
 #TODO: Revisar funcional pero ineficiente
-@login_required
-@lider_requerido
+
 def importMultiplePhase(request, id_fase, id_proyecto_destino):
     """
     *Vista para la importación de un tipo de ítem a otra fase*
@@ -274,3 +295,25 @@ def importMultiplePhase(request, id_fase, id_proyecto_destino):
                 ' al proyecto destino: ' + phase.proyecto.nombre)
 
     return HttpResponseRedirect('/phaselist/' + str(project.id))
+
+
+def workphase(request, id_fase):
+    """
+    *Vista para el trabajo sobre una fase de un proyecto.
+    Opción válida para usuarios asociados a un proyecto, con permisos de trabajo sobre items de la fase en cuestion*
+
+    :param request: HttpRequest necesario para visualizar el área de trabajo de los usuarios en la fase, es la solicitud de la acción.
+    :param id_fase: Identificador de la fase sobre la cual se trabaja.
+    :return: Proporciona la pagina ``workPhase.html``, página dedicada al desarrollo de la fase.
+             Vista para el desarrollo de fases
+    """
+
+    if request.method == 'GET':
+        faseTrabajo = Fase.objects.get(pk=id_fase)
+        proyectoTrabajo = faseTrabajo.proyecto
+        ti = TipoItem.objects.filter(fase=faseTrabajo)
+        itemsFase = ItemBase.objects.filter(tipoitem__in=ti)
+
+
+        return render(request, 'fase/workPhase.html', {'proyecto': proyectoTrabajo, 'fase': faseTrabajo,
+                                                       'listaItems': itemsFase, })

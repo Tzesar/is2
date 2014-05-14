@@ -1,0 +1,47 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+
+{% block title %}ATENCION!{% endblock %}
+
+{% block navbar %}{% endblock navbar %}
+{% block breadcrumbs %}{% endblock breadcrumbs %}
+
+{% block panelCentral %} {% block padTop %}{% endblock padTop %}
+
+
+    <div class="panel-heading">
+        <h1 class="text-info" style="display: inline-block">ATENCION!</h1>
+    </div>
+
+    <div class="panel-body">
+
+
+
+        <div class="col-sm-9">
+            <br>
+            <p>
+                Esta por eliminar la fase <b><i>{{ fase.nombre|capfirst }}</i></b>
+                del proyecto <b><i>{{ fase.proyecto.nombre|capfirst }}</i></b>.
+                {% if tipos %}
+                    La misma contiene tipos de ítem asociados:
+                    <ul>
+                        {% for t in tipos %}
+                            <li>{{ t.nombre|capfirst }}</li>
+                        {% endfor %}
+                    </ul>
+                {% endif %}
+                Tanto estos, como sus atributos serán eliminados en le proceso.
+            </p>
+            <p>Esta acción no podrá revertirse. Está seguro de querer completarla?</p>
+
+            <a href="{% url "administrarProyectos.views.workProject" fase.proyecto.id %}" class="btn btn-group-sm btn-warning ">Cancelar</a>
+            <a href="{% url "administrarFases.views.deletePhase" fase.id %}" class="btn btn-group-sm btn-danger ">Eliminar</a>
+        </div>
+
+        <div class="col-sm-3">
+            <img src="{% static "atencion.png" %}" width=100% height=100% >
+        </div>
+
+    </div>
+
+{% endblock panelCentral %}

@@ -57,6 +57,7 @@
             </nav>
             {% block mainBody %}
                 {% block errorBlock %}{% endblock errorBlock %}
+                {% block successBlock %}{% endblock successBlock %}
                 <div class="container col-lg-offset-1 col-lg-10 col-xs-12" style="padding-top: 2%; padding-bottom: inherit">
                 {# Utilizar el bloque padTop dejandolo en blanco para arreglar el padding superior del panel #}
                     <div class="panel panel-default" {% block padTop %}style="padding-top: 2%; padding-bottom: 2%"{% endblock padTop %}>
