@@ -29,6 +29,7 @@ class itemForm(forms.ModelForm):
         super(itemForm, self).__init__(*args, **kwargs)
         self.fields['tipoitem'].queryset = TipoItem.objects.all()
 
+
 class campoEnteroForm(forms.ModelForm):
     """
     Este es el formulario para la creacion de campos enteros

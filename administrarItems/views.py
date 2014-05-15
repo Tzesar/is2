@@ -36,10 +36,9 @@ def createItem(request, id_fase):
             item.fecha_modificacion = timezone.now()
             item.usuario = usuario
             item.usuario_modificacion = usuario
-
             item.save()
 
-            return HttpResponseRedirect('/workproject/' + str(proyecto.id))
+            return HttpResponseRedirect('/workphase/' + str(fase.id))
     else:
         form = itemForm()
         form.fields['tipoitem'].queryset = TipoItem.objects.filter(fase=id_fase)
@@ -66,7 +65,7 @@ def changeItem(request, id_item):
     tipoItem = item.tipoitem
     phase = tipoItem.fase
     project = phase.proyecto
-    numero = CampoNumero.objects.get(item=item)
+
     if request.method == 'POST':
         form = itemForm(request.POST, instance=item)
         form.fields['tipoitem'].queryset = TipoItem.objects.filter(fase=phase.id)
@@ -74,11 +73,10 @@ def changeItem(request, id_item):
             item = form.save(commit=False)
             item.fecha_modificacion = timezone.now()
             item.usuario_modificacion = request.user
+            item.version = reversion.get_unique_for_object(item).__len__() + 1
             item.save()
 
-            reversion.create_revision(numero)
-
-            return HttpResponseRedirect('/workproject/' + str(project.id))
+            return HttpResponseRedirect('/workphase/' + str(phase.id))
     else:
         form = itemForm(instance=item)
         form.fields['tipoitem'].queryset = TipoItem.objects.filter(fase=phase.id)
@@ -201,7 +199,7 @@ def completarImagen(request, id_atributo, id_item):
                                                     context_instance=RequestContext(request))
 
 
-def historial_ItemBase(request, id_fase, id_item):
+def historialItemBase(request, id_fase, id_item):
     """
     Vista para el historial de versiones
     """
@@ -212,12 +210,12 @@ def historial_ItemBase(request, id_fase, id_item):
 
     item = ItemBase.objects.get(pk=id_item)
     lista_versiones = reversion.get_unique_for_object(item)
-    return render('item/historial_item.html', {'lista_versiones': lista_versiones, 'item': item,
+    return render_to_response('item/historialitem.html', {'lista_versiones': lista_versiones, 'item': item,
                                               'proyecto': proyecto, 'fase': fase, 'user': usuario},
                                                context_instance=RequestContext(request))
 
 
-def reversion_ItemBase(request, id_item, id_fase, id_version):
+def reversionItemBase(request, id_item, id_fase, id_version):
     """
     Vista para la reversión de ítem
     """
@@ -227,35 +225,66 @@ def reversion_ItemBase(request, id_item, id_fase, id_version):
     item = ItemBase.objects.get(pk=id_item)
     lista_version = reversion.get_unique_for_object(item)
     id_new_version = int('0'+id_version)
-    lista_item = ItemBase.objects.filter(fase=fase)
-
 
     for version in lista_version:
         if version.id == id_new_version:
             version.revert()
-            return render('item/historial_item.html', {'item': item, 'exito': 0, 'message': 'La version se ha recuperado exitosamente',
-                                              'proyecto': proyecto, 'fase': fase, 'user': usuario, 'version': version},
-                                               context_instance=RequestContext(request))
+
+    return HttpResponseRedirect('/workphase/' + str(fase.id))
 
 
-def relacionar_item(request, id_proyecto, id_item_hijo, id_item_padre, id_fase_padre, id_fase_hijo):
+def relacionarItemBase(request, id_item_hijo, id_item_padre, id_fase):
     """
     Vista para relaciones los items
     """
-    usuario = request.user
-    #TODO: añadir la numeracion a las fases/ solo listar items de la fase actual y la fase inmediante anterior con estado ELB
+    fase = Fase.objects.get(pk=id_fase)
     item_hijo = ItemBase.objects.get(pk=id_item_hijo)
     item_padre = ItemBase.objects.get(pk=id_item_padre)
-    fase_padre = Fase.objects.get(pk=id_fase_padre)
-    fase_hijo = Fase.objects.get(pk=id_fase_hijo)
-    ItemRelacion.objects.get(itemHijo=item_hijo)
+    ti = TipoItem.objects.filter(fase=fase)
+    itemsFase = ItemBase.objects.filter(tipoitem__in=ti).order_by('fecha_creacion')
 
-    #TODO: Check si funciona
-    ItemRelacion.save(item_hijo, item_padre)
 
-  # ItemRelacion.itemHijo = item_hijo
-  # ItemRelacion.itemPadre = item_padre
-  #
-  #  ItemRelacion.estado = 'ACT'
+    try:
+        ItemRelacion.objects.get(itemHijo=item_hijo)
+    except:
+        relacion = ItemRelacion()
+        relacion.itemHijo = item_hijo
+        relacion.itemPadre = item_padre
+        relacion.save()
+        mensaje = 'Exito al crear la relacion'
+        duplicado = 0
+        return render(request, 'fase/workPhase.html', {'mensaje':mensaje, 'user':request.user, 'item':item_hijo, 'duplicado': duplicado,
+                                                    'fase':fase, 'proyecto':fase.proyecto, 'listaItems': itemsFase},
+                                                    context_instance=RequestContext(request))
 
-        #TODO: Regresar a workphase con un mensaje de exito
+    mensaje = 'Ud ya tiene un Padre.'
+    duplicado = 1
+    return render(request, 'fase/workPhase.html', {'mensaje':mensaje, 'user':request.user, 'item':item_hijo, 'duplicado': duplicado,
+                                                       'fase':fase, 'proyecto':fase.proyecto, 'listaItems': itemsFase},
+                                                        context_instance=RequestContext(request))
+
+def relacionarItemBaseView(request, id_fase_actual, id_item_actual):
+    """
+    Vista para relacionar items
+    """
+    item = ItemBase.objects.get(pk=id_item_actual)
+    tipoitem = item.tipoitem
+    fase_actual = Fase.objects.get(pk=id_fase_actual)
+    proyecto = fase_actual.proyecto
+    item_hijos = ItemRelacion.objects.filter(itemPadre=id_item_actual).values_list('itemHijo', flat=True)
+    item_lista_fase_actual = ItemBase.objects.filter(tipoitem=tipoitem).exclude(pk=id_item_actual).exclude(pk__in=item_hijos)
+
+    if fase_actual.nro_orden == 1:
+        return render(request, 'item/relacionaritemvista.html', {'item': item, 'fase': fase_actual, 'proyecto': proyecto,
+                      'itemlista': item_lista_fase_actual, 'user': request.user}, context_instance=RequestContext(request))
+
+    else:
+        orden_anterior = fase_actual.nro_orden - 1
+        fase_anterior = Fase.objects.get(nro_orden=orden_anterior)
+        tipoitem_anterior = TipoItem.objects.get(fase=fase_anterior)
+        item_lista_fase_anterior = ItemBase.objects.filter(tipoitem=tipoitem_anterior, estado='ELB')
+        return render(request, 'item/relacionaritemvista.html', {'item': item, 'fase': fase_actual, 'proyecto': proyecto,
+                      'itemlistaanterior': item_lista_fase_anterior, 'fase_anterior': fase_anterior,
+                      'itemlista': item_lista_fase_actual, 'user': request.user}, context_instance=RequestContext(request))
+
+

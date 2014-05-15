@@ -1,0 +1,35 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+{% load floppyforms %}
+
+    {% block title %}Calculo Impacto{% endblock %}
+
+    {% block css %}
+        <style>
+            img {width: 1000px ;}
+        </style>
+{% endblock %}
+
+    {% block breadContent %}
+        <li><a href="{% url 'autenticacion.views.main' %}">Inicio</a></li>
+        <li><a href="{% url 'administrarProyectos.views.workProject' proyecto.id %}">{{ proyecto.nombre }}</a></li>
+        <li><a href="{% url 'administrarFases.views.workphase' fase.id %}">{{ fase.nombre }}</a></li>
+        <li class="active">Fase: {{ phase.nombre }}</li>
+    {% endblock breadContent %}
+
+    {% block padTop %}{% endblock padTop %}
+    {% block panelCentral %}
+        <div class="panel-heading">
+            <h1 class="text-info" style="display: inline-block">Calculo de Impacto: {{ item.nombre }}</h1>
+        </div>
+        <div class="panel-body">
+            <div class="col-lg-5 col-md-5 col-sm-5"> {% csrf_token %}
+                <p> Costo = {{ costo }}</p>
+                <p>Tiempo= {{ tiempo }}</p>
+                <h3>Grafo de Relaciones</h3>
+                #TODO: Hacer que salga la imagen
+                   <img src=' {{ direccion }}.png '
+
+            </div>
+        </div>
+    {% endblock panelCentral %}>>

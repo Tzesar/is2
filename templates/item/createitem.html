@@ -18,7 +18,7 @@
     {% block breadContent %}
         <li><a href="{% url 'autenticacion.views.main' %}">Inicio</a></li>
         <li><a href="{% url 'administrarProyectos.views.workProject' proyecto.id %}">{{ proyecto.nombre }}</a></li>
-        <li><a href="#">WorkPhase</a> </li>
+        <li><a href="{% url 'administrarFases.views.workphase' fase.id %}">{{ fase.nombre }}</a> </li>
         <li class="active">Crear Item</li>
     {% endblock breadContent %}
 
@@ -34,7 +34,7 @@
                     {% form form using "formsLayouts/div.html" %}
                     <div class="btn-group btn-group-justified">
                         <div class="btn-group">
-                            <a href="#" " class="btn btn-lg btn-warning" type="submit">Cancelar</a>
+                            <a href="{% url 'administrarFases.views.workphase' fase.id %}" class="btn btn-lg btn-warning" type="submit">Cancelar</a>
                         </div>
                         <div class="btn-group">
                             <button class="btn btn-lg btn-success btn-block" type="submit">Crear Item</button>

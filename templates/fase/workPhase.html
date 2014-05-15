@@ -2,7 +2,23 @@
 {% load staticfiles %}
 
     {% block title %}Fase: {{ fase.nombre }}{% endblock %}
-    {% block errorBlock %}{% endblock errorBlock %}
+    {% block errorBlock %}
+        {% if duplicado == 0 %}
+            <div class="container-fluid">
+                <div class="alert alert-success alert-dismissable">
+                    <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+                    {{ mensaje }}
+                </div>
+            </div>
+        {% elif duplicado == 1 %}
+            <div class="container-fluid">
+                <div class="alert alert-warning alert-dismissable">
+                    <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+                    {{ mensaje }}
+                </div>
+            </div>
+        {% endif %}
+    {% endblock errorBlock %}
 
     {% block breadContent %}
         <li><a href="{% url 'autenticacion.views.main' %}">Inicio</a></li>
@@ -31,7 +47,7 @@
                 {% for item in listaItems %}
                     {% if forloop.counter0|divisibleby:"3" %}<div class="row">{% endif %}
                     <div class="col-lg-4 col-md-4 col-sm-4">
-                        <div class="panel {% if item.estado == '' %}panel-default">
+                        <div class="panel panel-default">
                             <div class="panel-heading">
                                 <a href="{% url 'administrarItems.views.changeItem' item.id %}">
                                     {{ item.nombre|capfirst }}
@@ -44,13 +60,13 @@
                                     <b>Informaicón adicional</b><br>
                                     <b> + Creado por:</b> <i>{{ item.usuario.username }}</i>, {{ item.fecha_creacion }}
                                     <br><b> + Última modif.:</b> {{ item.fecha_modificacion }}, por <i>{{ item.usuario_modificacion.username }}</i>
-                                    <br><b> + Versión actual:</b> version
+                                    <br><b> + Versión actual:</b> {{ item.version }}
                                     </font></p>
                             </div>
                             <div class="panel-heading">
-                                <a href="#" class="btn btn-xs btn-success">Ir al ítem</a>
-                                <a href="#" class="btn btn-xs btn-warning">historial de cambios</a>
-                                <a href="#" class="btn btn-xs btn-danger">dar de baja</a>
+                                <a href="{% url 'administrarItems.views.changeItem' item.id %}" class="btn btn-xs btn-success">Ir al ítem</a>
+                                <a href="{% url 'administrarItems.views.historialItemBase' fase.id item.id %}" class="btn btn-xs btn-warning">Historial de Versiones</a>
+                                <a href="#" class="btn btn-xs btn-danger">Bar de Baja</a>
                             </div>
 
                         </div>

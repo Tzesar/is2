@@ -1,0 +1,71 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+
+{% block title %}Relacionar Item {% endblock %}
+{% block pageName %}Relacionar Item{% endblock %}
+
+    {% block errorBlock %}  {% endblock errorBlock %}
+
+{% block breadContent %}
+    <li><a href="{% url 'autenticacion.views.main' %}">Inicio</a></li>
+    <li><a href="{% url 'administrarProyectos.views.workProject' proyecto.id %}">{{ proyecto.nombre }}</a></li>
+    <li><a href="{% url 'administrarFases.views.workphase' fase.id %}">{{ fase.nombre }}</a></li>
+    <li class="active">{{ item.nombre }}</li>
+{% endblock breadContent %}
+
+{% block mainBody %}
+    <div class="container col-lg-offset-1 col-lg-10 col-xs-12" style="padding-top: 2%">
+        <div class="panel panel-default" style="padding-top: 2%; padding-left: 2%; padding-right: 2%">
+            <div class="panel panel-default">
+                <!-- Default panel contents -->
+                <div class="panel-heading"><h1>Relacionar Items</h1></div>
+                <table class="table" >
+                    <thead>
+                        <tr>
+                            <th> Fase Actual: {{ fase.nombre }}</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for itemsrelacion in itemlista %}
+                            <tr>
+                                <td>{{ itemsrelacion.nombre }}</td>
+                                <td>
+                                    <div class="btn-group pull-right">
+                                    <a href="{% url 'administrarItems.views.relacionarItemBase' item.id itemsrelacion.id fase.id  %}" class="btn btn-info">Relacionar</a> </div>
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+                {% if fase.nro_orden != 1 %}
+                    <table class="table" >
+                       <thead>
+                           <tr>
+                                <th>Fase Anteior: {{ fase_anterior.nombre }}</th>
+                            </tr>
+                       </thead>
+                       <tbody>
+                           {% for lista_item in itemlistaanterior %}
+                               <tr>
+                                   <td>{{ lista_item.nombre }}</td>
+                                   <td>
+                                       <div class="btn-group pull-right">
+                                       <a href="{% url 'administrarItems.views.relacionarItemBase' item.id lista_item.id fase.id  %}" class="btn btn-info">Relacionar</a> </div>
+                                   </td>
+                               </tr>
+                           {% endfor %}
+                       </tbody>
+                    </table>
+                {% endif %}
+
+            </div>
+            <div class="btn-group btn-group-justified">
+                <div class="col-lg-4 col-md-4 col-sm-4" >
+                    <div class="btn-group" style="padding-bottom: 5%">
+                        <a href="{% url 'administrarFases.views.workphase' fase.id %}" class="btn btn-lg btn-success" type="submit">Finalizar</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

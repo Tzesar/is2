@@ -5,12 +5,12 @@ from django.contrib.auth.decorators import login_required
 from django.template import RequestContext
 from django.shortcuts import render
 from django.utils.html import format_html
+from django.db import IntegrityError
 
 from administrarFases.forms import NewPhaseForm, ChangePhaseForm
 from administrarRolesPermisos.decorators import *
-from django.db import IntegrityError
 from administrarRolesPermisos.models import PermisoFase
-from administrarItems.models import ItemBase, campoEntero, campoTextoCorto, campoTextoLargo, campoFile, campoImagen
+from administrarItems.models import ItemBase
 
 logger = logging.getLogger(__name__)
 
@@ -36,7 +36,11 @@ def createPhase(request, id_proyecto):
         if form.is_valid():
             fase = form.save(commit=False)
             fase.proyecto = project
-
+            fasesProyecto = Fase.objects.filter(proyecto=project)
+            if fasesProyecto:
+                fase.nro_orden = fasesProyecto.count() + 1
+            else:
+                fase.nro_orden = 1
 
             try:
                 fase.save()
@@ -312,8 +316,7 @@ def workphase(request, id_fase):
         faseTrabajo = Fase.objects.get(pk=id_fase)
         proyectoTrabajo = faseTrabajo.proyecto
         ti = TipoItem.objects.filter(fase=faseTrabajo)
-        itemsFase = ItemBase.objects.filter(tipoitem__in=ti)
-
+        itemsFase = ItemBase.objects.filter(tipoitem__in=ti).order_by('fecha_creacion')
 
         return render(request, 'fase/workPhase.html', {'proyecto': proyectoTrabajo, 'fase': faseTrabajo,
                                                        'listaItems': itemsFase, })

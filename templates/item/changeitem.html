@@ -39,6 +39,9 @@
                         <div class="btn-group">
                             <button class="btn btn-lg btn-success btn-lg" type="submit">Guardar cambios</button>
                         </div>
+                        <div class="btn-group">
+                            <a href="{% url 'administrarLineaBase.views.generarCalculoImpacto' item.id %}" class="btn btn-lg btn-info">Impacto</a>
+                        </div>
                     </div>
                 </form>
             </div>

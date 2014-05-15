@@ -5,6 +5,7 @@ Descripcion de las diferentes URLs utilizadas en el proyecto ZAPpm
 from django.conf.urls import patterns, url
 from django.contrib import admin
 from django.contrib.auth.views import logout_then_login
+from administrarLineaBase.views import generarCalculoImpacto
 
 from administrarTipoItem.views import createItemType, deleteItemType, itemTypeList, changeItemType, changeAtribute,\
     createAtribute, deleteAtribute, importItemType
@@ -13,11 +14,12 @@ from administrarUsuarios.views import createUser, changeUser, userList, userList
 from zar.views import about, contact
 from administrarProyectos.views import createProject, changeProject, projectList, workProject, setUserToProject,\
     viewSetUserProject, changeProjectLeader, startProject, cancelProject
-from administrarFases.views import changePhase, createPhase, phaseList, deletePhase, importPhase, importMultiplePhase,\
+from administrarFases.views import changePhase, createPhase, phaseList, deletePhase, importMultiplePhase,\
     confirmar_eliminacion_fase, workphase
 from administrarRolesPermisos.views import createRole, roleList, changeRole, deleteRole, asignRole
 from administrarItems.views import createItem, changeItem, completarEnteros, completarArchivo, \
-    completarImagen, completarTexto
+    completarImagen, completarTexto, historialItemBase, relacionarItemBaseView, reversionItemBase, relacionarItemBase
+
 
 admin.autodiscover()
 
@@ -83,4 +85,10 @@ urlpatterns = patterns('',
                        url(r'^completatexto/(?P<id_atributo>\d+)/(?P<id_item>\d+)$', completarTexto),
                        url(r'^completararchivo/(?P<id_atributo>\d+)/(?P<id_item>\d+)$', completarArchivo),
                        url(r'^completarimagen/(?P<id_atributo>\d+)/(?P<id_item>\d+)$', completarImagen),
+
+                       url(r'^historialitem/(?P<id_fase>\d+)/(?P<id_item>\d+)$', historialItemBase),
+                       url(r'^relacionaritemvista/(?P<id_fase_actual>\d+)/(?P<id_item_actual>\d+)$', relacionarItemBaseView),
+                       url(r'^revertiritem/(?P<id_item>\d+)/(?P<id_fase>\d+)/(?P<id_version>\d+)/$', reversionItemBase),
+                       url(r'^relacionaritembase/(?P<id_item_hijo>\d+)/(?P<id_item_padre>\d+)/(?P<id_fase>\d+)/$', relacionarItemBase),
+                       url(r'^generarcalculoimpacto/(?P<id_item>\d+)$', generarCalculoImpacto ),
                        )
