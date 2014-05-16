@@ -3,14 +3,14 @@
 
     {% block title %}Fase: {{ fase.nombre }}{% endblock %}
     {% block errorBlock %}
-        {% if duplicado == 0 %}
+        {% if error == 0 %}
             <div class="container-fluid">
                 <div class="alert alert-success alert-dismissable">
                     <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
                     {{ mensaje }}
                 </div>
             </div>
-        {% elif duplicado == 1 %}
+        {% elif error == 1 %}
             <div class="container-fluid">
                 <div class="alert alert-warning alert-dismissable">
                     <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
@@ -66,7 +66,7 @@
                             <div class="panel-heading">
                                 <a href="{% url 'administrarItems.views.changeItem' item.id %}" class="btn btn-xs btn-success">Ir al ítem</a>
                                 <a href="{% url 'administrarItems.views.historialItemBase' fase.id item.id %}" class="btn btn-xs btn-warning">Historial de Versiones</a>
-                                <a href="#" class="btn btn-xs btn-danger">Bar de Baja</a>
+                                <a href="{% url 'administrarItems.views.dardebajaItem' item.id %}" class="btn btn-xs btn-danger">Bar de Baja</a>
                             </div>
 
                         </div>

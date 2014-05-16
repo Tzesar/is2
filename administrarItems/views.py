@@ -4,11 +4,14 @@ from django.contrib.auth.decorators import login_required
 from django.template import RequestContext
 from django.shortcuts import render, render_to_response
 from django.utils import timezone
+import pydot
 
 from administrarItems.forms import itemForm, campoEnteroForm, campoImagenForm, campoTextoCortoForm, campoFileForm
 from administrarItems.models import ItemBase, CampoImagen, CampoNumero, CampoFile, CampoTextoCorto, CampoTextoLargo, ItemRelacion
 from administrarRolesPermisos.decorators import *
 import reversion
+from is2.settings import MEDIA_ROOT
+
 
 @login_required()
 @reversion.create_revision()
@@ -219,18 +222,22 @@ def reversionItemBase(request, id_item, id_fase, id_version):
     """
     Vista para la reversión de ítem
     """
-    usuario = request.user
     fase = Fase.objects.get(pk=id_fase)
-    proyecto = fase.proyecto
     item = ItemBase.objects.get(pk=id_item)
     lista_version = reversion.get_unique_for_object(item)
     id_new_version = int('0'+id_version)
+    ti = TipoItem.objects.filter(fase=fase)
+    itemsFase = ItemBase.objects.filter(tipoitem__in=ti).order_by('fecha_creacion')
 
     for version in lista_version:
         if version.id == id_new_version:
             version.revert()
+            mensaje = 'El item fue Reversionado correctamente.'
+            error = 0
+            return render(request, 'fase/workPhase.html', {'mensaje':mensaje, 'user':request.user, 'item':item, 'error': error,
+                                                        'fase':fase, 'proyecto':fase.proyecto, 'listaItems': itemsFase},
+                                                        context_instance=RequestContext(request))
 
-    return HttpResponseRedirect('/workphase/' + str(fase.id))
 
 
 def relacionarItemBase(request, id_item_hijo, id_item_padre, id_fase):
@@ -243,7 +250,6 @@ def relacionarItemBase(request, id_item_hijo, id_item_padre, id_fase):
     ti = TipoItem.objects.filter(fase=fase)
     itemsFase = ItemBase.objects.filter(tipoitem__in=ti).order_by('fecha_creacion')
 
-
     try:
         ItemRelacion.objects.get(itemHijo=item_hijo)
     except:
@@ -252,8 +258,8 @@ def relacionarItemBase(request, id_item_hijo, id_item_padre, id_fase):
         relacion.itemPadre = item_padre
         relacion.save()
         mensaje = 'Exito al crear la relacion'
-        duplicado = 0
-        return render(request, 'fase/workPhase.html', {'mensaje':mensaje, 'user':request.user, 'item':item_hijo, 'duplicado': duplicado,
+        error = 0
+        return render(request, 'fase/workPhase.html', {'mensaje':mensaje, 'user':request.user, 'item':item_hijo, 'error': error,
                                                     'fase':fase, 'proyecto':fase.proyecto, 'listaItems': itemsFase},
                                                     context_instance=RequestContext(request))
 
@@ -262,6 +268,7 @@ def relacionarItemBase(request, id_item_hijo, id_item_padre, id_fase):
     return render(request, 'fase/workPhase.html', {'mensaje':mensaje, 'user':request.user, 'item':item_hijo, 'duplicado': duplicado,
                                                        'fase':fase, 'proyecto':fase.proyecto, 'listaItems': itemsFase},
                                                         context_instance=RequestContext(request))
+
 
 def relacionarItemBaseView(request, id_fase_actual, id_item_actual):
     """
@@ -287,4 +294,105 @@ def relacionarItemBaseView(request, id_fase_actual, id_item_actual):
                       'itemlistaanterior': item_lista_fase_anterior, 'fase_anterior': fase_anterior,
                       'itemlista': item_lista_fase_actual, 'user': request.user}, context_instance=RequestContext(request))
 
+
+#TODO: Insertar en workitem
+def validarItem(request, id_item):
+    """
+    Vista para validar un item, previa aprovación del cliente
+    """
+    item = ItemBase.objects.get(pk=id_item)
+    fase = item.tipoitem.fase
+    ti = TipoItem.objects.filter(fase=fase)
+    itemsFase = ItemBase.objects.filter(tipoitem__in=ti).order_by('fecha_creacion')
+
+    if item.estado == 'FIN':
+        item.estado = 'VAL'
+        item.save()
+        mensaje = 'Item validado correctamente y listo para pasar a Linea Base'
+        error = 0
+        return render(request, 'fase/workPhase.html', {'mensaje':mensaje, 'user':request.user, 'item':item, 'duplicado': error,
+                                                    'fase':fase, 'proyecto':fase.proyecto, 'listaItems': itemsFase},
+                                                    context_instance=RequestContext(request))
+
+    else:
+        mensaje = 'Item no puede ser validado, deberia tener un estado Finalizado antes de ser Validado '
+        error = 1
+        return render(request, 'fase/workPhase.html', {'mensaje':mensaje, 'user':request.user, 'item':item, 'duplicado': error,
+                                                    'fase':fase, 'proyecto':fase.proyecto, 'listaItems': itemsFase},
+                                                    context_instance=RequestContext(request))
+
+#TODO: Insertar en workitem
+def finalizarItem(request, id_item):
+    """
+    Vista para validar un item, previa aprovación del cliente
+    """
+    item = ItemBase.objects.get(pk=id_item)
+    fase = item.tipoitem.fase
+    ti = TipoItem.objects.filter(fase=fase)
+    itemsFase = ItemBase.objects.filter(tipoitem__in=ti).order_by('fecha_creacion')
+
+    if item.estado == 'ACT':
+        item.estado = 'FIN'
+        item.save()
+        mensaje = 'Item finalizado correctamente y listo para ser verificado por el cliente'
+        error = 0
+        return render(request, 'fase/workPhase.html', {'mensaje':mensaje, 'user':request.user, 'item':item, 'error': error,
+                                                    'fase':fase, 'proyecto':fase.proyecto, 'listaItems': itemsFase},
+                                                    context_instance=RequestContext(request))
+
+    else:
+        mensaje = 'Item no puede ser finalizado, deberia tener un estado Activo antes de ser Finalizado '
+        error = 1
+        return render(request, 'fase/workPhase.html', {'mensaje':mensaje, 'user':request.user, 'item':item, 'error': error,
+                                                    'fase':fase, 'proyecto':fase.proyecto, 'listaItems': itemsFase},
+                                                    context_instance=RequestContext(request))
+
+#TODO: Insertar en workitem
+def dardebajaItem(request, id_item):
+    """
+    Vista para dar de baja un item
+    """
+    item = ItemBase.objects.get(pk=id_item)
+    fase = item.tipoitem.fase
+    ti = TipoItem.objects.filter(fase=fase)
+    itemsFase = ItemBase.objects.filter(tipoitem__in=ti).order_by('fecha_creacion')
+
+    try:
+        ItemRelacion.objects.get(itemPadre=item)
+    except:
+        if item.estado != 'ELB':
+            item.estado = 'DDB'
+            item.save()
+            try:
+                ItemRelacion.objects.get(itemHijo=item)
+            except:
+                mensaje = 'El item fue Dado de Baja correctamente.'
+                error = 0
+                return render(request, 'fase/workPhase.html', {'mensaje':mensaje, 'user':request.user, 'item':item, 'error': error,
+                                                            'fase':fase, 'proyecto':fase.proyecto, 'listaItems': itemsFase},
+                                                            context_instance=RequestContext(request))
+            itemRelacion = ItemRelacion.objects.get(itemHijo=item)
+            itemRelacion.estado = 'DES'
+            itemRelacion.save()
+            mensaje = 'El item fue Dado de Baja correctamente.'
+            error = 0
+            return render(request, 'fase/workPhase.html', {'mensaje':mensaje, 'user':request.user, 'item':item, 'error': error,
+                                                        'fase':fase, 'proyecto':fase.proyecto, 'listaItems': itemsFase},
+                                                        context_instance=RequestContext(request))
+
+    existePadre = ItemRelacion.objects.get(itemPadre=item)
+    if existePadre:
+        mensaje = 'Item no puede darse de baja, el item posse una relación de Padre con algún otro item. Favor verificar las relaciones del ítem '
+        error = 1
+        return render(request, 'fase/workPhase.html', {'mensaje':mensaje, 'user':request.user, 'item':item, 'error': error,
+                                                    'fase':fase, 'proyecto':fase.proyecto, 'listaItems': itemsFase},
+                                                    context_instance=RequestContext(request))
+
+
+    else:
+        mensaje = 'Item no puede darse de baja, el item forma parte de una Linea Base. '
+        error = 1
+        return render(request, 'fase/workPhase.html', {'mensaje':mensaje, 'user':request.user, 'item':item, 'error': error,
+                                                    'fase':fase, 'proyecto':fase.proyecto, 'listaItems': itemsFase},
+                                                    context_instance=RequestContext(request))
 

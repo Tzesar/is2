@@ -1,0 +1,46 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+{% load floppyforms %}
+
+    {% block title %}Crear Linea Base{% endblock %}
+
+    {% block errorBlock %}
+        {% if form.errors %}
+            <div class="container-fluid">
+                <div class="alert alert-danger alert-dismissable">
+                    <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+                    {{ form.errors }}
+                </div>
+            </div>
+        {% endif %}
+    {% endblock errorBlock %}
+
+    {% block breadContent %}
+        <li><a href="{% url 'autenticacion.views.main' %}">Inicio</a></li>
+        <li><a href="{% url 'administrarProyectos.views.workProject' proyecto.id %}">{{ proyecto.nombre }}</a></li>
+        <li><a href="{% url 'administrarFases.views.workphase' fase.id %}">{{ fase.nombre }}</a> </li>
+        <li class="active">Crear Linea Base </li>
+    {% endblock breadContent %}
+
+    {% block padTop %}{% endblock padTop %}
+    {% block panelCentral %}
+        <div class="panel-heading">
+            <h1 class="text-info" style="display: inline-block">Linea Base: {{ fase.nombre }} </h1>
+        </div>
+        <div class="panel-body">
+            <div class="col-lg-4 col-md-4 col-sm-4">
+                <form action="" class="form-signin" role="form" method="post">
+                    {% csrf_token %}
+                    {% form form using "formsLayouts/div.html" %}
+                    <div class="btn-group btn-group-justified">
+                        <div class="btn-group">
+                            <a href="{% url 'administrarFases.views.workphase' fase.id %}" class="btn btn-lg btn-warning" type="submit">Cancelar</a>
+                        </div>
+                        <div class="btn-group">
+                            <button class="btn btn-lg btn-success btn-block" type="submit">Crear Linea Base</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    {% endblock %}>

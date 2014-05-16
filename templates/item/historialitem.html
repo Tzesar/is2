@@ -53,9 +53,11 @@
                                 <td>{{ version.field_dict.fecha_modificacion }}</td>
                                 <td>{{ version.field_dict.version }}</td>
                                 <td>
-                                    <div class="btn-group pull-right">
-                                        <a href="{% url 'administrarItems.views.reversionItemBase' item.id fase.id version.id  %}" type="button" class="btn btn-danger">Recuperar esta version</a>
-                                    </div>
+                                    {% if item.estado == 'ACT' or item.estado == 'ELB'   %}
+                                        <div class="btn-group pull-right">
+                                            <a href="{% url 'administrarItems.views.reversionItemBase' item.id fase.id version.id  %}" type="button" class="btn btn-danger">Recuperar esta version</a>
+                                        </div>
+                                    {% endif %}
                                  </td>
                             </tr>
                         {% endfor %}

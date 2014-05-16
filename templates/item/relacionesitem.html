@@ -2,26 +2,22 @@
 {% load staticfiles %}
 {% load floppyforms %}
 
-    {% block title %}Calculo Impacto{% endblock %}
+    {% block title %}Relaciones del Item{% endblock %}
 
     {% block breadContent %}
         <li><a href="{% url 'autenticacion.views.main' %}">Inicio</a></li>
         <li><a href="{% url 'administrarProyectos.views.workProject' proyecto.id %}">{{ proyecto.nombre }}</a></li>
         <li><a href="{% url 'administrarFases.views.workphase' fase.id %}">{{ fase.nombre }}</a></li>
-        <li class="active">Fase: {{ phase.nombre }}</li>
+        <li class="active">Item: {{ item.nombre }}</li>
     {% endblock breadContent %}
 
     {% block padTop %}{% endblock padTop %}
     {% block panelCentral %}
         <div class="panel-heading">
-            <h1 class="text-info" style="display: inline-block">Calculo de Impacto: {{ item.nombre }}</h1>
+            <h1 class="text-info" style="display: inline-block">Relaciones del Item: {{ item.nombre }}</h1>
         </div>
         <div class="panel-body">
             <div class="col-lg-5 col-md-5 col-sm-5"> {% csrf_token %}
-                <p> Costo = {{ costo }}</p>
-                <p>Tiempo= {{ tiempo }}</p>
-            </div>
-            <div>
                 <h3>Grafo de Relaciones</h3>
                 {# TODO: Hacer que salga la imagen  #}
                 <img src="{{ direccion }}" alt="Grafo" height="160" width="83" >
