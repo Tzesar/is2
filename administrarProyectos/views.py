@@ -8,6 +8,7 @@ from django.shortcuts import render
 from django_tables2 import RequestConfig
 from django.core.exceptions import ObjectDoesNotExist
 from django.utils import timezone
+from administrarItems.models import ItemBase
 
 from administrarProyectos.forms import NewProjectForm, ChangeProjectForm, setUserToProjectForm, ChangeProjectLeaderForm
 from administrarProyectos.models import Proyecto, UsuariosVinculadosProyectos
@@ -206,7 +207,7 @@ def workProject(request, id_proyecto):
     if request.method == 'GET':
         proyecto = Proyecto.objects.get(id=id_proyecto)
         usuario = request.user
-        fases = proyecto.fase_set.all().order_by('id')
+        fases = proyecto.fase_set.all()
 
         if usuario == proyecto.lider_proyecto:
             rolesFases = RolFase.objects.filter(proyecto=proyecto).order_by('nombre')
@@ -217,7 +218,15 @@ def workProject(request, id_proyecto):
                                                                        'fases': fases, 'roles': rolesFases,
                                                                        'usuariosAsociados': usuariosAsociados})
         else:
-            return render(request, 'proyecto/workProject.html', {'user': request.user, 'proyecto': proyecto, 'fases': fases, })
+            itemsPorFase = {}
+
+            for f in fases:
+                ti = TipoItem.objects.filter(fase=f)
+                itemsPorFase[f.id] = ItemBase.objects.filter(tipoitem__in=ti)
+
+            print itemsPorFase.items()
+
+            return render(request, 'proyecto/workProject.html', {'user': request.user, 'proyecto': proyecto, 'fases': fases, 'itemsPorFase': itemsPorFase.items(),})
 
     # Esto sucede cuando se modifica el estado de un usuario dentro del proyecto
     #   cuando ajax envia una solicitud con el metodo POST

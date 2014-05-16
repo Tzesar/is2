@@ -17,7 +17,7 @@ from administrarFases.views import changePhase, createPhase, phaseList, deletePh
     confirmar_eliminacion_fase, workphase
 from administrarRolesPermisos.views import createRole, roleList, changeRole, deleteRole, asignRole
 from administrarItems.views import createItem, changeItem, completarEnteros, completarArchivo, \
-    completarImagen, completarTexto
+    completarImagen, completarTexto, workItem
 
 admin.autodiscover()
 
@@ -79,6 +79,7 @@ urlpatterns = patterns('',
 
                        url(r'^createitem/(?P<id_fase>\d+)$', createItem),
                        url(r'^changeitem/(?P<id_item>\d+)$', changeItem),
+                       url(r'^workitem/(?P<id_item>\d+)$', workItem),
                        url(r'^completarenteros/(?P<id_atributo>\d+)/(?P<id_item>\d+)$', completarEnteros),
                        url(r'^completatexto/(?P<id_atributo>\d+)/(?P<id_item>\d+)$', completarTexto),
                        url(r'^completararchivo/(?P<id_atributo>\d+)/(?P<id_item>\d+)$', completarArchivo),

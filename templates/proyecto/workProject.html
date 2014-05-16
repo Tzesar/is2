@@ -55,7 +55,23 @@
                                 <p>{{ fase.descripcion }}</p>
                                 <i><u>Estado</u></i>
                                 <p>{{ fase.get_estado_display }}</p>
+
+                                <p class="list-group-item-info" style="font-size: 11px; line-height: 2">
+                                    <b>Lista de ítems:</b>
+                                    {% for fase_id, items in itemsPorFase %}
+                                        {% if fase.id == fase_id %}
+                                            {% if items %}
+                                                {% for item in items %}
+                                                    <br> + {{ item.nombre }} - <i>({{ item.get_estado_display }})</i>
+                                                {% endfor %}
+                                            {% else %}
+                                                <br> + Aún no se han creado ítems para la fase.
+                                            {% endif %}
+                                        {% endif %}
+                                    {% endfor %}
+                                </p>
                             </div>
+
                             <div class="panel-heading">
                                 {% if fase.estado == 'DES' %}<a href="{% url 'administrarFases.views.workphase' fase.id %}" class="btn btn-success btn-sm">Gestionar Ítems</a>
                                 {% else %}<a href="#"class="btn btn-success btn-sm">Ver Ítems</a>{% endif %}

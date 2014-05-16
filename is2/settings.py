@@ -52,7 +52,7 @@ INSTALLED_APPS = (
     'administrarRolesPermisos',
     'administrarTipoItem',
     'administrarItems',
-    'reversion'
+    'reversion',
 )
 
 MIDDLEWARE_CLASSES = (

@@ -10,7 +10,8 @@ from administrarFases.forms import NewPhaseForm, ChangePhaseForm
 from administrarRolesPermisos.decorators import *
 from django.db import IntegrityError
 from administrarRolesPermisos.models import PermisoFase
-from administrarItems.models import ItemBase, campoEntero, campoTextoCorto, campoTextoLargo, campoFile, campoImagen
+from administrarItems.models import ItemBase, ItemRelacion
+
 
 logger = logging.getLogger(__name__)
 
@@ -312,8 +313,15 @@ def workphase(request, id_fase):
         faseTrabajo = Fase.objects.get(pk=id_fase)
         proyectoTrabajo = faseTrabajo.proyecto
         ti = TipoItem.objects.filter(fase=faseTrabajo)
-        itemsFase = ItemBase.objects.filter(tipoitem__in=ti)
+        itemsFase = ItemBase.objects.filter(tipoitem__in=ti).order_by('fecha_creacion')
 
+        relaciones = {}
+        for i in itemsFase:
+            try:
+                itemRelacionado = ItemRelacion.objects.get(itemHijo=i).itemPadre
+                relaciones[i] = itemRelacionado
+            except:
+                relaciones[i] = None
 
         return render(request, 'fase/workPhase.html', {'proyecto': proyectoTrabajo, 'fase': faseTrabajo,
-                                                       'listaItems': itemsFase, })
+                                                       'listaItems': itemsFase, 'relaciones': relaciones.items(),})
