@@ -343,24 +343,39 @@ def finProject(request, id_proyecto):
     """
     *Vista par inicar un proyecto*
     """
-    project = Proyecto.objects.get(pk=id_proyecto)
-    #TODO: Insertar mensajes de exitos/fallos en el template
-    if project.estado == 'ANU':
-        return workProject(request, id_proyecto)
-    elif project.estado == 'PEN':
-        return workProject(request, id_proyecto)
-    elif project.estado == 'FIN':
-        return workProject(request, id_proyecto)
-    else:
-        project.estado = 'FIN'
-        #TODO: Revisar que todas las fases se encuentren en estado finalizado
-        fases = Fase.objects.filter(proyecto=id_proyecto)
-        for fase in fases:
-            if fase.estado != 'FIN':
-                #TODO: con mensaje de fallo al finalizar el proyecto, por que la fase.nombre no esta finalizada
-                return workProject(request, id_proyecto)
+    proyecto = Proyecto.objects.get(pk=id_proyecto)
+    fases = proyecto.fase_set.all().order_by('id')
+    rolesFases = RolFase.objects.filter(proyecto=proyecto).order_by('nombre')
 
-        project.save()
-        return workProject(request, id_proyecto)
+    usuariosInactivos = Usuario.objects.filter(is_active=False).values_list('id', flat=True)
+    usuariosAsociados = proyecto.usuariosvinculadosproyectos_set.exclude(cod_usuario__in=usuariosInactivos)
+
+    for fase in fases:
+        if fase.estado != 'FIN':
+            message = 'No se puede Finalizar el proyecto por que aún posee fases que no estan finalizadas'
+            error = 1
+            return render(request, 'proyecto/workProjectLeader.html', {'user': request.user, 'proyecto': proyecto,
+                                                                       'fases': fases, 'roles': rolesFases,
+                                                                       'usuariosAsociados': usuariosAsociados,
+                                                                       'message': message, 'error': error})
+
+    if proyecto.estado != 'ACT':
+        message = 'No se puede Finalizar un proyecto que se encuentra en el estado: ' + proyecto.get_estado_display()
+        error = 1
+        return render(request, 'proyecto/workProjectLeader.html', {'user': request.user, 'proyecto': proyecto,
+                                                                       'fases': fases, 'roles': rolesFases,
+                                                                       'usuariosAsociados': usuariosAsociados,
+                                                                       'message': message, 'error': error})
+
+    else:
+        proyecto.estado = 'FIN'
+        proyecto.fecha_inicio = timezone.now()
+        proyecto.save()
+        message = 'El proyecto ha sido Finalizdo exitosamente.'
+        error = 0
+        return render(request, 'proyecto/workProjectLeader.html', {'user': request.user, 'proyecto': proyecto,
+                                                                       'fases': fases, 'roles': rolesFases,
+                                                                       'usuariosAsociados': usuariosAsociados,
+                                                                       'message': message, 'error': error})
 
 

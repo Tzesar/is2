@@ -187,7 +187,7 @@
         {% if proyecto.estado == 'PEN' %}
             <a href="{% url 'administrarProyectos.views.startProject' proyecto.id %}" class="btn btn-lg btn-primary btn-lg" role="button">Iniciar Proyecto</a>
         {% elif proyecto.estado == 'ACT' %}
-            <a href='#' class="btn btn-lg btn-success btn-lg" role="button">Finalizar Proyecto</a>
+            <a href='{% url 'administrarProyectos.views.finProject' proyecto.id %}' class="btn btn-lg btn-success btn-lg" role="button">Finalizar Proyecto</a>
         {% endif %}
     {% endblock botonesBottom %}
     {% block jsAdicional %}

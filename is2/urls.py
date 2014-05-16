@@ -13,9 +13,9 @@ from autenticacion.views import main, myLogin
 from administrarUsuarios.views import createUser, changeUser, userList, userListJson, changePass, changeAnyUser
 from zar.views import about, contact
 from administrarProyectos.views import createProject, changeProject, projectList, workProject, setUserToProject,\
-    viewSetUserProject, changeProjectLeader, startProject, cancelProject
+    viewSetUserProject, changeProjectLeader, startProject, cancelProject, finProject
 from administrarFases.views import changePhase, createPhase, phaseList, deletePhase, importMultiplePhase,\
-    confirmar_eliminacion_fase, workphase
+    confirmar_eliminacion_fase, workphase, finPhase, startPhase
 from administrarRolesPermisos.views import createRole, roleList, changeRole, deleteRole, asignRole
 from administrarItems.views import createItem, changeItem, completarEnteros, completarArchivo, \
     completarImagen, completarTexto, historialItemBase, relacionarItemBaseView, reversionItemBase, relacionarItemBase, \
@@ -57,6 +57,8 @@ urlpatterns = patterns('',
                        url(r'^workproject/(?P<id_proyecto>\d+)$', workProject, name='workproject'),
                        url(r'^startproject/(?P<id_proyecto>\d+)$', startProject, name='startproject'),
                        url(r'^cancelproject/(?P<id_proyecto>\d+)$', cancelProject, name='cancelproject'),
+                       url(r'^finproject/(?P<id_proyecto>\d+)$', finProject),
+
 
 ###################################################### FASES ###########################################################
                        url(r'^createphase/(?P<id_proyecto>\d+)$', createPhase),
@@ -67,6 +69,8 @@ urlpatterns = patterns('',
                        url(r'^deletephase/(?P<id_fase>\d+)$', deletePhase),
                        url(r'^createrole/(?P<id_proyecto>\d+)$', createRole),
                        url(r'^workphase/(?P<id_fase>\d+)$', workphase),
+                       url(r'^finphase/(?P<id_fase>\d+)$', finPhase),
+                       url(r'^startphase/(?P<id_fase>\d+)$', startPhase),
 
 ###################################################### ROLES ##########################################
                        url(r'^rolelist/(?P<id_proyecto>\d+)$', roleList, name="rolelist"),

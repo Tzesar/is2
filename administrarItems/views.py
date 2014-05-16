@@ -13,6 +13,7 @@ import reversion
 from is2.settings import MEDIA_ROOT
 
 
+
 @login_required()
 @reversion.create_revision()
 def createItem(request, id_fase):
@@ -239,7 +240,7 @@ def reversionItemBase(request, id_item, id_fase, id_version):
                                                         context_instance=RequestContext(request))
 
 
-
+#TODO: Insertar en workitem
 def relacionarItemBase(request, id_item_hijo, id_item_padre, id_fase):
     """
     Vista para relaciones los items
@@ -269,7 +270,7 @@ def relacionarItemBase(request, id_item_hijo, id_item_padre, id_fase):
                                                        'fase':fase, 'proyecto':fase.proyecto, 'listaItems': itemsFase},
                                                         context_instance=RequestContext(request))
 
-
+#TODO: Insertar en workitem
 def relacionarItemBaseView(request, id_fase_actual, id_item_actual):
     """
     Vista para relacionar items
@@ -347,7 +348,7 @@ def finalizarItem(request, id_item):
                                                     'fase':fase, 'proyecto':fase.proyecto, 'listaItems': itemsFase},
                                                     context_instance=RequestContext(request))
 
-#TODO: Insertar en workitem
+
 def dardebajaItem(request, id_item):
     """
     Vista para dar de baja un item

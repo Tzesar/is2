@@ -38,10 +38,13 @@
             <b>Estado:</b> <i> {{ fase.get_estado_display }} </i>
         </div>
         <div class="panel-body">
-            <a href="{% url 'administrarItems.views.createItem' fase.id %}" class="btn btn-sm btn-success">
-                Crear Ítem
-            </a>
+            <a href="{% url 'administrarItems.views.createItem' fase.id %}" class="btn btn-sm btn-success"> Crear Ítem </a>
             <a href="#" class="btn btn-sm btn-gray">Árbol de Relaciones</a>
+            {% if fase.estado == 'PEN' %}
+                <a href="{% url 'administrarFases.views.startPhase' fase.id %} " class="btn btn-sm btn-primary">Inicar Fase</a>
+            {% elif fase.estado == 'DES' %}
+                <a href="{% url 'administrarFases.views.finPhase' fase.id %}" class="btn btn-sm btn-info">Finalizar Fase</a>
+            {% endif %}
             <hr>
             {% if listaItems %}
                 {% for item in listaItems %}
