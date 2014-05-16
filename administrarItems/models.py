@@ -1,8 +1,11 @@
 #encoding:utf-8
+import reversion
 from django.db import models
+
+from administrarLineaBase.models import LineaBase
 from administrarTipoItem.models import TipoItem, Atributo
 from autenticacion.models import Usuario
-import reversion
+
 
 
 class ItemBase(models.Model):
@@ -25,8 +28,8 @@ class ItemBase(models.Model):
         ('REV', 'Revision'),
         ('FIN', 'Finalizado'), )
 
-    usuario = models.ForeignKey(Usuario, null=True, related_name='Usuario Creador')
-    usuario_modificacion = models.ForeignKey(Usuario, null=True, related_name='Usuario Modificador')
+    usuario = models.ForeignKey(Usuario, related_name='Usuario Creador')
+    usuario_modificacion = models.ForeignKey(Usuario, related_name='Usuario Modificador')
     nombre = models.CharField(max_length=100, unique=True)
     descripcion = models.TextField(max_length=140, help_text='Introduzca una breve reseña del proyecto', null=True)
     estado = models.CharField(max_length=3, choices=opciones_estado, default='ACT', help_text='Estado del item')
@@ -36,6 +39,8 @@ class ItemBase(models.Model):
     complejidad = models.IntegerField( help_text='Ingresar la complejidad del ítem creado, un valor entre 0-100')
     costo = models.IntegerField(help_text='Ingresar el costo de desarrollar el ítem')
     tiempo = models.IntegerField(help_text='Ingresar el tiempo estimado para desarrollar ')
+    version = models.IntegerField(help_text='Version actual del item', default=1)
+    linea_base = models.ForeignKey(LineaBase, null=True, verbose_name='Linea Base a la que pertenece el item')
 
     def __unicode__(self):
         return self.nombre

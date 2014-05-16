@@ -2,7 +2,23 @@
 {% load staticfiles %}
 
     {% block title %}Fase: {{ fase.nombre }}{% endblock %}
-    {% block errorBlock %}{% endblock errorBlock %}
+    {% block errorBlock %}
+        {% if error == 0 %}
+            <div class="container-fluid">
+                <div class="alert alert-success alert-dismissable">
+                    <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+                    {{ mensaje }}
+                </div>
+            </div>
+        {% elif error == 1 %}
+            <div class="container-fluid">
+                <div class="alert alert-warning alert-dismissable">
+                    <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+                    {{ mensaje }}
+                </div>
+            </div>
+        {% endif %}
+    {% endblock errorBlock %}
 
     {% block breadContent %}
         <li><a href="{% url 'autenticacion.views.main' %}">Inicio</a></li>
@@ -22,10 +38,13 @@
             <b>Estado:</b> <i> {{ fase.get_estado_display }} </i>
         </div>
         <div class="panel-body">
-            <a href="{% url 'administrarItems.views.createItem' fase.id %}" class="btn btn-sm btn-success">
-                Crear Ítem
-            </a>
+            <a href="{% url 'administrarItems.views.createItem' fase.id %}" class="btn btn-sm btn-success"> Crear Ítem </a>
             <a href="#" class="btn btn-sm btn-gray">Árbol de Relaciones</a>
+            {% if fase.estado == 'PEN' %}
+                <a href="{% url 'administrarFases.views.startPhase' fase.id %} " class="btn btn-sm btn-primary">Inicar Fase</a>
+            {% elif fase.estado == 'DES' %}
+                <a href="{% url 'administrarFases.views.finPhase' fase.id %}" class="btn btn-sm btn-info">Finalizar Fase</a>
+            {% endif %}
             <hr>
             {% if listaItems %}
                 {% for item, padre in relaciones %}
@@ -59,13 +78,13 @@
                                     <b>Información adicional</b><br>
                                     <b> + Creado por:</b> <i>{{ item.usuario.username }}</i>, {{ item.fecha_creacion }}
                                     <br><b> + Última modif.:</b> {{ item.fecha_modificacion }}, por <i>{{ item.usuario_modificacion.username }}</i>
-                                    <br><b> + Versión actual:</b> version >>FALTA<<
+                                    <br><b> + Versión actual:</b> {{ item.version }}
                                 </p>
                             </div>
                             <div class="panel-heading">
-                                <a href="{% url 'administrarItems.views.workItem' item.id %}" class="btn btn-xs btn-success">Ir al ítem</a>
-                                <a href="#" class="btn btn-xs btn-warning">historial de cambios</a>
-                                <a href="#" class="btn btn-xs btn-danger">dar de baja</a>
+                                <a href="{% url 'administrarItems.views.changeItem' item.id %}" class="btn btn-xs btn-success">Ir al ítem</a>
+                                <a href="{% url 'administrarItems.views.historialItemBase' fase.id item.id %}" class="btn btn-xs btn-warning">Historial de Versiones</a>
+                                <a href="{% url 'administrarItems.views.dardebajaItem' item.id %}" class="btn btn-xs btn-danger">Bar de Baja</a>
                             </div>
 
                         </div>

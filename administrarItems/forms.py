@@ -31,6 +31,7 @@ class itemForm(forms.ModelForm):
         self.fields['tipoitem'].queryset = TipoItem.objects.all()
 
 
+
 class modificarDatosItemForm(forms.ModelForm):
     """
     Formulario de modificacion de la configuracion general del item

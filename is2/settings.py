@@ -16,8 +16,8 @@ Configuraciones Generales:
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 import os
-
 BASE_DIR = os.path.dirname(os.path.dirname(__file__))
+SETTINGS_PATH = os.path.dirname(os.path.dirname(__file__))
 
 
 # Quick-start development settings - unsuitable for production
@@ -44,6 +44,7 @@ INSTALLED_APPS = (
     'django.contrib.admin',
     'django_tables2',
     'floppyforms',
+    'reversion',
     'zar',
     'autenticacion',
     'administrarUsuarios',
@@ -52,7 +53,8 @@ INSTALLED_APPS = (
     'administrarRolesPermisos',
     'administrarTipoItem',
     'administrarItems',
-    'reversion',
+    'administrarLineaBase',
+
 )
 
 MIDDLEWARE_CLASSES = (

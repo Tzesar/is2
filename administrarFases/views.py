@@ -5,12 +5,15 @@ from django.contrib.auth.decorators import login_required
 from django.template import RequestContext
 from django.shortcuts import render
 from django.utils.html import format_html
+from django.db import IntegrityError
 
 from administrarFases.forms import NewPhaseForm, ChangePhaseForm
+from administrarLineaBase.models import LineaBase
 from administrarRolesPermisos.decorators import *
 from django.db import IntegrityError
-from administrarRolesPermisos.models import PermisoFase
+from administrarRolesPermisos.models import PermisoFase, RolFase
 from administrarItems.models import ItemBase, ItemRelacion
+from autenticacion.models import Usuario
 
 
 logger = logging.getLogger(__name__)
@@ -37,7 +40,12 @@ def createPhase(request, id_proyecto):
         if form.is_valid():
             fase = form.save(commit=False)
             fase.proyecto = project
+            fasesProyecto = Fase.objects.filter(proyecto=project)
 
+            if fasesProyecto:
+                fase.nro_orden = fasesProyecto.count() + 1
+            else:
+                fase.nro_orden = 1
 
             try:
                 fase.save()
@@ -324,4 +332,75 @@ def workphase(request, id_fase):
                 relaciones[i] = None
 
         return render(request, 'fase/workPhase.html', {'proyecto': proyectoTrabajo, 'fase': faseTrabajo,
-                                                       'listaItems': itemsFase, 'relaciones': relaciones.items(),})
+                                                       'listaItems': itemsFase, 'relaciones': relaciones.items(),})                                                       'listaItems': itemsFase, })
+
+
+def finPhase(request, id_fase):
+    """
+    Vista para finalizar una fase
+    """
+    fase = Fase.objects.get(pk=id_fase)
+    proyecto = fase.proyecto
+    tipoItem = TipoItem.objects.filter(fase=fase)
+    items = ItemBase.objects.filter(tipoitem__in=tipoItem)
+
+    fases = proyecto.fase_set.all().order_by('id')
+    rolesFases = RolFase.objects.filter(proyecto=proyecto).order_by('nombre')
+
+    usuariosInactivos = Usuario.objects.filter(is_active=False).values_list('id', flat=True)
+    usuariosAsociados = proyecto.usuariosvinculadosproyectos_set.exclude(cod_usuario__in=usuariosInactivos)
+
+
+    for item in items:
+        if item.estado == 'ACT' or item.estado == 'VAL' or item.estado == 'FIN':
+            message = 'La fase no puede Finalizar por que aún existen ítems que no se encuentran en ninguna Linea Base'
+            error = 1
+            return render(request, 'proyecto/workProjectLeader.html', {'user': request.user, 'proyecto': proyecto,
+                                                                       'fases': fases, 'roles': rolesFases,
+                                                                       'usuariosAsociados': usuariosAsociados,
+                                                                       'message': message, 'error': error})
+    fase.estado = 'FIN'
+    fase.save()
+    message = 'La fase ha sido Finalizada exitosamente.'
+    error = 0
+    return render(request, 'proyecto/workProjectLeader.html', {'user': request.user, 'proyecto': proyecto,
+                                                                       'fases': fases, 'roles': rolesFases,
+                                                                       'usuariosAsociados': usuariosAsociados,
+                                                                       'message': message, 'error': error})
+
+def startPhase(request, id_fase):
+    """
+    Vista para iniciar una fase
+    """
+    fase = Fase.objects.get(pk=id_fase)
+    proyecto = fase.proyecto
+
+    fases = proyecto.fase_set.all().order_by('id')
+    rolesFases = RolFase.objects.filter(proyecto=proyecto).order_by('nombre')
+
+    usuariosInactivos = Usuario.objects.filter(is_active=False).values_list('id', flat=True)
+    usuariosAsociados = proyecto.usuariosvinculadosproyectos_set.exclude(cod_usuario__in=usuariosInactivos)
+
+    fase_anterior = Fase.objects.get(nro_orden=fase.nro_orden-1)
+
+    LineaBase.objects.filter(fase=fase_anterior)
+
+    if LineaBase:
+        fase.estado = 'DES'
+        fase.save()
+        message = 'La fase ' + fase.nombre + ' se ha iniciado coorrectamente.'
+        error = 0
+        return render(request, 'proyecto/workProjectLeader.html', {'user': request.user, 'proyecto': proyecto,
+                                                                       'fases': fases, 'roles': rolesFases,
+                                                                       'usuariosAsociados': usuariosAsociados,
+                                                                       'message': message, 'error': error})
+    else:
+        message = 'La fase ' + fase.nombre + ' no se ha iniciado coorrectamente. Favor verifique la existencia ' \
+                                             'de Lineas Base en la Fase Anterior'
+        error = 1
+        return render(request, 'proyecto/workProjectLeader.html', {'user': request.user, 'proyecto': proyecto,
+                                                                       'fases': fases, 'roles': rolesFases,
+                                                                       'usuariosAsociados': usuariosAsociados,
+                                                                       'message': message, 'error': error})
+
+
