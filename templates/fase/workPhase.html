@@ -112,7 +112,7 @@
                                     <br><b> + Ítem Relacionado:</b> {% if padre %}
                                                                         {{ padre.nombre|capfirst }}
                                                                     {% else %}
-                                                                        No existe. {% if item.estado == 'ACT' and item.estado == 'REV' %}[<a href="{% url 'administrarItems.views.relacionarItemBaseView' fase.id item.id %}">Relacionar</a>]{% endif %}
+                                                                        No existe. {% if item.estado == 'ACT' or item.estado == 'REV' %}[<a href="{% url 'administrarItems.views.relacionarItemBaseView' fase.id item.id %}">Relacionar</a>]{% endif %}
                                                                     {% endif %}
                                 </p>
 

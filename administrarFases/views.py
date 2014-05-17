@@ -1,5 +1,4 @@
 #encoding:utf-8
-import logging
 
 from django.contrib.auth.decorators import login_required
 from django.template import RequestContext
@@ -11,13 +10,12 @@ from administrarFases.forms import NewPhaseForm, ChangePhaseForm
 from administrarLineaBase.models import LineaBase
 from administrarProyectos.views import workProject, vistaDesarrollo
 from administrarRolesPermisos.decorators import *
-from django.db import IntegrityError
-from administrarRolesPermisos.models import PermisoFase, RolFase
-from administrarItems.models import ItemBase, ItemRelacion
+from administrarItems.models import ItemRelacion, ItemBase
+from administrarRolesPermisos.models import Rol
 from autenticacion.models import Usuario
 
 
-logger = logging.getLogger(__name__)
+# logger = logging.getLogger(__name__)
 
 
 @login_required()
@@ -57,10 +55,10 @@ def createPhase(request, id_proyecto):
                                                                  'proyecto': project, "error": err },
                                                                   context_instance=RequestContext(request) )
 
-            logger.info('El usuario ' + request.user.username + ' ha creado la fase ' +
-                        form["nombre"].value() + ' dentro del proyecto ' + project.nombre)
+            # logger.info('El usuario ' + request.user.username + ' ha creado la fase ' +
+            #             form["nombre"].value() + ' dentro del proyecto ' + project.nombre)
 
-            generarPermisosFase(project, fase)
+            # generarPermisosFase(project, fase)
 
             mensaje ='Fase: ' + Fase.objects.last().nombre + ', creada exitosamente'
             request.method = 'GET'
@@ -71,75 +69,8 @@ def createPhase(request, id_proyecto):
                                                      'error': {} })
 
 
-def generarPermisosFase(project, fase):
-    """
-    *Vista para generación de permisos correspondientes a la fase*
-
-    :param project: Recibe la instancia del proyecto al cual pertenece la fase.
-    :param fase: Recibe la instancia de la fase en la cual se crearán los permisos.
-    :return: Los permisos generados se vinculan correctamente a la fase creada.
-    """
-
-    #Permiso de creación de items
-    codigoPermiso = "CRE_ITEM_FASE:" + fase.nombre
-    nombrePermiso = "Crear Item - Fase: " + fase.nombre
-    descripcionPermiso = "Permite la creacion de items en la fase " + fase.nombre + " del proyecto " + project.nombre
-    p = PermisoFase(code=codigoPermiso.upper(), nombre=nombrePermiso, descripcion=descripcionPermiso)
-    p.fase = fase
-    p.save()
-
-    #Permiso de modificación de items
-    codigoPermiso = "ALT_ITEM_FASE:" + fase.nombre
-    nombrePermiso = "Modificar Items - Fase: " + fase.nombre
-    descripcionPermiso = "Permite la modificacion de items en la fase " + fase.nombre + " del proyecto " + project.nombre
-    p = PermisoFase(code=codigoPermiso.upper(), nombre=nombrePermiso, descripcion=descripcionPermiso)
-    p.fase = fase
-    p.save()
-
-    #Permiso de baja de items
-    codigoPermiso = "DDB_ITEM_FASE:" + fase.nombre
-    nombrePermiso = "Dar de baja Items - Fase: " + fase.nombre
-    descripcionPermiso = "Permite la baja de items en la fase " + fase.nombre + " del proyecto " + project.nombre
-    p = PermisoFase(code=codigoPermiso.upper(), nombre=nombrePermiso, descripcion=descripcionPermiso)
-    p.fase = fase
-    p.save()
-
-    #Permiso de consulta de items
-    codigoPermiso = "VER_ITEM_FASE:" + fase.nombre
-    nombrePermiso = "Visualizar Items - Fase: " + fase.nombre
-    descripcionPermiso = "Permite la visualizacion de items en la fase " + fase.nombre + " del proyecto " + project.nombre
-    p = PermisoFase(code=codigoPermiso.upper(), nombre=nombrePermiso, descripcion=descripcionPermiso)
-    p.fase = fase
-    p.save()
-
-    #Permiso de restauracion de items
-    codigoPermiso = "RVV_ITEM_FASE:" + fase.nombre
-    nombrePermiso = "Restaurar Item - Fase: " + fase.nombre
-    descripcionPermiso = "Permite la restauracion de items en la fase " + fase.nombre + " del proyecto " + project.nombre + " previamente eliminados"
-    p = PermisoFase(code=codigoPermiso.upper(), nombre=nombrePermiso, descripcion=descripcionPermiso)
-    p.fase = fase
-    p.save()
-
-    #Permiso de reversion de items
-    codigoPermiso = "REV_ITEM_FASE:" + fase.nombre
-    nombrePermiso = "Reversionar Item - Fase: " + fase.nombre
-    descripcionPermiso = "Permite volver a la version anterior de items en la fase " + fase.nombre + " del proyecto " + project.nombre
-    p = PermisoFase(code=codigoPermiso.upper(), nombre=nombrePermiso, descripcion=descripcionPermiso)
-    p.fase = fase
-    p.save()
-
-    #Permiso de creación solicitudes de cambio
-    codigoPermiso = "CRE_SOLCAMBIO_FASE:" + fase.nombre
-    nombrePermiso = "Crear Solicitud de Cambios - Fase: " + fase.nombre
-    descripcionPermiso = "Permite la creacion de solicitudes de cambios para items en linea base de la fase " + fase.nombre + " del proyecto " + project.nombre
-    p = PermisoFase(code=codigoPermiso.upper(), nombre=nombrePermiso, descripcion=descripcionPermiso)
-    p.fase = fase
-    p.save()
-
-
 #TODO: Botones Iniciar Fase - Finalizar Fase
 @login_required()
-@lider_requerido2
 def changePhase(request, id_fase, error=None, message=None):
     """
     *Vista para la modificacion de una fase dentro del sistema.
@@ -167,18 +98,18 @@ def changePhase(request, id_fase, error=None, message=None):
         if form.is_valid():
             form.save()
 
-            logger.info('El usuario ' + request.user.username + ' ha modificado la fase PH-' +
-                        id_fase + ': ' + form["nombre"].value() + ' dentro del proyecto' + project.nombre + 'en el sistema.')
+            # logger.info('El usuario ' + request.user.username + ' ha modificado la fase PH-' +
+            #             id_fase + ': ' + form["nombre"].value() + ' dentro del proyecto' + project.nombre + 'en el sistema.')
 
             return HttpResponseRedirect('/workproject/'+str(project.id))
     else:
         form = ChangePhaseForm(instance=phase)
     return render(request, 'fase/changephase.html', {'phaseForm': form, 'phase': phase, 'project': project, 'tiposItem': tiposDeItem, 'user': request.user,
-                                                     'error':error, 'message':message}, context_instance=RequestContext(request))
+                                                     'error': error, 'message': message}, context_instance=RequestContext(request))
 
 
-@login_required()
-@lider_requerido2
+@login_required
+@login_required
 def confirmar_eliminacion_fase(request, id_fase):
     """
     *Vista para la confirmar la eliminación definitiva de una fase del proyecto.
@@ -207,7 +138,7 @@ def deletePhase(request, id_fase):
     phase = Fase.objects.get(pk=id_fase)
     tiposItem = TipoItem.objects.filter(fase=phase)
 
-    eliminarPermisos(phase)
+    # eliminarPermisos(phase)
 
     for ti in tiposItem:
         attrs = Atributo.objects.filter(tipoDeItem=ti)
@@ -219,27 +150,15 @@ def deletePhase(request, id_fase):
     project = Proyecto.objects.get(pk=phase.proyecto.id)
     phase.delete()
 
-    logger.info('El usuario '+ request.user.username +' ha eliminado la fase '+ phase_copy.nombre +
-                ' dentro del proyecto: ' + project.nombre)
+    # logger.info('El usuario '+ request.user.username +' ha eliminado la fase '+ phase_copy.nombre +
+    #             ' dentro del proyecto: ' + project.nombre)
 
     mensaje = 'Fase: ' + phase_copy.nombre + ', eliminada exitosamente'
     return workProject(request, phase_copy.proyecto.id, error=0, message=mensaje )
 
 
-def eliminarPermisos(phase):
-    """
-    *Vista para la eliminacion de permisos correspondientes a la fase*
-
-    :param phase: Recibe la instancia de la fase que se eliminará.
-    :return: Los permisos vinculados son eliminados correctamente.
-    """
-    perm_list = PermisoFase.objects.filter(fase=phase)
-    for p in perm_list:
-        p.delete()
-
-
 @login_required
-@lider_requerido
+# @lider_requerido
 def phaseList(request, id_proyecto):
     """
     *Vista para la listar todas las fases dentro de algún proyecto.
@@ -262,7 +181,6 @@ def phaseList(request, id_proyecto):
 
 #TODO: No debería existir caso particular de importar multiples fases
 @login_required
-@lider_requerido
 def importPhase(request, id_fase, id_proyecto_destino):
     """
     *Vista para la importación de un tipo de ítem a otra fase*
@@ -279,15 +197,15 @@ def importPhase(request, id_fase, id_proyecto_destino):
         return render(request, "keyduplicate_fase.html", {'project': project, "message": e.message },
           context_instance=RequestContext(request) )
 
-    logger.info('El usuario '+ request.user.username +' ha importado la fase '+  phase.nombre +
-                ' al proyecto destino: ' + phase.proyecto.nombre)
+    # logger.info('El usuario '+ request.user.username +' ha importado la fase '+  phase.nombre +
+    #             ' al proyecto destino: ' + phase.proyecto.nombre)
 
 
     return HttpResponseRedirect('/changephase/' + str(phase.id))
 
 
 #TODO: Revisar funcional pero ineficiente
-
+@login_required
 def importMultiplePhase(request, id_fase, id_proyecto_destino):
     """
     *Vista para la importación de un tipo de ítem a otra fase*
@@ -304,8 +222,8 @@ def importMultiplePhase(request, id_fase, id_proyecto_destino):
         return render(request, "keyduplicate_fase.html", {'project': project, "message": e.message },
           context_instance=RequestContext(request) )
 
-    logger.info('El usuario '+ request.user.username +' ha importado la fase '+  phase.nombre +
-                ' al proyecto destino: ' + phase.proyecto.nombre)
+    # logger.info('El usuario '+ request.user.username +' ha importado la fase '+  phase.nombre +
+    #             ' al proyecto destino: ' + phase.proyecto.nombre)
 
     return HttpResponseRedirect('/phaselist/' + str(project.id))
 
@@ -346,7 +264,7 @@ def subirOrden(request, id_fase):
         mensaje = 'La fase ya es la primera. No se puede subir más'
     else:
         ordenAnterior = fase.nro_orden - 1
-        faseAnterior = Fase.objects.get(nro_orden=ordenAnterior)
+        faseAnterior = Fase.objects.get(proyecto=fase.proyecto, nro_orden=ordenAnterior)
         faseAnterior.nro_orden = fase.nro_orden
         fase.nro_orden = ordenAnterior
 
@@ -363,7 +281,7 @@ def bajarOrden(request, id_fase):
         mensaje = 'La fase ya es la última. No se puede bajar más'
     else:
         ordenPosterior = fase.nro_orden + 1
-        fasePosterior = Fase.objects.get(nro_orden=ordenPosterior)
+        fasePosterior = Fase.objects.get(proyecto=fase.proyecto, nro_orden=ordenPosterior)
         fasePosterior.nro_orden = fase.nro_orden
         fase.nro_orden = ordenPosterior
 
@@ -410,7 +328,7 @@ def startPhase(request, id_fase):
     proyecto = fase.proyecto
 
     fases = proyecto.fase_set.all().order_by('id')
-    rolesFases = RolFase.objects.filter(proyecto=proyecto).order_by('nombre')
+    rolesFases = Rol.objects.filter(proyecto=proyecto).order_by('nombre')
 
     usuariosInactivos = Usuario.objects.filter(is_active=False).values_list('id', flat=True)
     usuariosAsociados = proyecto.usuariosvinculadosproyectos_set.exclude(cod_usuario__in=usuariosInactivos)

@@ -139,7 +139,7 @@
                             </div>
                             <div class="col-sm-6">
                                 <span class="pull-right" data-toggle="tooltip" title="Agregar Rol" id="tooltip">
-                                    <a href="{% url 'administrarRolesPermisos.views.createRole' proyecto.id %}" class="text-success"
+                                    <a href="{% url 'administrarRolesPermisos.views.crearRol' proyecto.id %}" class="text-success"
                                             {% if fases %} disabled="disabled" {% endif %}>
                                         <span class="glyphicon glyphicon-plus-sign" style="font-size: 2em"></span>
                                     </a>
@@ -153,14 +153,14 @@
                                 <div class="list-group-item">
                                     <div class="row">
                                         <div class="col-sm-6">
-                                            <a href="{% url 'administrarRolesPermisos.views.changeRole' proyecto.id rol.id %}">
-                                                {{ rol.nombre }}
+                                            <a href="{% url 'administrarRolesPermisos.views.modificarRol' proyecto.id rol.id %}">
+                                                {{ rol.name }}
                                             </a>
                                         </div>
                                         <div class="col-sm-6">
                                             <span class="pull-right" data-toggle="tooltip" title="Eliminar Rol" id="tooltip">
-                                                <span class="pull-right" style="padding-right: 33%">
-                                                    <a href="{% url 'administrarRolesPermisos.views.deleteRole' proyecto.id rol.id %}" class="text-danger">
+                                                <span class="pull-right" style="padding-right: 5%">
+                                                    <a href="{% url 'administrarRolesPermisos.views.eliminarRol' proyecto.id rol.id %}" class="text-danger">
                                                         <span class="glyphicon glyphicon-minus-sign"></span>
                                                     </a>
                                                 </span>

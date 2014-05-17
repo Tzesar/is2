@@ -14,12 +14,14 @@ from administrarUsuarios.views import createUser, changeUser, userList, userList
 from zar.views import about, contact
 from administrarProyectos.views import createProject, changeProject, projectList, workProject, setUserToProject,\
     viewSetUserProject, changeProjectLeader, startProject, cancelProject, finProject, vistaDesarrollo
+
 from administrarFases.views import changePhase, createPhase, phaseList, deletePhase, importMultiplePhase,\
     confirmar_eliminacion_fase, workphase, finPhase, startPhase, subirOrden, bajarOrden
-from administrarRolesPermisos.views import createRole, roleList, changeRole, deleteRole, asignRole
+from administrarRolesPermisos.views import crearRol, eliminarRol, modificarRol, accesoDenegado
 from administrarItems.views import createItem, changeItem, completarEnteros, completarArchivo, \
     completarImagen, completarTexto, historialItemBase, relacionarItemBaseView, reversionItemBase, relacionarItemBase, \
     finalizarItem, validarItem, dardebajaItem, workItem
+
 
 
 admin.autodiscover()
@@ -68,7 +70,6 @@ urlpatterns = patterns('',
                        url(r'^importmultiplephase/(?P<id_fase>\d+)/(?P<id_proyecto_destino>\d+)$', importMultiplePhase),
                        url(r'^deletephase_confirm/(?P<id_fase>\d+)$', confirmar_eliminacion_fase),
                        url(r'^deletephase/(?P<id_fase>\d+)$', deletePhase),
-                       url(r'^createrole/(?P<id_proyecto>\d+)$', createRole),
                        url(r'^workphase/(?P<id_fase>\d+)$', workphase),
                        url(r'^finphase/(?P<id_fase>\d+)$', finPhase),
                        url(r'^startphase/(?P<id_fase>\d+)$', startPhase),
@@ -76,10 +77,11 @@ urlpatterns = patterns('',
                        url(r'^bajar/(?P<id_fase>\d+)$', bajarOrden),
 
 ###################################################### ROLES ##########################################
-                       url(r'^rolelist/(?P<id_proyecto>\d+)$', roleList, name="rolelist"),
-                       url(r'^changerole/(?P<id_proyecto>\d+)/(?P<id_rol>\d+)$', changeRole, name="rolelist"),
-                       url(r'^deleterole/(?P<id_proyecto>\d+)/(?P<id_rol>\d+)$', deleteRole),
-                       url(r'^asignrole/(?P<id_proyecto>\d+)/(?P<id_rol>\d+)$', asignRole),
+                       url(r'^createrole/(?P<id_proyecto>\d+)$', crearRol),
+                       url(r'^changerole/(?P<id_proyecto>\d+)/(?P<id_rol>\d+)$', modificarRol, name="rolelist"),
+                       url(r'^deleterole/(?P<id_proyecto>\d+)/(?P<id_rol>\d+)$', eliminarRol),                                             
+                       url(r'^acceso_denegado/(?P<id_error>\d+)$', accesoDenegado),
+
 
 ###################################################### TIPO DE ITEMS ###################################################
                        url(r'^createitemtype/(?P<id_fase>\d+)$', createItemType),

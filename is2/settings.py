@@ -44,6 +44,7 @@ INSTALLED_APPS = (
     'django.contrib.admin',
     'django_tables2',
     'floppyforms',
+    'guardian',
     'reversion',
     'zar',
     'autenticacion',
@@ -54,6 +55,11 @@ INSTALLED_APPS = (
     'administrarTipoItem',
     'administrarItems',
     'administrarLineaBase',
+)
+
+AUTHENTICATION_BACKENDS = (
+    'django.contrib.auth.backends.ModelBackend',
+    'guardian.backends.ObjectPermissionBackend',
 )
 
 MIDDLEWARE_CLASSES = (
@@ -120,6 +126,9 @@ AUTH_USER_MODEL = "autenticacion.Usuario"
 LOGIN_URL = "/login/"
 LOGIN_REDIRECT_URL = '/main/'
 
+# Configuracion necesaria para Django Guardian
+ANONYMOUS_USER_ID = -1
+
 MEDIA_ROOT = os.path.join(BASE_DIR, 'is2/', 'static/')
 MEDIA_URL = '/media/'
 
@@ -138,87 +147,87 @@ DATE_INPUT_FORMATS = (
     '%d %B %Y', '%d %B, %Y',            # '25 October 2006', '25 October, 2006'
 )
 
-LOGGING = {
-    'version': 1,
-    'disable_existing_loggers': False,
-    'formatters': {
-        'verbose': {
-            'format': "[%(asctime)s] %(levelname)s %(message)s",
-            'datefmt': "%d/%b/%Y %H:%M:%S"
-        },
-    },
-    'handlers': {
-        'proyecto': {
-            'level': 'INFO',
-            'class': 'logging.FileHandler',
-            'filename': 'Proyectos.log',
-            'formatter': 'verbose'
-        },
-        'usuario': {
-            'level': 'INFO',
-            'class': 'logging.FileHandler',
-            'filename': 'Usuarios.log',
-            'formatter': 'verbose'
-        },
-        'fase': {
-            'level': 'INFO',
-            'class': 'logging.FileHandler',
-            'filename': 'Fases.log',
-            'formatter': 'verbose'
-        },
-        'rol': {
-            'level': 'INFO',
-            'class': 'logging.FileHandler',
-            'filename': 'Roles.log',
-            'formatter': 'verbose'
-        },
-        'tipo_item': {
-            'level': 'INFO',
-            'class': 'logging.FileHandler',
-            'filename': 'Tipo_Items.log',
-            'formatter': 'verbose'
-        },
-        'item': {
-            'level': 'INFO',
-            'class': 'logging.FileHandler',
-            'filename': 'Items.log',
-            'formatter': 'verbose'
-        },
-        'linea_base': {
-            'level': 'INFO',
-            'class': 'logging.FileHandler',
-            'filename': 'Linea_base.log',
-            'formatter': 'verbose'
-        },
-    },
-    'loggers': {
-        'administrarProyectos': {
-            'handlers': ['proyecto'],
-            'level': 'INFO',
-        },
-        'administrarUsuarios': {
-            'handlers': ['usuario'],
-            'level': 'INFO',
-        },
-        'administrarFases': {
-            'handlers': ['fase'],
-            'level': 'INFO',
-        },
-        'administrarTipoItem': {
-            'handlers': ['tipo_item'],
-            'level': 'INFO',
-        },
-        'administrarRolesPermisos': {
-            'handlers': ['rol'],
-            'level': 'INFO',
-        },
-        'administrarItems': {
-            'handlers': ['item'],
-            'level': 'INFO',
-        },
-        'administrarLineaBase': {
-            'handlers': ['linea_base'],
-            'level': 'INFO',
-        },
-    }
-}
+# LOGGING = {
+#     'version': 1,
+#     'disable_existing_loggers': False,
+#     'formatters': {
+#         'verbose': {
+#             'format': "[%(asctime)s] %(levelname)s %(message)s",
+#             'datefmt': "%d/%b/%Y %H:%M:%S"
+#         },
+#     },
+#     'handlers': {
+#         'proyecto': {
+#             'level': 'INFO',
+#             'class': 'logging.FileHandler',
+#             'filename': 'Proyectos.log',
+#             'formatter': 'verbose'
+#         },
+#         'usuario': {
+#             'level': 'INFO',
+#             'class': 'logging.FileHandler',
+#             'filename': 'Usuarios.log',
+#             'formatter': 'verbose'
+#         },
+#         'fase': {
+#             'level': 'INFO',
+#             'class': 'logging.FileHandler',
+#             'filename': 'Fases.log',
+#             'formatter': 'verbose'
+#         },
+#         'rol': {
+#             'level': 'INFO',
+#             'class': 'logging.FileHandler',
+#             'filename': 'Roles.log',
+#             'formatter': 'verbose'
+#         },
+#         'tipo_item': {
+#             'level': 'INFO',
+#             'class': 'logging.FileHandler',
+#             'filename': 'Tipo_Items.log',
+#             'formatter': 'verbose'
+#         },
+#         'item': {
+#             'level': 'INFO',
+#             'class': 'logging.FileHandler',
+#             'filename': 'Items.log',
+#             'formatter': 'verbose'
+#         },
+#         'linea_base': {
+#             'level': 'INFO',
+#             'class': 'logging.FileHandler',
+#             'filename': 'Linea_base.log',
+#             'formatter': 'verbose'
+#         },
+#     },
+#     'loggers': {
+#         'administrarProyectos': {
+#             'handlers': ['proyecto'],
+#             'level': 'INFO',
+#         },
+#         'administrarUsuarios': {
+#             'handlers': ['usuario'],
+#             'level': 'INFO',
+#         },
+#         'administrarFases': {
+#             'handlers': ['fase'],
+#             'level': 'INFO',
+#         },
+#         'administrarTipoItem': {
+#             'handlers': ['tipo_item'],
+#             'level': 'INFO',
+#         },
+#         'administrarRolesPermisos': {
+#             'handlers': ['rol'],
+#             'level': 'INFO',
+#         },
+#         'administrarItems': {
+#             'handlers': ['item'],
+#             'level': 'INFO',
+#         },
+#         'administrarLineaBase': {
+#             'handlers': ['linea_base'],
+#             'level': 'INFO',
+#         },
+#     }
+# }
