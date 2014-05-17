@@ -19,7 +19,7 @@ from administrarFases.views import changePhase, createPhase, phaseList, deletePh
 from administrarRolesPermisos.views import createRole, roleList, changeRole, deleteRole, asignRole
 from administrarItems.views import createItem, changeItem, completarEnteros, completarArchivo, \
     completarImagen, completarTexto, historialItemBase, relacionarItemBaseView, reversionItemBase, relacionarItemBase, \
-    finalizarItem, validarItem, dardebajaItem
+    finalizarItem, validarItem, dardebajaItem, restaurarItem
 
 
 admin.autodiscover()
@@ -105,7 +105,7 @@ urlpatterns = patterns('',
                        url(r'^finalizaritem/(?P<id_item>\d+)$', finalizarItem ),
                        url(r'^validaritem/(?P<id_item>\d+)$', validarItem ),
                        url(r'^dardebajaitem/(?P<id_item>\d+)$', dardebajaItem ),
-
+                       url(r'^restauraritem/(?P<id_item>\d+)$', restaurarItem ),
 ###################################################### LINEA BASE ######################################################
                        url(r'^createlb/(?P<id_fase>\d+)$', createLB ),
                        )
