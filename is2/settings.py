@@ -52,6 +52,8 @@ INSTALLED_APPS = (
     'administrarFases',
     'administrarRolesPermisos',
     'administrarTipoItem',
+    'administrarItems',
+    'reversion'
 )
 
 AUTHENTICATION_BACKENDS = (
@@ -93,7 +95,7 @@ DATABASES = {
 # Internationalization
 # https://docs.djangoproject.com/en/1.6/topics/i18n/
 
-LANGUAGE_CODE = 'es-PY'
+LANGUAGE_CODE = 'en-us'
 
 TIME_ZONE = 'America/Asuncion'
 

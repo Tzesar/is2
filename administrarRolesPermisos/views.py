@@ -3,19 +3,19 @@
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponseRedirect
 from django.shortcuts import render
+from django.db import IntegrityError
 
 from administrarRolesPermisos.forms import NuevoRolForm, RoleObjectPermissionsForm, asignarUsuariosRolForm
 
 from administrarRolesPermisos.models import Rol
 
 from autenticacion.models import Usuario
-from administrarProyectos.models import Proyecto
+from administrarProyectos.models import Proyecto, UsuariosVinculadosProyectos
+from administrarRolesPermisos.decorators import *
 from administrarFases.models import Fase
 
 
 
-
-# logger = logging.getLogger(__name__)
 
 @login_required
 def crearRol(request, id_proyecto):
@@ -197,7 +197,6 @@ def eliminarRol(request, id_proyecto, id_rol):
     """
     *Vista para la eliminación de roles en un proyecto.*
     *Permite desasignar a los usuarios del ``Rol``, además de borrar todas las asociaciones entre el rol y los ``permisos``.*
-
 
     :param request: HttpRequest
     :param idProyecto: Clave única del proyecto donde se está borrando el ``Rol``.

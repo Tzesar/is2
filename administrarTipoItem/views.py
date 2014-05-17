@@ -42,9 +42,6 @@ def createItemType(request, id_fase):
                 return render(request, "keyduplicate_tipoitem.html", {'phase': phase, "message": e.message},
                   context_instance=RequestContext(request))
 
-            logger.info('El usuario '+ request.user.username +' ha creado el tipo de ítem '+ form["nombre"].value() +
-                        ' dentro de la fase '+ phase.nombre + ' en el proyecto: ' + project.nombre)
-
             return HttpResponseRedirect('/changephase/' + str(phase.id))
     else:
         form = NewItemTypeForm()
@@ -74,8 +71,6 @@ def changeItemType(request, id_tipoitem):
         form = ChangeItemTypeForm(request.POST, instance=itemtype)
         if form.is_valid():
             form.save()
-            logger.info('El usuario '+ request.user.username +' ha modificado el tipo de item '+ itemtype.nombre +
-                        ' la fase '+ phase.nombre + ' dentro del proyecto: ' + project.nombre)
 
             return HttpResponseRedirect('/changephase/' + str(phase.id))
 
@@ -102,8 +97,6 @@ def deleteItemType(request, id_tipoitem):
         attr.delete()
 
     itemtype.delete()
-    logger.info('El usuario '+ request.user.username +' ha eliminado el tipo de ítem '+ itemtype.nombre +
-                ' de la fase '+ fase.nombre +' dentro del proyecto: ' + fase.proyecto.nombre )
 
     return HttpResponseRedirect('/changephase/' + str(fase.id))
 
@@ -240,8 +233,8 @@ def changeAtribute(request, id_atribute):
         if form.is_valid():
             form.save()
 
-            logger.info('El usuario '+request.user.username+' ha modificado el atributo (ATI-' + atribute.id +') ' +
-                        atribute.nombre + ' perteneciente al tipo de ítem: ' + itemtype.nombre )
+            # logger.info('El usuario '+request.user.username+' ha modificado el atributo (ATI-' + atribute.id +') ' +
+            #             atribute.nombre + ' perteneciente al tipo de ítem: ' + itemtype.nombre )
 
             return HttpResponseRedirect('/changeitemtype/' + str(itemtype.id))
     else:

@@ -3,6 +3,8 @@
 from django.http.response import HttpResponseRedirect
 
 from administrarProyectos.models import Proyecto
+from administrarFases.models import Fase
+from administrarTipoItem.models import TipoItem, Atributo
 
 
 def admin_requerido(function):

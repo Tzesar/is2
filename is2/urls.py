@@ -12,9 +12,13 @@ from autenticacion.views import main, myLogin
 from administrarUsuarios.views import createUser, changeUser, userList, userListJson, changePass, changeAnyUser
 from zar.views import about, contact
 from administrarProyectos.views import createProject, changeProject, projectList, workProject, setUserToProject,\
-    viewSetUserProject, changeProjectLeader
+    viewSetUserProject, changeProjectLeader, startProject, cancelProject
 from administrarFases.views import changePhase, createPhase, phaseList, deletePhase, importMultiplePhase
 from administrarRolesPermisos.views import crearRol, eliminarRol, modificarRol, accesoDenegado
+from administrarFases.views import changePhase, createPhase, phaseList, deletePhase, importPhase, importMultiplePhase,\
+    confirmar_eliminacion_fase, workphase
+from administrarItems.views import createItem, changeItem, completarEnteros, completarArchivo, \
+    completarImagen, completarTexto
 
 
 admin.autodiscover()
@@ -41,12 +45,16 @@ urlpatterns = patterns('',
                        url(r'^usersetproject/(?P<id_proyecto>\d+)$', viewSetUserProject),
                        url(r'^projectlist/$', projectList, name='projectlist'),
                        url(r'^workproject/(?P<id_proyecto>\d+)$', workProject, name='workproject'),
+                       url(r'^startproject/(?P<id_proyecto>\d+)$', startProject, name='startproject'),
+                       url(r'^cancelproject/(?P<id_proyecto>\d+)$', cancelProject, name='cancelproject'),
 
                        url(r'^createphase/(?P<id_proyecto>\d+)$', createPhase),
                        url(r'^changephase/(?P<id_fase>\d+)$', changePhase),
                        url(r'^phaselist/(?P<id_proyecto>\d+)$', phaseList),
                        url(r'^importmultiplephase/(?P<id_fase>\d+)/(?P<id_proyecto_destino>\d+)$', importMultiplePhase),
+                       url(r'^deletephase_confirm/(?P<id_fase>\d+)$', confirmar_eliminacion_fase),
                        url(r'^deletephase/(?P<id_fase>\d+)$', deletePhase),
+                       url(r'^workphase/(?P<id_fase>\d+)$', workphase),
 
                        url(r'^createrole/(?P<id_proyecto>\d+)$', crearRol),
                        # url(r'^rolelist/(?P<id_proyecto>\d+)$', roleList, name="rolelist"),
@@ -66,9 +74,15 @@ urlpatterns = patterns('',
                            'django.contrib.auth.views.password_reset_confirm', {'post_reset_redirect': 'registration/password_reset_complete'}),
                        url(r'^/password_reset_complete/$', 'django.contrib.auth.views.password_reset_complete'),
 
-                       # url(r'^asignrole/(?P<id_proyecto>\d+)/(?P<id_rol>\d+)$', asignRole),
                        url(r'^acceso_denegado/(?P<id_error>\d+)$', accesoDenegado),
                        url(r'^createatribute/(?P<id_tipoitem>\d+)$', createAtribute),
                        url(r'^changeatribute/(?P<id_atribute>\d+)$', changeAtribute),
                        url(r'^deleteatribute/(?P<id_atribute>\d+)$', deleteAtribute),
+
+                       url(r'^createitem/(?P<id_fase>\d+)$', createItem),
+                       url(r'^changeitem/(?P<id_item>\d+)$', changeItem),
+                       url(r'^completarenteros/(?P<id_atributo>\d+)/(?P<id_item>\d+)$', completarEnteros),
+                       url(r'^completatexto/(?P<id_atributo>\d+)/(?P<id_item>\d+)$', completarTexto),
+                       url(r'^completararchivo/(?P<id_atributo>\d+)/(?P<id_item>\d+)$', completarArchivo),
+                       url(r'^completarimagen/(?P<id_atributo>\d+)/(?P<id_item>\d+)$', completarImagen),
                        )
