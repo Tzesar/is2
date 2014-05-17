@@ -36,7 +36,7 @@ class ItemBase(models.Model):
     fecha_creacion = models.DateTimeField(auto_now_add=True, help_text='Fecha de creacion del Item', null=True)
     fecha_modificacion = models.DateTimeField(help_text='Fecha de modificacion del Item', null=True)
     tipoitem = models.ForeignKey(TipoItem)
-    complejidad = models.IntegerField( help_text='Ingresar la complejidad del ítem creado, un valor entre 0-100')
+    complejidad = models.IntegerField(help_text='Ingresar la complejidad del ítem creado, un valor entre 0-100')
     costo = models.IntegerField(help_text='Ingresar el costo de desarrollar el ítem')
     tiempo = models.IntegerField(help_text='Ingresar el tiempo estimado para desarrollar ')
     version = models.IntegerField(help_text='Version actual del item', default=1)

@@ -4,14 +4,11 @@ from django.contrib.auth.decorators import login_required
 from django.template import RequestContext
 from django.shortcuts import render, render_to_response
 from django.utils import timezone
-import pydot
 
 from administrarItems.forms import itemForm, campoEnteroForm, campoImagenForm, campoTextoCortoForm, campoFileForm
 from administrarItems.models import ItemBase, CampoImagen, CampoNumero, CampoFile, CampoTextoCorto, CampoTextoLargo, ItemRelacion
 from administrarRolesPermisos.decorators import *
 import reversion
-from is2.settings import MEDIA_ROOT
-
 
 
 @login_required()
@@ -43,6 +40,7 @@ def createItem(request, id_fase):
             item.save()
 
             return HttpResponseRedirect('/workphase/' + str(fase.id))
+
     else:
         form = itemForm()
         form.fields['tipoitem'].queryset = TipoItem.objects.filter(fase=id_fase)
@@ -64,6 +62,11 @@ def changeItem(request, id_item):
     :return: Proporciona la pagina ``changephase.html`` con el formulario correspondiente.
              Modifica la fase especifica  y luego regresa al menu principal
     """
+    items = ItemBase.objects.filter(pk=id_item)
+    if items:
+        print 'Inicio de Proceso de Modificacion'
+    else:
+        return
 
     item = ItemBase.objects.get(pk=id_item)
     tipoItem = item.tipoitem

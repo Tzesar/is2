@@ -358,6 +358,7 @@ def finPhase(request, id_fase):
                                                                        'usuariosAsociados': usuariosAsociados,
                                                                        'message': message, 'error': error})
 
+
 def startPhase(request, id_fase):
     """
     Vista para iniciar una fase
