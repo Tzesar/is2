@@ -107,20 +107,34 @@ class ChangeProjectLeaderForm(forms2.ModelForm):
         if f is not None:
             f.queryset = f.queryset.select_related('content_type')
 
-class setUserToProjectForm(forms2.ModelForm):
+class setUserToProjectForm(forms2.Form):
     """
     *Formulario para vincular usuarios a un proyecto*
 
     :param args: Argumentos para el modelo base ``ModelForm``.
     :param kwargs: Keyword Arguments para el modelo ``ModelForm``.
     """
-    cod_usuario = str(forms.ModelChoiceField(widget=forms.Select, queryset=Usuario.objects.all(),
-                                         label='Usuarios Disponibles', required=True, ))
 
-    class Meta:
-        model = UsuariosVinculadosProyectos
-        fields = ('cod_usuario',)
-
+    usuarios = forms2.MultipleChoiceField()
 
     def __init__(self, *args, **kwargs):
+        id_proyecto = kwargs.pop('id_proyecto')
+        self.proyecto = Proyecto.objects.get(id=id_proyecto)
         super(setUserToProjectForm, self).__init__(*args, **kwargs)
+
+        usuariosExcluidos = list(UsuariosVinculadosProyectos.objects.filter(cod_proyecto=self.proyecto).values_list('cod_usuario', flat=True))
+        usuariosExcluidos.append(-1,)
+        opciones = list(Usuario.objects.exclude(pk__in=usuariosExcluidos).filter(is_superuser=False, is_active=True).values_list('id', 'username'))
+
+        self.fields['usuarios'].choices = opciones
+        super(setUserToProjectForm, self).full_clean()
+
+    def get_cleaned_data(self):
+        """
+        Retorna las opciones seleccionadas en la vista.
+        :return: opciones: ``Lista`` de valores.
+        """
+
+        opciones = self.cleaned_data.get('usuarios')
+
+        return opciones

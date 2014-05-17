@@ -13,8 +13,9 @@ from administrarUsuarios.views import createUser, changeUser, userList, userList
 from zar.views import about, contact
 from administrarProyectos.views import createProject, changeProject, projectList, workProject, setUserToProject,\
     viewSetUserProject, changeProjectLeader
-from administrarFases.views import changePhase, createPhase, phaseList, deletePhase, importPhase, importMultiplePhase
-from administrarRolesPermisos.views import createRole, roleList, changeRole, deleteRole, asignRole, accesoDenegado
+from administrarFases.views import changePhase, createPhase, phaseList, deletePhase, importMultiplePhase
+from administrarRolesPermisos.views import crearRol, eliminarRol, modificarRol, accesoDenegado
+
 
 admin.autodiscover()
 
@@ -46,11 +47,11 @@ urlpatterns = patterns('',
                        url(r'^phaselist/(?P<id_proyecto>\d+)$', phaseList),
                        url(r'^importmultiplephase/(?P<id_fase>\d+)/(?P<id_proyecto_destino>\d+)$', importMultiplePhase),
                        url(r'^deletephase/(?P<id_fase>\d+)$', deletePhase),
-                       url(r'^createrole/(?P<id_proyecto>\d+)$', createRole),
 
-                       url(r'^rolelist/(?P<id_proyecto>\d+)$', roleList, name="rolelist"),
-                       url(r'^changerole/(?P<id_proyecto>\d+)/(?P<id_rol>\d+)$', changeRole, name="rolelist"),
-                       url(r'^deleterole/(?P<id_proyecto>\d+)/(?P<id_rol>\d+)$', deleteRole),
+                       url(r'^createrole/(?P<id_proyecto>\d+)$', crearRol),
+                       # url(r'^rolelist/(?P<id_proyecto>\d+)$', roleList, name="rolelist"),
+                       url(r'^changerole/(?P<id_proyecto>\d+)/(?P<id_rol>\d+)$', modificarRol),
+                       url(r'^deleterole/(?P<id_proyecto>\d+)/(?P<id_rol>\d+)$', eliminarRol),
 
                        url(r'^createitemtype/(?P<id_fase>\d+)$', createItemType),
                        url(r'^changeitemtype/(?P<id_tipoitem>\d+)$', changeItemType),
@@ -65,8 +66,8 @@ urlpatterns = patterns('',
                            'django.contrib.auth.views.password_reset_confirm', {'post_reset_redirect': 'registration/password_reset_complete'}),
                        url(r'^/password_reset_complete/$', 'django.contrib.auth.views.password_reset_complete'),
 
-                       url(r'^asignrole/(?P<id_proyecto>\d+)/(?P<id_rol>\d+)$', asignRole),
-                       url(r'^acceso_denegado/(?P<id_error>\d+)$', accesoDenegado, name="acceso_denegado"),
+                       # url(r'^asignrole/(?P<id_proyecto>\d+)/(?P<id_rol>\d+)$', asignRole),
+                       url(r'^acceso_denegado/(?P<id_error>\d+)$', accesoDenegado),
                        url(r'^createatribute/(?P<id_tipoitem>\d+)$', createAtribute),
                        url(r'^changeatribute/(?P<id_atribute>\d+)$', changeAtribute),
                        url(r'^deleteatribute/(?P<id_atribute>\d+)$', deleteAtribute),

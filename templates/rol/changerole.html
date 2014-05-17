@@ -2,6 +2,11 @@
 {% load staticfiles %}
 {% load floppyforms %}
 
+    {% block cssAdicional %}
+        <link href="{% static 'bootstrap/css/jquery-theme/jquery-ui-1.10.3.custom.css' %}" rel="stylesheet">
+        <link href="{% static 'bootstrap/css/multi-select.css' %}" rel="stylesheet">
+    {% endblock cssAdicional %}
+
     {% block title %}Modificar Rol{% endblock %}
 
     {% block errorBlock %}
@@ -17,29 +22,56 @@
 
     {% block breadContent %}
         <li><a href="{% url 'autenticacion.views.main' %}">Inicio</a></li>
-        <li><a href="{% url 'administrarProyectos.views.workProject' project.id %}">{{ project.nombre }}</a></li>
-        <li class="active">Rol: {{ rol.nombre }}</li>
+        <li><a href="{% url 'administrarProyectos.views.workProject' proyecto.id %}">{{ proyecto.nombre }}</a></li>
+        <li class="active">{{ rol.name }}</li>
     {% endblock breadContent %}
 
     {% block padTop %}{% endblock padTop %}
     {% block panelCentral %}
         <div class="panel-heading">
-            <h1 class="text-info" style="display: inline-block">Rol: {{ rol.nombre }}</h1>
+            <h1 class="text-info" style="display: inline-block">{{ proyecto.nombre }} - Modificar Rol</h1>
         </div>
         <div class="panel-body">
-            <div class="col-lg-4 col-md-4 col-sm-4">
-                <form action="" class="form-signin" role="form" method="post">
-                    {% csrf_token %}
-                    {% form form using "formsLayouts/div.html" %}
-                    <div class="btn-group btn-group-justified">
-                        <div class="btn-group">
-                            <a href="{% url 'administrarProyectos.views.workProject' project.id %}" class="btn btn-lg btn-warning" type="submit">Cancelar</a>
+            <form action="" role="form" method="post">
+                {% csrf_token %}
+                <div class="col-lg-5 col-md-5 col-sm-5">
+                    <h2>Datos del rol: {{ rol.name }}</h2>
+                    {% form rolForm using "formsLayouts/div.html" %}
+                    {% form asignarUsuariosForm using "formsLayouts/div.html" %}
+                </div>
+                <div class="col-lg-5 col-md-5 col-sm-5 col-lg-offset-1 col-md-offset-1 col-sm-offset-1">
+                    <h2>Permisos</h2>
+                    <div class="form-group" id="listaPermisosAcordeon">
+                        <h3>Proyecto</h3>
+                        <div>
+                            {{ grupoForm.as_p }}
                         </div>
-                        <div class="btn-group">
-                            <button class="btn btn-lg btn-success" type="submit">Guardar cambios</button>
+                        {% for faseForm in fasesForms %}
+                            <h3>{{ faseForm.obj.nombre }}</h3>
+                            <div>
+                                {{ faseForm.as_p }}
+                            </div>
+                        {% endfor %}
+                    </div>
+                </div>
+                <div class="col-lg-12 col-md-12 col-sm-12">
+                    <div class="col-lg-5 col-md-5 col-sm-5" style="padding-left: 0px; padding-right: 0px">
+                        <div class="btn-group btn-group-justified">
+                            <div class="btn-group">
+                                <a href="{% url 'administrarProyectos.views.workProject' proyecto.id %}" class="btn btn-warning btn-lg">Atrás</a>
+                            </div>
+                            <div class="btn-group">
+                                <button class="btn btn-lg btn-success btn-block" type="submit">Crear Rol</button>
+                            </div>
                         </div>
                     </div>
-                </form>
-            </div>
+                </div>
+            </form>
         </div>
     {% endblock %}>
+
+    {% block jsAdicional %}
+        <script src="{% static 'bootstrap/js/jquery-ui-1.10.4.min.js' %}" type="application/javascript"></script>
+        <script src="{% static 'bootstrap/js/jquery.multi-select.js' %}" type="application/javascript"></script>
+        <script src="{% static "bootstrap/js/crearRol.js" %}"></script>
+    {% endblock jsAdicional %}

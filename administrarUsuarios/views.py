@@ -9,14 +9,13 @@ from django.http import HttpResponseRedirect, HttpResponse
 
 from administrarUsuarios.forms import CustomUserChangeForm, CustomUserCreationForm, CambiarUsuarioForm
 from autenticacion.models import Usuario
-from administrarRolesPermisos.decorators import admin_requerido
+# from administrarRolesPermisos.decorators import admin_requerido
 
 
-logger = logging.getLogger(__name__)
+# logger = logging.getLogger(__name__)
 
 
 @login_required
-@admin_requerido
 def createUser(request):
     """
     *Vista para la creación de usuarios en el sistema.*
@@ -31,8 +30,8 @@ def createUser(request):
         form = CustomUserCreationForm(request.POST)
         if form.is_valid():
             form.save()
-            logger.info('El usuario ' + request.user.username + ' ha creado el usuario: ' +
-                        form["username"].value() + ' dentro del sistema')
+            # logger.info('El usuario ' + request.user.username + ' ha creado el usuario: ' +
+            #             form["username"].value() + ' dentro del sistema')
             return HttpResponseRedirect("/userlist/")
     else:
         form = CustomUserCreationForm()
@@ -56,7 +55,7 @@ def changeUser(request):
         userForm = CambiarUsuarioForm(postdata, instance=request.user)
         if userForm.is_valid():
             userForm.save()
-            logger.info('El usuario ' + request.user.username + ' ha modificado sus datos personales dentro del sistema')
+            # logger.info('El usuario ' + request.user.username + ' ha modificado sus datos personales dentro del sistema')
             return HttpResponseRedirect("/main/")
     else:
         userForm = CambiarUsuarioForm(instance=request.user)
@@ -79,7 +78,7 @@ def changePass(request):
         form = PasswordChangeForm(user=request.user, data=request.POST)
         if form.is_valid():
             form.save()
-            logger.info('El usuario ' + request.user.username + ' ha modificado su contrasena dentro del sistema')
+            # logger.info('El usuario ' + request.user.username + ' ha modificado su contrasena dentro del sistema')
             return HttpResponseRedirect("/changeuser/")
     else:
         form = PasswordChangeForm(user=request.user)
@@ -87,7 +86,6 @@ def changePass(request):
 
 
 @login_required
-@admin_requerido
 def userList(request):
     """
     *Vista para listar los usuarios existentes en el sistema.*
@@ -137,7 +135,6 @@ def userList(request):
 
 
 @login_required()
-@admin_requerido
 def changeAnyUser(request, id_usuario):
     """
     *Vista para la modificacion de usuarios en el sistema.
@@ -153,8 +150,8 @@ def changeAnyUser(request, id_usuario):
         form = CambiarUsuarioForm(postdata, instance=usuarios)
         if form.is_valid():
             form.save()
-            logger.info('El usuario ' + request.user.username + ' ha modificado el usuario ' +
-                        usuarios.username + ' dentro del sistema')
+            # logger.info('El usuario ' + request.user.username + ' ha modificado el usuario ' +
+            #             usuarios.username + ' dentro del sistema')
             return HttpResponseRedirect("/userlist/")
     else:
         form = CambiarUsuarioForm(instance=usuarios)

@@ -36,6 +36,12 @@ class Proyecto(models.Model):
     def __unicode__(self):
         return self.nombre
 
+    class Meta:
+        permissions = (
+            ('consultar_Proyecto', 'Puede consultar proyecto'),
+            ('consultar_Usuarios_Vinculados', 'Puede consultar usuarios vinculados'),
+        )
+
 
 class UsuariosVinculadosProyectos(models.Model):
     """
@@ -60,6 +66,9 @@ class UsuariosVinculadosProyectos(models.Model):
     cod_usuario = models.ForeignKey(Usuario)
     habilitado = models.BooleanField('active', default=True,
         help_text='Designa si este usuario esta habilitado o no dentro de este proyecto')
+
+    def __unicode__(self):
+        return self.cod_usuario.username + ' ' + self.cod_proyecto.nombre
 
     class Meta:
         unique_together = (('cod_proyecto', 'cod_usuario'),)

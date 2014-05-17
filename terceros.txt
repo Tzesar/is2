@@ -1,0 +1,5 @@
+Agregar licencias de software de terceros
+
+- Todos los del readme
+- jquery-ui-bootstrap
+- lou/multi-select

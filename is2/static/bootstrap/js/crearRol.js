@@ -10,44 +10,25 @@ $(document).ready(function() {
     $('.proyecto').multiSelect({
         keepOrder: true,
         selectableHeader: "<h3>Permisos Disponibles</h3>",
-        selectionHeader: "<h3>Permisos Actuales</h3>",
-        afterInit: function() {
-            $("label[for='id_usuarios']").hide()
-        }
+        selectionHeader: "<h3>Permisos Actuales</h3>"
     });
 
-//    $('.proyecto').multiselectable({
-//        selectableLabel: 'Permisos Disponibles',
-//        selectedLabel: 'Permisos Elegidos',
-//        moveRightText: '',
-//        moveLeftText: ''
-//    });
-//
-//    $('.fase').multiselectable({
-//        selectableLabel: 'Permisos Disponibles',
-//        selectedLabel: 'Permisos Elegidos',
-//        moveRightText: '',
-//        moveLeftText: ''
-//    });
-//
-//    $('#m-selectable').change( function(){
-//        var that = this;
-//
-//        // Encuentra el elemento seleccionado
-//        var valor = $(that).val();
-//        var matchedElem = $(that).find('option[value="' + valor + '"]');
-//
-//        // Obtiene el tipo de permiso
-//        var tipo = matchedElem.attr( "data-type" );
-//
-//        // Segun el tipo de permiso muestra o oculta el select de fases
-//        if (tipo == 'fase'){
-//            fases.show();
-//        }
-//        else{
-//            fases.hide();
-//        }
-//
-//        //alert(tipo);
-//    });
+    $('.fase').multiSelect({
+        keepOrder: true,
+        selectableHeader: "<h3>Permisos Disponibles</h3>",
+        selectionHeader: "<h3>Permisos Actuales</h3>"
+    });
+
+    $('#id_usuarios').multiSelect({
+        keepOrder: true,
+        selectableHeader: "<h3>Usuarios del Proyecto</h3>",
+        selectionHeader: "<h3>Usuarios del Rol</h3>"
+    });
+
+    $("label[for='id_usuarios']").hide();
+
+    $('#listaPermisosAcordeon').accordion({
+        collapsible: true,
+        active: false
+    });
 });

@@ -11,16 +11,15 @@ from django.core.exceptions import ObjectDoesNotExist
 from administrarProyectos.forms import NewProjectForm, ChangeProjectForm, setUserToProjectForm, ChangeProjectLeaderForm
 from administrarProyectos.models import Proyecto, UsuariosVinculadosProyectos
 from administrarProyectos.tables import ProyectoTablaAdmin
-from administrarRolesPermisos.models import RolFase
+from administrarRolesPermisos.models import Rol
 from autenticacion.models import Usuario
 from administrarRolesPermisos.decorators import *
 
 
-logger = logging.getLogger(__name__)
+# logger = logging.getLogger(__name__)
 
 
 @login_required()
-@admin_requerido
 def createProject(request):
     """
     *Vista para la creación de proyectos en el sistema.
@@ -41,8 +40,8 @@ def createProject(request):
         if form.is_valid():
             form.save()
 
-            logger.info('El usuario ' + request.user.username + ' ha creado el proyecto: ' +
-                        form["nombre"].value() + ' dentro del sistema')
+            # logger.info('El usuario ' + request.user.username + ' ha creado el proyecto: ' +
+            #             form["nombre"].value() + ' dentro del sistema')
 
             vincularLider(form["nombre"].value(), form["lider_proyecto"].value())
 
@@ -61,7 +60,6 @@ def vincularLider(nombre_proyecto, lider_code):
 
 
 @login_required()
-@admin_requerido
 def changeProject(request, id_proyecto):
     """
     *Vista para la modificación de un proyecto dentro del sistema.
@@ -80,8 +78,8 @@ def changeProject(request, id_proyecto):
         form = ChangeProjectForm(request.POST, instance=project)
         if form.is_valid():
             form.save()
-            logger.info('El usuario ' + request.user.username + ' ha modificado el proyecto PR-' +
-                        id_proyecto + form["nombre"].value() + ' dentro del sistema')
+            # logger.info('El usuario ' + request.user.username + ' ha modificado el proyecto PR-' +
+            #             id_proyecto + form["nombre"].value() + ' dentro del sistema')
             return HttpResponseRedirect('/projectlist/')
     else:
         form = ChangeProjectForm(instance=project)
@@ -89,7 +87,6 @@ def changeProject(request, id_proyecto):
 
 
 @login_required()
-@lider_requerido
 def changeProjectLeader(request, id_proyecto):
     """
     *Vista para la modificación de un proyecto dentro del sistema.
@@ -108,8 +105,8 @@ def changeProjectLeader(request, id_proyecto):
         if form.is_valid():
             form.save()
 
-            logger.info('El Lider de Proyecto ' + request.user.username + ' ha modificado el proyecto PR-' +
-                        id_proyecto + form["nombre"].value() + ' dentro del sistema')
+            # logger.info('El Lider de Proyecto ' + request.user.username + ' ha modificado el proyecto PR-' +
+            #             id_proyecto + form["nombre"].value() + ' dentro del sistema')
 
             return HttpResponseRedirect('/workproject/'+str(project.id))
     else:
@@ -119,7 +116,6 @@ def changeProjectLeader(request, id_proyecto):
 
 
 @login_required()
-@admin_requerido
 def projectList(request):
     """
     *Vista para listar todos los proyectos dentro del sistema.
@@ -136,7 +132,6 @@ def projectList(request):
 
 
 @login_required()
-@lider_requerido
 def setUserToProject(request, id_proyecto):
     """
     *Vista para vincular usuarios a un proyecto existente.
@@ -149,21 +144,28 @@ def setUserToProject(request, id_proyecto):
     """
     project = Proyecto.objects.get(pk=id_proyecto)
 
-    u = UsuariosVinculadosProyectos.objects.filter(cod_proyecto=project)
-    usersInProject = u.values_list('cod_usuario', flat=True)
+
+    # Obtiene una lista de los usuarios ya vinculados al proyecto y una lista de los usuarios con estado
+    # Inactivo dentro del sistema para luego unir las dos listas en una.
+    # usuariosExcluidos = list(UsuariosVinculadosProyectos.objects.filter(cod_proyecto=project).values_list('cod_usuario', flat=True))
+    # usuariosExcluidos.append(-1,)
 
     if request.method == 'POST':
-        form = setUserToProjectForm(request.POST)
-        form.fields['cod_usuario'].queryset = Usuario.objects.exclude(pk__in=usersInProject).filter(is_superuser=False)
+        form = setUserToProjectForm(request.POST, id_proyecto=project.id)
         if form.is_valid():
-            usertoproject = form.save(commit=False)
-            usertoproject.cod_proyecto = project
-            usertoproject.save()
+            nuevosUsuariosAsociados = form.get_cleaned_data()
+            for idNuevoUsuario in nuevosUsuariosAsociados:
+                usuarioVinculado = UsuariosVinculadosProyectos()
+                usuarioVinculado.cod_usuario_id = idNuevoUsuario
+                usuarioVinculado.cod_proyecto = project
+                usuarioVinculado.save()
+
             return HttpResponseRedirect('/workproject/' + str(project.id))
     else:
-        form = setUserToProjectForm(instance=project)
-        form.fields['cod_usuario'].queryset = Usuario.objects.exclude(pk__in=usersInProject).filter(is_superuser=False)
-    return render(request, 'proyecto/setUserToProject.html', {'form': form, 'project': project, 'user': request.user},)
+        form = setUserToProjectForm(id_proyecto=project.id)
+    return render(request, 'proyecto/setUserToProject.html', {'form': form, 'projecto': project,
+                                                              'usuariosVinculados': UsuariosVinculadosProyectos.objects.filter(cod_proyecto=project),
+                                                              'user': request.user},)
 
 
 # TODO: eliminar luego si es necesario
@@ -186,6 +188,7 @@ def viewSetUserProject(request, id_proyecto):
 
 
 @login_required()
+@lider_requerido
 #TODO: Botones Iniciar Proyecto - Finalizar Proyecto - Cancelar Proyecto
 def workProject(request, id_proyecto):
     """
@@ -205,12 +208,13 @@ def workProject(request, id_proyecto):
 
         if usuario == proyecto.lider_proyecto:
             fases = proyecto.fase_set.all().order_by('id')
-            rolesFases = RolFase.objects.filter(proyecto=proyecto).order_by('nombre')
+            # rolesFases = RolFase.objects.filter(proyecto=proyecto).order_by('nombre')
+            roles = Rol.objects.filter(proyecto=proyecto)
 
             usuariosInactivos = Usuario.objects.filter(is_active=False).values_list('id', flat=True)
             usuariosAsociados = proyecto.usuariosvinculadosproyectos_set.exclude(cod_usuario__in=usuariosInactivos)
             return render(request, 'proyecto/workProjectLeader.html', {'user': request.user, 'proyecto': proyecto,
-                                                                       'fases': fases, 'roles': rolesFases,
+                                                                       'fases': fases, 'roles': roles,
                                                                        'usuariosAsociados': usuariosAsociados})
         else:
             return render(request, 'proyecto/workProject.html', {'user': request.user, })
@@ -234,7 +238,7 @@ def workProject(request, id_proyecto):
         return HttpResponse(json.dumps(responseDict), mimetype='application/javascript')
 
     try:
-        usuario = UsuariosVinculadosProyectos.objects.get(cod_usuario=idUsuario)
+        usuario = UsuariosVinculadosProyectos.objects.get(cod_usuario=idUsuario, cod_proyecto=id_proyecto)
     except ObjectDoesNotExist:
         responseDict = {'exito': False}
         return HttpResponse(json.dumps(responseDict), mimetype='application/javascript')

@@ -28,10 +28,20 @@ class Fase(models.Model):
     estado = models.CharField(max_length=3, choices=opciones_estado, default='PEN', help_text='Estado de la Fase')
     proyecto = models.ForeignKey(Proyecto)
 
+    def __unicode__(self):
+        return self.nombre
+
     class Meta:
         verbose_name = 'fase'
         verbose_name_plural = 'fases'
         unique_together = (('proyecto', 'nombre'),)
-
-    def __unicode__(self):
-        return self.nombre
+        permissions = (
+            ('crear_Item', 'Puede crear items'),
+            ('modificar_Item', 'Puede modificar items'),
+            ('dar_de_baja_Item', 'Puede dar de baja items'),
+            ('restaurar_Item', 'Puede restaurar items'),
+            ('revertir_Item', 'Puede revertir items'),
+            ('consultar_Item', 'Puede consultar items'),
+            ('consultar_Fase', 'Puede consultar fases'),
+            ('consultar_Tipo_Item', 'Puede consultar tipos de item'),
+        )

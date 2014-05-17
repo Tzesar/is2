@@ -35,16 +35,18 @@
                 </thead>
                 <tbody id="rows">
                     {% for user in usuarios %}
-                        <tr id="{{ user.id }}">
-                            <td class="datos">{{ user.username }}</td>
-                            <td class="datos">{{ user.get_full_name }}</td>
-                            <td class="estado">
-                                <input type="checkbox" name="usuario_activo" id="{{ user.id }}"
-                                       data_user_id="{{ user.id }}" data_url="{% url 'userlist' %}"
-                                       {% if user.is_active %} checked {% endif %} />
-                            </td>
-                            <td><a href="{% url 'changeanyuser' user.id %}" class="btn btn-info"><span class="glyphicon glyphicon-chevron-right"></span></a></td>
-                        </tr>
+                        {% if user.id > 0 %}
+                            <tr id="{{ user.id }}">
+                                <td class="datos">{{ user.username }}</td>
+                                <td class="datos">{{ user.get_full_name }}</td>
+                                <td class="estado">
+                                    <input type="checkbox" name="usuario_activo" id="{{ user.id }}"
+                                           data_user_id="{{ user.id }}" data_url="{% url 'userlist' %}"
+                                           {% if user.is_active %} checked {% endif %} />
+                                </td>
+                                <td><a href="{% url 'changeanyuser' user.id %}" class="btn btn-info"><span class="glyphicon glyphicon-chevron-right"></span></a></td>
+                            </tr>
+                        {% endif %}
                     {% endfor %}
                 </tbody>
             </table>
