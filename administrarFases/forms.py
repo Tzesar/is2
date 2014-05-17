@@ -1,6 +1,5 @@
 #encoding=utf-8
 
-from django import forms
 import floppyforms as forms2
 
 from administrarFases.models import Fase

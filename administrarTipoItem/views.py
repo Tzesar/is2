@@ -2,19 +2,22 @@
 import logging
 
 from django.contrib.auth.decorators import login_required
+from django.http import HttpResponseRedirect
 from django.template import RequestContext
 from django.shortcuts import render
 
+from administrarProyectos.models import Proyecto
+from administrarFases.models import Fase
+from administrarTipoItem.models import TipoItem, Atributo
 from administrarTipoItem.forms import NewItemTypeForm, ChangeItemTypeForm, CreateAtributeForm, ChangeAtributeForm
-from administrarRolesPermisos.decorators import *
+
 from django.db import IntegrityError
 
 
-logger = logging.getLogger(__name__)
+# logger = logging.getLogger(__name__)
 
 
 @login_required()
-@lider_requerido2
 def createItemType(request, id_fase):
     """
     *Vista para la creación de tipos de ítems en el sistema.
@@ -49,7 +52,6 @@ def createItemType(request, id_fase):
 
 
 @login_required()
-@lider_requerido3
 def changeItemType(request, id_tipoitem):
     """
     *Vista para la modificacion de un tipo de ítem dentro del sistema.
@@ -80,7 +82,6 @@ def changeItemType(request, id_tipoitem):
 
 
 @login_required()
-@lider_requerido3
 def deleteItemType(request, id_tipoitem):
     """
     *Vista para la eliminación de un tipo de ítem existente en el sistema.*
@@ -102,7 +103,6 @@ def deleteItemType(request, id_tipoitem):
 
 
 @login_required
-@lider_requerido2
 def itemTypeList(request, id_fase):
     """
     *Vista para la listar todos los tipos de ítem pertenecientes a alguna fase.*
@@ -126,7 +126,6 @@ def itemTypeList(request, id_fase):
 
 
 @login_required
-@lider_requerido2
 def importItemType(request, id_fase, id_itemtype):
     """
     *Vista para la listar todos los tipos de ítem pertenecientes a alguna fase.*
@@ -159,9 +158,9 @@ def importItemType(request, id_fase, id_itemtype):
         atributo.tipoDeItem = tipoItemNuevo
         atributo.save()
 
-    logger.info('El usuario '+request.user.username + ' ha importado el tipo de ítem ' +tipoItemExistente.nombre +
-                ' de la fase ' +tipoItemExistente.fase.nombre + ' del proyecto ' +tipoItemExistente.fase.proyecto.nombre+
-                ' a la fase' + fase.nombre +' del proyecto ' + fase.proyecto.nombre )
+    # logger.info('El usuario '+request.user.username + ' ha importado el tipo de ítem ' +tipoItemExistente.nombre +
+    #             ' de la fase ' +tipoItemExistente.fase.nombre + ' del proyecto ' +tipoItemExistente.fase.proyecto.nombre+
+    #             ' a la fase' + fase.nombre +' del proyecto ' + fase.proyecto.nombre )
 
 
 
@@ -169,7 +168,6 @@ def importItemType(request, id_fase, id_itemtype):
 
 
 @login_required()
-@lider_requerido3
 def createAtribute(request, id_tipoitem):
     """
     *Vista para la creación de ``Atributos`` en los ``Tipos de ítems`` en el sistema.
@@ -198,8 +196,8 @@ def createAtribute(request, id_tipoitem):
                 return render(request, "keyduplicate_atributo.html", {'itemtype': itemtype, "message": e.message},
                   context_instance=RequestContext(request))
 
-            logger.info('El usuario '+request.user.username+'  ha creado el atributo ' + atributo.nombre +
-                        ' perteneciente al tipo de item: '+ itemtype.nombre )
+            # logger.info('El usuario '+request.user.username+'  ha creado el atributo ' + atributo.nombre +
+            #             ' perteneciente al tipo de item: '+ itemtype.nombre )
 
 
         return HttpResponseRedirect('/changeitemtype/'+str(id_tipoitem))
@@ -210,7 +208,6 @@ def createAtribute(request, id_tipoitem):
 
 
 @login_required()
-@lider_requerido4
 def changeAtribute(request, id_atribute):
     """
     *Vista para la modificacion de un tipo de ítem dentro del sistema.
@@ -244,7 +241,6 @@ def changeAtribute(request, id_atribute):
 
 
 @login_required()
-@lider_requerido4
 def deleteAtribute(request, id_atribute):
     """
     *Vista para la eliminación de un tipo de ítem existente en el sistema.*
@@ -257,7 +253,7 @@ def deleteAtribute(request, id_atribute):
     id_tipoItem = attr.tipoDeItem.id
     attr.delete()
 
-    logger.info('El usuario '+ request.user.username +' ha eliminado el atributo '  + attr.nombre +
-                ' perteneciente al tipo de ítem: ' + attr.tipoDeItem.nombre )
+    # logger.info('El usuario '+ request.user.username +' ha eliminado el atributo '  + attr.nombre +
+    #             ' perteneciente al tipo de ítem: ' + attr.tipoDeItem.nombre )
 
     return HttpResponseRedirect('/changeitemtype/' + str(id_tipoItem))
