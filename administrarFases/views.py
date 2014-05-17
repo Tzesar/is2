@@ -332,7 +332,7 @@ def workphase(request, id_fase):
                 relaciones[i] = None
 
         return render(request, 'fase/workPhase.html', {'proyecto': proyectoTrabajo, 'fase': faseTrabajo,
-                                                       'listaItems': itemsFase, 'relaciones': relaciones.items(),})                                                       'listaItems': itemsFase, })
+                                                       'listaItems': itemsFase, 'relaciones': relaciones.items()})
 
 
 def finPhase(request, id_fase):
@@ -367,6 +367,7 @@ def finPhase(request, id_fase):
                                                                        'fases': fases, 'roles': rolesFases,
                                                                        'usuariosAsociados': usuariosAsociados,
                                                                        'message': message, 'error': error})
+
 
 def startPhase(request, id_fase):
     """

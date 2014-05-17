@@ -4,14 +4,12 @@ from django.contrib.auth.decorators import login_required
 from django.template import RequestContext
 from django.shortcuts import render, render_to_response
 from django.utils import timezone
-import pydot
 
 from administrarItems.forms import itemForm, campoEnteroForm, campoImagenForm, campoTextoCortoForm, campoFileForm, modificarAtributosBasicosForm,\
     modificarDatosItemForm, campoTextoLargoForm, CustomInlineFormSet_NUM, CustomInlineFormSet_STR, \
     CustomInlineFormSet_TXT, CustomInlineFormSet_IMG, CustomInlineFormSet_FIL
 
-from django.forms.models import modelformset_factory, inlineformset_factory
-from django.forms.formsets import formset_factory
+from django.forms.models import  inlineformset_factory
 from administrarItems.models import ItemBase, CampoImagen, CampoNumero, CampoFile, CampoTextoCorto, CampoTextoLargo, ItemRelacion
 from administrarRolesPermisos.decorators import *
 import reversion
@@ -431,4 +429,176 @@ def dardebajaItem(request, id_item):
         return render(request, 'fase/workPhase.html', {'mensaje':mensaje, 'user':request.user, 'item':item, 'error': error,
                                                     'fase':fase, 'proyecto':fase.proyecto, 'listaItems': itemsFase},
                                                     context_instance=RequestContext(request))
+
+
+def workItem(request, id_item):
+    item = ItemBase.objects.get(pk=id_item)
+    tipoItem = item.tipoitem
+    faseActual = tipoItem.fase
+    proyectoActual = faseActual.proyecto
+    atributos = Atributo.objects.filter(tipoDeItem=tipoItem)
+
+    formNum_list = None
+    formSTR_list = None
+    formTXT_list = None
+    formIMG_list = None
+    formFile_list = None
+
+    CampoNumeroFormset = inlineformset_factory(ItemBase, CampoNumero, formset=CustomInlineFormSet_NUM, form=campoEnteroForm, extra=0, can_delete=False)
+    atributosNumericos = atributos.filter(tipo='NUM')
+    camposNumericos = CampoNumero.objects.filter(item=item, atributo__in=atributosNumericos).order_by('id')
+    existen_NUM = False
+    if camposNumericos:
+        existen_NUM = True
+
+    CampoSTRFormset = inlineformset_factory(ItemBase, CampoTextoCorto, formset=CustomInlineFormSet_STR, form=campoTextoCortoForm, extra=0, can_delete=False)
+    atributosSTR = atributos.filter(tipo='STR')
+    camposSTR = CampoTextoCorto.objects.filter(item=item, atributo__in=atributosSTR).order_by('id')
+    existen_STR = False
+    if camposSTR:
+        existen_STR = True
+
+    CampoTXTFormset = inlineformset_factory(ItemBase, CampoTextoLargo, formset=CustomInlineFormSet_TXT, form=campoTextoLargoForm, extra=0, can_delete=False)
+    atributosTXT = atributos.filter(tipo='TXT')
+    camposTXT = CampoTextoLargo.objects.filter(item=item, atributo__in=atributosTXT).order_by('id')
+    existen_TXT = False
+    if camposTXT:
+        existen_TXT = True
+
+    CampoIMGFormset = inlineformset_factory(ItemBase, CampoImagen, formset=CustomInlineFormSet_IMG, form=campoImagenForm, extra=0, can_delete=False)
+    atributosIMG = atributos.filter(tipo='IMG')
+    camposIMG = CampoImagen.objects.filter(item=item, atributo__in=atributosIMG).order_by('id')
+    existen_IMG = False
+    if camposIMG:
+        existen_IMG = True
+
+    CampoFILFormset = inlineformset_factory(ItemBase, CampoFile, formset=CustomInlineFormSet_FIL, form=campoFileForm, extra=0, can_delete=False)
+    atributosFIL = atributos.filter(tipo='FIL')
+    camposFIL = CampoFile.objects.filter(item=item, atributo__in=atributosFIL).order_by('id')
+    existen_FIL = False
+    if camposFIL:
+        existen_FIL = True
+
+    if request.method == 'POST':
+        formDatosItem = modificarDatosItemForm(request.POST, instance=item)
+        formAtributosBasicos = modificarAtributosBasicosForm(request.POST, instance=item)
+
+        if existen_NUM:
+            formNum_list = CampoNumeroFormset(request.POST, queryset=camposNumericos, instance=item, prefix='formularios_NUM')
+
+        if existen_STR:
+            formSTR_list = CampoSTRFormset(request.POST, queryset=camposSTR, instance=item, prefix='formularios_STR')
+
+        if existen_TXT:
+            formTXT_list = CampoTXTFormset(request.POST, queryset=camposTXT, instance=item, prefix='formularios_TXT')
+
+        if existen_IMG:
+            formIMG_list = CampoIMGFormset(request.POST, queryset=camposIMG, instance=item, prefix='formularios_IMG')
+
+        if existen_FIL:
+            formFile_list = CampoFILFormset(request.POST, queryset=camposFIL, instance=item, prefix='formularios_FIL')
+
+
+        if formsValidos(formDatosItem, formAtributosBasicos, formNum_list, formSTR_list, formTXT_list,
+                        formIMG_list, formFile_list, existen_FIL, existen_TXT, existen_NUM, existen_IMG, existen_STR):
+            saveForms(formDatosItem, formAtributosBasicos, formNum_list, formSTR_list, formTXT_list,
+                        formIMG_list, formFile_list, existen_FIL, existen_TXT, existen_NUM, existen_IMG, existen_STR)
+            item.fecha_modificacion = timezone.now()
+            item.save()
+
+            return HttpResponseRedirect('/workitem/' + str(item.id))
+    else:
+        formAtributosBasicos = modificarAtributosBasicosForm(instance=item)
+        formDatosItem = modificarDatosItemForm(instance=item)
+
+        if existen_NUM:
+            formNum_list = CampoNumeroFormset(queryset=camposNumericos, instance=item, prefix='formularios_NUM')
+
+        if existen_STR:
+            formSTR_list = CampoSTRFormset(queryset=camposSTR, instance=item, prefix='formularios_STR')
+
+        if existen_TXT:
+            formTXT_list = CampoTXTFormset(queryset=camposTXT, instance=item, prefix='formularios_TXT')
+
+        if existen_IMG:
+            formIMG_list = CampoIMGFormset(queryset=camposIMG, instance=item, prefix='formularios_IMG')
+
+        if existen_FIL:
+            formFile_list = CampoFILFormset(queryset=camposFIL, instance=item, prefix='formularios_FIL')
+
+    return render(request, 'item/workItem.html', {'user': request.user, 'fase': faseActual, 'proyecto': proyectoActual,
+                                                  'item': item, 'formAtributosBasicos': formAtributosBasicos,
+                                                  'formDatosItem': formDatosItem, 'formNumericos': formNum_list,
+                                                  'formTXT': formTXT_list, 'formSTR': formSTR_list, 'formFile': formFile_list,
+                                                  'formIMG': formIMG_list, 'existen_formNumericos': existen_NUM, 'existen_formSTR': existen_STR,
+                                                  'existen_formTXT': existen_TXT, 'existen_formIMG': existen_IMG, 'existen_formFile': existen_FIL},
+                  context_instance=RequestContext(request))
+
+
+def formsValidos(formDatosItem, formAtributosBasicos, formNum_list, formSTR_list, formTXT_list,
+                        formIMG_list, formFile_list, existen_FIL, existen_TXT, existen_NUM, existen_IMG, existen_STR):
+
+    valido = True
+    if formDatosItem.is_valid():
+        pass
+    else:
+        valido = False
+
+    if formAtributosBasicos.is_valid():
+        pass
+    else:
+        valido = False
+
+    if existen_NUM:
+        if formNum_list.is_valid():
+            pass
+        else:
+           valido = False
+
+    if existen_STR:
+        if formSTR_list.is_valid():
+            pass
+        else:
+           valido = False
+
+    if existen_TXT:
+        if formTXT_list.is_valid():
+            pass
+        else:
+           valido = False
+
+    if existen_IMG:
+        if formIMG_list.is_valid():
+            pass
+        else:
+           valido = False
+
+    if existen_FIL:
+        if formFile_list.is_valid():
+            pass
+        else:
+           valido = False
+
+    return valido
+
+def saveForms(formDatosItem, formAtributosBasicos, formNum_list, formSTR_list, formTXT_list,
+                        formIMG_list, formFile_list, existen_FIL, existen_TXT, existen_NUM, existen_IMG, existen_STR):
+    formDatosItem.save()
+    formAtributosBasicos.save()
+
+    if existen_NUM:
+        formNum_list.save()
+
+    if existen_STR:
+        formSTR_list.save()
+
+    if existen_TXT:
+        formTXT_list.save()
+
+    if existen_IMG:
+        formIMG_list.save()
+
+    if existen_FIL:
+        formFile_list.save()
+
 

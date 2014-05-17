@@ -226,7 +226,7 @@ def workProject(request, id_proyecto):
 
             print itemsPorFase.items()
 
-            return render(request, 'proyecto/workProject.html', {'user': request.user, 'proyecto': proyecto, 'fases': fases, 'itemsPorFase': itemsPorFase.items(),})
+            return render(request, 'proyecto/workProject.html', {'user': request.user, 'proyecto': proyecto, 'fases': fases, 'itemsPorFase': itemsPorFase.items()})
 
     # Esto sucede cuando se modifica el estado de un usuario dentro del proyecto
     #   cuando ajax envia una solicitud con el metodo POST
@@ -286,15 +286,29 @@ def startProject(request, id_proyecto):
                                                                        'usuariosAsociados': usuariosAsociados,
                                                                        'message': message, 'error': error})
     else:
-        proyecto.estado = 'ACT'
-        proyecto.fecha_inicio = timezone.now()
-        proyecto.save()
-        message = 'El proyecto ha sido iniciado exitosamente.'
-        error = 0
-        return render(request, 'proyecto/workProjectLeader.html', {'user': request.user, 'proyecto': proyecto,
+        if rolesFases and fases:
+            proyecto.estado = 'ACT'
+            proyecto.fecha_inicio = timezone.now()
+            proyecto.save()
+
+            primeraFase = Fase.objects.get(proyecto=proyecto, nro_orden=1)
+            primeraFase.estado = 'DES'
+            primeraFase.save()
+
+            message = 'El proyecto ha sido iniciado exitosamente.'
+            error = 0
+            return render(request, 'proyecto/workProjectLeader.html', {'user': request.user, 'proyecto': proyecto,
                                                                        'fases': fases, 'roles': rolesFases,
                                                                        'usuariosAsociados': usuariosAsociados,
                                                                        'message': message, 'error': error})
+        else:
+            message = 'Debe especificar al menos un rol y una fase para que el prpyecto se considere válido y pueda iniciarse.'
+            error = 1
+            return render(request, 'proyecto/workProjectLeader.html', {'user': request.user, 'proyecto': proyecto,
+                                                                       'fases': fases, 'roles': rolesFases,
+                                                                       'usuariosAsociados': usuariosAsociados,
+                                                                       'message': message, 'error': error})
+
 
 @login_required()
 @lider_requerido
