@@ -401,6 +401,7 @@ def finPhase(request, id_fase):
     return vistaDesarrollo(request, proyecto.id, error=error, message=message)
 
 
+
 def startPhase(request, id_fase):
     """
     Vista para iniciar una fase
