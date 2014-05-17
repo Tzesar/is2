@@ -4,6 +4,7 @@ import logging
 from django.contrib.auth.decorators import login_required
 from django.template import RequestContext
 from django.shortcuts import render
+from administrarFases.views import changePhase
 
 from administrarTipoItem.forms import NewItemTypeForm, ChangeItemTypeForm, CreateAtributeForm, ChangeAtributeForm
 from administrarRolesPermisos.decorators import *
@@ -42,7 +43,9 @@ def createItemType(request, id_fase):
                 return render(request, "keyduplicate_tipoitem.html", {'phase': phase, "message": e.message},
                   context_instance=RequestContext(request))
 
-            return HttpResponseRedirect('/changephase/' + str(phase.id))
+            mensaje = 'Tipo de Item: ' + TipoItem.objects.last().nombre + ', creado exitosamente'
+            request.method = 'GET'
+            return changePhase(request, id_fase, error=0, message=mensaje)
     else:
         form = NewItemTypeForm()
     return render(request, 'tipo_item/createitemtype.html', {'user': request.user, 'form': form, 'project': project, 'fase': phase})

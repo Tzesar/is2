@@ -13,9 +13,9 @@ from autenticacion.views import main, myLogin
 from administrarUsuarios.views import createUser, changeUser, userList, userListJson, changePass, changeAnyUser
 from zar.views import about, contact
 from administrarProyectos.views import createProject, changeProject, projectList, workProject, setUserToProject,\
-    viewSetUserProject, changeProjectLeader, startProject, cancelProject, finProject
+    viewSetUserProject, changeProjectLeader, startProject, cancelProject, finProject, vistaDesarrollo
 from administrarFases.views import changePhase, createPhase, phaseList, deletePhase, importMultiplePhase,\
-    confirmar_eliminacion_fase, workphase, finPhase, startPhase
+    confirmar_eliminacion_fase, workphase, finPhase, startPhase, subirOrden, bajarOrden
 from administrarRolesPermisos.views import createRole, roleList, changeRole, deleteRole, asignRole
 from administrarItems.views import createItem, changeItem, completarEnteros, completarArchivo, \
     completarImagen, completarTexto, historialItemBase, relacionarItemBaseView, reversionItemBase, relacionarItemBase, \
@@ -58,6 +58,7 @@ urlpatterns = patterns('',
                        url(r'^startproject/(?P<id_proyecto>\d+)$', startProject, name='startproject'),
                        url(r'^cancelproject/(?P<id_proyecto>\d+)$', cancelProject, name='cancelproject'),
                        url(r'^finproject/(?P<id_proyecto>\d+)$', finProject),
+                       url(r'^desarrollo/(?P<id_proyecto>\d+)$', vistaDesarrollo),
 
 
 ###################################################### FASES ###########################################################
@@ -71,6 +72,8 @@ urlpatterns = patterns('',
                        url(r'^workphase/(?P<id_fase>\d+)$', workphase),
                        url(r'^finphase/(?P<id_fase>\d+)$', finPhase),
                        url(r'^startphase/(?P<id_fase>\d+)$', startPhase),
+                       url(r'^subir/(?P<id_fase>\d+)$', subirOrden),
+                       url(r'^bajar/(?P<id_fase>\d+)$', bajarOrden),
 
 ###################################################### ROLES ##########################################
                        url(r'^rolelist/(?P<id_proyecto>\d+)$', roleList, name="rolelist"),

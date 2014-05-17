@@ -4,6 +4,7 @@ from django.contrib.auth.decorators import login_required
 from django.template import RequestContext
 from django.shortcuts import render, render_to_response
 from django.utils import timezone
+from administrarFases.views import workphase
 
 from administrarItems.forms import itemForm, campoEnteroForm, campoImagenForm, campoTextoCortoForm, campoFileForm, modificarAtributosBasicosForm,\
     modificarDatosItemForm, campoTextoLargoForm, CustomInlineFormSet_NUM, CustomInlineFormSet_STR, \
@@ -266,11 +267,9 @@ def reversionItemBase(request, id_item, id_fase, id_version):
     for version in lista_version:
         if version.id == id_new_version:
             version.revert()
-            mensaje = 'El item fue Reversionado correctamente.'
+            mensaje = 'Item: ' + item.nombre + '. Reversionado correctamente.'
             error = 0
-            return render(request, 'fase/workPhase.html', {'mensaje':mensaje, 'user':request.user, 'item':item, 'error': error,
-                                                        'fase':fase, 'proyecto':fase.proyecto, 'listaItems': itemsFase},
-                                                        context_instance=RequestContext(request))
+            return workphase(request, fase.id, error=error, message=mensaje)
 
 
 #TODO: Insertar en workitem
@@ -281,8 +280,6 @@ def relacionarItemBase(request, id_item_hijo, id_item_padre, id_fase):
     fase = Fase.objects.get(pk=id_fase)
     item_hijo = ItemBase.objects.get(pk=id_item_hijo)
     item_padre = ItemBase.objects.get(pk=id_item_padre)
-    ti = TipoItem.objects.filter(fase=fase)
-    itemsFase = ItemBase.objects.filter(tipoitem__in=ti).order_by('fecha_creacion')
 
     try:
         ItemRelacion.objects.get(itemHijo=item_hijo)
@@ -291,17 +288,16 @@ def relacionarItemBase(request, id_item_hijo, id_item_padre, id_fase):
         relacion.itemHijo = item_hijo
         relacion.itemPadre = item_padre
         relacion.save()
-        mensaje = 'Exito al crear la relacion'
+        item_hijo.fecha_modificacion = timezone.now()
+        item_hijo.usuario_modificacion = request.user
+        item_hijo.save()
+        mensaje = 'Relacion establecida entre ' + item_hijo.nombre + ' e ' + item_padre.nombre + '.'
         error = 0
-        return render(request, 'fase/workPhase.html', {'mensaje':mensaje, 'user':request.user, 'item':item_hijo, 'error': error,
-                                                    'fase':fase, 'proyecto':fase.proyecto, 'listaItems': itemsFase},
-                                                    context_instance=RequestContext(request))
+        return workphase(request, id_fase, error=error, message=mensaje)
 
-    mensaje = 'Ud ya tiene un Padre.'
+    mensaje = 'El item ' + item_hijo + ' ya cuenta con una relacin hacia un item ancestro'
     duplicado = 1
-    return render(request, 'fase/workPhase.html', {'mensaje':mensaje, 'user':request.user, 'item':item_hijo, 'duplicado': duplicado,
-                                                       'fase':fase, 'proyecto':fase.proyecto, 'listaItems': itemsFase},
-                                                        context_instance=RequestContext(request))
+    return workphase(request, id_fase, error=duplicado, message=mensaje)
 
 #TODO: Insertar en workitem
 def relacionarItemBaseView(request, id_fase_actual, id_item_actual):
@@ -316,9 +312,13 @@ def relacionarItemBaseView(request, id_fase_actual, id_item_actual):
     item_lista_fase_actual = ItemBase.objects.filter(tipoitem=tipoitem).exclude(pk=id_item_actual).exclude(pk__in=item_hijos)
 
     if fase_actual.nro_orden == 1:
-        return render(request, 'item/relacionaritemvista.html', {'item': item, 'fase': fase_actual, 'proyecto': proyecto,
+        if item_lista_fase_actual:
+            return render(request, 'item/relacionaritemvista.html', {'item': item, 'fase': fase_actual, 'proyecto': proyecto,
                       'itemlista': item_lista_fase_actual, 'user': request.user}, context_instance=RequestContext(request))
-
+        else:
+            error=1
+            mensaje= 'No existen items con los cuales relacionarse'
+            return workphase(request, id_fase_actual, error=error, message=mensaje)
     else:
         orden_anterior = fase_actual.nro_orden - 1
         fase_anterior = Fase.objects.get(nro_orden=orden_anterior)
@@ -335,25 +335,20 @@ def validarItem(request, id_item):
     Vista para validar un item, previa aprovación del cliente
     """
     item = ItemBase.objects.get(pk=id_item)
-    fase = item.tipoitem.fase
-    ti = TipoItem.objects.filter(fase=fase)
-    itemsFase = ItemBase.objects.filter(tipoitem__in=ti).order_by('fecha_creacion')
 
     if item.estado == 'FIN':
         item.estado = 'VAL'
+        item.fecha_modificacion = timezone.now()
+        item.usuario_modificacion = request.user
         item.save()
         mensaje = 'Item validado correctamente y listo para pasar a Linea Base'
         error = 0
-        return render(request, 'fase/workPhase.html', {'mensaje':mensaje, 'user':request.user, 'item':item, 'duplicado': error,
-                                                    'fase':fase, 'proyecto':fase.proyecto, 'listaItems': itemsFase},
-                                                    context_instance=RequestContext(request))
+        return workphase(request, item.tipoitem.fase.id, error=error, message=mensaje)
 
     else:
         mensaje = 'Item no puede ser validado, deberia tener un estado Finalizado antes de ser Validado '
         error = 1
-        return render(request, 'fase/workPhase.html', {'mensaje':mensaje, 'user':request.user, 'item':item, 'duplicado': error,
-                                                    'fase':fase, 'proyecto':fase.proyecto, 'listaItems': itemsFase},
-                                                    context_instance=RequestContext(request))
+        return workphase(request, item.tipoitem.fase.id, error=error, message=mensaje)
 
 #TODO: Insertar en workitem
 def finalizarItem(request, id_item):
@@ -362,24 +357,29 @@ def finalizarItem(request, id_item):
     """
     item = ItemBase.objects.get(pk=id_item)
     fase = item.tipoitem.fase
-    ti = TipoItem.objects.filter(fase=fase)
-    itemsFase = ItemBase.objects.filter(tipoitem__in=ti).order_by('fecha_creacion')
+    error = 0
 
     if item.estado == 'ACT':
-        item.estado = 'FIN'
-        item.save()
-        mensaje = 'Item finalizado correctamente y listo para ser verificado por el cliente'
-        error = 0
-        return render(request, 'fase/workPhase.html', {'mensaje':mensaje, 'user':request.user, 'item':item, 'error': error,
-                                                    'fase':fase, 'proyecto':fase.proyecto, 'listaItems': itemsFase},
-                                                    context_instance=RequestContext(request))
+        try:
+            itemPadre = ItemRelacion.objects.get(itemHijo=item)
+        except:
+            itemPadre = None
 
+        if not itemPadre and item.tipoitem.fase.nro_orden != 1:
+            error = 1
+            mensaje = 'No se puede Finalizar el item. Se precisa especificar su relacion con otro item'
     else:
-        mensaje = 'Item no puede ser finalizado, deberia tener un estado Activo antes de ser Finalizado '
+        mensaje = 'Item: ' + item.nombre + ' no puede ser finalizado. Deberia tener un estado Activo.'
         error = 1
-        return render(request, 'fase/workPhase.html', {'mensaje':mensaje, 'user':request.user, 'item':item, 'error': error,
-                                                    'fase':fase, 'proyecto':fase.proyecto, 'listaItems': itemsFase},
-                                                    context_instance=RequestContext(request))
+
+    if error == 0:
+        item.estado = 'FIN'
+        item.fecha_modificacion = timezone.now()
+        item.usuario_modificacion = request.user
+        item.save()
+        mensaje = 'Item: ' + item.nombre + ', finalizado y listo para su validacion'
+
+    return workphase(request, fase.id, error=error, message=mensaje)
 
 
 def dardebajaItem(request, id_item):
@@ -388,50 +388,41 @@ def dardebajaItem(request, id_item):
     """
     item = ItemBase.objects.get(pk=id_item)
     fase = item.tipoitem.fase
-    ti = TipoItem.objects.filter(fase=fase)
-    itemsFase = ItemBase.objects.filter(tipoitem__in=ti).order_by('fecha_creacion')
 
     try:
         ItemRelacion.objects.get(itemPadre=item)
     except:
         if item.estado != 'ELB':
+            item.fecha_modificacion = timezone.now()
+            item.usuario_modificacion = request.user
             item.estado = 'DDB'
             item.save()
             try:
                 ItemRelacion.objects.get(itemHijo=item)
             except:
-                mensaje = 'El item fue Dado de Baja correctamente.'
+                mensaje = 'Item: ' + item.nombre + '. Dado de Baja correctamente.'
                 error = 0
-                return render(request, 'fase/workPhase.html', {'mensaje':mensaje, 'user':request.user, 'item':item, 'error': error,
-                                                            'fase':fase, 'proyecto':fase.proyecto, 'listaItems': itemsFase},
-                                                            context_instance=RequestContext(request))
+                return workphase(request, fase.id, error=error, message=mensaje)
+
             itemRelacion = ItemRelacion.objects.get(itemHijo=item)
             itemRelacion.estado = 'DES'
             itemRelacion.save()
-            mensaje = 'El item fue Dado de Baja correctamente.'
+            mensaje = 'Item: ' + item.nombre + '. Dado de Baja correctamente.'
             error = 0
-            return render(request, 'fase/workPhase.html', {'mensaje':mensaje, 'user':request.user, 'item':item, 'error': error,
-                                                        'fase':fase, 'proyecto':fase.proyecto, 'listaItems': itemsFase},
-                                                        context_instance=RequestContext(request))
+            return workphase(request, fase.id, error=error, message=mensaje)
 
-    existePadre = ItemRelacion.objects.get(itemPadre=item)
-    if existePadre:
+    esPadre = ItemRelacion.objects.get(itemPadre=item)
+    if esPadre:
         mensaje = 'Item no puede darse de baja, el item posse una relación de Padre con algún otro item. Favor verificar las relaciones del ítem '
         error = 1
-        return render(request, 'fase/workPhase.html', {'mensaje':mensaje, 'user':request.user, 'item':item, 'error': error,
-                                                    'fase':fase, 'proyecto':fase.proyecto, 'listaItems': itemsFase},
-                                                    context_instance=RequestContext(request))
-
-
+        return workphase(request, fase.id, error=error, message=mensaje)
     else:
         mensaje = 'Item no puede darse de baja, el item forma parte de una Linea Base. '
         error = 1
-        return render(request, 'fase/workPhase.html', {'mensaje':mensaje, 'user':request.user, 'item':item, 'error': error,
-                                                    'fase':fase, 'proyecto':fase.proyecto, 'listaItems': itemsFase},
-                                                    context_instance=RequestContext(request))
+        return workphase(request, fase.id, error=error, message=mensaje)
 
 
-def workItem(request, id_item):
+def workItem(request, id_item, error=None, message=None):
     item = ItemBase.objects.get(pk=id_item)
     tipoItem = item.tipoitem
     faseActual = tipoItem.fase
@@ -504,9 +495,14 @@ def workItem(request, id_item):
             saveForms(formDatosItem, formAtributosBasicos, formNum_list, formSTR_list, formTXT_list,
                         formIMG_list, formFile_list, existen_FIL, existen_TXT, existen_NUM, existen_IMG, existen_STR)
             item.fecha_modificacion = timezone.now()
+            item.usuario_modificacion = request.user
+            item.estado = 'ACT'
             item.save()
 
-            return HttpResponseRedirect('/workitem/' + str(item.id))
+            request.method = 'GET'
+            no_error = 0
+            mensaje = 'Item: ' + item.nombre + '. Modificacion exitosa.'
+            return workphase(request, faseActual.id, error=no_error, message=mensaje)
     else:
         formAtributosBasicos = modificarAtributosBasicosForm(instance=item)
         formDatosItem = modificarDatosItemForm(instance=item)

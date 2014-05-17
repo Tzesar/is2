@@ -9,6 +9,7 @@ from django.db import IntegrityError
 
 from administrarFases.forms import NewPhaseForm, ChangePhaseForm
 from administrarLineaBase.models import LineaBase
+from administrarProyectos.views import workProject, vistaDesarrollo
 from administrarRolesPermisos.decorators import *
 from django.db import IntegrityError
 from administrarRolesPermisos.models import PermisoFase, RolFase
@@ -61,7 +62,9 @@ def createPhase(request, id_proyecto):
 
             generarPermisosFase(project, fase)
 
-            return HttpResponseRedirect('/workproject/'+str(project.id))
+            mensaje ='Fase: ' + Fase.objects.last().nombre + ', creada exitosamente'
+            request.method = 'GET'
+            return workProject(request, id_proyecto, error=0, message=mensaje)
     else:
         form = NewPhaseForm()
     return render(request, 'fase/createphase.html', {'form': form, 'proyecto': project, 'user': request.user,
@@ -137,7 +140,7 @@ def generarPermisosFase(project, fase):
 #TODO: Botones Iniciar Fase - Finalizar Fase
 @login_required()
 @lider_requerido2
-def changePhase(request, id_fase):
+def changePhase(request, id_fase, error=None, message=None):
     """
     *Vista para la modificacion de una fase dentro del sistema.
     Opción válida para usuarios con los roles correspondientes.*
@@ -170,8 +173,8 @@ def changePhase(request, id_fase):
             return HttpResponseRedirect('/workproject/'+str(project.id))
     else:
         form = ChangePhaseForm(instance=phase)
-    return render(request, 'fase/changephase.html', {'phaseForm': form, 'phase': phase, 'project': project, 'tiposItem': tiposDeItem, 'user': request.user},
-                              context_instance=RequestContext(request))
+    return render(request, 'fase/changephase.html', {'phaseForm': form, 'phase': phase, 'project': project, 'tiposItem': tiposDeItem, 'user': request.user,
+                                                     'error':error, 'message':message}, context_instance=RequestContext(request))
 
 
 @login_required()
@@ -219,7 +222,8 @@ def deletePhase(request, id_fase):
     logger.info('El usuario '+ request.user.username +' ha eliminado la fase '+ phase_copy.nombre +
                 ' dentro del proyecto: ' + project.nombre)
 
-    return HttpResponseRedirect('/workproject/'+str(project.id))
+    mensaje = 'Fase: ' + phase_copy.nombre + ', eliminada exitosamente'
+    return workProject(request, phase_copy.proyecto.id, error=0, message=mensaje )
 
 
 def eliminarPermisos(phase):
@@ -306,7 +310,7 @@ def importMultiplePhase(request, id_fase, id_proyecto_destino):
     return HttpResponseRedirect('/phaselist/' + str(project.id))
 
 
-def workphase(request, id_fase):
+def workphase(request, id_fase, error=None, message=None):
     """
     *Vista para el trabajo sobre una fase de un proyecto.
     Opción válida para usuarios asociados a un proyecto, con permisos de trabajo sobre items de la fase en cuestion*
@@ -331,8 +335,42 @@ def workphase(request, id_fase):
             except:
                 relaciones[i] = None
 
-        return render(request, 'fase/workPhase.html', {'proyecto': proyectoTrabajo, 'fase': faseTrabajo,
-                                                       'listaItems': itemsFase, 'relaciones': relaciones.items()})
+        return render(request, 'fase/workPhase.html', {'proyecto': proyectoTrabajo, 'fase': faseTrabajo, 'user': request.user,
+                                                       'listaItems': itemsFase, 'relaciones': relaciones.items(),
+                                                       'error': error, 'message': message})
+
+def subirOrden(request, id_fase):
+    fase = Fase.objects.get(pk=id_fase)
+
+    if fase.nro_orden == 1:
+        mensaje = 'La fase ya es la primera. No se puede subir más'
+    else:
+        ordenAnterior = fase.nro_orden - 1
+        faseAnterior = Fase.objects.get(nro_orden=ordenAnterior)
+        faseAnterior.nro_orden = fase.nro_orden
+        fase.nro_orden = ordenAnterior
+
+        faseAnterior.save()
+        fase.save()
+
+        return HttpResponseRedirect('/workproject/' + str(fase.proyecto.id))
+
+
+def bajarOrden(request, id_fase):
+    fase = Fase.objects.get(pk=id_fase)
+
+    if fase.nro_orden == Fase.objects.filter(proyecto=fase.proyecto).count():
+        mensaje = 'La fase ya es la última. No se puede bajar más'
+    else:
+        ordenPosterior = fase.nro_orden + 1
+        fasePosterior = Fase.objects.get(nro_orden=ordenPosterior)
+        fasePosterior.nro_orden = fase.nro_orden
+        fase.nro_orden = ordenPosterior
+
+        fasePosterior.save()
+        fase.save()
+
+        return HttpResponseRedirect('/workproject/' + str(fase.proyecto.id))
 
 
 def finPhase(request, id_fase):
@@ -344,29 +382,23 @@ def finPhase(request, id_fase):
     tipoItem = TipoItem.objects.filter(fase=fase)
     items = ItemBase.objects.filter(tipoitem__in=tipoItem)
 
-    fases = proyecto.fase_set.all().order_by('id')
-    rolesFases = RolFase.objects.filter(proyecto=proyecto).order_by('nombre')
-
-    usuariosInactivos = Usuario.objects.filter(is_active=False).values_list('id', flat=True)
-    usuariosAsociados = proyecto.usuariosvinculadosproyectos_set.exclude(cod_usuario__in=usuariosInactivos)
-
-
-    for item in items:
-        if item.estado == 'ACT' or item.estado == 'VAL' or item.estado == 'FIN':
-            message = 'La fase no puede Finalizar por que aún existen ítems que no se encuentran en ninguna Linea Base'
-            error = 1
-            return render(request, 'proyecto/workProjectLeader.html', {'user': request.user, 'proyecto': proyecto,
-                                                                       'fases': fases, 'roles': rolesFases,
-                                                                       'usuariosAsociados': usuariosAsociados,
-                                                                       'message': message, 'error': error})
-    fase.estado = 'FIN'
-    fase.save()
-    message = 'La fase ha sido Finalizada exitosamente.'
+    message = ''
     error = 0
-    return render(request, 'proyecto/workProjectLeader.html', {'user': request.user, 'proyecto': proyecto,
-                                                                       'fases': fases, 'roles': rolesFases,
-                                                                       'usuariosAsociados': usuariosAsociados,
-                                                                       'message': message, 'error': error})
+    if items:
+        for item in items:
+            if item.estado == 'ACT' or item.estado == 'VAL' or item.estado == 'FIN':
+                message = 'Fase:' + fase.nombre + '. No se pudo finalizar. Aun existen items fuera de Linea Base. Verifique esto y vuelva a intentarlo.'
+                error = 1
+    else:
+        error = 1
+        message = 'Fase: ' + fase.nombre + '. No se pudo finalizar. No se han creado items en la misma. Verifiquela y vuelva a intentarlo.'
+
+    if error == 0:
+        fase.estado = 'FIN'
+        fase.save()
+        message = 'La fase ha sido Finalizada exitosamente.'
+
+    return vistaDesarrollo(request, proyecto.id, error=error, message=message)
 
 
 def startPhase(request, id_fase):

@@ -192,7 +192,7 @@ def viewSetUserProject(request, id_proyecto):
                   {'project': project, 'userproject': userproject, 'user': request.user},)
 
 @login_required()
-def workProject(request, id_proyecto):
+def workProject(request, id_proyecto, error=None, message=None):
     """
     *Vista para el trabajo sobre un proyecto dentro del sistema.
     Opción válida para usuarios asociados a un proyecto, ya sea como ``Líder de Proyecto`` o como participante.*
@@ -207,7 +207,8 @@ def workProject(request, id_proyecto):
     if request.method == 'GET':
         proyecto = Proyecto.objects.get(id=id_proyecto)
         usuario = request.user
-        fases = proyecto.fase_set.all()
+        fases = proyecto.fase_set.all().order_by('nro_orden')
+        cantFases = fases.count()
 
         if usuario == proyecto.lider_proyecto:
             rolesFases = RolFase.objects.filter(proyecto=proyecto).order_by('nombre')
@@ -215,18 +216,10 @@ def workProject(request, id_proyecto):
             usuariosInactivos = Usuario.objects.filter(is_active=False).values_list('id', flat=True)
             usuariosAsociados = proyecto.usuariosvinculadosproyectos_set.exclude(cod_usuario__in=usuariosInactivos)
             return render(request, 'proyecto/workProjectLeader.html', {'user': request.user, 'proyecto': proyecto,
-                                                                       'fases': fases, 'roles': rolesFases,
-                                                                       'usuariosAsociados': usuariosAsociados})
+                                                                       'fases': fases, 'roles': rolesFases, 'cantFases':cantFases,
+                                                                       'usuariosAsociados': usuariosAsociados, 'error': error, 'message': message})
         else:
-            itemsPorFase = {}
-
-            for f in fases:
-                ti = TipoItem.objects.filter(fase=f)
-                itemsPorFase[f.id] = ItemBase.objects.filter(tipoitem__in=ti)
-
-            print itemsPorFase.items()
-
-            return render(request, 'proyecto/workProject.html', {'user': request.user, 'proyecto': proyecto, 'fases': fases, 'itemsPorFase': itemsPorFase.items()})
+            return HttpResponseRedirect('/desarrollo/' + str(proyecto.id))
 
     # Esto sucede cuando se modifica el estado de un usuario dentro del proyecto
     #   cuando ajax envia una solicitud con el metodo POST
@@ -264,6 +257,25 @@ def workProject(request, id_proyecto):
         responseDict = {'exito': True}
         return HttpResponse(json.dumps(responseDict), mimetype='application/javascript')
 
+
+
+
+def vistaDesarrollo(request, id_proyecto, error=None, message=None):
+
+    proyecto = Proyecto.objects.get(pk=id_proyecto)
+    fases = Fase.objects.filter(proyecto=proyecto).order_by('nro_orden')
+
+    itemsPorFase = {}
+
+    for f in fases:
+        ti = TipoItem.objects.filter(fase=f)
+        itemsPorFase[f.id] = ItemBase.objects.filter(tipoitem__in=ti)
+
+    print itemsPorFase.items()
+    return render(request, 'proyecto/workProject.html', {'user': request.user, 'proyecto': proyecto, 'fases': fases,
+                                                         'itemsPorFase': itemsPorFase.items(), 'error': error, 'message': message})
+
+
 @login_required()
 @lider_requerido
 def startProject(request, id_proyecto):
@@ -272,42 +284,51 @@ def startProject(request, id_proyecto):
     """
 
     proyecto = Proyecto.objects.get(pk=id_proyecto)
-    fases = proyecto.fase_set.all().order_by('id')
     rolesFases = RolFase.objects.filter(proyecto=proyecto).order_by('nombre')
+    fases = proyecto.fase_set.all().order_by('id')
 
     usuariosInactivos = Usuario.objects.filter(is_active=False).values_list('id', flat=True)
     usuariosAsociados = proyecto.usuariosvinculadosproyectos_set.exclude(cod_usuario__in=usuariosInactivos)
 
+    message = ''
+    error = 0
     if proyecto.estado != 'PEN':
         message = 'No se puede Iniciar un proyecto que se encuentra en el estado: ' + proyecto.get_estado_display()
         error = 1
-        return render(request, 'proyecto/workProjectLeader.html', {'user': request.user, 'proyecto': proyecto,
-                                                                       'fases': fases, 'roles': rolesFases,
-                                                                       'usuariosAsociados': usuariosAsociados,
-                                                                       'message': message, 'error': error})
     else:
         if rolesFases and fases:
-            proyecto.estado = 'ACT'
-            proyecto.fecha_inicio = timezone.now()
-            proyecto.save()
+            for f in fases:
+                tipos = TipoItem.objects.filter(fase=f)
+                if not tipos:
+                    error = 1
+                else:
+                    for t in tipos:
+                        atributos = Atributo.objects.filter(tipoDeItem=t)
+                        if not atributos:
+                            error = 1
 
-            primeraFase = Fase.objects.get(proyecto=proyecto, nro_orden=1)
-            primeraFase.estado = 'DES'
-            primeraFase.save()
+            if error == 1:
+                message = 'No se dan las condiciones para iniciar el proyecto. Existen fases sin tipos de item,' \
+                          ' o tipos de item sin atributos.'
+            else:
+                proyecto.estado = 'ACT'
+                proyecto.fecha_inicio = timezone.now()
+                proyecto.save()
 
-            message = 'El proyecto ha sido iniciado exitosamente.'
-            error = 0
-            return render(request, 'proyecto/workProjectLeader.html', {'user': request.user, 'proyecto': proyecto,
-                                                                       'fases': fases, 'roles': rolesFases,
-                                                                       'usuariosAsociados': usuariosAsociados,
-                                                                       'message': message, 'error': error})
+                primeraFase = Fase.objects.get(proyecto=proyecto, nro_orden=1)
+                primeraFase.estado = 'DES'
+                primeraFase.save()
+
+                message = 'El proyecto ha sido iniciado exitosamente.'
         else:
             message = 'Debe especificar al menos un rol y una fase para que el prpyecto se considere válido y pueda iniciarse.'
             error = 1
-            return render(request, 'proyecto/workProjectLeader.html', {'user': request.user, 'proyecto': proyecto,
-                                                                       'fases': fases, 'roles': rolesFases,
-                                                                       'usuariosAsociados': usuariosAsociados,
-                                                                       'message': message, 'error': error})
+
+    fases = proyecto.fase_set.all().order_by('id')
+    return render(request, 'proyecto/workProjectLeader.html', {'user': request.user, 'proyecto': proyecto,
+                                                                'fases': fases, 'roles': rolesFases,
+                                                                'usuariosAsociados': usuariosAsociados,
+                                                                'message': message, 'error': error})
 
 
 @login_required()
@@ -375,7 +396,7 @@ def finProject(request, id_proyecto):
 
     for fase in fases:
         if fase.estado != 'FIN':
-            message = 'No se puede Finalizar el proyecto por que aún posee fases que no estan finalizadas'
+            message = 'No se puede Finalizar el Proyecto. Aún existen fases en desarrollo'
             error = 1
             return render(request, 'proyecto/workProjectLeader.html', {'user': request.user, 'proyecto': proyecto,
                                                                        'fases': fases, 'roles': rolesFases,

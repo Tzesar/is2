@@ -5,6 +5,7 @@ import pydot
 from django.shortcuts import render
 
 from administrarFases.models import Fase
+from administrarFases.views import workphase
 from administrarItems.models import ItemBase, ItemRelacion
 from administrarLineaBase.forms import createLBForm
 from administrarLineaBase.models import LineaBase
@@ -16,14 +17,11 @@ def createLB(request, id_fase):
     """
     Esta es la vista para la creación de Linea Base
     """
-
     fase = Fase.objects.get(pk=id_fase)
     tipoitem = TipoItem.objects.filter(fase=fase)
     items = ItemBase.objects.filter(tipoitem=tipoitem)
     proyecto = fase.proyecto
     itemsVAL = items.filter(estado='VAL')
-    ti = TipoItem.objects.filter(fase=fase)
-    itemsFase = ItemBase.objects.filter(tipoitem__in=ti).order_by('fecha_creacion')
 
     if itemsVAL:
         if request.method == 'POST':
@@ -34,27 +32,33 @@ def createLB(request, id_fase):
                 lineaBase.fecha_creacion = timezone.now()
                 lineaBase.fecha_modificacion = timezone.now()
                 lineaBase.save()
-                for item in items:
-                    if item.estado == 'VAL':
-                        item.estado = 'ELB'
-                        item.linea_base = LineaBase.objects.get(pk=lineaBase.id, fase=fase)
-                        item.save()
+                for item in itemsVAL:
+                    item.estado = 'ELB'
+                    item.linea_base = LineaBase.objects.get(pk=lineaBase.id, fase=fase)
+                    item.save()
 
-                mensaje = 'Linea Base creada exitosamente.'
-                duplicado = 0
-                return render(request, 'fase/workPhase.html', {'mensaje':mensaje, 'user':request.user, 'duplicado': duplicado,
-                                                    'fase':fase, 'proyecto':fase.proyecto, 'listaItems': itemsFase},
-                                                    context_instance=RequestContext(request))
+
+                # Activamos la siguiente fase al crear la primera linea base
+                cantFases = Fase.objects.filter(proyecto=proyecto).count()
+                if fase.nro_orden != cantFases:
+                    ordenNext = fase.nro_orden + 1
+                    faseSgte = Fase.objects.get(proyecto=proyecto, nro_orden=ordenNext)
+                    if faseSgte.estado == 'PEN':
+                        faseSgte.estado = 'DES'
+                        faseSgte.save()
+
+                mensaje = 'Linea Base establecida'
+                error = 0
+                request.method = 'GET'
+                return workphase(request, id_fase, error=error, message=mensaje)
         else:
             form = createLBForm()
         return render(request, 'createLineaBase.html', {'form': form, 'proyecto': proyecto,
-                                                    'user': request.user, 'fase':fase, })
+                                                        'user': request.user, 'fase':fase, })
     else:
-        mensaje = 'Error al crear Linea Base, no existen items VALIDADOS en la fase'
-        duplicado = 1
-        return render(request, 'fase/workPhase.html', {'mensaje':mensaje, 'user':request.user, 'duplicado': duplicado,
-                                                    'fase':fase, 'proyecto':fase.proyecto, 'listaItems': itemsFase},
-                                                    context_instance=RequestContext(request))
+        mensaje = 'Error al crear Linea Base. No existen items VALIDADOS en la fase'
+        error = 1
+        return workphase(request, id_fase, error=error, message=mensaje)
 
 
 def calculoImpacto(padres, hijos, costo, tiempo, grafo):
