@@ -277,7 +277,6 @@ def reversionItemBase(request, id_item, id_fase, id_version):
             return workphase(request, fase.id, error=error, message=mensaje)
 
 
-#TODO: Insertar en workitem
 def relacionarItemBase(request, id_item_hijo, id_item_padre, id_fase):
     """
     Vista para relaciones los items
@@ -304,7 +303,7 @@ def relacionarItemBase(request, id_item_hijo, id_item_padre, id_fase):
     duplicado = 1
     return workphase(request, id_fase, error=duplicado, message=mensaje)
 
-#TODO: Insertar en workitem
+
 def relacionarItemBaseView(request, id_fase_actual, id_item_actual):
     """
     Vista para relacionar items
@@ -327,14 +326,13 @@ def relacionarItemBaseView(request, id_fase_actual, id_item_actual):
     else:
         orden_anterior = fase_actual.nro_orden - 1
         fase_anterior = Fase.objects.get(nro_orden=orden_anterior)
-        tipoitem_anterior = TipoItem.objects.get(fase=fase_anterior)
-        item_lista_fase_anterior = ItemBase.objects.filter(tipoitem=tipoitem_anterior, estado='ELB')
+        tipoitem_anterior = TipoItem.objects.filter(fase=fase_anterior)
+        item_lista_fase_anterior = ItemBase.objects.filter(tipoitem__in=tipoitem_anterior, estado='ELB')
         return render(request, 'item/relacionaritemvista.html', {'item': item, 'fase': fase_actual, 'proyecto': proyecto,
                       'itemlistaanterior': item_lista_fase_anterior, 'fase_anterior': fase_anterior,
                       'itemlista': item_lista_fase_actual, 'user': request.user}, context_instance=RequestContext(request))
 
 
-#TODO: Insertar en workitem
 def validarItem(request, id_item):
     """
     Vista para validar un item, previa aprovación del cliente
@@ -355,7 +353,7 @@ def validarItem(request, id_item):
         error = 1
         return workphase(request, item.tipoitem.fase.id, error=error, message=mensaje)
 
-#TODO: Insertar en workitem
+
 def finalizarItem(request, id_item):
     """
     Vista para validar un item, previa aprovación del cliente
@@ -418,17 +416,29 @@ def dardebajaItem(request, id_item):
             error = 0
             return workphase(request, fase.id, error=error, message=mensaje)
 
-    esPadre = ItemRelacion.objects.get(itemPadre=item)
+    esPadre = ItemRelacion.objects.filter(itemPadre=item, estado='ACT')
     if esPadre:
         mensaje = 'Item no puede darse de baja, el item posse una relación de Padre con algún otro item. Favor verificar las relaciones del ítem '
         error = 1
         return workphase(request, fase.id, error=error, message=mensaje)
     else:
-        mensaje = 'Item no puede darse de baja, el item forma parte de una Linea Base. '
-        error = 1
-        return render(request, 'fase/workPhase.html', {'mensaje':mensaje, 'user':request.user, 'item':item, 'error': error,
-                                                    'fase':fase, 'proyecto':fase.proyecto, 'listaItems': itemsFase},
-                                                    context_instance=RequestContext(request))
+        item.fecha_modificacion = timezone.now()
+        item.usuario_modificacion = request.user
+        item.estado = 'DDB'
+        item.save()
+        try:
+            ItemRelacion.objects.get(itemHijo=item)
+        except:
+            mensaje = 'Item: ' + item.nombre + '. Dado de Baja correctamente.'
+            error = 0
+            return workphase(request, fase.id, error=error, message=mensaje)
+
+        itemRelacion = ItemRelacion.objects.get(itemHijo=item)
+        itemRelacion.estado = 'DES'
+        itemRelacion.save()
+        mensaje = 'Item: ' + item.nombre + '. Dado de Baja correctamente.'
+        error = 0
+        return workphase(request, fase.id, error=error, message=mensaje)
 
 
 def restaurarItem(request, id_item):
@@ -437,18 +447,15 @@ def restaurarItem(request, id_item):
     """
     item = ItemBase.objects.get(pk=id_item)
     fase = item.tipoitem.fase
-    ti = TipoItem.objects.filter(fase=fase)
-    itemsFase = ItemBase.objects.filter(tipoitem__in=ti).order_by('fecha_creacion')
 
     try:
         ItemRelacion.objects.get(itemHijo=item)
     except:
         item.estado = 'ACT'
         item.save()
-        mensaje = 'Item restaurado exitosamente'
+        mensaje = 'Item ' + item.nombre +' restaurado exitosamente'
         error = 0
         return workphase(request, fase.id, error=error, message=mensaje)
-
 
     padres = []
     hijos = [id_item]
@@ -463,8 +470,7 @@ def restaurarItem(request, id_item):
             item.estado = 'ACT'
             item.save()
 
-
-    mensaje = 'Item restaurado exitosamente'
+    mensaje = 'Item ' + item.nombre +' restaurado exitosamente'
     error = 0
     return workphase(request, fase.id, error=error, message=mensaje)
 
@@ -476,14 +482,13 @@ def restaurarItemRelacion(padres, hijos):
 
     if hijos:
         hijo = hijos.pop()
-        item = ItemBase.objects.get(pk=hijo)
 
         itemPadres = ItemRelacion.objects.get(itemHijo=hijo)
         itemPadre = itemPadres.itemPadre
+        padres.append(itemPadre.id)
 
         item_hijos = list(ItemRelacion.objects.filter(itemHijo=itemPadre).values_list('itemHijo', flat=True))
         hijos.extend(item_hijos)
-        padres.extend(item_hijos)
         restaurarItemRelacion(padres, hijos)
 
     else:
@@ -646,6 +651,7 @@ def formsValidos(formDatosItem, formAtributosBasicos, formNum_list, formSTR_list
     return valido
 
 
+#TODO: No se guardan ni las imágenes ni los archivos.
 def saveForms(formDatosItem, formAtributosBasicos, formNum_list, formSTR_list, formTXT_list,
                         formIMG_list, formFile_list, existen_FIL, existen_TXT, existen_NUM, existen_IMG, existen_STR):
     formDatosItem.save()

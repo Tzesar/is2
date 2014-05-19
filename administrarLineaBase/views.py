@@ -105,8 +105,9 @@ def generarCalculoImpacto(request, id_item):
     calculoImpacto(padres, hijos, costo, tiempo, grafo)
     costo = sum(costo)
     tiempo = sum(tiempo)
-    direccion = MEDIA_ROOT + 'grafos/' + item.nombre + '.png'
+    direccion = MEDIA_ROOT + 'grafos/' + item.nombre
     graph = grafo.write(direccion, format='png')
+    direccion = 'grafos/' + item.nombre
 
 
     return render(request, 'lineabase/calculoimpacto.html', {'user':usuario, 'fase':fase, 'item':item, 'proyecto':proyecto,

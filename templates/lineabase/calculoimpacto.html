@@ -21,10 +21,10 @@
                 <p> Costo = {{ costo }}</p>
                 <p>Tiempo= {{ tiempo }}</p>
             </div>
-            <div>
-                <h3>Grafo de Relaciones</h3>
+            <div class="col-sm-3">
+               <h3>Grafo de Relaciones</h3>
                 {# TODO: Hacer que salga la imagen  #}
-                <img src="{{ direccion }}" alt="Grafo" height="160" width="83" >
+                <img src="{% static "grafos/Item02"  %}" width=100% height=100% >
             </div>
         </div>
     {% endblock panelCentral %}>>

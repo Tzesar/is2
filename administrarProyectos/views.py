@@ -270,8 +270,6 @@ def workProject(request, id_proyecto, error=None, message=None):
         return HttpResponse(json.dumps(responseDict), mimetype='application/javascript')
 
 
-
-
 def vistaDesarrollo(request, id_proyecto, error=None, message=None):
 
     proyecto = Proyecto.objects.get(pk=id_proyecto)
@@ -333,7 +331,7 @@ def startProject(request, id_proyecto):
 
                 message = 'El proyecto ha sido iniciado exitosamente.'
         else:
-            message = 'Debe especificar al menos un rol y una fase para que el prpyecto se considere válido y pueda iniciarse.'
+            message = 'Debe especificar al menos un rol y una fase para que el proyecto se considere válido y pueda iniciarse.'
             error = 1
 
     fases = proyecto.fase_set.all().order_by('id')
@@ -401,7 +399,7 @@ def finProject(request, id_proyecto):
     """
     proyecto = Proyecto.objects.get(pk=id_proyecto)
     fases = proyecto.fase_set.all().order_by('id')
-    roles = Rol.objects.filter(proyecto=proyecto).order_by('nombre')
+    roles = Rol.objects.filter(proyecto=proyecto)
 
     usuariosInactivos = Usuario.objects.filter(is_active=False).values_list('id', flat=True)
     usuariosAsociados = proyecto.usuariosvinculadosproyectos_set.exclude(cod_usuario__in=usuariosInactivos)
@@ -411,9 +409,9 @@ def finProject(request, id_proyecto):
             message = 'No se puede Finalizar el Proyecto. Aún existen fases en desarrollo'
             error = 1
             return render(request, 'proyecto/workProjectLeader.html', {'user': request.user, 'proyecto': proyecto,
-                                                                       'fases': fases, 'roles': roles,
-                                                                       'usuariosAsociados': usuariosAsociados,
-                                                                       'message': message, 'error': error})
+                                                                'fases': fases, 'roles': roles,
+                                                                'usuariosAsociados': usuariosAsociados,
+                                                                'message': message, 'error': error})
 
     if proyecto.estado != 'ACT':
         message = 'No se puede Finalizar un proyecto que se encuentra en el estado: ' + proyecto.get_estado_display()

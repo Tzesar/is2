@@ -69,7 +69,6 @@ def createPhase(request, id_proyecto):
                                                      'error': {} })
 
 
-#TODO: Botones Iniciar Fase - Finalizar Fase
 @login_required()
 def changePhase(request, id_fase, error=None, message=None):
     """
@@ -228,6 +227,8 @@ def importMultiplePhase(request, id_fase, id_proyecto_destino):
     return HttpResponseRedirect('/phaselist/' + str(project.id))
 
 
+#TODO: Al modificar los atributos crear una nueva version.
+#TODO: Boton de ir a items
 def workphase(request, id_fase, error=None, message=None):
     """
     *Vista para el trabajo sobre una fase de un proyecto.
@@ -256,6 +257,7 @@ def workphase(request, id_fase, error=None, message=None):
         return render(request, 'fase/workPhase.html', {'proyecto': proyectoTrabajo, 'fase': faseTrabajo, 'user': request.user,
                                                        'listaItems': itemsFase, 'relaciones': relaciones.items(),
                                                        'error': error, 'message': message})
+
 
 def subirOrden(request, id_fase):
     fase = Fase.objects.get(pk=id_fase)
@@ -317,7 +319,6 @@ def finPhase(request, id_fase):
         message = 'La fase ha sido Finalizada exitosamente.'
 
     return vistaDesarrollo(request, proyecto.id, error=error, message=message)
-
 
 
 def startPhase(request, id_fase):
