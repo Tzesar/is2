@@ -393,6 +393,8 @@ def dardebajaItem(request, id_item):
     """
     item = ItemBase.objects.get(pk=id_item)
     fase = item.tipoitem.fase
+    ti = TipoItem.objects.filter(fase=fase)
+    itemsFase = ItemBase.objects.filter(tipoitem__in=ti).order_by('fecha_creacion')
 
     try:
         ItemRelacion.objects.get(itemPadre=item)
@@ -441,14 +443,11 @@ def restaurarItem(request, id_item):
     try:
         ItemRelacion.objects.get(itemHijo=item)
     except:
-        print 'El item no posee padre'
         item.estado = 'ACT'
         item.save()
         mensaje = 'Item restaurado exitosamente'
         error = 0
-        return render(request, 'fase/workPhase.html', {'mensaje': mensaje, 'user':request.user, 'item':item, 'duplicado': error,
-                                                   'fase':fase, 'proyecto':fase.proyecto, 'listaItems': itemsFase},
-                                                    context_instance=RequestContext(request))
+        return workphase(request, fase.id, error=error, message=mensaje)
 
 
     padres = []
@@ -468,8 +467,7 @@ def restaurarItem(request, id_item):
     mensaje = 'Item restaurado exitosamente'
     error = 0
     return workphase(request, fase.id, error=error, message=mensaje)
-                                                   'fase':fase, 'proyecto':fase.proyecto, 'listaItems': itemsFase},
-                                                    context_instance=RequestContext(request))
+
 
 def restaurarItemRelacion(padres, hijos):
     """
@@ -490,6 +488,7 @@ def restaurarItemRelacion(padres, hijos):
 
     else:
         return
+
 
 def workItem(request, id_item, error=None, message=None):
     item = ItemBase.objects.get(pk=id_item)
@@ -645,6 +644,7 @@ def formsValidos(formDatosItem, formAtributosBasicos, formNum_list, formSTR_list
            valido = False
 
     return valido
+
 
 def saveForms(formDatosItem, formAtributosBasicos, formNum_list, formSTR_list, formTXT_list,
                         formIMG_list, formFile_list, existen_FIL, existen_TXT, existen_NUM, existen_IMG, existen_STR):
