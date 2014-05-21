@@ -13,8 +13,9 @@ from autenticacion.views import main, myLogin
 from administrarUsuarios.views import createUser, changeUser, userList, userListJson, changePass, changeAnyUser
 from zar.views import about, contact
 from administrarProyectos.views import createProject, changeProject, projectList, workProject, setUserToProject,\
-    viewSetUserProject, changeProjectLeader, startProject, cancelProject
-from administrarFases.views import changePhase, createPhase, phaseList, deletePhase, importMultiplePhase
+    viewSetUserProject, changeProjectLeader, startProject, cancelProject, finProject, vistaDesarrollo
+from administrarFases.views import changePhase, createPhase, phaseList, deletePhase, importMultiplePhase, finPhase, \
+    startPhase, subirOrden, bajarOrden
 from administrarRolesPermisos.views import crearRol, eliminarRol, modificarRol, accesoDenegado
 from administrarFases.views import changePhase, createPhase, phaseList, deletePhase, importPhase, importMultiplePhase,\
     confirmar_eliminacion_fase, workphase
@@ -95,7 +96,7 @@ urlpatterns = patterns('',
                            'django.contrib.auth.views.password_reset_confirm', {'post_reset_redirect': 'registration/password_reset_complete'}),
                        url(r'^/password_reset_complete/$', 'django.contrib.auth.views.password_reset_complete'),
 
-                       url(r'^asignrole/(?P<id_proyecto>\d+)/(?P<id_rol>\d+)$', asignRole),
+                       # url(r'^asignrole/(?P<id_proyecto>\d+)/(?P<id_rol>\d+)$', asignRole),
                        url(r'^createatribute/(?P<id_tipoitem>\d+)$', createAtribute),
                        url(r'^changeatribute/(?P<id_atribute>\d+)$', changeAtribute),
                        url(r'^deleteatribute/(?P<id_atribute>\d+)$', deleteAtribute),

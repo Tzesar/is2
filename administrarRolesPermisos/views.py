@@ -1,20 +1,14 @@
 #encoding:utf-8
 
 from django.contrib.auth.decorators import login_required
-from django.http import HttpResponseRedirect
 from django.shortcuts import render
-from django.db import IntegrityError
+from django.contrib.auth.models import Group
 
 from administrarRolesPermisos.forms import NuevoRolForm, RoleObjectPermissionsForm, asignarUsuariosRolForm
-
 from administrarRolesPermisos.models import Rol
-
 from autenticacion.models import Usuario
-from administrarProyectos.models import Proyecto, UsuariosVinculadosProyectos
 from administrarRolesPermisos.decorators import *
 from administrarFases.models import Fase
-
-
 
 
 @login_required
@@ -36,64 +30,66 @@ def crearRol(request, id_proyecto):
     if request.method == 'POST':
 
         # Se crea el formulario para crear el rol con los datos del POST
-        rolForm = NuevoRolForm(request.POST)
+        rolGrupoForm = NuevoRolForm(request.POST)
 
-        # Verifica que el rol tenga los datos correctos
-        if rolForm.is_valid():
-            rol = rolForm.save(commit=False)
-            rol.proyecto = proyecto
+        # Verifica que el grupo del rol tenga los datos correctos
+        if rolGrupoForm.is_valid():
+            rolGrupo = rolGrupoForm.save(commit=False)
 
             # Se crean los formularios para otorgarle al rol los permisos sobre los objetos especificos, proyecto o fases
-            grupoForm = RoleObjectPermissionsForm(rol, proyecto, request.POST, field_name='permisosProyecto')
+            grupoPermisosForm = RoleObjectPermissionsForm(rolGrupo, proyecto, request.POST, field_name='permisosProyecto')
             fasesForms = []
             for fase in fases:
-                faseForm = RoleObjectPermissionsForm(rol, fase, request.POST, field_name='permisosFases'+str(fase.id))
+                faseForm = RoleObjectPermissionsForm(rolGrupo, fase, request.POST, field_name='permisosFases'+str(fase.id))
                 fasesForms.append(faseForm)
 
             # Se crea el formulario que contiene los usuarios asignados al rol
             asignarUsuariosForm = asignarUsuariosRolForm(request.POST, id_proyecto=id_proyecto)
 
             # Verifica que los datos de los permisos y los usuarios asociados al rol sean correctos
-            if grupoForm.is_valid() and asignarUsuariosForm.is_valid() and not encontrarFormInvalidas(fasesForms):
+            if grupoPermisosForm.is_valid() and asignarUsuariosForm.is_valid() and not encontrarFormInvalidas(fasesForms):
                 # Guarda el rol en la base de datos
-                rol.save()
+                rolGrupo.save()
 
-                # Asocia los permisos sobre el proyecto y las fases al rol
-                grupoForm.save_obj_perms()
+                # Asocia los permisos sobre el proyecto y las fases al grupo del rol
+                grupoPermisosForm.save_obj_perms()
                 for faseForm in fasesForms:
                     faseForm.save_obj_perms()
 
-                # Asigna los usuarios al rol
+                # Asigna los usuarios al grupo del rol
                 usuariosRol = asignarUsuariosForm.get_cleaned_data()
                 for usuario in usuariosRol:
                     usuarioNuevo = Usuario.objects.get(id=usuario)
-                    rol.user_set.add(usuarioNuevo)
+                    rolGrupo.user_set.add(usuarioNuevo)
+
+                rol = Rol(grupo=rolGrupo, proyecto=proyecto)
+                rol.save()
 
                 return HttpResponseRedirect('/workproject/'+str(proyecto.id))
 
-    # Crea un grupo temporal para generar los formularios iniciales
-    rol = Rol()
-
     # Formulario para crear un nuevo rol. Definicion de rol en models de esta app.
-    rolForm = NuevoRolForm()
+    rolGrupoForm = NuevoRolForm()
+
+    # Crea un grupo temporal para generar los formularios iniciales
+    rolGrupo = Group()
 
     # Formularios para asignar permisos a un rol sobre un objeto especifico.
     # Primer argumento: rol
     # Segundo argumento: objeto especifico
-    grupoForm = RoleObjectPermissionsForm(rol, proyecto, field_name='permisosProyecto',
+    grupoPermisosForm = RoleObjectPermissionsForm(rolGrupo, proyecto, field_name='permisosProyecto',
                                           field_label='', attrs={'class': 'form-control proyecto'})
-    fasesForms = []
+    fasesPermisosForms = []
     for fase in fases:
-        faseForm = RoleObjectPermissionsForm(rol, fase, field_name='permisosFases'+str(fase.id),
+        faseForm = RoleObjectPermissionsForm(rolGrupo, fase, field_name='permisosFases'+str(fase.id),
                                              field_label='', attrs={'class': 'form-control fase'})
-        fasesForms.append(faseForm)
+        fasesPermisosForms.append(faseForm)
 
     # Formulario para asignar usuarios al rol
     # asignarUsuariosForm = asignarUsuariosRolForm(proyecto, initial={'usuarios': [2, ]})
     asignarUsuariosForm = asignarUsuariosRolForm(id_proyecto=id_proyecto)
 
-    return render(request, "rol/createrole.html", {'proyecto': proyecto, 'user': request.user, 'rolForm': rolForm,
-                                                   'grupoForm': grupoForm, 'fasesForms': fasesForms,
+    return render(request, "rol/createrole.html", {'proyecto': proyecto, 'user': request.user, 'rolGrupoForm': rolGrupoForm,
+                                                   'grupoPermisosForm': grupoPermisosForm, 'fasesPermisosForms': fasesPermisosForms,
                                                    'asignarUsuariosForm': asignarUsuariosForm, })
 
 
@@ -122,8 +118,8 @@ def modificarRol(request, id_proyecto, id_rol):
     *asigna privilegios específicos sobre una ``fase`` o ``proyecto`` dados.*
 
     :param request: HttpRequest
-    :param idProyecto: Clave única del proyecto donde se está creando el ``Rol``.
-    :param idProyecto: Clave única del ``Rol`` que se está modificando.
+    :param id_proyecto: Clave única del proyecto donde se está creando el ``Rol``.
+    :param id_rol: Clave única del ``Rol`` que se está modificando.
     :return: Proporciona la pagina changerole.html con los formularios correspondientes: ````
     """
 
@@ -133,31 +129,31 @@ def modificarRol(request, id_proyecto, id_rol):
 
     if request.method == 'POST':
 
-        # Se crea el formulario para crear el rol con los datos del POST
-        rolForm = NuevoRolForm(request.POST)
+        # Se crea el formulario para modificar el rol con los datos del POST
+        rolGrupoForm = NuevoRolForm(request.POST)
 
         # Verifica que el rol tenga los datos correctos
-        if rolForm.is_valid():
-            rol = rolForm.save(commit=False)
-            rol.proyecto = proyecto
+        if rolGrupoForm.is_valid():
+            rolGrupo = rolGrupoForm.save(commit=False)
+
 
             # Se crean los formularios para otorgarle al rol los permisos sobre los objetos especificos, proyecto o fases
-            grupoForm = RoleObjectPermissionsForm(rol, proyecto, request.POST, field_name='permisosProyecto')
+            grupoPermisosForm = RoleObjectPermissionsForm(rolGrupo, proyecto, request.POST, field_name='permisosProyecto')
             fasesForms = []
             for fase in fases:
-                faseForm = RoleObjectPermissionsForm(rol, fase, request.POST, field_name='permisosFases'+str(fase.id))
+                faseForm = RoleObjectPermissionsForm(rolGrupo, fase, request.POST, field_name='permisosFases'+str(fase.id))
                 fasesForms.append(faseForm)
 
             # Se crea el formulario que contiene los usuarios asignados al rol
             asignarUsuariosForm = asignarUsuariosRolForm(request.POST, id_proyecto=id_proyecto)
 
             # Verifica que los datos de los permisos y los usuarios asociados al rol sean correctos
-            if grupoForm.is_valid() and asignarUsuariosForm.is_valid() and not encontrarFormInvalidas(fasesForms):
+            if grupoPermisosForm.is_valid() and asignarUsuariosForm.is_valid() and not encontrarFormInvalidas(fasesForms):
                 # Guarda el rol en la base de datos
-                rol.save()
+                rolGrupo.save()
 
                 # Asocia los permisos sobre el proyecto y las fases al rol
-                grupoForm.save_obj_perms()
+                grupoPermisosForm.save_obj_perms()
                 for faseForm in fasesForms:
                     faseForm.save_obj_perms()
 
@@ -165,30 +161,34 @@ def modificarRol(request, id_proyecto, id_rol):
                 usuariosRol = asignarUsuariosForm.get_cleaned_data()
                 for usuario in usuariosRol:
                     usuarioNuevo = Usuario.objects.get(id=usuario)
-                    rol.user_set.add(usuarioNuevo)
+                    rolGrupo.user_set.add(usuarioNuevo)
+
+                rol = Rol(grupo=rolGrupo, proyecto=proyecto)
+                rol.save()
 
                 return HttpResponseRedirect('/workproject/'+str(proyecto.id))
 
     # Formulario para crear un nuevo rol. Definicion de rol en models de esta app.
-    rolForm = NuevoRolForm(instance=rol)
+    rolGrupoForm = NuevoRolForm(instance=rol.grupo)
 
-    # Formularios para asignar permisos a un rol sobre un objeto especifico.
-    # Primer argumento: rol
+    # Formularios para asignar permisos a un grupo sobre un objeto especifico, este grupo es luego asociado a
+    # un rol.
+    # Primer argumento: grupo
     # Segundo argumento: objeto especifico
-    grupoForm = RoleObjectPermissionsForm(rol, proyecto, field_name='permisosProyecto',
+    grupoPermisosForm = RoleObjectPermissionsForm(rol.grupo, proyecto, field_name='permisosProyecto',
                                           field_label='', attrs={'class': 'form-control proyecto'})
-    fasesForms = []
+    fasesPermisosForms = []
     for fase in fases:
-        faseForm = RoleObjectPermissionsForm(rol, fase, field_name='permisosFases'+str(fase.id),
+        faseForm = RoleObjectPermissionsForm(rol.grupo, fase, field_name='permisosFases'+str(fase.id),
                                              field_label='', attrs={'class': 'form-control fase'})
-        fasesForms.append(faseForm)
+        fasesPermisosForms.append(faseForm)
 
     # Formulario para asignar usuarios al rol
-    usuariosRol = list(rol.user_set.all().values_list('id', flat=True))
+    usuariosRol = list(rol.grupo.user_set.all().values_list('id', flat=True))
     asignarUsuariosForm = asignarUsuariosRolForm(id_proyecto=id_proyecto, initial={'usuarios': usuariosRol})
 
-    return render(request, "rol/changerole.html", {'proyecto': proyecto, 'user': request.user, 'rolForm': rolForm,
-                                                   'grupoForm': grupoForm, 'fasesForms': fasesForms,
+    return render(request, "rol/changerole.html", {'proyecto': proyecto, 'user': request.user, 'rol': rol, 'rolGrupoForm': rolGrupoForm,
+                                                   'grupoPermisosForm': grupoPermisosForm, 'fasesPermisosForms': fasesPermisosForms,
                                                    'asignarUsuariosForm': asignarUsuariosForm, })
 
 
@@ -205,11 +205,10 @@ def eliminarRol(request, id_proyecto, id_rol):
     """
 
     rol = Rol.objects.get(pk=id_rol)
-    proyecto = Proyecto.objects.get(pk=id_proyecto)
-
     rol.delete()
+    rol.grupo.delete()
 
-    return HttpResponseRedirect('/workproject/'+str(proyecto.id))
+    return HttpResponseRedirect('/workproject/'+str(id_proyecto))
 
 
 @login_required()

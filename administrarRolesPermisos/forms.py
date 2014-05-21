@@ -2,11 +2,8 @@
 
 from django import forms
 from guardian.forms import BaseObjectPermissionsForm
-from django.contrib.auth.models import Permission
-from django.contrib.auth.models import ContentType
-from guardian.shortcuts import assign_perm
-from guardian.shortcuts import remove_perm
-from guardian.shortcuts import get_perms
+from django.contrib.auth.models import Permission, ContentType, Group
+from guardian.shortcuts import assign_perm, remove_perm, get_perms
 import floppyforms as forms2
 
 from administrarProyectos.models import UsuariosVinculadosProyectos, Proyecto
@@ -127,15 +124,12 @@ class NuevoRolForm(forms2.ModelForm):
     """
 
     class Meta:
-        model = Rol
+        model = Group
         fields = ('name', )
-        exclude = ('permissions', 'objects', 'proyecto')
+        exclude = ('permissions', 'objects', )
         widgets = {
             'name': forms2.TextInput(attrs={'class': 'form-control'}),
         }
-
-    def __init__(self, *args, **kwargs):
-        super(NuevoRolForm, self).__init__(*args, **kwargs)
 
 class asignarUsuariosRolForm(forms2.Form):
     """

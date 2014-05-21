@@ -14,9 +14,8 @@ from administrarProyectos.models import Proyecto
 from administrarFases.models import Fase
 from administrarTipoItem.models import TipoItem, Atributo
 from administrarRolesPermisos.decorators import *
-from administrarItems.models import ItemRelacion, ItemBase
-from administrarRolesPermisos.models import Rol
-from autenticacion.models import Usuario
+from django.db import IntegrityError
+from administrarItems.models import ItemBase
 
 
 # logger = logging.getLogger(__name__)
@@ -72,75 +71,8 @@ def createPhase(request, id_proyecto):
                                                      'error': {} })
 
 
-def generarPermisosFase(project, fase):
-    """
-    *Vista para generación de permisos correspondientes a la fase*
-
-    :param project: Recibe la instancia del proyecto al cual pertenece la fase.
-    :param fase: Recibe la instancia de la fase en la cual se crearán los permisos.
-    :return: Los permisos generados se vinculan correctamente a la fase creada.
-    """
-
-    #Permiso de creación de items
-    codigoPermiso = "CRE_ITEM_FASE:" + fase.nombre
-    nombrePermiso = "Crear Item - Fase: " + fase.nombre
-    descripcionPermiso = "Permite la creacion de items en la fase " + fase.nombre + " del proyecto " + project.nombre
-    p = PermisoFase(code=codigoPermiso.upper(), nombre=nombrePermiso, descripcion=descripcionPermiso)
-    p.fase = fase
-    p.save()
-
-    #Permiso de modificación de items
-    codigoPermiso = "ALT_ITEM_FASE:" + fase.nombre
-    nombrePermiso = "Modificar Items - Fase: " + fase.nombre
-    descripcionPermiso = "Permite la modificacion de items en la fase " + fase.nombre + " del proyecto " + project.nombre
-    p = PermisoFase(code=codigoPermiso.upper(), nombre=nombrePermiso, descripcion=descripcionPermiso)
-    p.fase = fase
-    p.save()
-
-    #Permiso de baja de items
-    codigoPermiso = "DDB_ITEM_FASE:" + fase.nombre
-    nombrePermiso = "Dar de baja Items - Fase: " + fase.nombre
-    descripcionPermiso = "Permite la baja de items en la fase " + fase.nombre + " del proyecto " + project.nombre
-    p = PermisoFase(code=codigoPermiso.upper(), nombre=nombrePermiso, descripcion=descripcionPermiso)
-    p.fase = fase
-    p.save()
-
-    #Permiso de consulta de items
-    codigoPermiso = "VER_ITEM_FASE:" + fase.nombre
-    nombrePermiso = "Visualizar Items - Fase: " + fase.nombre
-    descripcionPermiso = "Permite la visualizacion de items en la fase " + fase.nombre + " del proyecto " + project.nombre
-    p = PermisoFase(code=codigoPermiso.upper(), nombre=nombrePermiso, descripcion=descripcionPermiso)
-    p.fase = fase
-    p.save()
-
-    #Permiso de restauracion de items
-    codigoPermiso = "RVV_ITEM_FASE:" + fase.nombre
-    nombrePermiso = "Restaurar Item - Fase: " + fase.nombre
-    descripcionPermiso = "Permite la restauracion de items en la fase " + fase.nombre + " del proyecto " + project.nombre + " previamente eliminados"
-    p = PermisoFase(code=codigoPermiso.upper(), nombre=nombrePermiso, descripcion=descripcionPermiso)
-    p.fase = fase
-    p.save()
-
-    #Permiso de reversion de items
-    codigoPermiso = "REV_ITEM_FASE:" + fase.nombre
-    nombrePermiso = "Reversionar Item - Fase: " + fase.nombre
-    descripcionPermiso = "Permite volver a la version anterior de items en la fase " + fase.nombre + " del proyecto " + project.nombre
-    p = PermisoFase(code=codigoPermiso.upper(), nombre=nombrePermiso, descripcion=descripcionPermiso)
-    p.fase = fase
-    p.save()
-
-    #Permiso de creación solicitudes de cambio
-    codigoPermiso = "CRE_SOLCAMBIO_FASE:" + fase.nombre
-    nombrePermiso = "Crear Solicitud de Cambios - Fase: " + fase.nombre
-    descripcionPermiso = "Permite la creacion de solicitudes de cambios para items en linea base de la fase " + fase.nombre + " del proyecto " + project.nombre
-    p = PermisoFase(code=codigoPermiso.upper(), nombre=nombrePermiso, descripcion=descripcionPermiso)
-    p.fase = fase
-    p.save()
-
-
 #TODO: Botones Iniciar Fase - Finalizar Fase
 @login_required()
-@lider_requerido2
 def changePhase(request, id_fase):
     """
     *Vista para la modificacion de una fase dentro del sistema.
@@ -227,18 +159,6 @@ def deletePhase(request, id_fase):
     return workProject(request, phase_copy.proyecto.id, error=0, message=mensaje )
 
 
-def eliminarPermisos(phase):
-    """
-    *Vista para la eliminacion de permisos correspondientes a la fase*
-
-    :param phase: Recibe la instancia de la fase que se eliminará.
-    :return: Los permisos vinculados son eliminados correctamente.
-    """
-    perm_list = PermisoFase.objects.filter(fase=phase)
-    for p in perm_list:
-        p.delete()
-
-
 @login_required
 # @lider_requerido
 def phaseList(request, id_proyecto):
@@ -279,8 +199,8 @@ def importPhase(request, id_fase, id_proyecto_destino):
         return render(request, "keyduplicate_fase.html", {'project': project, "message": e.message },
           context_instance=RequestContext(request) )
 
-    logger.info('El usuario '+ request.user.username +' ha importado la fase '+  phase.nombre +
-                ' al proyecto destino: ' + phase.proyecto.nombre)
+    # logger.info('El usuario '+ request.user.username +' ha importado la fase '+  phase.nombre +
+    #             ' al proyecto destino: ' + phase.proyecto.nombre)
 
 
     return HttpResponseRedirect('/changephase/' + str(phase.id))
@@ -304,8 +224,8 @@ def importMultiplePhase(request, id_fase, id_proyecto_destino):
         return render(request, "keyduplicate_fase.html", {'project': project, "message": e.message },
           context_instance=RequestContext(request) )
 
-    logger.info('El usuario '+ request.user.username +' ha importado la fase '+  phase.nombre +
-                ' al proyecto destino: ' + phase.proyecto.nombre)
+    # logger.info('El usuario '+ request.user.username +' ha importado la fase '+  phase.nombre +
+    #             ' al proyecto destino: ' + phase.proyecto.nombre)
 
     return HttpResponseRedirect('/phaselist/' + str(project.id))
 

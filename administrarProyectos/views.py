@@ -50,7 +50,7 @@ def createProject(request):
 
             vincularLider(proyectoNuevo, form["lider_proyecto"].value())
 
-            return projectList(request, True, False, proyectoNuevo)
+            return HttpResponseRedirect('/projectlist/')
     else:
         form = NewProjectForm()
         form.fields["lider_proyecto"].queryset = Usuario.objects.exclude(pk__in=admin)
@@ -138,8 +138,7 @@ def projectList(request, exitoCrear=False, exitoModif=False, proyecto=None):
     """
     proyectos = ProyectoTablaAdmin( Proyecto.objects.all().order_by('nombre') )
     RequestConfig(request, paginate={"per_page": 25}).configure(proyectos)
-    return render(request, "proyecto/projectlist.html", {'user': request.user, 'proyectos': proyectos, 'exitoCreacion': exitoCrear,
-                                                         'exitoModif': exitoModif, 'proyecto': proyecto,}, )
+    return render(request, "proyecto/projectlist.html", {'user': request.user, 'proyectos': proyectos}, )
 
 
 @login_required()
@@ -431,5 +430,3 @@ def finProject(request, id_proyecto):
                                                                        'fases': fases, 'roles': roles,
                                                                        'usuariosAsociados': usuariosAsociados,
                                                                        'message': message, 'error': error})
-
-

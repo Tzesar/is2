@@ -52,7 +52,7 @@ class Permiso(models.Model):
         return self.nombre
 
 
-class Rol(Group):
+class Rol(models.Model):
     """
     *Modelo que implementa la estructura de la clase *``Rol``* heredando de la clase ``Group``, por defecto dentro
     de Django, que asocia un conjunto de permisos a un conjunto de Usuarios.
@@ -65,29 +65,11 @@ class Rol(Group):
     :param kwargs: Keyword Arguments para la el modelo ``Group``.
     """
 
+    grupo = models.OneToOneField(Group)
     proyecto = models.ForeignKey(Proyecto)
 
-
-class RolPermiso(models.Model):
-    """
-    *Modelo que implementa la estructura de la clase *``RolPermiso``*
-    que asocia un permiso específico a un ``Rol`` del sistema.
-    Un grupo de instancias de ``RolPermiso`` forman un ``Rol`` que luego es asociado a un ``Usuario``*
-        + *rol*: Rol del cual forma parte este permiso
-        + *permiso*: Permiso asociado al rol
-        + *fase*: *Fase sobre la cual se aplican los permisos. Si este campo contiene el valor NULL el permiso afecta a
-        todas las fases del proyecto*
-
-    :param args: Argumentos para el modelo ``Model``.
-    :param kwargs: Keyword Arguments para la el modelo ``Model``.
-    """
-
-    rol = models.ForeignKey(Rol)
-    permiso = models.ForeignKey(Permiso)
-    fase = models.ForeignKey(Fase, null=True, blank=True, default=None)
-
-    def __unicode__(self):
-        return "Permiso " + self.permiso.nombre + "del rol" + self.rol.nombre
+    class Meta:
+        unique_together = ('grupo', 'proyecto')
 
 
 # class PermisoFase(models.Model):

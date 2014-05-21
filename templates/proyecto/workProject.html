@@ -50,7 +50,11 @@
                         <b><i>El proyecto aún no ha iniciado.</i></b>
                         <br>Por este motivo, no se puede realizar ningún tipo de trabajo sobre el mismo.
                         <br>
-                        <br>El inicio del mismo está estimado para: <i>{{ proyecto.fecha_inicio }}</i>
+                        {% if proyecto.fecha_inicio %}
+                            <br>El inicio del mismo está estimado para: <i>{{ proyecto.fecha_inicio }}</i>
+                        {% else %}
+                            <br>El inicio del mismo aún no se ha estimado.
+                        {% endif %}
                         <br>Para mas detalle, contacte al Líder del Proyecto: <b><i>[{{ proyecto.lider_proyecto.username }}] - {{ proyecto.lider_proyecto.get_full_name }}</i></b>
                     </p>
                 </div>

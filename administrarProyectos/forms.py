@@ -92,8 +92,8 @@ class ChangeProjectLeaderForm(forms2.ModelForm):
         fields = ('nombre', 'fecha_inicio', 'fecha_fin', 'descripcion', 'observaciones')
         widgets = {
             'nombre': forms2.TextInput(attrs={'class': 'form-control', }),
-            'fecha_inicio': forms2.DateInput(attrs={'class': 'form-control', }),
-            'fecha_fin': forms2.DateInput(attrs={'class': 'form-control', }),
+            'fecha_inicio': forms2.DateInput(attrs={'class': 'form-control', }, format='%Y-%m-%d'),
+            'fecha_fin': forms2.DateInput(attrs={'class': 'form-control', }, format='%Y-%m-%d'),
             'descripcion': forms2.Textarea(attrs={'class': 'form-control', }),
             'observaciones': forms2.Textarea(attrs={'class': 'form-control', }),
         }

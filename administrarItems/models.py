@@ -7,7 +7,6 @@ from administrarTipoItem.models import TipoItem, Atributo
 from autenticacion.models import Usuario
 
 
-
 class ItemBase(models.Model):
     """
     *Modelo para la clase* ``Proyecto`` *, en el cual se encuentras todos los atributos de un proyecto:*
@@ -59,7 +58,6 @@ class ItemRelacion(models.Model):
     itemPadre = models.ForeignKey(ItemBase, verbose_name='ItemPadre', related_name='ItemPadre')
     itemHijo = models.ForeignKey(ItemBase, verbose_name='ItemHijo', related_name='ItemHijo', unique=True)
     estado = models.CharField(max_length=3, choices=opciones_estado, default='ACT', help_text='Estado de la relación')
-
 
 
 class CampoNumero(models.Model):
@@ -115,5 +113,3 @@ class CampoImagen(models.Model):
     imagen = models.ImageField(verbose_name='Imagen', upload_to='archivos')
 
 reversion.register(CampoImagen)
-
-
