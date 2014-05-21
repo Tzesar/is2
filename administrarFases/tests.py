@@ -2,12 +2,13 @@
 from django.utils import timezone
 from django.test import TestCase
 from django.test.client import RequestFactory
+import factory
+
 from administrarProyectos.models import Proyecto
 from autenticacion.models import Usuario
-from administrarProyectos.views import changeProject, createProject
 from administrarFases.views import createPhase, changePhase, deletePhase
 from administrarFases.models import Fase
-import factory
+
 
 class UsuarioFactory(factory.DjangoModelFactory):
     FACTORY_FOR = Usuario

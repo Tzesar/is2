@@ -27,6 +27,7 @@ class Fase(models.Model):
     descripcion = models.TextField(max_length=140, help_text='Introduzca una breve reseña del proyecto', null=True)
     estado = models.CharField(max_length=3, choices=opciones_estado, default='PEN', help_text='Estado de la Fase')
     proyecto = models.ForeignKey(Proyecto)
+    nro_orden = models.IntegerField(help_text='Nurmero de orden de ejecuccion de la fase')
 
     def __unicode__(self):
         return self.nombre

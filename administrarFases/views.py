@@ -1,22 +1,25 @@
 #encoding:utf-8
-import logging
 
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponseRedirect
 from django.template import RequestContext
 from django.shortcuts import render
 from django.utils.html import format_html
+from django.db import IntegrityError
 
 from administrarFases.forms import NewPhaseForm, ChangePhaseForm
+from administrarLineaBase.models import LineaBase
+from administrarProyectos.views import workProject, vistaDesarrollo
 from administrarProyectos.models import Proyecto
 from administrarFases.models import Fase
 from administrarTipoItem.models import TipoItem, Atributo
 from administrarRolesPermisos.decorators import *
-from django.db import IntegrityError
-from administrarItems.models import ItemBase, campoEntero, campoTextoCorto, campoTextoLargo, campoFile, campoImagen
+from administrarItems.models import ItemRelacion, ItemBase
+from administrarRolesPermisos.models import Rol
+from autenticacion.models import Usuario
+
 
 # logger = logging.getLogger(__name__)
-
 
 @login_required()
 @lider_requerido
@@ -39,6 +42,12 @@ def createPhase(request, id_proyecto):
         if form.is_valid():
             fase = form.save(commit=False)
             fase.proyecto = project
+            fasesProyecto = Fase.objects.filter(proyecto=project)
+
+            if fasesProyecto:
+                fase.nro_orden = fasesProyecto.count() + 1
+            else:
+                fase.nro_orden = 1
 
             try:
                 fase.save()
@@ -54,15 +63,84 @@ def createPhase(request, id_proyecto):
 
             # generarPermisosFase(project, fase)
 
-            return HttpResponseRedirect('/workproject/'+str(project.id))
+            mensaje ='Fase: ' + Fase.objects.last().nombre + ', creada exitosamente'
+            request.method = 'GET'
+            return workProject(request, id_proyecto, error=0, message=mensaje)
     else:
         form = NewPhaseForm()
     return render(request, 'fase/createphase.html', {'form': form, 'proyecto': project, 'user': request.user,
                                                      'error': {} })
 
 
+def generarPermisosFase(project, fase):
+    """
+    *Vista para generación de permisos correspondientes a la fase*
+
+    :param project: Recibe la instancia del proyecto al cual pertenece la fase.
+    :param fase: Recibe la instancia de la fase en la cual se crearán los permisos.
+    :return: Los permisos generados se vinculan correctamente a la fase creada.
+    """
+
+    #Permiso de creación de items
+    codigoPermiso = "CRE_ITEM_FASE:" + fase.nombre
+    nombrePermiso = "Crear Item - Fase: " + fase.nombre
+    descripcionPermiso = "Permite la creacion de items en la fase " + fase.nombre + " del proyecto " + project.nombre
+    p = PermisoFase(code=codigoPermiso.upper(), nombre=nombrePermiso, descripcion=descripcionPermiso)
+    p.fase = fase
+    p.save()
+
+    #Permiso de modificación de items
+    codigoPermiso = "ALT_ITEM_FASE:" + fase.nombre
+    nombrePermiso = "Modificar Items - Fase: " + fase.nombre
+    descripcionPermiso = "Permite la modificacion de items en la fase " + fase.nombre + " del proyecto " + project.nombre
+    p = PermisoFase(code=codigoPermiso.upper(), nombre=nombrePermiso, descripcion=descripcionPermiso)
+    p.fase = fase
+    p.save()
+
+    #Permiso de baja de items
+    codigoPermiso = "DDB_ITEM_FASE:" + fase.nombre
+    nombrePermiso = "Dar de baja Items - Fase: " + fase.nombre
+    descripcionPermiso = "Permite la baja de items en la fase " + fase.nombre + " del proyecto " + project.nombre
+    p = PermisoFase(code=codigoPermiso.upper(), nombre=nombrePermiso, descripcion=descripcionPermiso)
+    p.fase = fase
+    p.save()
+
+    #Permiso de consulta de items
+    codigoPermiso = "VER_ITEM_FASE:" + fase.nombre
+    nombrePermiso = "Visualizar Items - Fase: " + fase.nombre
+    descripcionPermiso = "Permite la visualizacion de items en la fase " + fase.nombre + " del proyecto " + project.nombre
+    p = PermisoFase(code=codigoPermiso.upper(), nombre=nombrePermiso, descripcion=descripcionPermiso)
+    p.fase = fase
+    p.save()
+
+    #Permiso de restauracion de items
+    codigoPermiso = "RVV_ITEM_FASE:" + fase.nombre
+    nombrePermiso = "Restaurar Item - Fase: " + fase.nombre
+    descripcionPermiso = "Permite la restauracion de items en la fase " + fase.nombre + " del proyecto " + project.nombre + " previamente eliminados"
+    p = PermisoFase(code=codigoPermiso.upper(), nombre=nombrePermiso, descripcion=descripcionPermiso)
+    p.fase = fase
+    p.save()
+
+    #Permiso de reversion de items
+    codigoPermiso = "REV_ITEM_FASE:" + fase.nombre
+    nombrePermiso = "Reversionar Item - Fase: " + fase.nombre
+    descripcionPermiso = "Permite volver a la version anterior de items en la fase " + fase.nombre + " del proyecto " + project.nombre
+    p = PermisoFase(code=codigoPermiso.upper(), nombre=nombrePermiso, descripcion=descripcionPermiso)
+    p.fase = fase
+    p.save()
+
+    #Permiso de creación solicitudes de cambio
+    codigoPermiso = "CRE_SOLCAMBIO_FASE:" + fase.nombre
+    nombrePermiso = "Crear Solicitud de Cambios - Fase: " + fase.nombre
+    descripcionPermiso = "Permite la creacion de solicitudes de cambios para items en linea base de la fase " + fase.nombre + " del proyecto " + project.nombre
+    p = PermisoFase(code=codigoPermiso.upper(), nombre=nombrePermiso, descripcion=descripcionPermiso)
+    p.fase = fase
+    p.save()
+
+
 #TODO: Botones Iniciar Fase - Finalizar Fase
 @login_required()
+@lider_requerido2
 def changePhase(request, id_fase):
     """
     *Vista para la modificacion de una fase dentro del sistema.
@@ -96,8 +174,8 @@ def changePhase(request, id_fase):
             return HttpResponseRedirect('/workproject/'+str(project.id))
     else:
         form = ChangePhaseForm(instance=phase)
-    return render(request, 'fase/changephase.html', {'phaseForm': form, 'phase': phase, 'project': project, 'tiposItem': tiposDeItem, 'user': request.user},
-                              context_instance=RequestContext(request))
+    return render(request, 'fase/changephase.html', {'phaseForm': form, 'phase': phase, 'project': project, 'tiposItem': tiposDeItem, 'user': request.user,
+                                                     'error': error, 'message': message}, context_instance=RequestContext(request))
 
 
 @login_required
@@ -145,7 +223,20 @@ def deletePhase(request, id_fase):
     # logger.info('El usuario '+ request.user.username +' ha eliminado la fase '+ phase_copy.nombre +
     #             ' dentro del proyecto: ' + project.nombre)
 
-    return HttpResponseRedirect('/workproject/'+str(project.id))
+    mensaje = 'Fase: ' + phase_copy.nombre + ', eliminada exitosamente'
+    return workProject(request, phase_copy.proyecto.id, error=0, message=mensaje )
+
+
+def eliminarPermisos(phase):
+    """
+    *Vista para la eliminacion de permisos correspondientes a la fase*
+
+    :param phase: Recibe la instancia de la fase que se eliminará.
+    :return: Los permisos vinculados son eliminados correctamente.
+    """
+    perm_list = PermisoFase.objects.filter(fase=phase)
+    for p in perm_list:
+        p.delete()
 
 
 @login_required
@@ -188,15 +279,15 @@ def importPhase(request, id_fase, id_proyecto_destino):
         return render(request, "keyduplicate_fase.html", {'project': project, "message": e.message },
           context_instance=RequestContext(request) )
 
-    # logger.info('El usuario '+ request.user.username +' ha importado la fase '+  phase.nombre +
-    #             ' al proyecto destino: ' + phase.proyecto.nombre)
+    logger.info('El usuario '+ request.user.username +' ha importado la fase '+  phase.nombre +
+                ' al proyecto destino: ' + phase.proyecto.nombre)
 
 
     return HttpResponseRedirect('/changephase/' + str(phase.id))
 
 
 #TODO: Revisar funcional pero ineficiente
-@login_required
+
 def importMultiplePhase(request, id_fase, id_proyecto_destino):
     """
     *Vista para la importación de un tipo de ítem a otra fase*
@@ -213,13 +304,15 @@ def importMultiplePhase(request, id_fase, id_proyecto_destino):
         return render(request, "keyduplicate_fase.html", {'project': project, "message": e.message },
           context_instance=RequestContext(request) )
 
-    # logger.info('El usuario '+ request.user.username +' ha importado la fase '+  phase.nombre +
-    #             ' al proyecto destino: ' + phase.proyecto.nombre)
+    logger.info('El usuario '+ request.user.username +' ha importado la fase '+  phase.nombre +
+                ' al proyecto destino: ' + phase.proyecto.nombre)
 
     return HttpResponseRedirect('/phaselist/' + str(project.id))
 
 
-def workphase(request, id_fase):
+#TODO: Al modificar los atributos crear una nueva version.
+#TODO: Boton de ir a items
+def workphase(request, id_fase, error=None, message=None):
     """
     *Vista para el trabajo sobre una fase de un proyecto.
     Opción válida para usuarios asociados a un proyecto, con permisos de trabajo sobre items de la fase en cuestion*
@@ -234,8 +327,116 @@ def workphase(request, id_fase):
         faseTrabajo = Fase.objects.get(pk=id_fase)
         proyectoTrabajo = faseTrabajo.proyecto
         ti = TipoItem.objects.filter(fase=faseTrabajo)
-        itemsFase = ItemBase.objects.filter(tipoitem__in=ti)
+        itemsFase = ItemBase.objects.filter(tipoitem__in=ti).order_by('fecha_creacion')
+
+        relaciones = {}
+        for i in itemsFase:
+            try:
+                itemRelacionado = ItemRelacion.objects.get(itemHijo=i).itemPadre
+                relaciones[i] = itemRelacionado
+            except:
+                relaciones[i] = None
+
+        return render(request, 'fase/workPhase.html', {'proyecto': proyectoTrabajo, 'fase': faseTrabajo, 'user': request.user,
+                                                       'listaItems': itemsFase, 'relaciones': relaciones.items(),
+                                                       'error': error, 'message': message})
 
 
-        return render(request, 'fase/workPhase.html', {'proyecto': proyectoTrabajo, 'fase': faseTrabajo,
-                                                       'listaItems': itemsFase, })
+def subirOrden(request, id_fase):
+    fase = Fase.objects.get(pk=id_fase)
+
+    if fase.nro_orden == 1:
+        mensaje = 'La fase ya es la primera. No se puede subir más'
+    else:
+        ordenAnterior = fase.nro_orden - 1
+        faseAnterior = Fase.objects.get(proyecto=fase.proyecto, nro_orden=ordenAnterior)
+        faseAnterior.nro_orden = fase.nro_orden
+        fase.nro_orden = ordenAnterior
+
+        faseAnterior.save()
+        fase.save()
+
+        return HttpResponseRedirect('/workproject/' + str(fase.proyecto.id))
+
+
+def bajarOrden(request, id_fase):
+    fase = Fase.objects.get(pk=id_fase)
+
+    if fase.nro_orden == Fase.objects.filter(proyecto=fase.proyecto).count():
+        mensaje = 'La fase ya es la última. No se puede bajar más'
+    else:
+        ordenPosterior = fase.nro_orden + 1
+        fasePosterior = Fase.objects.get(proyecto=fase.proyecto, nro_orden=ordenPosterior)
+        fasePosterior.nro_orden = fase.nro_orden
+        fase.nro_orden = ordenPosterior
+
+        fasePosterior.save()
+        fase.save()
+
+        return HttpResponseRedirect('/workproject/' + str(fase.proyecto.id))
+
+
+def finPhase(request, id_fase):
+    """
+    Vista para finalizar una fase
+    """
+    fase = Fase.objects.get(pk=id_fase)
+    proyecto = fase.proyecto
+    tipoItem = TipoItem.objects.filter(fase=fase)
+    items = ItemBase.objects.filter(tipoitem__in=tipoItem)
+
+    message = ''
+    error = 0
+    if items:
+        for item in items:
+            if item.estado == 'ACT' or item.estado == 'VAL' or item.estado == 'FIN':
+                message = 'Fase:' + fase.nombre + '. No se pudo finalizar. Aun existen items fuera de Linea Base. Verifique esto y vuelva a intentarlo.'
+                error = 1
+    else:
+        error = 1
+        message = 'Fase: ' + fase.nombre + '. No se pudo finalizar. No se han creado items en la misma. Verifiquela y vuelva a intentarlo.'
+
+    if error == 0:
+        fase.estado = 'FIN'
+        fase.save()
+        message = 'La fase ha sido Finalizada exitosamente.'
+
+    return vistaDesarrollo(request, proyecto.id, error=error, message=message)
+
+
+def startPhase(request, id_fase):
+    """
+    Vista para iniciar una fase
+    """
+    fase = Fase.objects.get(pk=id_fase)
+    proyecto = fase.proyecto
+
+    fases = proyecto.fase_set.all().order_by('id')
+    rolesFases = Rol.objects.filter(proyecto=proyecto).order_by('nombre')
+
+    usuariosInactivos = Usuario.objects.filter(is_active=False).values_list('id', flat=True)
+    usuariosAsociados = proyecto.usuariosvinculadosproyectos_set.exclude(cod_usuario__in=usuariosInactivos)
+
+    fase_anterior = Fase.objects.get(nro_orden=fase.nro_orden-1)
+
+    LineaBase.objects.filter(fase=fase_anterior)
+
+    if LineaBase:
+        fase.estado = 'DES'
+        fase.save()
+        message = 'La fase ' + fase.nombre + ' se ha iniciado coorrectamente.'
+        error = 0
+        return render(request, 'proyecto/workProjectLeader.html', {'user': request.user, 'proyecto': proyecto,
+                                                                       'fases': fases, 'roles': rolesFases,
+                                                                       'usuariosAsociados': usuariosAsociados,
+                                                                       'message': message, 'error': error})
+    else:
+        message = 'La fase ' + fase.nombre + ' no se ha iniciado coorrectamente. Favor verifique la existencia ' \
+                                             'de Lineas Base en la Fase Anterior'
+        error = 1
+        return render(request, 'proyecto/workProjectLeader.html', {'user': request.user, 'proyecto': proyecto,
+                                                                       'fases': fases, 'roles': rolesFases,
+                                                                       'usuariosAsociados': usuariosAsociados,
+                                                                       'message': message, 'error': error})
+
+
