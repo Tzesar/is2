@@ -6,7 +6,8 @@ from django.conf.urls import patterns, url
 from django.contrib import admin
 from django.contrib.auth.views import logout_then_login
 
-from administrarLineaBase.views import generarCalculoImpacto, createLB
+from administrarLineaBase.views import generarCalculoImpacto, createLB, visualizarLB, workApplication, \
+    crearSolicitudCambios, cancelarSolicitudCambios, visualizarSolicitud
 from administrarTipoItem.views import createItemType, deleteItemType, itemTypeList, changeItemType, changeAtribute,\
     createAtribute, deleteAtribute, importItemType
 from autenticacion.views import main, myLogin
@@ -21,7 +22,6 @@ from administrarRolesPermisos.views import crearRol, eliminarRol, modificarRol, 
 from administrarItems.views import createItem, changeItem, completarEnteros, completarArchivo, \
     completarImagen, completarTexto, historialItemBase, relacionarItemBaseView, reversionItemBase, relacionarItemBase, \
     finalizarItem, validarItem, dardebajaItem, workItem, restaurarItem
-
 
 
 admin.autodiscover()
@@ -112,6 +112,14 @@ urlpatterns = patterns('',
                        url(r'^validaritem/(?P<id_item>\d+)$', validarItem ),
                        url(r'^dardebajaitem/(?P<id_item>\d+)$', dardebajaItem ),
                        url(r'^restauraritem/(?P<id_item>\d+)$', restaurarItem ),
+
 ###################################################### LINEA BASE ######################################################
                        url(r'^createlb/(?P<id_fase>\d+)$', createLB ),
+                       url(r'^visualizarlb/(?P<id_fase>\d+)$', visualizarLB ),
+
+###################################################### SOLICITUD DE CAMBIOS ############################################
+                       url(r'^crearsolicitud/(?P<id_fase>\d+)$', crearSolicitudCambios ),
+                       url(r'^cancelarsolicitud/(?P<id_solicitud>\d+)/(?P<id_fase>\d+)$', cancelarSolicitudCambios ),
+                       url(r'^workapplication/(?P<id_fase>\d+)$', workApplication ),
+                       url(r'^visualizarsolicitud/(?P<id_solicitud>\d+)/(?P<id_fase>\d+)$', visualizarSolicitud ),
                        )

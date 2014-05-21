@@ -228,7 +228,7 @@ def importMultiplePhase(request, id_fase, id_proyecto_destino):
 
 
 #TODO: Al modificar los atributos crear una nueva version.
-#TODO: Boton de ir a items
+#TODO: Boton para iniciar una fase y trabajr en fases paralelas
 def workphase(request, id_fase, error=None, message=None):
     """
     *Vista para el trabajo sobre una fase de un proyecto.
@@ -321,39 +321,26 @@ def finPhase(request, id_fase):
     return vistaDesarrollo(request, proyecto.id, error=error, message=message)
 
 
+#TODO: Si no se utiliza eliminar, verificar con Gerardo
 def startPhase(request, id_fase):
     """
     Vista para iniciar una fase
     """
     fase = Fase.objects.get(pk=id_fase)
-    proyecto = fase.proyecto
-
-    fases = proyecto.fase_set.all().order_by('id')
-    rolesFases = Rol.objects.filter(proyecto=proyecto).order_by('nombre')
-
-    usuariosInactivos = Usuario.objects.filter(is_active=False).values_list('id', flat=True)
-    usuariosAsociados = proyecto.usuariosvinculadosproyectos_set.exclude(cod_usuario__in=usuariosInactivos)
 
     fase_anterior = Fase.objects.get(nro_orden=fase.nro_orden-1)
-
-    LineaBase.objects.filter(fase=fase_anterior)
-
-    if LineaBase:
+    LB = LineaBase.objects.filter(fase=fase_anterior)
+    if LB:
         fase.estado = 'DES'
         fase.save()
-        message = 'La fase ' + fase.nombre + ' se ha iniciado coorrectamente.'
+        mensaje = 'La fase ' + fase.nombre + ' se ha iniciado coorrectamente.'
         error = 0
-        return render(request, 'proyecto/workProjectLeader.html', {'user': request.user, 'proyecto': proyecto,
-                                                                       'fases': fases, 'roles': rolesFases,
-                                                                       'usuariosAsociados': usuariosAsociados,
-                                                                       'message': message, 'error': error})
+        return vistaDesarrollo(request, fase.proyecto.id, error=error, message=mensaje)
+
     else:
-        message = 'La fase ' + fase.nombre + ' no se ha iniciado coorrectamente. Favor verifique la existencia ' \
-                                             'de Lineas Base en la Fase Anterior'
+        mensaje = 'La fase ' + fase.nombre + ' no se ha iniciado coorrectamente. Favor verifique la existencia ' \
+                                             'de Lineas Base en la Fase Anterior: ' + fase_anterior.nombre
         error = 1
-        return render(request, 'proyecto/workProjectLeader.html', {'user': request.user, 'proyecto': proyecto,
-                                                                       'fases': fases, 'roles': rolesFases,
-                                                                       'usuariosAsociados': usuariosAsociados,
-                                                                       'message': message, 'error': error})
+        return vistaDesarrollo(request, fase.proyecto.id, error=error, message=mensaje)
 
 

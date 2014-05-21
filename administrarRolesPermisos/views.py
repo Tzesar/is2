@@ -34,7 +34,6 @@ def crearRol(request, id_proyecto):
     fases = Fase.objects.filter(proyecto=proyecto)
 
     if request.method == 'POST':
-
         # Se crea el formulario para crear el rol con los datos del POST
         rolForm = NuevoRolForm(request.POST)
 

@@ -281,7 +281,6 @@ def vistaDesarrollo(request, id_proyecto, error=None, message=None):
         ti = TipoItem.objects.filter(fase=f)
         itemsPorFase[f.id] = ItemBase.objects.filter(tipoitem__in=ti)
 
-    print itemsPorFase.items()
     return render(request, 'proyecto/workProject.html', {'user': request.user, 'proyecto': proyecto, 'fases': fases,
                                                          'itemsPorFase': itemsPorFase.items(), 'error': error, 'message': message})
 

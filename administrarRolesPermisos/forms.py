@@ -137,6 +137,7 @@ class NuevoRolForm(forms2.ModelForm):
     def __init__(self, *args, **kwargs):
         super(NuevoRolForm, self).__init__(*args, **kwargs)
 
+
 class asignarUsuariosRolForm(forms2.Form):
     """
     *Formulario para vincular usuarios a un rol.

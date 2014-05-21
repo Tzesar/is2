@@ -392,7 +392,6 @@ def dardebajaItem(request, id_item):
     item = ItemBase.objects.get(pk=id_item)
     fase = item.tipoitem.fase
     ti = TipoItem.objects.filter(fase=fase)
-    itemsFase = ItemBase.objects.filter(tipoitem__in=ti).order_by('fecha_creacion')
 
     try:
         ItemRelacion.objects.get(itemPadre=item)

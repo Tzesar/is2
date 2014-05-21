@@ -1,0 +1,80 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+
+    {% block title %}Fase: {{ fase.nombre }}{% endblock %}
+    {% block errorBlock %}
+        {% if error == 1 %}
+            <div class="container-fluid">
+                <div class="alert alert-danger alert-dismissable">
+                    <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+                    {{ mensaje }}
+                </div>
+            {% elif error == 0 %}
+                <div class="alert alert-success alert-dismissable">
+                    <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+                    {{ mensaje }}
+                </div>
+            </div>
+        {% endif %}
+    {% endblock errorBlock %}
+
+    {% block breadContent %}
+        <li><a href="{% url 'autenticacion.views.main' %}">Inicio</a></li>
+        <li><a href="{% url 'administrarProyectos.views.vistaDesarrollo' proyecto.id %}">{{ proyecto.nombre|capfirst }}</a></li>
+        <li><a href="{% url 'administrarFases.views.workphase' fase.id %}">{{ fase.nombre|capfirst }}</a></li>
+        <li class="active">Fase: {{ fase.nombre|capfirst }}</li>
+    {% endblock breadContent %}
+
+    {% block padTop %}{% endblock padTop %}
+    {% block panelCentral %}
+        <div class="panel-heading">
+            <h1 class="text-info" style="display: inline-block">Gestión de Solicitud de Cambios de la Fase: {{ fase.nombre|capfirst }}</h1>
+        </div>
+        <div class="panel-body" style="padding-bottom: 2%">
+            <a href="{% url 'administrarLineaBase.views.crearSolicitudCambios' fase.id %}" class="btn btn-sm btn-info"> Crear Solicitudes de Cambios</a>
+            <hr>
+            {% if solicitudes %}
+                {% for solicitud in solicitudes %}
+                    {% if forloop.counter0|divisibleby:"3" %}
+                        <div class="row">
+                    {% endif %}
+                    <div class="col-lg-4 col-md-4 col-sm-4">
+                        <div class="panel panel-default">
+                            <div class="panel-heading">
+                                <div class="row">
+                                    <div class="col-sm-8 col-md-8 col-lg-8">
+                                        <span class="text-primary">
+
+                                        </span>
+                                    </div>
+                                    <div class="list-group-item">
+                                        <i><u>Fecha Creación</u>:</i> {{ solicitud.fecha_creacion }}<br>
+                                        <i><u>Motivo</u>:</i> {{ solicitud.motivo }} <br>
+                                        <br>
+                                        <p class="list-group-item-warning" style="font-size: 10px; line-height: 2">
+                                            <b>Información general</b><br>
+                                            <b> + Estado:</b> {{ solicitud.get_estado_display }}
+                                            <br><b> + Costo total de trabajo:</b> {{ solicitud.costo }}
+                                            <br><b> + Tiempo total de trabajo:</b> {{ solicitud.tiempo }}
+                                        </p>
+                                    </div>
+
+                                    <div class="panel-heading">
+                                        {% if solicitud.estado == 'VOT' %}
+                                                <a href="{% url 'administrarLineaBase.views.cancelarSolicitudCambios' solicitud.id fase.id %}" class="btn btn-xs btn-warning">Cancelar Solicitud</a>
+                                        {% endif %}
+                                        <a href="{% url 'administrarLineaBase.views.visualizarSolicitud' solicitud.id fase.id %}" class="btn btn-xs btn-success">Ver Solicitud</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    {% if forloop.last or forloop.counter|divisibleby:"3" %}
+                        </div>
+                    {% endif %}
+                {% endfor %}
+            {% else %}
+                <p class="list-group-item list-group-item-warning"> No se ha realizado ninguna solicitud de cambio.</p>
+            {% endif %}
+        </div>
+{% endblock panelCentral %}
