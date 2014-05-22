@@ -3,6 +3,7 @@ Descripcion de las diferentes URLs utilizadas en el proyecto ZAPpm
 """
 
 from django.conf.urls import patterns, url
+from django.conf import settings
 from django.contrib import admin
 from django.contrib.auth.views import logout_then_login
 
@@ -21,7 +22,7 @@ from administrarFases.views import changePhase, createPhase, phaseList, deletePh
 from administrarRolesPermisos.views import crearRol, eliminarRol, modificarRol, accesoDenegado
 from administrarItems.views import createItem, changeItem, completarEnteros, completarArchivo, \
     completarImagen, completarTexto, historialItemBase, relacionarItemBaseView, reversionItemBase, relacionarItemBase, \
-    finalizarItem, validarItem, dardebajaItem, workItem, restaurarItem
+    finalizarItem, validarItem, dardebajaItem, workItem, restaurarItem, verImagen
 
 
 admin.autodiscover()
@@ -112,6 +113,9 @@ urlpatterns = patterns('',
                        url(r'^validaritem/(?P<id_item>\d+)$', validarItem ),
                        url(r'^dardebajaitem/(?P<id_item>\d+)$', dardebajaItem ),
                        url(r'^restauraritem/(?P<id_item>\d+)$', restaurarItem ),
+                       url(r'^media/(?P<path>.*)$', 'django.views.static.serve',
+		                                                    {'document_root':settings.MEDIA_ROOT, 'show_indexes': True}
+                       ),
 
 ###################################################### LINEA BASE ######################################################
                        url(r'^createlb/(?P<id_fase>\d+)$', createLB ),

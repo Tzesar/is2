@@ -253,7 +253,6 @@ def workphase(request, id_fase, error=None, message=None):
                 relaciones[i] = itemRelacionado
             except:
                 relaciones[i] = None
-
         return render(request, 'fase/workPhase.html', {'proyecto': proyectoTrabajo, 'fase': faseTrabajo, 'user': request.user,
                                                        'listaItems': itemsFase, 'relaciones': relaciones.items(),
                                                        'error': error, 'message': message})

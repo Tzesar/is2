@@ -213,6 +213,10 @@ def completarArchivo(request, id_atributo, id_item):
                                                     'tiposItem': tipoItem, 'user': request.user, 'attr':atributo},
                                                     context_instance=RequestContext(request))
 
+
+def verImagen(request, imagen_dir):
+    render(request, 'item/../is2/static/directory_index.html', {'img': imagen_dir})
+
 @reversion.create_revision()
 def completarImagen(request, id_atributo, id_item):
     """
@@ -241,7 +245,7 @@ def completarImagen(request, id_atributo, id_item):
                                                     'tiposItem': tipoItem, 'user': request.user, 'attr':atributo},
                                                     context_instance=RequestContext(request))
 
-
+#TODO: no funciona correctamente
 def historialItemBase(request, id_fase, id_item):
     """
     Vista para el historial de versiones
@@ -258,6 +262,7 @@ def historialItemBase(request, id_fase, id_item):
                                                context_instance=RequestContext(request))
 
 
+#TODO: reversion de atributos
 def reversionItemBase(request, id_item, id_fase, id_version):
     """
     Vista para la reversión de ítem
@@ -281,7 +286,6 @@ def relacionarItemBase(request, id_item_hijo, id_item_padre, id_fase):
     """
     Vista para relaciones los items
     """
-    fase = Fase.objects.get(pk=id_fase)
     item_hijo = ItemBase.objects.get(pk=id_item_hijo)
     item_padre = ItemBase.objects.get(pk=id_item_padre)
 
@@ -295,13 +299,26 @@ def relacionarItemBase(request, id_item_hijo, id_item_padre, id_fase):
         item_hijo.fecha_modificacion = timezone.now()
         item_hijo.usuario_modificacion = request.user
         item_hijo.save()
-        mensaje = 'Relacion establecida entre ' + item_hijo.nombre + ' e ' + item_padre.nombre + '.'
+        mensaje = 'Relacion establecida entre ' + item_hijo.nombre + ' y ' + item_padre.nombre + '.'
         error = 0
         return workphase(request, id_fase, error=error, message=mensaje)
 
-    mensaje = 'El item ' + item_hijo + ' ya cuenta con una relacin hacia un item ancestro'
-    duplicado = 1
-    return workphase(request, id_fase, error=duplicado, message=mensaje)
+    relacion = ItemRelacion.objects.get(itemHijo=item_hijo)
+    padre = relacion.itemPadre
+    if padre == item_padre:
+        mensaje = 'El item ' + item_hijo.nombre + ' ya cuenta con una relacion hacia el item especificado.'
+        duplicado = 1
+        return workphase(request, id_fase, error=duplicado, message=mensaje)
+    else:
+        relacion = ItemRelacion.objects.get(itemHijo=item_hijo)
+        relacion.delete()
+
+        nueva_relacion = ItemRelacion(itemHijo=item_hijo, itemPadre=item_padre)
+        nueva_relacion.save()
+
+        mensaje = 'Relacion establecida entre ' + item_hijo.nombre + ' y ' + item_padre.nombre + '.'
+        error = 0
+        return workphase(request, id_fase, error=error, message=mensaje)
 
 
 def relacionarItemBaseView(request, id_fase_actual, id_item_actual):
@@ -325,7 +342,7 @@ def relacionarItemBaseView(request, id_fase_actual, id_item_actual):
             return workphase(request, id_fase_actual, error=error, message=mensaje)
     else:
         orden_anterior = fase_actual.nro_orden - 1
-        fase_anterior = Fase.objects.get(nro_orden=orden_anterior)
+        fase_anterior = Fase.objects.get(proyecto=proyecto, nro_orden=orden_anterior)
         tipoitem_anterior = TipoItem.objects.filter(fase=fase_anterior)
         item_lista_fase_anterior = ItemBase.objects.filter(tipoitem__in=tipoitem_anterior, estado='ELB')
         return render(request, 'item/relacionaritemvista.html', {'item': item, 'fase': fase_actual, 'proyecto': proyecto,
@@ -349,7 +366,7 @@ def validarItem(request, id_item):
         return workphase(request, item.tipoitem.fase.id, error=error, message=mensaje)
 
     else:
-        mensaje = 'Item no puede ser validado, deberia tener un estado Finalizado antes de ser Validado '
+        mensaje = 'Item no puede ser validado. El mismo debe finalizarse primero.'
         error = 1
         return workphase(request, item.tipoitem.fase.id, error=error, message=mensaje)
 
@@ -556,10 +573,10 @@ def workItem(request, id_item, error=None, message=None):
             formTXT_list = CampoTXTFormset(request.POST, queryset=camposTXT, instance=item, prefix='formularios_TXT')
 
         if existen_IMG:
-            formIMG_list = CampoIMGFormset(request.POST, queryset=camposIMG, instance=item, prefix='formularios_IMG')
+            formIMG_list = CampoIMGFormset(request.POST, request.FILES, queryset=camposIMG, instance=item, prefix='formularios_IMG')
 
         if existen_FIL:
-            formFile_list = CampoFILFormset(request.POST, queryset=camposFIL, instance=item, prefix='formularios_FIL')
+            formFile_list = CampoFILFormset(request.POST, request.FILES, queryset=camposFIL, instance=item, prefix='formularios_FIL')
 
 
         if formsValidos(formDatosItem, formAtributosBasicos, formNum_list, formSTR_list, formTXT_list,

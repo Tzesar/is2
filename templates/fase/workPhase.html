@@ -63,23 +63,39 @@
                                         </span>
                                     </div>
                                     <div class="col-sm-4 col-md-4 col-lg-4">
-                                        {% if item.estado == 'ACT' and user == proyecto.lider_proyecto %}
-                                            <span class="pull-right" data-toggle="tooltip" title="Finalizar Ítem" id="tooltip">
-                                                <span class="pull-right" style="padding-right: 5%">
-                                                    <a href="{% url 'administrarItems.views.finalizarItem' item.id %}" class="text-info">
-                                                        <span class="glyphicon glyphicon-record"></span>
-                                                    </a>
+                                        {% if item.estado == 'ACT' %}
+                                            {% if user == proyecto.lider_proyecto %}
+                                                <span class="pull-right" data-toggle="tooltip" title="Finalizar Ítem" id="tooltip">
+                                                    <span class="pull-right" style="padding-right: 5%">
+                                                        <a href="{% url 'administrarItems.views.finalizarItem' item.id %}" class="text-info">
+                                                            <span class="glyphicon glyphicon-record"></span>
+                                                        </a>
+                                                    </span>
                                                 </span>
-                                            </span>
+                                            {% else %}
+                                                <span class="pull-right" data-toggle="tooltip" title="Ítem Activo" id="tooltip">
+                                                    <span class="pull-right" style="padding-right: 5%">
+                                                        <span class="text-success glyphicon glyphicon-record"></span>
+                                                    </span>
+                                                </span>
+                                            {% endif %}
                                         {% endif %}
-                                        {% if user == proyecto.lider_proyecto and item.estado == 'FIN' %}
-                                            <span class="pull-right" data-toggle="tooltip" title="Validar Ítem" id="tooltip">
-                                                <span class="pull-right" style="padding-right: 5%">
-                                                    <a href="{% url 'administrarItems.views.validarItem' item.id %}" class="text-warning">
-                                                        <span class="glyphicon glyphicon-ok-circle"></span>
-                                                    </a>
+                                        {% if item.estado == 'FIN' %}
+                                            {% if user == proyecto.lider_proyecto %}
+                                                <span class="pull-right" data-toggle="tooltip" title="Validar Ítem" id="tooltip">
+                                                    <span class="pull-right" style="padding-right: 5%">
+                                                        <a href="{% url 'administrarItems.views.validarItem' item.id %}" class="text-warning">
+                                                            <span class="glyphicon glyphicon-ok-circle"></span>
+                                                        </a>
+                                                    </span>
                                                 </span>
-                                            </span>
+                                            {% else %}
+                                                <span class="pull-right" data-toggle="tooltip" title="Ítem Finalizado" id="tooltip">
+                                                    <span class="pull-right" style="padding-right: 5%">
+                                                        <span class="text-success glyphicon glyphicon-ok-circle"></span>
+                                                    </span>
+                                                </span>
+                                            {% endif %}
                                         {% endif %}
                                         {% if item.estado == 'VAL' %}
                                             <span class="pull-right" data-toggle="tooltip" title="Ítem validado" id="tooltip">
@@ -117,9 +133,9 @@
                                     <br><b> + Costo:</b> {{ item.costo }}
                                     <br><b> + Tiempo estimado de trabajo:</b> {{ item.tiempo }}
                                     <br><b> + Ítem Relacionado:</b> {% if padre %}
-                                                                        {{ padre.nombre|capfirst }}
+                                                                        {{ padre.nombre|capfirst }} {% if item.estado != 'DDB' and item.estado != 'ELB' %}[<a href="{% url 'administrarItems.views.relacionarItemBaseView' fase.id item.id %}">Modificar</a>]{% endif %}
                                                                     {% else %}
-                                                                        No existe. {% if item.estado == 'ACT' or item.estado == 'REV' %}[<a href="{% url 'administrarItems.views.relacionarItemBaseView' fase.id item.id %}">Relacionar</a>]{% endif %}
+                                                                        No existe. {% if item.estado != 'DDB' and item.estado != 'ELB' %}[<a href="{% url 'administrarItems.views.relacionarItemBaseView' fase.id item.id %}">Relacionar</a>]{% endif %}
                                                                     {% endif %}
                                 </p>
 
@@ -146,9 +162,7 @@
                                         <a href="{% url 'administrarItems.views.historialItemBase' fase.id item.id %}" class="btn btn-xs btn-warning">Historial de Versiones</a>
                                     {% endif %}
                                 {% endif %}
-                            {# TODO: Insertar boton detalles para observar los valores de todos sus atributos #}
                             </div>
-
                         </div>
 
                     </div>

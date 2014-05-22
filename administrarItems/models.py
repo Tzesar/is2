@@ -40,7 +40,7 @@ class ItemBase(models.Model):
     tiempo = models.IntegerField(help_text='Ingresar el tiempo estimado para desarrollar ')
     version = models.IntegerField(help_text='Version actual del item', default=1)
     linea_base = models.ForeignKey(LineaBase, null=True, verbose_name='Linea Base a la que pertenece el item')
-    solicitudes = models.ManyToManyField(SolicitudCambios, related_name='items', help_text='Items especificados para modificar')
+    # solicitudes = models.ManyToManyField(SolicitudCambios, related_name='items', help_text='Items especificados para modificar')
 
     def __unicode__(self):
         return self.nombre

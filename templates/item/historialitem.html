@@ -55,7 +55,7 @@
                                 <td>
                                     {% if item.estado == 'ACT' or item.estado == 'REV'   %}
                                         <div class="btn-group pull-right">
-                                            <a href="{% url 'administrarItems.views.reversionItemBase' item.id fase.id version.id  %}" type="button" class="btn btn-danger">Recuperar esta version</a>
+                                            <a href="{% url 'administrarItems.views.reversionItemBase' item.id fase.id version.id  %}" type="button" class="btn btn-danger btn-sm">Recuperar esta version</a>
                                         </div>
                                     {% endif %}
                                  </td>
@@ -64,13 +64,11 @@
                     </tbody>
                 </table>
             </div>
-            <div class="btn-group btn-group-justified">
-                <div class="col-lg-4 col-md-4 col-sm-4" >
-                    <div class="btn-group" style="padding-bottom: 5%">
-                        <a href="{% url 'administrarFases.views.workphase' fase.id %}" class="btn btn-lg btn-success" type="submit">Finalizar</a>
-                    </div>
-                </div>
+
+            <div class="btn-group" style="padding-bottom: 5%">
+                <a href="{% url 'administrarFases.views.workphase' fase.id %}" class="btn btn-lg btn-success" type="submit">Finalizar</a>
             </div>
+
         </div>
     </div>
 {% endblock %}

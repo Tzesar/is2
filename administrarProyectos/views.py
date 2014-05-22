@@ -221,13 +221,12 @@ def workProject(request, id_proyecto, error=None, message=None):
         cantFases = fases.count()
 
         if usuario == proyecto.lider_proyecto:
-            fases = proyecto.fase_set.all().order_by('id')
             roles = Rol.objects.filter(proyecto=proyecto)
 
             usuariosInactivos = Usuario.objects.filter(is_active=False).values_list('id', flat=True)
             usuariosAsociados = proyecto.usuariosvinculadosproyectos_set.exclude(cod_usuario__in=usuariosInactivos)
             return render(request, 'proyecto/workProjectLeader.html', {'user': request.user, 'proyecto': proyecto,
-                                                                       'fases': fases, 'roles': roles, 'cantFases':cantFases,
+                                                                       'fases': fases, 'roles': roles, 'cantFases': cantFases,
                                                                        'usuariosAsociados': usuariosAsociados, 'error': error, 'message': message})
 
         else:
@@ -295,6 +294,7 @@ def startProject(request, id_proyecto):
     proyecto = Proyecto.objects.get(pk=id_proyecto)
     roles = Rol.objects.filter(proyecto=proyecto)
     fases = proyecto.fase_set.all().order_by('nro_orden')
+    cantFases = fases.count()
 
     usuariosInactivos = Usuario.objects.filter(is_active=False).values_list('id', flat=True)
     usuariosAsociados = proyecto.usuariosvinculadosproyectos_set.exclude(cod_usuario__in=usuariosInactivos)
@@ -333,9 +333,9 @@ def startProject(request, id_proyecto):
             message = 'Debe especificar al menos un rol y una fase para que el proyecto se considere válido y pueda iniciarse.'
             error = 1
 
-    fases = proyecto.fase_set.all().order_by('id')
+    fases = proyecto.fase_set.all().order_by('nro_orden')
     return render(request, 'proyecto/workProjectLeader.html', {'user': request.user, 'proyecto': proyecto,
-                                                                'fases': fases, 'roles': roles,
+                                                                'fases': fases, 'roles': roles, 'cantFases': cantFases,
                                                                 'usuariosAsociados': usuariosAsociados,
                                                                 'message': message, 'error': error})
 
@@ -397,7 +397,8 @@ def finProject(request, id_proyecto):
     *Vista par inicar un proyecto*
     """
     proyecto = Proyecto.objects.get(pk=id_proyecto)
-    fases = proyecto.fase_set.all().order_by('id')
+    fases = proyecto.fase_set.all().order_by('nro_orden')
+    cantFases = fases.count()
     roles = Rol.objects.filter(proyecto=proyecto)
 
     usuariosInactivos = Usuario.objects.filter(is_active=False).values_list('id', flat=True)
@@ -408,7 +409,7 @@ def finProject(request, id_proyecto):
             message = 'No se puede Finalizar el Proyecto. Aún existen fases en desarrollo'
             error = 1
             return render(request, 'proyecto/workProjectLeader.html', {'user': request.user, 'proyecto': proyecto,
-                                                                'fases': fases, 'roles': roles,
+                                                                'fases': fases, 'roles': roles, 'cantFases': cantFases,
                                                                 'usuariosAsociados': usuariosAsociados,
                                                                 'message': message, 'error': error})
 
@@ -416,7 +417,7 @@ def finProject(request, id_proyecto):
         message = 'No se puede Finalizar un proyecto que se encuentra en el estado: ' + proyecto.get_estado_display()
         error = 1
         return render(request, 'proyecto/workProjectLeader.html', {'user': request.user, 'proyecto': proyecto,
-                                                                       'fases': fases, 'roles': roles,
+                                                                       'fases': fases, 'roles': roles, 'cantFases': cantFases,
                                                                        'usuariosAsociados': usuariosAsociados,
                                                                        'message': message, 'error': error})
 
@@ -427,7 +428,7 @@ def finProject(request, id_proyecto):
         message = 'El proyecto ha sido Finalizdo exitosamente.'
         error = 0
         return render(request, 'proyecto/workProjectLeader.html', {'user': request.user, 'proyecto': proyecto,
-                                                                       'fases': fases, 'roles': roles,
+                                                                       'fases': fases, 'roles': roles, 'cantFases': cantFases,
                                                                        'usuariosAsociados': usuariosAsociados,
                                                                        'message': message, 'error': error})
 
