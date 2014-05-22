@@ -52,8 +52,9 @@ class asignarItemSolicitudForm(forms2.Form):
 
         super(asignarItemSolicitudForm, self).__init__(*args, **kwargs)
 
-        itemHabilitados = list(ItemBase.objects.filter(estado='ELB', tipoitem__in=self.tipoitem).values_list('id', 'nombre'))
-        self.fields['items'] = forms2.MultipleChoiceField(choices=itemHabilitados)
+        itemHabilitados = list(ItemBase.objects.filter(estado='ELB', tipoitem__in=self.tipoitem).order_by('nombre').values_list('id', 'nombre'))
+        self.fields['items'] = forms2.MultipleChoiceField(choices=itemHabilitados, required=True,
+                                                          widget=forms2.CheckboxSelectMultiple(attrs={'class': 'form-control', }), help_text='Items que serán modificados')
 
         super(asignarItemSolicitudForm, self).full_clean()
 

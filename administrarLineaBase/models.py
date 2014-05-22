@@ -43,3 +43,4 @@ class SolicitudCambios(models.Model):
 
     def __unicode__(self):
         return self.fecha_creacion
+

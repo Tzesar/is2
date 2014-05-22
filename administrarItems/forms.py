@@ -1,3 +1,4 @@
+#encoding:utf-8
 from django import forms
 from django.forms import ModelForm
 from django.forms.models import BaseInlineFormSet
@@ -9,7 +10,20 @@ from administrarTipoItem.models import TipoItem, Atributo
 
 class itemForm(forms.ModelForm):
     """
-    Este es el formulario para la creacion de items
+    *Formulario para la creación de items, utilizamos el modelo* ``ItemBase``
+        + *Nombre*: Nombre del Ítem
+        + *Descripción*: Breve reseña del ítem
+        + *Tipo de Ítem*: Tipo de ítem al cual pertenece el ítem.
+        + *Complejidad*: Es el nivel complejidad que abarca el item.
+        + *Costo*: Es el nivel costo de recurso estimados a utilizar para desarrollar el item.
+
+    ::
+
+        class Meta:
+            model = ItemBase
+            fields = ('nombre', 'complejidad', 'tiempo', 'costo', 'descripcion', 'tipoitem',)
+
+
     """
 
     tipoitem = forms.ModelChoiceField(queryset=TipoItem.objects.all(), label='Tipo de Item')
@@ -31,12 +45,17 @@ class itemForm(forms.ModelForm):
         self.fields['tipoitem'].queryset = TipoItem.objects.all()
 
 
-
 class modificarDatosItemForm(forms.ModelForm):
     """
-    Formulario de modificacion de la configuracion general del item
-    Campos como el nombre del item, y su descripcion se incluyen en
-    este formulario
+    * Formulario de modificacion de la configuracion general del item.*
+    *Campos como el nombre del item, y su descripcion se incluyen en este formulario *
+
+    ::
+
+        class Meta:
+            model = ItemBase
+            fields = ('nombre', 'descripcion',)
+
     """
     class Meta:
         model = ItemBase
@@ -49,7 +68,14 @@ class modificarDatosItemForm(forms.ModelForm):
 
 class modificarAtributosBasicosForm(forms.ModelForm):
     """
-    Formulario para modificar los atributos basicos de un item
+    *Formulario para modificar los atributos basicos de un item.*
+
+    ::
+
+        class Meta:
+            model = ItemBase
+            fields = ('costo', 'complejidad', 'tiempo',)
+
     """
     class Meta:
         model = ItemBase
@@ -60,6 +86,8 @@ class modificarAtributosBasicosForm(forms.ModelForm):
             'tiempo': forms2.NumberInput(attrs={'class': 'form-control',})
         }
 
+
+#TODO: Eliminar si ya no se usa
 class campoEnteroForm(forms.ModelForm):
     """
     Este es el formulario para la creacion de campos enteros
@@ -127,7 +155,11 @@ class campoImagenForm(forms.ModelForm):
         super(campoImagenForm, self).__init__(*args, **kwargs)
         self.fields['imagen'].required = False
 
+
 class CustomInlineFormSet_NUM(BaseInlineFormSet):
+    """
+    *Formulario para los atributos del tipo numérico*
+    """
     def __init__(self, *args, **kwargs):
         super(CustomInlineFormSet_NUM, self).__init__(*args, **kwargs)
         nro_formularios = len(self)
@@ -141,6 +173,9 @@ class CustomInlineFormSet_NUM(BaseInlineFormSet):
 
 
 class CustomInlineFormSet_STR(BaseInlineFormSet):
+    """
+    *Formulario para los atributos del tipo alfanumérico*
+    """
     def __init__(self, *args, **kwargs):
         super(CustomInlineFormSet_STR, self).__init__(*args, **kwargs)
         nro_formularios = len(self)
@@ -154,6 +189,9 @@ class CustomInlineFormSet_STR(BaseInlineFormSet):
 
 
 class CustomInlineFormSet_TXT(BaseInlineFormSet):
+    """
+    *Formulario para los atributos del tipo alfanumérico extendido*
+    """
     def __init__(self, *args, **kwargs):
         super(CustomInlineFormSet_TXT, self).__init__(*args, **kwargs)
         nro_formularios = len(self)
@@ -167,6 +205,9 @@ class CustomInlineFormSet_TXT(BaseInlineFormSet):
 
 
 class CustomInlineFormSet_IMG(BaseInlineFormSet):
+    """
+    *Formulario para los atributos del tipo imagen*
+    """
     def __init__(self, *args, **kwargs):
         super(CustomInlineFormSet_IMG, self).__init__(*args, **kwargs)
         nro_formularios = len(self)
@@ -180,6 +221,9 @@ class CustomInlineFormSet_IMG(BaseInlineFormSet):
 
 
 class CustomInlineFormSet_FIL(BaseInlineFormSet):
+    """
+    *Formulario para los atributos del tipo archivo*
+    """
     def __init__(self, *args, **kwargs):
         super(CustomInlineFormSet_FIL, self).__init__(*args, **kwargs)
         nro_formularios = len(self)
