@@ -33,14 +33,8 @@
                     {% csrf_token %}
                     {% form form using "formsLayouts/div.html" %}
                     {% form asignarItemSolicitud using "formsLayouts/div.html" %}
-                    <div class="btn-group btn-group-justified">
-                        <div class="btn-group">
-                            <a href="{% url 'administrarLineaBase.views.workApplication' fase.id %}" class="btn btn-lg btn-warning" type="submit">Cancelar</a>
-                        </div>
-                        <div class="btn-group">
-                            <button class="btn btn-lg btn-success btn-block" type="submit">Crear Solicitud</button>
-                        </div>
-                    </div>
+                        <a href="{% url 'administrarLineaBase.views.workApplication' fase.id %}" class="btn btn-lg btn-warning" type="submit">Cancelar</a>
+                        <button class="btn btn-lg btn-success btn-block" type="submit">Crear Solicitud</button>
                 </form>
             </div>
         </div>

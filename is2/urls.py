@@ -8,7 +8,7 @@ from django.contrib import admin
 from django.contrib.auth.views import logout_then_login
 
 from administrarLineaBase.views import generarCalculoImpacto, createLB, visualizarLB, workApplication, \
-    crearSolicitudCambios, cancelarSolicitudCambios, visualizarSolicitud
+    crearSolicitudCambios, cancelarSolicitudCambios, visualizarSolicitud, votarSolicitud
 from administrarTipoItem.views import createItemType, deleteItemType, itemTypeList, changeItemType, changeAtribute,\
     createAtribute, deleteAtribute, importItemType
 from autenticacion.views import main, myLogin
@@ -121,4 +121,5 @@ urlpatterns = patterns('',
                        url(r'^cancelarsolicitud/(?P<id_solicitud>\d+)/(?P<id_fase>\d+)$', cancelarSolicitudCambios ),
                        url(r'^workapplication/(?P<id_fase>\d+)$', workApplication ),
                        url(r'^visualizarsolicitud/(?P<id_solicitud>\d+)/(?P<id_fase>\d+)$', visualizarSolicitud ),
+                       url(r'^createvote/(?P<id_solicitud>\d+)/(?P<error>\d+)$', votarSolicitud),
                        )

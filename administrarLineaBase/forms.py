@@ -1,10 +1,10 @@
 #encoding:utf-8
 from django import forms
 import floppyforms as forms2
+
 from administrarFases.models import Fase
 from administrarItems.models import ItemBase
-from administrarLineaBase.models import LineaBase, SolicitudCambios
-from administrarProyectos.models import Proyecto
+from administrarLineaBase.models import LineaBase, SolicitudCambios, Votacion
 from administrarTipoItem.models import TipoItem
 
 
@@ -49,13 +49,11 @@ class asignarItemSolicitudForm(forms2.Form):
         id_fase = kwargs.pop('id_fase')
         self.fase = Fase.objects.get(id=id_fase)
         self.tipoitem = TipoItem.objects.filter(fase=self.fase)
-
         super(asignarItemSolicitudForm, self).__init__(*args, **kwargs)
 
-        itemHabilitados = list(ItemBase.objects.filter(estado='ELB', tipoitem__in=self.tipoitem).order_by('nombre').values_list('id', 'nombre'))
-        self.fields['items'] = forms2.MultipleChoiceField(choices=itemHabilitados, required=True,
-                                                          widget=forms2.CheckboxSelectMultiple(attrs={'class': 'form-control', }), help_text='Items que serán modificados')
+        opciones = list(ItemBase.objects.filter(estado='ELB', tipoitem__in=self.tipoitem).order_by('nombre').values_list('id', 'nombre'))
 
+        self.fields['items'].choices = opciones
         super(asignarItemSolicitudForm, self).full_clean()
 
 
@@ -68,3 +66,15 @@ class asignarItemSolicitudForm(forms2.Form):
         opciones = self.cleaned_data.get('items')
 
         return opciones
+
+
+class emitirVotoForm(forms2.Form):
+    """
+    *Formulario para realizar la justificación en la decisión tomada sobre una solicitud de cambio*
+    """
+    class Meta:
+        model = Votacion
+        fields = ('justificacion',)
+        widgets = {
+            'justificacion': forms2.Textarea(attrs={'class': 'form-control', }),
+        }

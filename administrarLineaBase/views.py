@@ -7,7 +7,7 @@ from django.shortcuts import render
 from administrarFases.models import Fase
 from administrarFases.views import workphase
 from administrarItems.models import ItemBase, ItemRelacion
-from administrarLineaBase.forms import createLBForm, createSCForm, asignarItemSolicitudForm
+from administrarLineaBase.forms import createLBForm, createSCForm, asignarItemSolicitudForm, emitirVotoForm
 from administrarLineaBase.models import LineaBase, SolicitudCambios
 from administrarProyectos.views import vistaDesarrollo
 from administrarTipoItem.models import TipoItem
@@ -54,7 +54,7 @@ def createLB(request, id_fase):
                 return workphase(request, id_fase, error=error, message=mensaje)
         else:
             form = createLBForm()
-        return render(request, 'createLineaBase.html', {'form': form, 'proyecto': proyecto,
+        return render(request, 'lineabase/createlb.html', {'form': form, 'proyecto': proyecto,
                                                         'user': request.user, 'fase':fase, })
     else:
         mensaje = 'Error al crear Linea Base. No existen items VALIDADOS en la fase'
@@ -186,11 +186,11 @@ def workApplication(request, id_fase, error=None, mensaje=None):
     usuario = request.user
     fase = Fase.objects.get(pk=id_fase)
     proyecto = fase.proyecto
-
+    error = 0
     solicitudes = SolicitudCambios.objects.filter(usuario=usuario, fase=fase)
 
     return render(request, 'lineabase/workapplication.html', {'proyecto': proyecto, 'fase': fase, 'user': usuario,
-                                                              'solicitudes': solicitudes})
+                                                              'solicitudes': solicitudes, 'error': error})
 
 
 def visualizarSolicitud(request, id_solicitud, id_fase):
@@ -259,4 +259,38 @@ def crearSolicitudCambios(request, id_fase):
                                                     context_instance=RequestContext(request))
 
 
+def votarSolicitud(request, id_solicitud, error):
+    """
+    *Vista para realizar las votaciones correspondientes a una solicitud de cambio *
+    """
 
+    solicitud = SolicitudCambios.objects.get(pk=id_solicitud)
+    fase = solicitud.fase
+    proyecto = fase.proyecto
+
+    if request.method == 'POST':
+        form = emitirVotoForm(request.POST)
+        if form.is_valid():
+            if error == 1:
+                votacion = form.save(commit=False)
+                votacion.usuario = request.user
+                votacion.solicitud = solicitud
+                votacion.voto = 'GOOD'
+                votacion.save()
+            else:
+                votacion = form.save(commit=False)
+                votacion.usuario = request.user
+                votacion.solicitud = solicitud
+                votacion.voto = 'EVIL'
+                votacion.save()
+
+            mensaje = 'Voto confirmado para la solicitud ' + str(solicitud.id)
+            error = 0
+            request.method = 'GET'
+            return workApplication(request, fase.id, error=error, mensaje=mensaje)
+    else:
+        form = emitirVotoForm()
+    return render(request, 'lineabase/createvote.html', {'form': form, 'proyecto': proyecto,
+                                                         'user': request.user, 'fase': fase,
+                                                         'solicitud': solicitud},
+                  context_instance=RequestContext(request))
