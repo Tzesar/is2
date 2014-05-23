@@ -19,20 +19,24 @@
         <div class="panel-body">
             <div class="col-lg-5 col-md-5 col-sm-5"> {% csrf_token %}
                 {% for solicitud in solicitud %}
-                    <p>Usuario = {{ solicitud.usuario }}</p>
-                    <p>Fase = {{ solicitud.fase }}</p>
-                    <p>Fecha de Creación = {{ solicitud.fecha_creacion }}</p>
-                    <p>Motivo = {{ solicitud.motivo }}</p>
-                    <p>Estado = {{ solicitud.estado }}</p>
-                    <p>Costo = {{ solicitud.costo }}</p>
-                    <p>Tiempo= {{ solicitud.tiempo }}</p>
+                    <p> <b>Usuario</b> : {{ solicitud.usuario }}</p>
+                    <p><b>Fase</b> : {{ solicitud.fase }}</p>
+                    <p><b>Fecha de Creación</b> : {{ solicitud.fecha_creacion }}</p>
+                    <p><b>Motivo</b> : {{ solicitud.motivo }}</p>
+                    <p><b>Estado</b> : {{ solicitud.estado }}</p>
+                    <p><b>Costo</b> : {{ solicitud.costo }}</p>
+                    <p><b>Tiempo</b> : {{ solicitud.tiempo }}</p>
+                    <p><b>Items Solicitados</b>  <br> {% for item in items %}
+                                    {{ item.nombre }}
+                                    <br>
+                                {% endfor %}
+                    </p>
                 {% endfor %}
             </div>
             <div class="col-sm-3">
                <h3>Grafo de Relaciones</h3>
-                    {% for item in items %}
-                        {{ item.nombre }}
-                        <img src={{ grafos.pop }}>
+                    {% for grafo in grafos %}
+                        <img src={{ grafo }}>
                         <hr>
                     {% endfor %}
             </div>

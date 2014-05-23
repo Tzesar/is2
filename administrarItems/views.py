@@ -56,6 +56,9 @@ def createItem(request, id_fase):
 
 
 def crearAtributos(item_id):
+    """
+    *Vista para la creación de atributos correspondientes según el tipo de ítem al que pertenece el ítem*
+    """
 
     nuevoItem = ItemBase.objects.get(pk=item_id)
     atributosNumericos = Atributo.objects.filter(tipoDeItem=nuevoItem.tipoitem, tipo='NUM')
@@ -84,6 +87,7 @@ def crearAtributos(item_id):
         nuevoAtributo = CampoImagen(atributo=a, item=nuevoItem)
         nuevoAtributo.save()
 
+#TODO: Eliminar si no se usa
 @login_required()
 @reversion.create_revision()
 def changeItem(request, id_item):
@@ -127,6 +131,7 @@ def changeItem(request, id_item):
                                                     'tiposItem': tipoItem, 'user': request.user},
                                                     context_instance=RequestContext(request))
 
+#TODO: Eliminar si no se usa
 @reversion.create_revision()
 def completarEnteros(request, id_atributo, id_item):
     """
@@ -156,6 +161,7 @@ def completarEnteros(request, id_atributo, id_item):
                                                     'tiposItem': tipoItem, 'user': request.user, 'attr':atributo},
                                                     context_instance=RequestContext(request))
 
+#TODO: Eliminar si no se usa
 @reversion.create_revision()
 def completarTexto(request, id_atributo, id_item):
     """
@@ -186,6 +192,7 @@ def completarTexto(request, id_atributo, id_item):
                                                     'tiposItem': tipoItem, 'user': request.user, 'attr':atributo},
                                                     context_instance=RequestContext(request))
 
+#TODO: Eliminar si no se usa
 @reversion.create_revision()
 def completarArchivo(request, id_atributo, id_item):
     """
@@ -212,10 +219,6 @@ def completarArchivo(request, id_atributo, id_item):
     return render(request, 'item/filesatributos.html', {'form': form, 'item': item, 'phase': phase, 'project': project,
                                                     'tiposItem': tipoItem, 'user': request.user, 'attr':atributo},
                                                     context_instance=RequestContext(request))
-
-
-def verImagen(request, imagen_dir):
-    render(request, 'item/../is2/static/directory_index.html', {'img': imagen_dir})
 
 @reversion.create_revision()
 def completarImagen(request, id_atributo, id_item):
@@ -245,10 +248,11 @@ def completarImagen(request, id_atributo, id_item):
                                                     'tiposItem': tipoItem, 'user': request.user, 'attr':atributo},
                                                     context_instance=RequestContext(request))
 
-#TODO: no funciona correctamente
+
 def historialItemBase(request, id_fase, id_item):
     """
-    Vista para el historial de versiones
+    *Vista para el historial de versiones de los ítems*
+    Obs. Cada modificación realizada en el ítem es una nueva versión del ítem.
     """
 
     usuario = request.user
@@ -257,26 +261,41 @@ def historialItemBase(request, id_fase, id_item):
 
     item = ItemBase.objects.get(pk=id_item)
     lista_versiones = reversion.get_unique_for_object(item)
+
     return render(request, 'item/historialitem.html', {'lista_versiones': lista_versiones, 'item': item,
                                               'proyecto': proyecto, 'fase': fase, 'user': usuario},
                                                context_instance=RequestContext(request))
 
 
-#TODO: reversion de atributos
 def reversionItemBase(request, id_item, id_fase, id_version):
     """
-    Vista para la reversión de ítem
+    *Vista para realizar la reversión de un ítem*
     """
     fase = Fase.objects.get(pk=id_fase)
     item = ItemBase.objects.get(pk=id_item)
-    lista_version = reversion.get_unique_for_object(item)
+    tipoitem = item.tipoitem
+    atributos = Atributo.objects.filter(tipoDeItem=tipoitem)
     id_new_version = int('0'+id_version)
-    ti = TipoItem.objects.filter(fase=fase)
-    itemsFase = ItemBase.objects.filter(tipoitem__in=ti).order_by('fecha_creacion')
+    campos = []
+    campos.extend(CampoTextoLargo.objects.filter(atributo__in=atributos, item=item))
+    campos.extend(CampoTextoCorto.objects.filter(atributo__in=atributos, item=item))
+    campos.extend(CampoNumero.objects.filter(atributo__in=atributos, item=item))
+    campos.extend(CampoFile.objects.filter(atributo__in=atributos, item=item))
+    campos.extend(CampoImagen.objects.filter(atributo__in=atributos, item=item))
 
+    for campo in campos:
+        versionAttr = reversion.get_unique_for_object(campo)
+        for version_attr in versionAttr:
+            if version_attr.revision.id == id_new_version:
+                version_attr.revert()
+
+
+    lista_version = reversion.get_unique_for_object(item)
+    print id_new_version
     for version in lista_version:
-        if version.id == id_new_version:
+        if version.revision.id == id_new_version:
             version.revert()
+
             mensaje = 'Item: ' + item.nombre + '. Reversionado correctamente.'
             error = 0
             return workphase(request, fase.id, error=error, message=mensaje)
@@ -511,7 +530,9 @@ def restaurarItemRelacion(padres, hijos):
         return
 
 
+@reversion.create_revision()
 def workItem(request, id_item, error=None, message=None):
+
     item = ItemBase.objects.get(pk=id_item)
     tipoItem = item.tipoitem
     faseActual = tipoItem.fase
@@ -581,11 +602,14 @@ def workItem(request, id_item, error=None, message=None):
 
         if formsValidos(formDatosItem, formAtributosBasicos, formNum_list, formSTR_list, formTXT_list,
                         formIMG_list, formFile_list, existen_FIL, existen_TXT, existen_NUM, existen_IMG, existen_STR):
+            reversion.create_revision()
             saveForms(formDatosItem, formAtributosBasicos, formNum_list, formSTR_list, formTXT_list,
                         formIMG_list, formFile_list, existen_FIL, existen_TXT, existen_NUM, existen_IMG, existen_STR)
+
             item.fecha_modificacion = timezone.now()
             item.usuario_modificacion = request.user
             item.estado = 'ACT'
+            item.version = reversion.get_unique_for_object(item).__len__() +1
             item.save()
 
             request.method = 'GET'

@@ -28,11 +28,9 @@
     {% block panelCentral %}
         <div class="panel-heading">
             <h1 class="text-info" style="display: inline-block">Fase: {{ fase.nombre|capfirst }}</h1>
-            {% if fase.estado == 'FIN' %}
-                <span class="pull-right" style="padding-top: 2%">
-                        <a href="{% url 'administrarLineaBase.views.workApplication' fase.id %}" class="btn btn-sm btn-info"> Gestionar Solicitud Cambios</a>
-                </span>
-            {% endif %}
+            <span class="pull-right" style="padding-top: 2%">
+                    <a href="{% url 'administrarLineaBase.views.workApplication' fase.id %}" class="btn btn-sm btn-info"> Gestionar Solicitud Cambios</a>
+            </span>
         </div>
         <div class="list-group-item-info" style="padding-left: 2%; padding-top: 1%; padding-bottom: 1%">
             <b>Descripción:</b> <i>{{ fase.descripcion }}</i><br>

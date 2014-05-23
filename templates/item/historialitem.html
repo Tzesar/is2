@@ -42,7 +42,8 @@
                             <td>Nombre</td>
                             <td>Descripcion</td>
                             <td>Fecha de Modificacion</td>
-                            <td>Version del Item</td>
+                            <td>Usuario </td>
+                            <td>Version</td>
                         </tr>
                     </thead>
                     <tbody>
@@ -51,11 +52,12 @@
                                 <td>{{ version.field_dict.nombre }}</td>
                                 <td>{{ version.field_dict.descripcion}}</td>
                                 <td>{{ version.field_dict.fecha_modificacion }}</td>
-                                <td>{{ version.field_dict.version }}</td>
+                                <td>{{ user.username }} </td>
+                                <td>{{ version.field_dict.version }} </td>
                                 <td>
                                     {% if item.estado == 'ACT' or item.estado == 'REV'   %}
                                         <div class="btn-group pull-right">
-                                            <a href="{% url 'administrarItems.views.reversionItemBase' item.id fase.id version.id  %}" type="button" class="btn btn-danger btn-sm">Recuperar esta version</a>
+                                            <a href="{% url 'administrarItems.views.reversionItemBase' item.id fase.id version.revision.id  %}" type="button" class="btn btn-danger">Revertir</a>
                                         </div>
                                     {% endif %}
                                  </td>
