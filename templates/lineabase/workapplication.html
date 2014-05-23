@@ -67,14 +67,14 @@
 
                                         <span class="pull-right" data-toggle="tooltip" title="Voto a favor" id="tooltip">
                                             <span class="pull-right" style="padding-right: 5%">
-                                                    <a href="{% url 'administrarLineaBase.views.votarSolicitud' solicitud.id error  %}" class="text-success">
+                                                    <a href="{% url 'administrarLineaBase.views.votarSolicitud' solicitud.id 1  %}" class="text-success">
                                                         <span class="glyphicon glyphicon-thumbs-up"></span>
                                                     </a>
                                             </span>
                                         </span>
                                         <span class="pull-right" data-toggle="tooltip" title="Voto en contra" id="tooltip">
                                             <span class="pull-right" style="padding-right: 5%">
-                                                    <a href="{% url 'administrarLineaBase.views.votarSolicitud' solicitud.id error %}" class="text-danger">
+                                                    <a href="{% url 'administrarLineaBase.views.votarSolicitud' solicitud.id 0 %}" class="text-danger">
                                                         <span class="glyphicon glyphicon-thumbs-down"></span>
                                                     </a>
                                             </span>

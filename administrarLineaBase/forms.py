@@ -37,10 +37,10 @@ class createSCForm(forms.ModelForm):
 
 class asignarItemSolicitudForm(forms2.Form):
     """
-    *Formulario para vincular usuarios a un rol.
-    *Establece las opciones a los usuarios vinculados al proyecto que estén **activos** y no sean el* **administrador**.
+    *Formulario para vincular items a una solicitud.
+    *Establece las opciones a los item que se encuentran que pertenecen a alguna ``Linea Base`` dentro de la fase*.
 
-    :param id_proyecto: Argumento keyword que contiene el ``id`` del proyecto al cual se desea asignar a los usuarios.
+    :param id_fase: Argumento keyword que contiene el ``id`` de la fase a la que pertenecen los ítems que se desean modificar.
     """
 
     items = forms2.MultipleChoiceField()
@@ -53,7 +53,7 @@ class asignarItemSolicitudForm(forms2.Form):
 
         opciones = list(ItemBase.objects.filter(estado='ELB', tipoitem__in=self.tipoitem).order_by('nombre').values_list('id', 'nombre'))
 
-        self.fields['items'].choices = opciones
+        self.fields['items'] = forms2.MultipleChoiceField(choices=opciones)
         super(asignarItemSolicitudForm, self).full_clean()
 
 
@@ -68,7 +68,7 @@ class asignarItemSolicitudForm(forms2.Form):
         return opciones
 
 
-class emitirVotoForm(forms2.Form):
+class emitirVotoForm(forms.ModelForm):
     """
     *Formulario para realizar la justificación en la decisión tomada sobre una solicitud de cambio*
     """

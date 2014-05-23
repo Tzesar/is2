@@ -1,4 +1,4 @@
-#encoding=utf-8
+ #encoding=utf-8
 
 from django import forms
 from guardian.forms import BaseObjectPermissionsForm

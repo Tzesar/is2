@@ -68,10 +68,11 @@ class ItemRelacion(models.Model):
         ('ACT', 'Activo'),
         ('DES', 'Desactivado'), )
 
-    itemPadre = models.ForeignKey(ItemBase, verbose_name='ItemPadre', related_name='ItemPadre')
+    itemPadre = models.ForeignKey(ItemBase, verbose_name='ItemPadre', related_name='ItemPadre', null=True)
     itemHijo = models.ForeignKey(ItemBase, verbose_name='ItemHijo', related_name='ItemHijo', unique=True)
     estado = models.CharField(max_length=3, choices=opciones_estado, default='ACT', help_text='Estado de la relación')
 
+reversion.register(ItemRelacion)
 
 class CampoNumero(models.Model):
     """

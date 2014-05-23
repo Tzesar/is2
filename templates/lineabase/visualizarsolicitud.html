@@ -21,9 +21,9 @@
                 {% for solicitud in solicitud %}
                     <p> <b>Usuario</b> : {{ solicitud.usuario }}</p>
                     <p><b>Fase</b> : {{ solicitud.fase }}</p>
-                    <p><b>Fecha de Creación</b> : {{ solicitud.fecha_creacion }}</p>
                     <p><b>Motivo</b> : {{ solicitud.motivo }}</p>
-                    <p><b>Estado</b> : {{ solicitud.estado }}</p>
+                    <p><b>Fecha de Creación</b> : {{ solicitud.fecha_creacion }}</p>
+                    <p><b>Estado</b> : {{ solicitud.get_estado_display }}</p>
                     <p><b>Costo</b> : {{ solicitud.costo }}</p>
                     <p><b>Tiempo</b> : {{ solicitud.tiempo }}</p>
                     <p><b>Items Solicitados</b>  <br> {% for item in items %}

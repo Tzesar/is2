@@ -87,50 +87,6 @@ def crearAtributos(item_id):
         nuevoAtributo = CampoImagen(atributo=a, item=nuevoItem)
         nuevoAtributo.save()
 
-#TODO: Eliminar si no se usa
-@login_required()
-@reversion.create_revision()
-def changeItem(request, id_item):
-    """
-    *Vista para la modificacion de una fase dentro del sistema.
-    Opción válida para usuarios con los roles correspondientes.*
-
-    :param request: HttpRequest necesario para modificar la fase, es la solicitud de la acción.
-    :param id_fase: Identificador de la fase dentro del sistema la cual se desea modificar.
-    :param args: Argumentos para el modelo ``Fase``.
-    :param kwargs: Keyword Arguments para la el modelo ``Fase``.
-    :return: Proporciona la pagina ``changephase.html`` con el formulario correspondiente.
-             Modifica la fase especifica  y luego regresa al menu principal
-    """
-    items = ItemBase.objects.filter(pk=id_item)
-    if items:
-        print 'Inicio de Proceso de Modificacion'
-    else:
-        return
-
-    item = ItemBase.objects.get(pk=id_item)
-    tipoItem = item.tipoitem
-    phase = tipoItem.fase
-    project = phase.proyecto
-
-    if request.method == 'POST':
-        form = itemForm(request.POST, instance=item)
-        form.fields['tipoitem'].queryset = TipoItem.objects.filter(fase=phase.id)
-        if form.is_valid():
-            item = form.save(commit=False)
-            item.fecha_modificacion = timezone.now()
-            item.usuario_modificacion = request.user
-            item.version = reversion.get_unique_for_object(item).__len__() + 1
-            item.save()
-
-            return HttpResponseRedirect('/workphase/' + str(phase.id))
-    else:
-        form = itemForm(instance=item)
-        form.fields['tipoitem'].queryset = TipoItem.objects.filter(fase=phase.id)
-    return render(request, 'item/changeitem.html', {'form': form, 'item': item, 'phase': phase, 'project': project,
-                                                    'tiposItem': tipoItem, 'user': request.user},
-                                                    context_instance=RequestContext(request))
-
 
 def historialItemBase(request, id_fase, id_item):
     """
@@ -159,7 +115,25 @@ def reversionItemBase(request, id_item, id_fase, id_version):
     tipoitem = item.tipoitem
     atributos = Atributo.objects.filter(tipoDeItem=tipoitem)
     id_new_version = int('0'+id_version)
+    print id_new_version
     campos = []
+    lista_version = reversion.get_unique_for_object(item)
+
+    relacion = ItemRelacion.objects.filter(itemHijo=item)
+
+    if relacion:
+        versionRelacion = reversion.get_for_object(relacion.get())
+        for version_relacion in versionRelacion:
+            if version_relacion.revision.id == id_new_version:
+                version_relacion.revert()
+
+        ItemPadre = ItemRelacion.objects.get(itemHijo=item).itemPadre
+        padre = ItemBase.objects.get(nombre=ItemPadre)
+        if padre.estado == 'DDB':
+            print 'Padre en baja'
+            relacion[0].itemPadre = None
+            relacion[0].save()
+
     campos.extend(CampoTextoLargo.objects.filter(atributo__in=atributos, item=item))
     campos.extend(CampoTextoCorto.objects.filter(atributo__in=atributos, item=item))
     campos.extend(CampoNumero.objects.filter(atributo__in=atributos, item=item))
@@ -173,8 +147,6 @@ def reversionItemBase(request, id_item, id_fase, id_version):
                 version_attr.revert()
 
 
-    lista_version = reversion.get_unique_for_object(item)
-    print id_new_version
     for version in lista_version:
         if version.revision.id == id_new_version:
             version.revert()
@@ -183,6 +155,7 @@ def reversionItemBase(request, id_item, id_fase, id_version):
             return workphase(request, fase.id, error=error, message=mensaje)
 
 
+@reversion.create_revision()
 def relacionarItemBase(request, id_item_hijo, id_item_padre, id_fase):
     """
     Vista para relaciones los items
@@ -199,6 +172,7 @@ def relacionarItemBase(request, id_item_hijo, id_item_padre, id_fase):
         relacion.save()
         item_hijo.fecha_modificacion = timezone.now()
         item_hijo.usuario_modificacion = request.user
+        item_hijo.version = reversion.get_unique_for_object(item_hijo).__len__() + 1
         item_hijo.save()
         mensaje = 'Relacion establecida entre ' + item_hijo.nombre + ' y ' + item_padre.nombre + '.'
         error = 0
@@ -211,11 +185,10 @@ def relacionarItemBase(request, id_item_hijo, id_item_padre, id_fase):
         duplicado = 1
         return workphase(request, id_fase, error=duplicado, message=mensaje)
     else:
-        relacion = ItemRelacion.objects.get(itemHijo=item_hijo)
-        relacion.delete()
-
-        nueva_relacion = ItemRelacion(itemHijo=item_hijo, itemPadre=item_padre)
-        nueva_relacion.save()
+        relacion.itemPadre = item_padre
+        relacion.save()
+        item_hijo.version = reversion.get_unique_for_object(item_hijo).__len__() + 1
+        item_hijo.save()
 
         mensaje = 'Relacion establecida entre ' + item_hijo.nombre + ' y ' + item_padre.nombre + '.'
         error = 0
@@ -282,13 +255,18 @@ def finalizarItem(request, id_item):
 
     if item.estado == 'ACT':
         try:
-            itemPadre = ItemRelacion.objects.get(itemHijo=item)
+            relacion = ItemRelacion.objects.get(itemHijo=item)
         except:
-            itemPadre = None
+            relacion = None
 
-        if not itemPadre and item.tipoitem.fase.nro_orden != 1:
+        if relacion:
+            if relacion.itemPadre == None and item.tipoitem.fase.nro_orden != 1:
+                error = 1
+                mensaje = 'No se puede Finalizar el item. Se precisa especificar su relacion con otro item'
+        elif item.tipoitem.fase.nro_orden != 1:
             error = 1
             mensaje = 'No se puede Finalizar el item. Se precisa especificar su relacion con otro item'
+
     else:
         mensaje = 'Item: ' + item.nombre + ' no puede ser finalizado. Deberia tener un estado Activo.'
         error = 1
@@ -370,14 +348,13 @@ def restaurarItem(request, id_item):
     except:
         item.estado = 'ACT'
         item.save()
-        mensaje = 'Item ' + item.nombre +' restaurado exitosamente'
+        mensaje = 'Item ' + item.nombre + ' restaurado exitosamente'
         error = 0
         return workphase(request, fase.id, error=error, message=mensaje)
 
     padres = []
     hijos = [id_item]
     restaurarItemRelacion(padres, hijos)
-    print padres
     for padre in padres:
         itemPadre = ItemBase.objects.get(pk=padre)
         if itemPadre.estado != 'DDB':
@@ -387,7 +364,7 @@ def restaurarItem(request, id_item):
             item.estado = 'ACT'
             item.save()
 
-    mensaje = 'Item ' + item.nombre +' restaurado exitosamente'
+    mensaje = 'Item ' + item.nombre + ' restaurado exitosamente'
     error = 0
     return workphase(request, fase.id, error=error, message=mensaje)
 
