@@ -29,8 +29,8 @@
                                     <thead>
                                         <tr>
                                             <th>Nombre del Item</th>
-                                            <th>Descripción</th>
                                             <th>Versión</th>
+                                            <th>Descripción</th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -38,8 +38,8 @@
                                                 <tr>
                                                 {% if item.linea_base_id == lineas.id %}
                                                         <td style="width: 20%" ><a href='#'>{{item.nombre}}</a></td>
-                                                        <td style="width: 60%">{{ item.descripcion }}</td>
                                                         <td style="width: 10%">{{ item.version }}</td>
+                                                        <td style="width: 60%">{{ item.descripcion }}</td>
                                                 {% endif %}
                                                 </tr>
                                             {% endfor %}

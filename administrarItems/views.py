@@ -394,7 +394,7 @@ def restaurarItem(request, id_item):
 
 def restaurarItemRelacion(padres, hijos):
     """
-    Vista para realizar el calculo de impacto
+    *Función auxiliar de la restauración de ítems que permite restaurar la relación del mismo.*
     """
 
     if hijos:
@@ -414,7 +414,21 @@ def restaurarItemRelacion(padres, hijos):
 
 @reversion.create_revision()
 def workItem(request, id_item, error=None, message=None):
+    """
+    *Vista para el desarrollo de ítems creados en una Fase de un Proyecto.
+    Opción válida para usuarios asociados a un proyecto, con permisos de creación
+    y modificación de ítems en la Fase en cuestión*
 
+    *En caso de que el método de la solicitud HTTP sea GET, gestiona un formulario
+    con los datos actueles del ítem y sus atributos. En el caso de que el método sea POST,
+    gestiona la actualización de los datos del ítem y sus atributos en la base de datos.*
+
+    :param request: Solicitud HTTP relacionada a la ejecución de esta vista.
+    :param id_item: Identificador del ítem sobre el cual se desea trabajar.
+    :param error: Indicador de la existencia de errores en los formularios.
+    :param message: Mensaje de error o de éxito a ser desplegado según corresponda.
+    :return: Proporciona la pagina ``workitem.html``, página dedicada al desarrollo del ítem especificado.
+    """
     item = ItemBase.objects.get(pk=id_item)
     tipoItem = item.tipoitem
     faseActual = tipoItem.fase
@@ -528,7 +542,42 @@ def workItem(request, id_item, error=None, message=None):
 
 def formsValidos(formDatosItem, formAtributosBasicos, formNum_list, formSTR_list, formTXT_list,
                         formIMG_list, formFile_list, existen_FIL, existen_TXT, existen_NUM, existen_IMG, existen_STR):
+    """
+    *Función que verifica la validez de los formularios y conjuntos de formularios* - ``formsets`` -
+    que son cargados durante el trabajo sobre un ítem*
 
+    :param formDatosItem: Formulario de modificación de datos generales de un ítem.
+                          Incluye datos tales como el Nombre y la Descripción del ítem en cuestión.
+    :param formAtributosBasicos: Formulario de modificación de los atributos básicos asociados
+                          a cada ítem. Incluye: Complejidad, Costo y Tiempo.
+    :param existen_NUM: Indicador booleano de la existencia de atributos numéricos en el ítem considerado.
+    :param formNum_list: Conjunto de formularios destinados a modificar atributos de tipo numérico
+                          asociados al ítem con el que se trabaja, en caso de que exista al menos uno
+                          de este tipo.
+    :param existen_STR: Indicador booleano de la existencia de atributos de texto cortos en el ítem
+                          que se considera.
+    :param formSTR_list: Conjunto de formularios destinados a modificar atributos de tipo texto corto
+                          asociados al ítem con el que se trabaja, en caso de que exista al menos uno
+                          de este tipo.
+    :param existen_TXT: Indicador booleano de la existencia de atributos de texto largos en el ítem
+                          que se considera.
+    :param formTXT_list: Conjunto de formularios destinados a modificar atributos de tipo texto largo
+                          asociados al ítem con el que se trabaja, en caso de que exista al menos uno
+                          de este tipo.
+    :param existen_IMG: Indicador booleano de la existencia de atributos de tipo Imagen en el ítem
+                          que se considera.
+    :param formIMG_list: Conjunto de formularios destinados a modificar atributos de tipo Imagen
+                          asociados al ítem con el que se trabaja, en caso de que exista al menos uno
+                          de este tipo.
+    :param existen_FIL: Indicador booleano de la existencia de atributos de tipo Archivo en el ítem
+                          que se considera.
+    :param formFile_list: Conjunto de formularios destinados a modificar atributos de tipo Archivo
+                          asociados al ítem con el que se trabaja, en caso de que exista al menos uno
+                          de este tipo.
+    :rtype: bool
+    :return: Indicador booleano de la validez o no de la totalidad de los formularios con los que se trabaja
+             en el ítem indicado.
+    """
     valido = True
     if formDatosItem.is_valid():
         pass
@@ -575,6 +624,39 @@ def formsValidos(formDatosItem, formAtributosBasicos, formNum_list, formSTR_list
 
 def saveForms(formDatosItem, formAtributosBasicos, formNum_list, formSTR_list, formTXT_list,
                         formIMG_list, formFile_list, existen_FIL, existen_TXT, existen_NUM, existen_IMG, existen_STR):
+    """
+    *Función que almacena los datos que se recibieron a través de los formularios de trabajo con un ítem
+    una vez los mismos hayan pasado por la prueba de validez*
+
+    :param formDatosItem: Formulario de modificación de datos generales de un ítem.
+                          Incluye datos tales como el Nombre y la Descripción del ítem en cuestión.
+    :param formAtributosBasicos: Formulario de modificación de los atributos básicos asociados
+                          a cada ítem. Incluye: Complejidad, Costo y Tiempo.
+    :param existen_NUM: Indicador booleano de la existencia de atributos numéricos en el ítem considerado.
+    :param formNum_list: Conjunto de formularios destinados a modificar atributos de tipo numérico
+                          asociados al ítem con el que se trabaja, en caso de que exista al menos uno
+                          de este tipo.
+    :param existen_STR: Indicador booleano de la existencia de atributos de texto cortos en el ítem
+                          que se considera.
+    :param formSTR_list: Conjunto de formularios destinados a modificar atributos de tipo texto corto
+                          asociados al ítem con el que se trabaja, en caso de que exista al menos uno
+                          de este tipo.
+    :param existen_TXT: Indicador booleano de la existencia de atributos de texto largos en el ítem
+                          que se considera.
+    :param formTXT_list: Conjunto de formularios destinados a modificar atributos de tipo texto largo
+                          asociados al ítem con el que se trabaja, en caso de que exista al menos uno
+                          de este tipo.
+    :param existen_IMG: Indicador booleano de la existencia de atributos de tipo Imagen en el ítem
+                          que se considera.
+    :param formIMG_list: Conjunto de formularios destinados a modificar atributos de tipo Imagen
+                          asociados al ítem con el que se trabaja, en caso de que exista al menos uno
+                          de este tipo.
+    :param existen_FIL: Indicador booleano de la existencia de atributos de tipo Archivo en el ítem
+                          que se considera.
+    :param formFile_list: Conjunto de formularios destinados a modificar atributos de tipo Archivo
+                          asociados al ítem con el que se trabaja, en caso de que exista al menos uno
+                          de este tipo.
+    """
     formDatosItem.save()
     formAtributosBasicos.save()
 
