@@ -186,10 +186,20 @@ def workApplication(request, id_fase, error=None, mensaje=None):
     usuario = request.user
     fase = Fase.objects.get(pk=id_fase)
     proyecto = fase.proyecto
-    solicitudes = SolicitudCambios.objects.filter(usuario=usuario, fase=fase)
+    misSolicitudes = SolicitudCambios.objects.filter(usuario=usuario, fase=fase)
+    misPK = misSolicitudes.values_list('id', flat=True)
+    otrasSolicitudes = SolicitudCambios.objects.filter(fase=fase).exclude(pk__in=misPK)
+
+    misSolicitudes_lista = {}
+    for s in misSolicitudes:
+        misSolicitudes_lista[s] = s.votacion_set.filter(usuario=request.user)
+
+    otrasSolicitudes_lista = {}
+    for s in otrasSolicitudes:
+        otrasSolicitudes_lista[s] = s.votacion_set.filter(usuario=request.user)
 
     return render(request, 'lineabase/workapplication.html', {'proyecto': proyecto, 'fase': fase, 'user': usuario,
-                                                              'solicitudes': solicitudes, 'error': error, 'mensaje': mensaje})
+                                                              'solicitudes': solicitudes, 'error': error})
 
 
 def visualizarSolicitud(request, id_solicitud, id_fase):
@@ -266,7 +276,6 @@ def votarSolicitud(request, id_solicitud, voto):
 
     if request.method == 'POST':
         form = emitirVotoForm(request.POST)
-        print form
         if form.is_valid():
             if str(voto) == "1":
                 votacion = form.save(commit=False)
@@ -282,21 +291,22 @@ def votarSolicitud(request, id_solicitud, voto):
                 votacion.save()
 
             votos = Votacion.objects.filter(solicitud=solicitud)
-            aprobado = 0
+            aceptado = 0
             rechazado = 0
-            if votos.__len__() == 3:
+            if votos.count() == 3:
                 for voto in votos:
                     if voto.voto == 'GOOD':
-                        aprobado = aprobado + 1
+                        aceptado = aceptado + 1
                     else:
                         rechazado = rechazado + 1
 
-                if aprobado > rechazado:
+                if aceptado > rechazado:
                     solicitud.estado = 'ACP'
-                    solicitud.save()
                 else:
                     solicitud.estado = 'RCH'
-                    solicitud.save()
+
+                solicitud.save()
+
 
             mensaje = 'Voto confirmado para la solicitud ' + str(solicitud.id)
             error = 0

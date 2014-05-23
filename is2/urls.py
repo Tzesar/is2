@@ -19,8 +19,9 @@ from administrarProyectos.views import createProject, changeProject, projectList
 from administrarFases.views import changePhase, createPhase, phaseList, deletePhase, importMultiplePhase,\
     confirmar_eliminacion_fase, workphase, finPhase, startPhase, subirOrden, bajarOrden
 from administrarRolesPermisos.views import crearRol, eliminarRol, modificarRol, accesoDenegado
-from administrarItems.views import createItem, historialItemBase, relacionarItemBaseView, reversionItemBase,\
-    relacionarItemBase, finalizarItem, validarItem, dardebajaItem, workItem, restaurarItem
+from administrarItems.views import createItem,\
+    historialItemBase, relacionarItemBaseView, reversionItemBase, relacionarItemBase, \
+    finalizarItem, validarItem, dardebajaItem, workItem, restaurarItem
 
 
 admin.autodiscover()

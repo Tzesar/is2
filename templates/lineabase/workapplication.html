@@ -9,7 +9,9 @@
                     <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
                     {{ mensaje }}
                 </div>
-            {% elif error == 0 %}
+            </div>
+        {% elif error == 0 %}
+            <div class="container-fluid">
                 <div class="alert alert-success alert-dismissable">
                     <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
                     {{ mensaje }}
@@ -28,53 +30,142 @@
     {% block padTop %}{% endblock padTop %}
     {% block panelCentral %}
         <div class="panel-heading">
-            <h1 class="text-info" style="display: inline-block">Solicitud de Cambios de la Fase: {{ fase.nombre|capfirst }}</h1>
+            <h1 class="text-info" style="display: inline-block">Solicitud de Cambios - Fase: {{ fase.nombre|capfirst }}</h1>
         </div>
         <div class="panel-body" style="padding-bottom: 2%">
             <a href="{% url 'administrarLineaBase.views.crearSolicitudCambios' fase.id %}" class="btn btn-sm btn-info"> Crear Solicitudes de Cambios</a>
             <hr>
-            {% if solicitudes %}
-                {% for solicitud in solicitudes %}
-                    {% if forloop.counter0|divisibleby:"3" %}
-                        <div class="row">
-                    {% endif %}
-                    <div class="col-lg-4 col-md-4 col-sm-4">
-                        <div class="panel panel-default">
-                            <div class="panel-heading">
-                                <div class="row">
-                                    <div class="col-sm-8 col-md-8 col-lg-8">
-                                        <span class="text-primary">
-                                            Id. Solicitud: {{ solicitud.id }}
-                                        </span>
+            {% if misSolicitudes or otrasSolicitudes %}
+                {% if misSolicitudes %}
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            <span class="text-primary">
+                                MIS SOLICITUDES
+                            </span>
+                        </div>
+                        <div class="panel-body">
+                            {% for solicitud, voto in misSolicitudes %}
+                                {% if forloop.counter0|divisibleby:"3" %}
+                                    <div class="row">
+                                {% endif %}
+                                <div class="col-lg-4 col-md-4 col-sm-4">
+                                    <div class="panel panel-default">
+                                        <div class="panel-heading">
+                                            <div class="row">
+                                                <div class="col-sm-8 col-md-8 col-lg-8">
+                                                    <span class="text-primary">
+                                                        Id. Solicitud: {{ solicitud.id }}
+                                                    </span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="list-group-item">
+                                            <i><u>Fecha Creación</u>:</i> {{ solicitud.fecha_creacion }}<br>
+                                            <i><u>Motivo</u>:</i> {{ solicitud.motivo }} <br>
+                                            <br>
+                                            <p class="list-group-item-warning" style="font-size: 10px; line-height: 2">
+                                                <b>Información general</b><br>
+                                                <b> + Estado:</b> {{ solicitud.get_estado_display }}
+                                                <br><b> + Costo total de trabajo:</b> {{ solicitud.costo }}
+                                                <br><b> + Tiempo total de trabajo:</b> {{ solicitud.tiempo }}
+                                            </p>
+                                        </div>
+
+                                        <div class="panel-heading">
+                                            {% if solicitud.estado == 'VOT' %}
+                                                <span data-toggle="tooltip" title="Cancelar Solicitud" id="tooltip">
+                                                    <a href="{% url 'administrarLineaBase.views.cancelarSolicitudCambios' solicitud.id fase.id %}" class="btn btn-xs btn-danger">X</a>
+                                                </span>
+
+                                                {# TODO: Esto solo debe mostrarse a usuarios Miembros del Comité de Cambios #}
+                                                {% if not voto %}
+                                                    <span class="pull-right" data-toggle="tooltip" title="Voto a favor" id="tooltip">
+                                                        <span class="pull-right" style="padding-right: 5%">
+
+                                                                <a href="{% url 'administrarLineaBase.views.votarSolicitud' solicitud.id 1 %}" class="text-success">
+                                                                    <span class="glyphicon glyphicon-thumbs-up"></span>
+                                                                </a>
+                                                        </span>
+                                                    </span>
+                                                    <span class="pull-right" data-toggle="tooltip" title="Voto en contra" id="tooltip">
+                                                        <span class="pull-right" style="padding-right: 5%">
+                                                                <a href="{% url 'administrarLineaBase.views.votarSolicitud' solicitud.id 0 %}" class="text-danger">
+                                                                    <span class="glyphicon glyphicon-thumbs-down"></span>
+                                                                </a>&nbsp;
+                                                        </span>
+                                                    </span>
+
+                                                {% else %}
+                                                    <span class="pull-right" style="font-size: 70%; color: forestgreen; padding-top: 2%"">
+                                                        Usted ya votó por esta solicitud
+                                                    </span>
+                                                {% endif %}
+                                            {% endif %}
+                                            <a href="{% url 'administrarLineaBase.views.visualizarSolicitud' solicitud.id fase.id %}" class="btn btn-xs btn-success">Ver Solicitud</a>
+                                        </div>
+
                                     </div>
                                 </div>
-                            </div>
-                            <div class="list-group-item">
-                                <i><u>Fecha Creación</u>:</i> {{ solicitud.fecha_creacion }}<br>
-                                <i><u>Motivo</u>:</i> {{ solicitud.motivo }} <br>
-                                <br>
-                                <p class="list-group-item-warning" style="font-size: 10px; line-height: 2">
-                                    <b>Información general</b><br>
-                                    <b> + Estado:</b> {{ solicitud.get_estado_display }}
-                                    <br><b> + Costo total de trabajo:</b> {{ solicitud.costo }}
-                                    <br><b> + Tiempo total de trabajo:</b> {{ solicitud.tiempo }}
-                                </p>
-                            </div>
+                                {% if forloop.last or forloop.counter|divisibleby:"3" %}
+                                    </div>
+                                {% endif %}
+                            {% endfor %}
+                        </div>
+                    </div>
+                {% endif %}
+                {% if otrasSolicitudes %}
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            <span class="text-primary">
+                                SOLICITUDES DE OTROS USUARIOS
+                            </span>
+                        </div>
+                        <div class="panel-body">
+                            {% for solicitud, voto in otrasSolicitudes %}
+                                {% if forloop.counter0|divisibleby:"3" %}
+                                    <div class="row">
+                                {% endif %}
+                                <div class="col-lg-4 col-md-4 col-sm-4">
+                                    <div class="panel panel-default">
+                                        <div class="panel-heading">
+                                            <div class="row">
+                                                <div class="col-sm-8 col-md-8 col-lg-8">
+                                                    <span class="text-primary">
+                                                        Id. Solicitud: {{ solicitud.id }}
+                                                    </span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="list-group-item">
+                                            <i><u>Fecha Creación</u>:</i> {{ solicitud.fecha_creacion }}<br>
+                                            <i><u>Usuario Responable</u>:</i> {{ solicitud.usuario.get_full_name }}<br>
+                                            <i><u>Motivo</u>:</i> {{ solicitud.motivo }} <br>
+                                            <br>
+                                            <p class="list-group-item-warning" style="font-size: 10px; line-height: 2">
+                                                <b>Información general</b><br>
+                                                <b> + Estado:</b> {{ solicitud.get_estado_display }}
+                                                <br><b> + Costo total de trabajo:</b> {{ solicitud.costo }}
+                                                <br><b> + Tiempo total de trabajo:</b> {{ solicitud.tiempo }}
+                                            </p>
+                                        </div>
 
-                            <div class="panel-heading">
-                                {% if solicitud.estado == 'VOT' %}
-                                        <a href="{% url 'administrarLineaBase.views.cancelarSolicitudCambios' solicitud.id fase.id %}" class="btn btn-xs btn-warning">Cancelar Solicitud</a>
+                                        <div class="panel-heading">
+                                            {% if solicitud.estado == 'VOT' %}
+                                                {# TODO: Esto solo debe mostrarse a usuarios Miembros del Comité de Cambios #}
+                                                {% if not voto %}
+                                                    <span class="pull-right" data-toggle="tooltip" title="Voto a favor" id="tooltip">
+                                                        <span class="pull-right" style="padding-right: 5%">
 
                                         <span class="pull-right" data-toggle="tooltip" title="Voto a favor" id="tooltip">
                                             <span class="pull-right" style="padding-right: 5%">
-                                                    <a href="{% url 'administrarLineaBase.views.votarSolicitud' solicitud.id 1  %}" class="text-success">
+                                                    <a href="{% url 'administrarLineaBase.views.votarSolicitud' solicitud.id error  %}" class="text-success">
                                                         <span class="glyphicon glyphicon-thumbs-up"></span>
                                                     </a>
                                             </span>
                                         </span>
                                         <span class="pull-right" data-toggle="tooltip" title="Voto en contra" id="tooltip">
                                             <span class="pull-right" style="padding-right: 5%">
-                                                    <a href="{% url 'administrarLineaBase.views.votarSolicitud' solicitud.id 0 %}" class="text-danger">
+                                                    <a href="{% url 'administrarLineaBase.views.votarSolicitud' solicitud.id error %}" class="text-danger">
                                                         <span class="glyphicon glyphicon-thumbs-down"></span>
                                                     </a>
                                             </span>
@@ -83,12 +174,15 @@
                                 <a href="{% url 'administrarLineaBase.views.visualizarSolicitud' solicitud.id fase.id %}" class="btn btn-xs btn-success">Ver Solicitud</a>
                             </div>
 
+                                    </div>
+                                </div>
+                                {% if forloop.last or forloop.counter|divisibleby:"3" %}
+                                    </div>
+                                {% endif %}
+                            {% endfor %}
                         </div>
                     </div>
-                    {% if forloop.last or forloop.counter|divisibleby:"3" %}
-                        </div>
-                    {% endif %}
-                {% endfor %}
+                {% endif %}
             {% else %}
                 <p class="list-group-item list-group-item-warning"> No se ha realizado ninguna solicitud de cambio.</p>
             {% endif %}
