@@ -198,8 +198,10 @@ def workApplication(request, id_fase, error=None, mensaje=None):
     for s in otrasSolicitudes:
         otrasSolicitudes_lista[s] = s.votacion_set.filter(usuario=request.user)
 
+
     return render(request, 'lineabase/workapplication.html', {'proyecto': proyecto, 'fase': fase, 'user': usuario,
-                                                              'solicitudes': solicitudes, 'error': error})
+                                                              'misSolicitudes': misSolicitudes_lista.items(), 'error': error,
+                                                              'otrasSolicitudes': otrasSolicitudes_lista.items()})
 
 
 def visualizarSolicitud(request, id_solicitud, id_fase):
