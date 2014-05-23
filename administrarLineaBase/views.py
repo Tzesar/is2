@@ -8,7 +8,7 @@ from administrarFases.models import Fase
 from administrarFases.views import workphase
 from administrarItems.models import ItemBase, ItemRelacion
 from administrarLineaBase.forms import createLBForm, createSCForm, asignarItemSolicitudForm, emitirVotoForm
-from administrarLineaBase.models import LineaBase, SolicitudCambios
+from administrarLineaBase.models import LineaBase, SolicitudCambios, Votacion
 from administrarProyectos.views import vistaDesarrollo
 from administrarTipoItem.models import TipoItem
 from is2.settings import MEDIA_ROOT
@@ -111,7 +111,7 @@ def generarCalculoImpactoHTML(request, id_item):
     graph = grafo.write(direccion, format='png')
     direccion = '/static/grafos/' + item.nombre
 
-    return render(request, 'lineabase/calculoimpacto.html', {'user':usuario, 'fase':fase, 'item':item, 'proyecto':proyecto,
+    return render(request, 'lineabase/visualizarsolicitud.html', {'user':usuario, 'fase':fase, 'item':item, 'proyecto':proyecto,
                                                             'costo': costo, 'tiempo':tiempo, 'grafo':graph, 'direccion':direccion },
                                                             context_instance=RequestContext(request))
 
@@ -186,11 +186,21 @@ def workApplication(request, id_fase, error=None, mensaje=None):
     usuario = request.user
     fase = Fase.objects.get(pk=id_fase)
     proyecto = fase.proyecto
-    error = 0
-    solicitudes = SolicitudCambios.objects.filter(usuario=usuario, fase=fase)
+    misSolicitudes = SolicitudCambios.objects.filter(usuario=usuario, fase=fase)
+    misPK = misSolicitudes.values_list('id', flat=True)
+    otrasSolicitudes = SolicitudCambios.objects.filter(fase=fase).exclude(pk__in=misPK)
+
+    misSolicitudes_lista = {}
+    for s in misSolicitudes:
+        misSolicitudes_lista[s] = s.votacion_set.filter(usuario=request.user)
+
+    otrasSolicitudes_lista = {}
+    for s in otrasSolicitudes:
+        otrasSolicitudes_lista[s] = s.votacion_set.filter(usuario=request.user)
 
     return render(request, 'lineabase/workapplication.html', {'proyecto': proyecto, 'fase': fase, 'user': usuario,
-                                                              'solicitudes': solicitudes, 'error': error})
+                                                              'misSolicitudes': misSolicitudes_lista.items(), 'error': error,
+                                                              'otrasSolicitudes': otrasSolicitudes_lista.items()})
 
 
 def visualizarSolicitud(request, id_solicitud, id_fase):
@@ -210,7 +220,7 @@ def visualizarSolicitud(request, id_solicitud, id_fase):
         direccion = '/static/grafos/' + item.nombre
         grafos.append(direccion)
 
-    return render(request, 'lineabase/calculoimpacto.html', {'user': request.user, 'fase': fase, 'proyecto': proyecto,
+    return render(request, 'lineabase/visualizarsolicitud.html', {'user': request.user, 'fase': fase, 'proyecto': proyecto,
                                                              'solicitud': solicitud, 'items': itemsSolicitud, 'grafos':grafos})
 
 
@@ -259,7 +269,7 @@ def crearSolicitudCambios(request, id_fase):
                                                     context_instance=RequestContext(request))
 
 
-def votarSolicitud(request, id_solicitud, error):
+def votarSolicitud(request, id_solicitud, voto):
     """
     *Vista para realizar las votaciones correspondientes a una solicitud de cambio *
     """
@@ -271,7 +281,7 @@ def votarSolicitud(request, id_solicitud, error):
     if request.method == 'POST':
         form = emitirVotoForm(request.POST)
         if form.is_valid():
-            if error == 1:
+            if voto == 1:
                 votacion = form.save(commit=False)
                 votacion.usuario = request.user
                 votacion.solicitud = solicitud
@@ -283,6 +293,24 @@ def votarSolicitud(request, id_solicitud, error):
                 votacion.solicitud = solicitud
                 votacion.voto = 'EVIL'
                 votacion.save()
+
+            votos = Votacion.objects.filter(solicitud=solicitud)
+            aceptado = 0
+            rechazado = 0
+            if votos.count() == 3:
+                for voto in votos:
+                    if voto.voto == 'GOOD':
+                        aceptado = aceptado + 1
+                    else:
+                        rechazado = rechazado + 1
+
+                if aceptado > rechazado:
+                    solicitud.estado = 'ACP'
+                else:
+                    solicitud.estado = 'RCH'
+
+                solicitud.save()
+
 
             mensaje = 'Voto confirmado para la solicitud ' + str(solicitud.id)
             error = 0

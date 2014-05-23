@@ -69,7 +69,7 @@ class modificarDatosItemForm(forms.ModelForm):
 class modificarAtributosBasicosForm(forms.ModelForm):
     """
     *Formulario para modificar los atributos basicos de un item.*
-
+    *Se incluyen en este formulario, los campos Complejidad, Costo y Tiempo.*
     ::
 
         class Meta:

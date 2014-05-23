@@ -19,7 +19,7 @@ from administrarProyectos.views import createProject, changeProject, projectList
 from administrarFases.views import changePhase, createPhase, phaseList, deletePhase, importMultiplePhase,\
     confirmar_eliminacion_fase, workphase, finPhase, startPhase, subirOrden, bajarOrden
 from administrarRolesPermisos.views import crearRol, eliminarRol, modificarRol, accesoDenegado
-from administrarItems.views import createItem, changeItem, \
+from administrarItems.views import createItem,\
     historialItemBase, relacionarItemBaseView, reversionItemBase, relacionarItemBase, \
     finalizarItem, validarItem, dardebajaItem, workItem, restaurarItem
 
@@ -97,7 +97,6 @@ urlpatterns = patterns('',
 
 ###################################################### ITEMS ###########################################################
                        url(r'^createitem/(?P<id_fase>\d+)$', createItem),
-                       url(r'^changeitem/(?P<id_item>\d+)$', changeItem),
                        url(r'^workitem/(?P<id_item>\d+)$', workItem),
                        url(r'^historialitem/(?P<id_fase>\d+)/(?P<id_item>\d+)$', historialItemBase),
                        url(r'^relacionaritemvista/(?P<id_fase_actual>\d+)/(?P<id_item_actual>\d+)$', relacionarItemBaseView),
@@ -121,5 +120,5 @@ urlpatterns = patterns('',
                        url(r'^cancelarsolicitud/(?P<id_solicitud>\d+)/(?P<id_fase>\d+)$', cancelarSolicitudCambios ),
                        url(r'^workapplication/(?P<id_fase>\d+)$', workApplication ),
                        url(r'^visualizarsolicitud/(?P<id_solicitud>\d+)/(?P<id_fase>\d+)$', visualizarSolicitud ),
-                       url(r'^createvote/(?P<id_solicitud>\d+)/(?P<error>\d+)$', votarSolicitud),
+                       url(r'^createvote/(?P<id_solicitud>\d+)/(?P<voto>\d+)$', votarSolicitud),
                        )

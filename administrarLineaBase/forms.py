@@ -68,7 +68,7 @@ class asignarItemSolicitudForm(forms2.Form):
         return opciones
 
 
-class emitirVotoForm(forms2.Form):
+class emitirVotoForm(forms.ModelForm):
     """
     *Formulario para realizar la justificación en la decisión tomada sobre una solicitud de cambio*
     """

@@ -87,50 +87,6 @@ def crearAtributos(item_id):
         nuevoAtributo = CampoImagen(atributo=a, item=nuevoItem)
         nuevoAtributo.save()
 
-#TODO: Eliminar si no se usa
-@login_required()
-@reversion.create_revision()
-def changeItem(request, id_item):
-    """
-    *Vista para la modificacion de una fase dentro del sistema.
-    Opción válida para usuarios con los roles correspondientes.*
-
-    :param request: HttpRequest necesario para modificar la fase, es la solicitud de la acción.
-    :param id_fase: Identificador de la fase dentro del sistema la cual se desea modificar.
-    :param args: Argumentos para el modelo ``Fase``.
-    :param kwargs: Keyword Arguments para la el modelo ``Fase``.
-    :return: Proporciona la pagina ``changephase.html`` con el formulario correspondiente.
-             Modifica la fase especifica  y luego regresa al menu principal
-    """
-    items = ItemBase.objects.filter(pk=id_item)
-    if items:
-        print 'Inicio de Proceso de Modificacion'
-    else:
-        return
-
-    item = ItemBase.objects.get(pk=id_item)
-    tipoItem = item.tipoitem
-    phase = tipoItem.fase
-    project = phase.proyecto
-
-    if request.method == 'POST':
-        form = itemForm(request.POST, instance=item)
-        form.fields['tipoitem'].queryset = TipoItem.objects.filter(fase=phase.id)
-        if form.is_valid():
-            item = form.save(commit=False)
-            item.fecha_modificacion = timezone.now()
-            item.usuario_modificacion = request.user
-            item.version = reversion.get_unique_for_object(item).__len__() + 1
-            item.save()
-
-            return HttpResponseRedirect('/workphase/' + str(phase.id))
-    else:
-        form = itemForm(instance=item)
-        form.fields['tipoitem'].queryset = TipoItem.objects.filter(fase=phase.id)
-    return render(request, 'item/changeitem.html', {'form': form, 'item': item, 'phase': phase, 'project': project,
-                                                    'tiposItem': tipoItem, 'user': request.user},
-                                                    context_instance=RequestContext(request))
-
 
 def historialItemBase(request, id_fase, id_item):
     """
