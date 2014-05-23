@@ -15,34 +15,45 @@
         <div class="panel panel-default" style="padding-top: 2%; padding-left: 2%; padding-right: 2%">
             <div class="panel panel-default">
                 <!-- Default panel contents -->
-                <div class="panel-heading"><h1>Fases</h1></div>
-                <table class="table">
-                    <thead>
-                        <tr>
-                            <th>#</th>
-                            <th>Nombre de Fase</th>
-                            <th>Proyecto</th>
-                            <th>Estado</th>
-                            <th></th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {% for phase in phase %}
+                <div class="panel-heading">
+                    <h1 class="text-info">Fases</h1>
+                </div>
+                {% if phase %}
+                    <table class="table">
+                        <thead>
                             <tr>
-                                <td>{{ phase.id }}</td>
-                                <td><a href='{% url 'administrarFases.views.changePhase' phase.id %}'>{{phase.nombre}}</a></td>
-                                <td>{{ phase.proyecto.nombre }}</td>
-                                <td>{{ phase.estado }}</td>
-                                <td><a href="/importmultiplephase/{{ phase.id }}/{{ project.id }}" class="btn btn-success">Importar</a></td>
+                                <th>#</th>
+                                <th>Nombre de Fase</th>
+                                <th>Proyecto</th>
+                                <th>Estado</th>
+                                <th></th>
                             </tr>
-                        {% endfor %}
-                    </tbody>
-                </table>
-            </div>
-            <div class="btn-group btn-group-justified">
-                <div class="col-lg-4 col-md-4 col-sm-4" >
-                    <div class="btn-group" style="padding-bottom: 5%">
-                        <a href="{% url 'administrarProyectos.views.workProject' project.id %}" class="btn btn-lg btn-success" type="submit">Finalizar</a>
+                        </thead>
+                        <tbody>
+                            {% for phase in phase %}
+                                <tr>
+                                    <td>{{ phase.id }}</td>
+                                    <td><a href='{% url 'administrarFases.views.changePhase' phase.id %}'>{{phase.nombre}}</a></td>
+                                    <td>{{ phase.proyecto.nombre }}</td>
+                                    <td>{{ phase.estado }}</td>
+                                    <td><a href="/importmultiplephase/{{ phase.id }}/{{ project.id }}" class="btn btn-success">Importar</a></td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                {% else %}
+                    <div class="panel-body">
+                        <span class="list-group-item list-group-item-warning">
+                            No existen fases de las cuales se puede importar.
+                        </span>
+                    </div>
+                {% endif %}
+
+                <div class="btn-group btn-group-justified">
+                    <div class="col-lg-4 col-md-4 col-sm-4" >
+                        <div class="btn-group" style="padding-bottom: 5%">
+                            <a href="{% url 'administrarProyectos.views.workProject' project.id %}" class="btn btn-md btn-success" type="submit">Finalizar</a>
+                        </div>
                     </div>
                 </div>
             </div>

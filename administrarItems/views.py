@@ -131,123 +131,6 @@ def changeItem(request, id_item):
                                                     'tiposItem': tipoItem, 'user': request.user},
                                                     context_instance=RequestContext(request))
 
-#TODO: Eliminar si no se usa
-@reversion.create_revision()
-def completarEnteros(request, id_atributo, id_item):
-    """
-    Vista para completar el atributo de numeros
-    :rtype : object
-    """
-    id_atributo = 10
-    atributo = Atributo.objects.get(pk=id_atributo)
-    tipoItem = atributo.tipoDeItem
-    item = ItemBase.objects.get(pk=id_item)
-
-    phase = tipoItem.fase
-    project = phase.proyecto
-    if request.method == 'POST':
-        form = campoEnteroForm(request.POST)
-        if form.is_valid():
-            articulo = form.save(commit=False)
-            articulo.item = item
-            articulo.atributo = atributo
-            articulo.save()
-
-
-            return HttpResponseRedirect('/workproject/' + str(project.id))
-    else:
-        form = campoEnteroForm()
-    return render(request, 'item/fillatributos.html', {'form': form, 'item': item, 'phase': phase, 'project': project,
-                                                    'tiposItem': tipoItem, 'user': request.user, 'attr':atributo},
-                                                    context_instance=RequestContext(request))
-
-#TODO: Eliminar si no se usa
-@reversion.create_revision()
-def completarTexto(request, id_atributo, id_item):
-    """
-    Vista para completar el atributo de numeros
-    :rtype : object
-    """
-    id_atributo = 12
-    atributo = Atributo.objects.get(pk=id_atributo)
-    tipoItem = atributo.tipoDeItem
-    item = ItemBase.objects.get(pk=id_item)
-
-    phase = tipoItem.fase
-    project = phase.proyecto
-    if request.method == 'POST':
-        form = campoTextoCortoForm(request.POST)
-        if form.is_valid():
-            articulo = form.save(commit=False)
-            articulo.item = item
-            articulo.atributo = atributo
-            articulo.save()
-
-
-
-            return HttpResponseRedirect('/workproject/' + str(project.id))
-    else:
-        form = campoTextoCortoForm()
-    return render(request, 'item/fillatributos.html', {'form': form, 'item': item, 'phase': phase, 'project': project,
-                                                    'tiposItem': tipoItem, 'user': request.user, 'attr':atributo},
-                                                    context_instance=RequestContext(request))
-
-#TODO: Eliminar si no se usa
-@reversion.create_revision()
-def completarArchivo(request, id_atributo, id_item):
-    """
-    Vista para completar el atributo de numeros
-    :rtype : object
-    """
-    id_atributo = 13
-    atributo = Atributo.objects.get(pk=id_atributo)
-    tipoItem = atributo.tipoDeItem
-    item = ItemBase.objects.get(pk=id_item)
-
-    phase = tipoItem.fase
-    project = phase.proyecto
-    if request.method == 'POST':
-        form = campoFileForm(request.POST, request.FILES)
-        if form.is_valid():
-            articulo = form.save(commit=False)
-            articulo.item = item
-            articulo.atributo = atributo
-            articulo.save()
-            return HttpResponseRedirect('/workproject/' + str(project.id))
-    else:
-        form = campoFileForm()
-    return render(request, 'item/filesatributos.html', {'form': form, 'item': item, 'phase': phase, 'project': project,
-                                                    'tiposItem': tipoItem, 'user': request.user, 'attr':atributo},
-                                                    context_instance=RequestContext(request))
-
-@reversion.create_revision()
-def completarImagen(request, id_atributo, id_item):
-    """
-    Vista para completar el atributo de numeros
-    :rtype : object
-    """
-    id_atributo = 14
-    id_item = 5
-    atributo = Atributo.objects.get(pk=id_atributo)
-    item = ItemBase.objects.get(pk=id_item)
-    tipoItem = atributo.tipoDeItem
-    phase = tipoItem.fase
-    project = phase.proyecto
-
-    if request.method == 'POST':
-        form = campoImagenForm(request.POST, request.FILES)
-        if form.is_valid():
-            imagen = form.save(commit=False)
-            imagen.item = item
-            imagen.atributo = atributo
-            imagen.save()
-            return HttpResponseRedirect('/workproject/' + str(project.id))
-    else:
-        form = campoImagenForm()
-    return render_to_response('item/filesatributos.html', {'form': form, 'item': item, 'phase': phase, 'project': project,
-                                                    'tiposItem': tipoItem, 'user': request.user, 'attr':atributo},
-                                                    context_instance=RequestContext(request))
-
 
 def historialItemBase(request, id_fase, id_item):
     """
@@ -295,7 +178,6 @@ def reversionItemBase(request, id_item, id_fase, id_version):
     for version in lista_version:
         if version.revision.id == id_new_version:
             version.revert()
-
             mensaje = 'Item: ' + item.nombre + '. Reversionado correctamente.'
             error = 0
             return workphase(request, fase.id, error=error, message=mensaje)
@@ -691,7 +573,6 @@ def formsValidos(formDatosItem, formAtributosBasicos, formNum_list, formSTR_list
     return valido
 
 
-#TODO: No se guardan ni las imágenes ni los archivos.
 def saveForms(formDatosItem, formAtributosBasicos, formNum_list, formSTR_list, formTXT_list,
                         formIMG_list, formFile_list, existen_FIL, existen_TXT, existen_NUM, existen_IMG, existen_STR):
     formDatosItem.save()

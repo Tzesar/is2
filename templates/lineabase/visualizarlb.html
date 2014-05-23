@@ -15,32 +15,40 @@
         <div class="panel panel-default" style="padding-top: 2%; padding-left: 2%; padding-right: 2%">
             <div class="panel panel-default">
                 <!-- Default panel contents -->
-                <div class="panel-heading"><h1>Lineas Base: {{ fase.nombre }} </h1></div>
-                {# TODO: Encolumnar bien #}
-                {% for lineas in lb %}
-                <table class="table" style="width: 100%" >
-                    <thead>
-                        <tr>
-                            <th>Nombre del Item</th>
-                            <th>Descripción</th>
-                            <th>Versión</th>
-                            <th>Linea Base</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                            {% for item in items %}
-                                <tr>
-                                {% if item.linea_base_id == lineas.id %}
-                                        <td style="width: 20%" ><a href='#'>{{item.nombre}}</a></td>
-                                        <td style="width: 60%">{{ item.descripcion }}</td>
-                                        <td style="width: 10%">{{ item.version }}</td>
-                                        <td style="width: 10%">{{ item.linea_base_id }}</td>
-                                {% endif %}
-                                </tr>
-                            {% endfor %}
-                    </tbody>
-                </table>
-            {% endfor %}
+                <div class="panel-heading"><h1 class="text-info">Lineas Base: {{ fase.nombre }} </h1></div>
+                <div class="panel-body">
+                    {% for lineas in lb %}
+                        <div class="panel panel-default">
+                            <div class="panel-heading">
+                                <p class="text-info">
+                                    <b>Id. Línea Base:</b> {{ lineas.id }}<br> <b>Descripción:</b> {{ lineas.observaciones }}
+                                </p>
+                            </div>
+                            <div class="panel-body">
+                                <table class="table" style="width: 100%">
+                                    <thead>
+                                        <tr>
+                                            <th>Nombre del Item</th>
+                                            <th>Descripción</th>
+                                            <th>Versión</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                            {% for item in items %}
+                                                <tr>
+                                                {% if item.linea_base_id == lineas.id %}
+                                                        <td style="width: 20%" ><a href='#'>{{item.nombre}}</a></td>
+                                                        <td style="width: 60%">{{ item.descripcion }}</td>
+                                                        <td style="width: 10%">{{ item.version }}</td>
+                                                {% endif %}
+                                                </tr>
+                                            {% endfor %}
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
             </div>
         </div>
     </div>

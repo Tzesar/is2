@@ -4,7 +4,6 @@ from django.db import models
 from administrarFases.models import Fase
 from autenticacion.models import Usuario
 
-
 class LineaBase(models.Model):
     """
     Este es el modelo para la Linea Base

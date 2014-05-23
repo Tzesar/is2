@@ -16,13 +16,12 @@ from administrarUsuarios.views import createUser, changeUser, userList, userList
 from zar.views import about, contact
 from administrarProyectos.views import createProject, changeProject, projectList, workProject, setUserToProject,\
     viewSetUserProject, changeProjectLeader, startProject, cancelProject, finProject, vistaDesarrollo
-
 from administrarFases.views import changePhase, createPhase, phaseList, deletePhase, importMultiplePhase,\
     confirmar_eliminacion_fase, workphase, finPhase, startPhase, subirOrden, bajarOrden
 from administrarRolesPermisos.views import crearRol, eliminarRol, modificarRol, accesoDenegado
-from administrarItems.views import createItem, changeItem, completarEnteros, completarArchivo, \
-    completarImagen, completarTexto, historialItemBase, relacionarItemBaseView, reversionItemBase, relacionarItemBase, \
-    finalizarItem, validarItem, dardebajaItem, workItem, restaurarItem, verImagen
+from administrarItems.views import createItem, changeItem, \
+    historialItemBase, relacionarItemBaseView, reversionItemBase, relacionarItemBase, \
+    finalizarItem, validarItem, dardebajaItem, workItem, restaurarItem
 
 
 admin.autodiscover()
@@ -100,10 +99,6 @@ urlpatterns = patterns('',
                        url(r'^createitem/(?P<id_fase>\d+)$', createItem),
                        url(r'^changeitem/(?P<id_item>\d+)$', changeItem),
                        url(r'^workitem/(?P<id_item>\d+)$', workItem),
-                       url(r'^completarenteros/(?P<id_atributo>\d+)/(?P<id_item>\d+)$', completarEnteros),
-                       url(r'^completatexto/(?P<id_atributo>\d+)/(?P<id_item>\d+)$', completarTexto),
-                       url(r'^completararchivo/(?P<id_atributo>\d+)/(?P<id_item>\d+)$', completarArchivo),
-                       url(r'^completarimagen/(?P<id_atributo>\d+)/(?P<id_item>\d+)$', completarImagen),
                        url(r'^historialitem/(?P<id_fase>\d+)/(?P<id_item>\d+)$', historialItemBase),
                        url(r'^relacionaritemvista/(?P<id_fase_actual>\d+)/(?P<id_item_actual>\d+)$', relacionarItemBaseView),
                        url(r'^revertiritem/(?P<id_item>\d+)/(?P<id_fase>\d+)/(?P<id_version>\d+)/$', reversionItemBase),

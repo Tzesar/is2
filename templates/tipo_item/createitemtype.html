@@ -31,9 +31,9 @@
                 <form action="" class="form-signin" role="form" method="post">
                     {% csrf_token %}
                     {% form form using "formsLayouts/div.html" %}
-                    <a href= "{% url 'administrarFases.views.changePhase' fase.id %}" class="btn btn-lg btn-warning btn-lg" role="button">Atrás</a>
-                    <button class="btn btn-lg btn-success" type="submit">Crear</button>
-                    <a href= "{% url 'administrarTipoItem.views.itemTypeList' fase.id %}" class="btn btn-lg btn-danger" role="button">Importar</a>
+                    <a href= "{% url 'administrarFases.views.changePhase' fase.id %}" class="btn btn-md btn-warning" role="button">Volver</a>
+                    <button class="btn btn-md btn-success" type="submit">Crear Tipo</button>
+                    <a href= "{% url 'administrarTipoItem.views.itemTypeList' fase.id %}" class="btn btn-md btn-danger" role="button">Importar Tipo</a>
                 </form>
             </div>
         </div>

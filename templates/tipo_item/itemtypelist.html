@@ -15,37 +15,53 @@
         <div class="panel panel-default" style="padding-top: 2%; padding-left: 2%; padding-right: 2%">
             <div class="panel panel-default">
                 <!-- Default panel contents -->
-                <div class="panel-heading"><h1>Tipo de Items</h1></div>
-                <table class="table">
-                    <thead>
-                        <tr>
-                            <th>Nombre de Tipo de Item</th>
-                            <th>Proyecto</th>
-                            <th>Fase</th>
-                            <th>Atributos</th>
-                            <th></th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {% for itemtype in itemtypes %}
+                <div class="panel-heading"><h1 class="text-info">Tipo de Items</h1></div>
+                {% if itemtypes %}
+                    <div class="panel-body">
+                    <table class="table">
+                        <thead>
                             <tr>
-                                <td>{{ itemtype.nombre }}</td>
-                                <td>{{ itemtype.fase.proyecto }}</td>
-                                <td>{{ itemtype.fase }}</td>
-                                <td>{% for attribute in itemtype.atributo_set.all %}
-                                        {{ attribute }},
-                                    {% endfor %}
-                                </td>
-                                <td><a class="btn btn-success" href="/importitemtype/{{ id_fase }}/{{ itemtype.id }}">Importar</a></td>
+                                <th>Nombre</th>
+                                <th>Proyecto</th>
+                                <th>Fase</th>
+                                <th>Atributos</th>
+                                <th></th>
                             </tr>
-                        {% endfor %}
-                    </tbody>
-                </table>
-            </div>
-            <div class="btn-group btn-group-justified">
-                <div class="col-lg-4 col-md-4 col-sm-4" >
-                    <div class="btn-group" style="padding-bottom: 5%">
-                        <a href="{% url 'administrarFases.views.changePhase' id_fase %}" class="btn btn-lg btn-warning" type="submit">Cancelar</a>
+                        </thead>
+                        <tbody>
+                            {% for itemtype in itemtypes %}
+                                <tr>
+                                    <td style="width: 15%">{{ itemtype.nombre }}</td>
+                                    <td style="width: 15%">{{ itemtype.fase.proyecto }}</td>
+                                    <td style="width: 15%">{{ itemtype.fase }}</td>
+                                    <td style="width: 40%">
+                                        {% for attribute in itemtype.atributo_set.all %}
+                                            {% if forloop.last %}
+                                                {{ attribute }}
+                                            {% else %}
+                                                {{ attribute }},
+                                            {% endif %}
+                                        {% endfor %}
+                                    </td>
+                                    <td style="width: 15%"><a class="btn btn-success" href="/importitemtype/{{ id_fase }}/{{ itemtype.id }}">Importar</a></td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                    </div>
+                {% else %}
+                    <div class="panel-body">
+                        <span class="list-group-item list-group-item-warning">
+                            No existen Tipos de Ítem disponibles para ser importados.
+                        </span>
+                    </div>
+                {% endif %}
+
+                <div class="btn-group btn-group-justified">
+                    <div class="col-lg-4 col-md-4 col-sm-4" >
+                        <div class="btn-group" style="padding-bottom: 5%">
+                            <a href="{% url 'administrarFases.views.changePhase' id_fase %}" class="btn btn-md btn-warning" type="submit">Cancelar</a>
+                        </div>
                     </div>
                 </div>
             </div>

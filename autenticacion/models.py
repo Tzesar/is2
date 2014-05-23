@@ -1,15 +1,7 @@
 #encoding=utf-8
-import re
-import warnings
 
 from django.db import models
-
-from django.core.mail import send_mail
-from django.utils.http import urlquote
-from django.utils import timezone
-from django.core import validators
-
-from django.contrib.auth.models import AbstractUser, AbstractBaseUser, UserManager, SiteProfileNotAvailable, ImproperlyConfigured, User
+from django.contrib.auth.models import AbstractUser
 
 # class AbstractUser(AbstractBaseUser):
 #     """

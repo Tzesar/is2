@@ -154,7 +154,7 @@ def visualizarLB(request, id_fase):
         return render(request, 'lineabase/visualizarlb.html', {'user': request.user, 'proyecto': proyecto, 'fase': fase,
                                                                'items': items, 'lb': LB})
     else:
-        mensaje = 'Aún no se han creado Líneas Base en la fase: ' + fase.nombre
+        mensaje = 'Aun no se han creado Lineas Base en la fase: ' + fase.nombre
         error = 1
         return vistaDesarrollo(request, fase.proyecto.id, error=error, message=mensaje)
 

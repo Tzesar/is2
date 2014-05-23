@@ -94,10 +94,10 @@
                             <div class="panel-heading">
                                 {% if fase.estado == 'DES' %}
                                     <a href="{% url 'administrarFases.views.workphase' fase.id %}" class="btn btn-primary btn-sm">Gestionar Ítems</a>
-                                    {% if user == proyecto.lider_proyecto %}<a href="{% url 'administrarFases.views.finPhase' fase.id %}" class="btn btn-success btn-sm">Finalizar Fase</a>{% endif %}
+                                    {% if user == proyecto.lider_proyecto %}<a href="{% url 'administrarFases.views.finPhase' fase.id %}" class="btn btn-success btn-sm">Fin Fase</a>{% endif %}
+                                    <a href="{% url 'administrarLineaBase.views.visualizarLB' fase.id %}" class="btn btn-gray btn-sm">Lineas Base</a>
                                 {% else %}
                                     <a href="{% url 'administrarFases.views.workphase' fase.id %}"class="btn btn-success btn-sm">Ver Ítems</a>
-                                    <a href="{% url 'administrarLineaBase.views.visualizarLB' fase.id %}" class="btn btn-primary btn-sm">Visualizar Lineas Base</a>
                                 {% endif %}
                             </div>
                         </div>
