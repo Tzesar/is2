@@ -1,10 +1,11 @@
-zar 
+ZAR
 ===========
 
-zar.views 
+
+Vistas
 ----------------
 
 .. automodule:: zar.views
     :members:
-    :undoc-members:
     :show-inheritance:
+

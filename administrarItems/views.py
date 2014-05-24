@@ -25,8 +25,8 @@ def createItem(request, id_fase):
 
     :param request: HttpRequest necesario para crear fases dentro de los proyectos, es la solicitud de la acción.
     :param id_proyecto: Identificador del proyecto dentro del sistema al cual se le vincularán las fases creadas.
-    :param args: Argumentos para el modelo ``Fase``.
-    :param kwargs: Keyword Arguments para la el modelo ``Fase``.
+    :param args: Argumentos para el modelo ``Item``.
+    :param kwargs: Keyword Arguments para la el modelo ``Item``.
     :return: Proporciona la pagina ``createphase.html`` con el formulario correspondiente.
             Crea la fase dentro del proyecto especificando y luego regresa al menu principal
     """
@@ -58,6 +58,9 @@ def createItem(request, id_fase):
 def crearAtributos(item_id):
     """
     *Vista para la creación de atributos correspondientes según el tipo de ítem al que pertenece el ítem*
+
+    :param item_id: Identificador del ítem al cual se le adicionarán los atributos de acuerdo al tipo al que pertenece
+
     """
 
     nuevoItem = ItemBase.objects.get(pk=item_id)
@@ -92,6 +95,11 @@ def historialItemBase(request, id_fase, id_item):
     """
     *Vista para el historial de versiones de los ítems*
     Obs. Cada modificación realizada en el ítem es una nueva versión del ítem.
+
+    :param request: HttpRequest necesario para listar el historial de modificaciones, es la solicitud de la acción.
+    :param id_item: Identificador del ítem, del cual se expone su historial de modificaciones.
+    :param id_fase: Identificador de la fase, al cual pertence el ítem.
+    :return: Despliega el historial de modificaciones sobre el ítem.
     """
 
     usuario = request.user
@@ -109,6 +117,12 @@ def historialItemBase(request, id_fase, id_item):
 def reversionItemBase(request, id_item, id_fase, id_version):
     """
     *Vista para realizar la reversión de un ítem*
+
+    :param request: HttpRequest necesario seleccionar la versión a la cual se desea revertir el ítem, es la solicitud de la acción.
+    :param id_item: Identificador del ítem, del cual se expone su historial de modificaciones.
+    :param id_fase: Identificador de la fase, al cual pertence el ítem.
+    :param id_version: Identificador de la versión a la cual se desea realizar una reversión.
+    :return: El item fue reversionado exitosamente.
     """
     fase = Fase.objects.get(pk=id_fase)
     item = ItemBase.objects.get(pk=id_item)
@@ -158,7 +172,15 @@ def reversionItemBase(request, id_item, id_fase, id_version):
 @reversion.create_revision()
 def relacionarItemBase(request, id_item_hijo, id_item_padre, id_fase):
     """
-    Vista para relaciones los items
+    *Vista para establecer relaciones entre los items o modificarlos.*
+
+    :param request: HttpRequest necesario seleccionar los ítem que serán relacionados, es la solicitud de la acción.
+    :param id_item_hijo: Es el identificador del Item que cumplirá con el rol de Hijo en la relación.
+    :param id_item_padre: Es el identificador del Item que cumplirá con el rol de Padre en la relación.
+    :param id_fase: Es el identificador de la Fase a la cual pertenece el item Hijo.
+    :param args: Argumentos para el modelo ``Item``.
+    :param kwargs: Keyword Arguments para la el modelo ``Item``.
+    :return: Establece exitosamente una relación entre los ítems especificados.
     """
     item_hijo = ItemBase.objects.get(pk=id_item_hijo)
     item_padre = ItemBase.objects.get(pk=id_item_padre)
@@ -176,14 +198,14 @@ def relacionarItemBase(request, id_item_hijo, id_item_padre, id_fase):
         item_hijo.save()
         mensaje = 'Relacion establecida entre ' + item_hijo.nombre + ' y ' + item_padre.nombre + '.'
         error = 0
-        return workphase(request, id_fase, error=error, message=mensaje)
+        return workphase(request, id_fase)
 
     relacion = ItemRelacion.objects.get(itemHijo=item_hijo)
     padre = relacion.itemPadre
     if padre == item_padre:
         mensaje = 'El item ' + item_hijo.nombre + ' ya cuenta con una relacion hacia el item especificado.'
         duplicado = 1
-        return workphase(request, id_fase, error=duplicado, message=mensaje)
+        return workphase(request, id_fase)
     else:
         relacion.itemPadre = item_padre
         relacion.save()
@@ -192,12 +214,18 @@ def relacionarItemBase(request, id_item_hijo, id_item_padre, id_fase):
 
         mensaje = 'Relacion establecida entre ' + item_hijo.nombre + ' y ' + item_padre.nombre + '.'
         error = 0
-        return workphase(request, id_fase, error=error, message=mensaje)
+        return workphase(request, id_fase)
 
 
 def relacionarItemBaseView(request, id_fase_actual, id_item_actual):
     """
-    Vista para relacionar items
+    *Vista para establecer relaciones entre los items o modificarlos.*
+    *Prepara una lista de las posibles relaciones a ser establecidas.*
+
+    :param request: HttpRequest necesario seleccionar los ítem que serán relacionados, es la solicitud de la acción.
+    :param id_item_fase_actual: Es el identificador de la fase actual donde se encuentra el hijo a relacionar.
+    :param id_item_actual: Es el identificador del Item que cumplirá con el rol de Hijo en la relación.
+    :return: Establece exitosamente una relación entre los ítems especificados.
     """
     item = ItemBase.objects.get(pk=id_item_actual)
     tipoitem = item.tipoitem
@@ -226,7 +254,11 @@ def relacionarItemBaseView(request, id_fase_actual, id_item_actual):
 
 def validarItem(request, id_item):
     """
-    Vista para validar un item, previa aprovación del cliente
+    *Vista para validar un item, previa aprobación del cliente*
+
+    :param request: HttpRequest necesario seleccionar el ítem que será validado, es la solicitud de la acción.
+    :param id_item: Es el identificador del ítem que será validado.
+    :return: El ítem fue validado correctamente por el cliente.
     """
     item = ItemBase.objects.get(pk=id_item)
 
@@ -237,17 +269,21 @@ def validarItem(request, id_item):
         item.save()
         mensaje = 'Item validado correctamente y listo para pasar a Linea Base'
         error = 0
-        return workphase(request, item.tipoitem.fase.id, error=error, message=mensaje)
+        return workphase(request, item.tipoitem.fase.id)
 
     else:
         mensaje = 'Item no puede ser validado. El mismo debe finalizarse primero.'
         error = 1
-        return workphase(request, item.tipoitem.fase.id, error=error, message=mensaje)
+        return workphase(request, item.tipoitem.fase.id)
 
 
 def finalizarItem(request, id_item):
     """
-    Vista para validar un item, previa aprovación del cliente
+    *Vista para finalizar un item, previa culminación de operaciones en él.*
+
+    :param request: HttpRequest necesario seleccionar el ítem que será finalizado, es la solicitud de la acción.
+    :param id_item: Es el identificador del ítem que será finalizado.
+    :return: El ítem fue finalizado correctamente y espera ser validado.
     """
     item = ItemBase.objects.get(pk=id_item)
     fase = item.tipoitem.fase
@@ -278,12 +314,16 @@ def finalizarItem(request, id_item):
         item.save()
         mensaje = 'Item: ' + item.nombre + ', finalizado y listo para su validacion'
 
-    return workphase(request, fase.id, error=error, message=mensaje)
+    return workphase(request, fase.id)
 
 
 def dardebajaItem(request, id_item):
     """
-    Vista para dar de baja un item
+    *Vista para cambiar el estado de un ítem al estado de Dado de baja.*
+
+    :param request: HttpRequest necesario seleccionar el ítem que será dado de baja, es la solicitud de la acción.
+    :param item_id: Identificador del ítem, el cual se dará de baja.
+
     """
     item = ItemBase.objects.get(pk=id_item)
     fase = item.tipoitem.fase
@@ -338,7 +378,11 @@ def dardebajaItem(request, id_item):
 
 def restaurarItem(request, id_item):
     """
-    Vista para restaurar un item que fue dado de baja
+    *Vista para restaurar un item que fue dado de baja.*
+
+    :param request: HttpRequest necesario seleccionar el ítem que será restaurado, es la solicitud de la acción.
+    :param id_item: Es el identificador del ítem que será restaurado.
+    :return: El ítem fue restaurado correctamente..
     """
     item = ItemBase.objects.get(pk=id_item)
     fase = item.tipoitem.fase
@@ -372,6 +416,10 @@ def restaurarItem(request, id_item):
 def restaurarItemRelacion(padres, hijos):
     """
     *Función auxiliar de la restauración de ítems que permite restaurar la relación del mismo.*
+
+    :param padres: Es una lista de todos los ancestros que posee un ítem.
+    :param hijos: Es una lista que contiene los descendientes de los diferentes ancestros en la lista padres.
+    :return: Una lista de ancestros(padres) y los descendientes(hijos) de ellos.
     """
 
     if hijos:
@@ -652,16 +700,14 @@ def saveForms(formDatosItem, formAtributosBasicos, formNum_list, formSTR_list, f
     if existen_FIL:
         formFile_list.save()
 
-#TODO: No borrar se usa en las pruebas =D
+#TODO: No borrar se usa en las pruebas
 def changeItem(request, id_item):
     """
         *Vista para la modificacion de una fase dentro del sistema.*
         *Opción válida para usuarios con los roles correspondientes.*
 
         :param request: HttpRequest necesario para modificar la fase, es la solicitud de la acción.
-        :param id_fase: Identificador de la fase dentro del sistema la cual se desea modificar.
-        :param args: Argumentos para el modelo ``Fase``.
-        :param kwargs: Keyword Arguments para la el modelo ``Fase``.
+        :param id_item: Identificador de la fase dentro del sistema la cual se desea modificar.
         :return: Proporciona la pagina ``changephase.html`` con el formulario correspondiente.
                  Modifica la fase especifica y luego regresa al menu principal
 

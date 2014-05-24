@@ -15,7 +15,7 @@ from autenticacion.views import main, myLogin
 from administrarUsuarios.views import createUser, changeUser, userList, userListJson, changePass, changeAnyUser
 from zar.views import about, contact
 from administrarProyectos.views import createProject, changeProject, projectList, workProject, setUserToProject,\
-    viewSetUserProject, changeProjectLeader, startProject, cancelProject, finProject, vistaDesarrollo
+    changeProjectLeader, startProject, cancelProject, finProject, vistaDesarrollo
 from administrarFases.views import changePhase, createPhase, phaseList, deletePhase, importMultiplePhase,\
     confirmar_eliminacion_fase, workphase, finPhase, startPhase, subirOrden, bajarOrden
 from administrarRolesPermisos.views import crearRol, eliminarRol, modificarRol, accesoDenegado
@@ -54,7 +54,6 @@ urlpatterns = patterns('',
                        url(r'^changeproject/(?P<id_proyecto>\d+)$', changeProject, name='changeproject'),
                        url(r'^changeprojectleader/(?P<id_proyecto>\d+)$', changeProjectLeader, name='changeprojectleader'),
                        url(r'^setusertoproject/(?P<id_proyecto>\d+)$', setUserToProject),
-                       url(r'^usersetproject/(?P<id_proyecto>\d+)$', viewSetUserProject),
                        url(r'^projectlist/$', projectList, name='projectlist'),
                        url(r'^workproject/(?P<id_proyecto>\d+)$', workProject, name='workproject'),
                        url(r'^startproject/(?P<id_proyecto>\d+)$', startProject, name='startproject'),

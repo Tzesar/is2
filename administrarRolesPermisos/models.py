@@ -31,14 +31,15 @@ from administrarProyectos.models import UsuariosVinculadosProyectos
 
 class Permiso(models.Model):
     """
-    *Modelo que implementa la estructura basica de la clase *``Permiso``*
-    para los usuarios cuyo premiso no dependa de la fase del proyecto en la cual trabaja*
-        + *code*: Identificador Único del permiso en el sistema
-        + *nombre*: Nombre del Permiso a ser mostrado
-        + *descripcion*: Breve descripción de las actividades que permite el permiso asociado
+    *Modelo que implementa la estructura basica de la clase * ``Permiso`` *para los usuarios cuyo premiso no dependa de
+    la fase del proyecto en la cual trabaja*
+        + **Code**: Identificador Único del permiso en el sistema
+        + **Nombre**: Nombre del Permiso a ser mostrado
+        + **Descripcion**: Breve descripción de las actividades que permite el permiso asociado
 
     :param args: Argumentos para el modelo ``Model``.
     :param kwargs: Keyword Arguments para la el modelo ``Model``.
+
     """
     code = models.CharField('code', max_length=20)
     nombre = models.CharField('nombre', max_length=50)
@@ -54,15 +55,16 @@ class Permiso(models.Model):
 
 class Rol(Group):
     """
-    *Modelo que implementa la estructura de la clase *``Rol``* heredando de la clase ``Group``, por defecto dentro
-    de Django, que asocia un conjunto de permisos a un conjunto de Usuarios.
-    Un grupo de instancias de ``RolPermiso`` forman un ``Rol`` que luego es asociado a un ``Usuario``*
-        + *name*: Nombre del ``Rol``.
-        + *permissions*: Permisos asociado al rol.
-        + *proyecto*: *Proyecto al cual el ``Rol`` está asociado.
+    *Modelo que implementa la estructura de la clase * ``Rol`` * heredando de la clase* ``Group`` *, por defecto dentro
+    de Django, que asocia un conjunto de permisos a un conjunto de Usuarios.*
+    Un grupo de instancias de ``RolPermiso`` forman un ``Rol`` que luego es asociado a un* ``Usuario``
+        + **Name**: Nombre del ``Rol``.
+        + **Permissions**: Permisos asociado al rol.
+        + **Proyecto**: Proyecto al cual el ``Rol`` está asociado.
 
     :param args: Argumentos para el modelo ``Group``.
     :param kwargs: Keyword Arguments para la el modelo ``Group``.
+
     """
 
     proyecto = models.ForeignKey(Proyecto)
@@ -70,16 +72,16 @@ class Rol(Group):
 
 class RolPermiso(models.Model):
     """
-    *Modelo que implementa la estructura de la clase *``RolPermiso``*
-    que asocia un permiso específico a un ``Rol`` del sistema.
-    Un grupo de instancias de ``RolPermiso`` forman un ``Rol`` que luego es asociado a un ``Usuario``*
-        + *rol*: Rol del cual forma parte este permiso
-        + *permiso*: Permiso asociado al rol
-        + *fase*: *Fase sobre la cual se aplican los permisos. Si este campo contiene el valor NULL el permiso afecta a
-        todas las fases del proyecto*
+    *Modelo que implementa la estructura de la clase * ``RolPermiso`` *que asocia un permiso específico a un* ``Rol`` *del sistema.*
+
+    *Un grupo de instancias de* ``RolPermiso`` *forman un* ``Rol`` *que luego es asociado a un* ``Usuario``*
+        + **Rol**: Rol del cual forma parte este permiso
+        + **Permiso**: Permiso asociado al rol
+        + **Fase**: Fase sobre la cual se aplican los permisos. Si este campo contiene el valor NULL el permiso afecta a todas las fases del proyecto
 
     :param args: Argumentos para el modelo ``Model``.
     :param kwargs: Keyword Arguments para la el modelo ``Model``.
+
     """
 
     rol = models.ForeignKey(Rol)

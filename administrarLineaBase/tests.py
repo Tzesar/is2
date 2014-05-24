@@ -99,7 +99,7 @@ class TestAdministrarSolicitudes_creacion(TestCase):
 
     def test_createSolicitud_response(self):
         """
-        *Test para la vista de creacion de proyectos en el sistema*
+        *Test para la vista de creacion de Solicitudes en el sistema*
         """
         print '\nInicio - Prueba: Creacion de Solicitud'
         login = self.client.login(username='admin', password='admin')

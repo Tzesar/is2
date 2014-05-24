@@ -16,7 +16,12 @@ from is2.settings import MEDIA_ROOT
 
 def createLB(request, id_fase):
     """
-    Esta es la vista para la creación de Linea Base
+    *Vista para la creación de una* ``Linea Base`` * dentro de una fase específica.*
+
+    :param request: HttpRequest necesario para la creación de una Linea Base, es la solicitud de la acción.
+    :param id_fase: Identificador de la Fase donde se creará la Linea Base.
+    :return: Una nueva Línea Base fue establecida en la fase.
+
     """
     fase = Fase.objects.get(pk=id_fase)
     tipoitem = TipoItem.objects.filter(fase=fase)
@@ -38,7 +43,6 @@ def createLB(request, id_fase):
                     item.linea_base = LineaBase.objects.get(pk=lineaBase.id, fase=fase)
                     item.save()
 
-
                 # Activamos la siguiente fase al crear la primera linea base
                 cantFases = Fase.objects.filter(proyecto=proyecto).count()
                 if fase.nro_orden != cantFases:
@@ -51,21 +55,30 @@ def createLB(request, id_fase):
                 mensaje = 'Linea Base establecida para la fase: ' + fase.nombre
                 error = 0
                 request.method = 'GET'
-                return workphase(request, id_fase, error=error, message=mensaje)
+                return workphase(request, id_fase)
         else:
-
             form = createLBForm()
         return render(request, 'lineabase/createlb.html', {'form': form, 'proyecto': proyecto,
                                                         'user': request.user, 'fase':fase, })
     else:
         mensaje = 'Error al crear Linea Base. No existen items VALIDADOS en la fase'
         error = 1
-        return workphase(request, id_fase, error=error, message=mensaje)
+
+    return workphase(request, id_fase)
 
 
 def calculoImpacto(padres, hijos, costo, tiempo, grafo):
     """
-    Vista para realizar el calculo de impacto
+    *Función recursiva para realizar el cálculo de impacto por los ítems que se desean modificar dentro de una Línea Base.*
+    *La función identificará todos los hijos que posea un ítem y al mismo tiempo los hijos de esto y los almacerará en padres
+    e hijos respectivamente*
+
+    :param padres: Recibe una lista vacía, en donde la función almacenará los padres de los ítems hijos.
+    :param hijos: Recibe una lista vacía, donde la función almacenará todos los hijos del ítem.
+    :param costo: Es el costo que se irá acumulando de acuerdo a los ítems que se encuentran afectados por la modificación de los ítems especificados en la solicitud.
+    :param tiempo: Es el tiempo que se irá acumulando de acuerdo a los ítems que se encuentran afectados por la modificación de los ítems especificados en la solicitud.
+    :param grafo: Es el grafo de relaciones que se irá formando de acuerdo a los ítems que serán afectados por la modificación de los ítems especificados en la solicitud.
+    :return: Regresa el costo, tiempo y el grafo de relaciones entre los ítems afectados.
     """
 
     if padres:
@@ -85,6 +98,8 @@ def calculoImpacto(padres, hijos, costo, tiempo, grafo):
 
         calculoImpacto(padres, hijos, costo, tiempo, grafo)
 
+        arista = pydot.Edge(item.nombre, "^.^")
+        grafo.add_edge(arista)
     else:
         return (costo, tiempo)
 
@@ -119,7 +134,13 @@ def generarCalculoImpactoHTML(request, id_item):
 
 def generarCalculoImpacto(request, id_item):
     """
-    Vista para la creación del resumen del calculo de impacto de relaciones
+    *Función para la creación del resumen del calculo de impacto de relaciones.*
+    *Esta función utiliza la función auxiliar* ``calculoImpacto`` * y junto con ella realiza la búsqueda de todos
+    los ítems que se encuentran afectados por los items que se desean modificar*
+
+    :param request: HttpRequest necesario para realizar el calculo de impacto, es la solicitud de la acción.
+    :param id_item: Es el ítem que se desea modificar y por el cual se debe realizar el cálculo de impacto.
+    :return: Regresa el costo y el tiempo estimados para la culminación de las modificaciones específicas.
     """
     usuario = request.user
     item = ItemBase.objects.get(pk=id_item)
@@ -145,7 +166,12 @@ def generarCalculoImpacto(request, id_item):
 
 def visualizarLB(request, id_fase):
     """
-    Esta es la vista para visualizar Líneas Bases existentes en la fase actual
+    *Función para visualizar Líneas Bases existentes en la fase actual*
+
+    :param request: HttpRequest necesario para visualizar las Lineas Base dentro de una fase, es la solicitud de la acción.
+    :param id_fase: Es el identificador de la Fase a la cual se le consultará sobre las líneas bases existentes en ella.
+    :return: Retorna una lista de todas las Lineas Bases existentes en la Fase y los ítems que forman parte de las mismas.
+
     """
     fase = Fase.objects.get(pk=id_fase)
     proyecto = fase.proyecto
@@ -157,12 +183,18 @@ def visualizarLB(request, id_fase):
     else:
         mensaje = 'Aun no se han creado Lineas Base en la fase: ' + fase.nombre
         error = 1
-        return vistaDesarrollo(request, fase.proyecto.id, error=error, message=mensaje)
+        return vistaDesarrollo(request, fase.proyecto.id)
 
 
 def cancelarSolicitudCambios(request, id_solicitud, id_fase):
     """
-    Vista para cancelar una solicitud de cambios expedida
+    *Vista para cancelar una solicitud de cambios expedida*
+    Obs. Solo puede cancelarse una solicitud que aún no ha sido Aprobada o Rechazada.
+
+    :param request: HttpRequest necesario para cancelar la solicitud, es la solicitud de la acción.
+    :param id_solicitud: Es el identificador de la Solicitud de Cambios que se desea cancelar.
+    :param id_fase: Es el identificador de la fase a la cual se encuentra ligada la Solicitud de Cambios.
+    return: Solicitud de Cambios cancelada exitosamente.
     """
 
     solicitud = SolicitudCambios.objects.get(pk=id_solicitud)
@@ -180,10 +212,18 @@ def cancelarSolicitudCambios(request, id_solicitud, id_fase):
         return workApplication(request, id_fase, error=error, mensaje=mensaje)
 
 
-def workApplication(request, id_fase, error=None, mensaje=None):
+def workApplication(request, id_fase):
     """
-    Vista para la gestión de Solicitud de Cambios Creada por el usuario
+    *Vista para la gestión de Solicitud de Cambios Creada por el usuario.*
+    *El usuario puede gestionar las diferentes solicitudes de cambios que ha expedido y ver el proceso de estas.
+    y también puede ver todas las solicitudes de cambios expedidas sobre la fase específica.
+
+    :param request: HttpRequest necesario para visualizar las Solicitudes Existentes en la fase, es la solicitud de la acción.
+    :param id_fase: Es el identificador de la fase a la cual se encuentran ligadas las Solicitudes de Cambios que se visualizan.
+    :return: Retorna una lista de todas las Solicitudes de Cambios que fueron expedidas sobre la fase.
     """
+    error = None
+    message = None
     usuario = request.user
     fase = Fase.objects.get(pk=id_fase)
     proyecto = fase.proyecto
@@ -207,7 +247,13 @@ def workApplication(request, id_fase, error=None, mensaje=None):
 
 def visualizarSolicitud(request, id_solicitud, id_fase):
     """
-    Vista para visualizar las Solicitudes creadas
+    *Función para visualizar los atributos de la Solicitud de Cambios, los cuales se encuentran especificados en el modelos*
+     ``Solicitud de Cambios``.
+
+    :param request: HttpRequest necesario para visualizar la Solicitud de Cambios creada, es la solicitud de la acción.
+    :param id_solicitud: Es el identificador de la Solcitud de Cambios la cual se desea visualizar.
+    :param id_fase: Es el identificador de la Fase a la cual se encuentra ligada la Solicitud de Cambios.
+    :return: Despliega en pantalla los datos correspondientes sobre una solicitud de cambios.
     """
     fase = Fase.objects.get(pk=id_fase)
     proyecto = fase.proyecto
@@ -227,7 +273,13 @@ def visualizarSolicitud(request, id_solicitud, id_fase):
 
 def crearSolicitudCambios(request, id_fase):
     """
-    Vista para la creación de solicitudes de cambios del sistema
+    *Función para la creación de solicitudes de cambios en el sistema. En la cual se debe especificar las razones por la
+    cual se desea realizar los cambios y una lista de ítems que desea modificar.*
+
+    :param request: HttpRequest necesario para la creación de una Solicitud de Cambios en la fase, es la solicitud de la acción.
+    :param id_fase: Es el identificador de la Fase a la cual se encuentra ligada la Solicitud de Cambios.
+    :return: Regresa una Solicitud de Cambios creada exitosamente.
+
     """
     fase = Fase.objects.get(pk=id_fase)
     proyecto = fase.proyecto
@@ -258,7 +310,7 @@ def crearSolicitudCambios(request, id_fase):
                 solicitud.save()
                 mensaje = 'Solicitud Creada y Enviada satisfactoriamente al comité de cambios'
                 error = 0
-                return workApplication(request, fase.id, error=error, mensaje=mensaje)
+                return workApplication(request, fase.id)
 
     form = createSCForm()
     asignarItemSolicitud = asignarItemSolicitudForm(id_fase=id_fase)
@@ -270,7 +322,12 @@ def crearSolicitudCambios(request, id_fase):
 
 def votarSolicitud(request, id_solicitud, voto):
     """
-    *Vista para realizar las votaciones correspondientes a una solicitud de cambio *
+    *Función para expedir un voto correspondiente a una Solicitud de Cambios. Los votos son realizados por el comite de cambios.*
+
+    :param request: HttpRequest necesario para votar la Solicitud de Cambios creada, es la solicitud de la acción.
+    :param id_solicitud: Es el identificador de la Solcitud de Cambios la cual se desea votar.
+    :param voto: Es el voto sobre la Solicitud de Cambios.
+    :return: Voto confirmado y registrado exitosamente en el Sistema.
     """
 
     solicitud = SolicitudCambios.objects.get(pk=id_solicitud)

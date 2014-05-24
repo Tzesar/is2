@@ -18,8 +18,9 @@ from administrarItems.models import ItemRelacion, ItemBase
 @lider_requerido
 def createPhase(request, id_proyecto):
     """
-    *Vista para la creación de fases en el sistema.
-    Opción válida para usuarios con los roles correspondientes.*
+    *Vista para la creación de fases en el sistema.*
+
+    *Opción válida para usuarios con los roles correspondientes.*
 
     :param request: HttpRequest necesario para crear fases dentro de los proyectos, es la solicitud de la acción.
     :param id_proyecto: Identificador del proyecto dentro del sistema al cual se le vincularán las fases creadas.
@@ -63,8 +64,9 @@ def createPhase(request, id_proyecto):
 @login_required()
 def changePhase(request, id_fase, error=None, message=None):
     """
-    *Vista para la modificacion de una fase dentro del sistema.
-    Opción válida para usuarios con los roles correspondientes.*
+    *Vista para la modificacion de una fase dentro del sistema.*
+
+    *Opción válida para usuarios con los roles correspondientes.*
 
     :param request: HttpRequest necesario para modificar la fase, es la solicitud de la acción.
     :param id_fase: Identificador de la fase dentro del sistema la cual se desea modificar.
@@ -105,6 +107,8 @@ def confirmar_eliminacion_fase(request, id_fase):
 
     :param request: HttpRequest - Solicitud de eliminación.
     :param id_fase: Identificador de la fase dentro del sistema la cual se desea eliminar.
+    :param args: Argumentos para el modelo ``Fase``.
+    :param kwargs: Keyword Arguments para la el modelo ``Fase``.
     :return: Elimina la fase especifica  y luego regresa al menu de fases.
     """
     faseAEliminar = Fase.objects.get(pk=id_fase)
@@ -115,11 +119,14 @@ def confirmar_eliminacion_fase(request, id_fase):
 @login_required
 def deletePhase(request, id_fase):
     """
-    *Vista para la eliminación de una fase dentro del sistema.
-    Opción válida para usuarios con los roles correspondientes.*
+    *Vista para la eliminación de una fase dentro del sistema.*
+
+    *Opción válida para usuarios con los roles correspondientes.*
 
     :param request: HttpRequest necesario para eliminar fases de un proyectos, es la solicitud de la acción.
     :param id_fase: Identificador de la fase dentro del sistema la cual se desea eliminar.
+    :param args: Argumentos para el modelo ``Fase``.
+    :param kwargs: Keyword Arguments para la el modelo ``Fase``.
     :return: Elimina la fase especifica  y luego regresa al menu de fases.
     """
 
@@ -166,6 +173,12 @@ def phaseList(request, id_proyecto):
 def importPhase(request, id_fase, id_proyecto_destino):
     """
     *Vista para la importación de un tipo de ítem a otra fase*
+
+    :param request: HttpRequest es la solicitud de la acción.
+    :param id_fase: Identificador de la fase que se desea importar.
+    :param id_proyecto_destino: Identificador del proyecto destino donde se importará la fase
+    :param args: Argumentos para el modelo ``Fase``.
+    :param kwargs: Keyword Arguments para la el modelo ``Fase``.
     """
 
     phase = Fase.objects.get(pk=id_fase)
@@ -179,10 +192,6 @@ def importPhase(request, id_fase, id_proyecto_destino):
         return render(request, "keyduplicate_fase.html", {'project': project, "message": e.message },
           context_instance=RequestContext(request) )
 
-    # logger.info('El usuario '+ request.user.username +' ha importado la fase '+  phase.nombre +
-    #             ' al proyecto destino: ' + phase.proyecto.nombre)
-
-
     return HttpResponseRedirect('/changephase/' + str(phase.id))
 
 
@@ -191,6 +200,12 @@ def importPhase(request, id_fase, id_proyecto_destino):
 def importMultiplePhase(request, id_fase, id_proyecto_destino):
     """
     *Vista para la importación de un tipo de ítem a otra fase*
+
+    :param request: HttpRequest es la solicitud de la acción.
+    :param id_fase: Identificador de la fase que se desea importar.
+    :param id_proyecto_destino: Identificador del proyecto destino donde se importará la fase
+    :param args: Argumentos para el modelo ``Fase``.
+    :param kwargs: Keyword Arguments para la el modelo ``Fase``.
     """
     phase = Fase.objects.get(pk=id_fase)
     phase.id = None
@@ -207,7 +222,7 @@ def importMultiplePhase(request, id_fase, id_proyecto_destino):
     return HttpResponseRedirect('/phaselist/' + str(project.id))
 
 
-def workphase(request, id_fase, error=None, message=None):
+def workphase(request, id_fase):
     """
     *Vista para el trabajo sobre una fase de un proyecto.
     Opción válida para usuarios asociados a un proyecto, con permisos de trabajo sobre items de la fase en cuestion*
@@ -217,7 +232,8 @@ def workphase(request, id_fase, error=None, message=None):
     :return: Proporciona la pagina ``workPhase.html``, página dedicada al desarrollo de la fase.
              Vista para el desarrollo de fases
     """
-
+    error = None
+    message = None
     if request.method == 'GET':
         faseTrabajo = Fase.objects.get(pk=id_fase)
         proyectoTrabajo = faseTrabajo.proyecto
@@ -272,7 +288,12 @@ def bajarOrden(request, id_fase):
 
 def finPhase(request, id_fase):
     """
-    Vista para finalizar una fase
+    *Vista para finalizar una fase dentro de un proyecto.*
+
+    :param request: HttpRequest es la solicitud de la acción.
+    :param id_fase: Identificador de la fase la cual se desea finalizar.
+    :return: Fase finalizada exitosamente
+
     """
     fase = Fase.objects.get(pk=id_fase)
     proyecto = fase.proyecto
@@ -300,7 +321,11 @@ def finPhase(request, id_fase):
 
 def startPhase(request, id_fase):
     """
-    Vista para iniciar una fase
+    *Vista para Iniciar una fase dentro de un proyecto.*
+
+    :param request: HttpRequest es la solicitud de la acción.
+    :param id_fase: Identificador de la fase la cual se desea Iniciar.
+    :return: Fase finalizada exitosamente
     """
     fase = Fase.objects.get(pk=id_fase)
 

@@ -6,11 +6,11 @@ from administrarProyectos.models import Proyecto
 class Fase(models.Model):
     """
     *Modelo para la clase proyecto, en el cual se encuentras todos los atributos de una fase:*
-        + *Codigo*: Identificador Único dentro del Sistema
-        + *Nombre*: Nombre de la fase
-        + *Descripción*: Breve reseña del proyecto
-        + *Estado*: Los estados posibles del Proyecto. Por default: PEN(Pendiente)
-        + *Proyecto*: Instancia del proyecto a la cual pertenece la fase
+        + **Codigo**: Identificador Único dentro del Sistema
+        + **Nombre**: Nombre de la fase
+        + **Descripción**: Breve reseña del proyecto
+        + **Estado**: Los estados posibles del Proyecto. Por default: PEN(Pendiente)
+        + **Proyecto**: Instancia del proyecto a la cual pertenece la fase
 
     :param args: Argumentos para el modelo ``Model``.
     :param kwargs: Keyword Arguments para la el modelo ``Model``.

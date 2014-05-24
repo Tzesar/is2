@@ -8,9 +8,9 @@ from administrarFases.models import Fase
 class NewPhaseForm(forms2.ModelForm):
     """
     *Formulario para la creación de nuevas fases en el sistema. Utilizamos el modelo de* ``Fase``
-    *definido,del cual filtramos los campos de tal manera a que solo se habiliten los *
-    *campos necesarios para la creación de una fase en el proyecto.*
-    *Opción válida solo para usuarios con roles correspondientes.*
+    *definido,del cual filtramos los campos de tal manera a que solo se habiliten los campos
+    necesarios para la creación de una fase en el proyecto.*
+    * Opción válida solo para usuarios con roles correspondientes.*
 
     :param args: Argumentos para el modelo ``ModelForm``.
     :param kwargs: Keyword Arguments para la el modelo ``ModelForm``.

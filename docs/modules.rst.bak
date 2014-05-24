@@ -2,17 +2,18 @@
 
    Modulos
    ----------
-   
+
 .. toctree::
    :maxdepth: 2
 
    administrarFases
+   administrarItems
+   administrarLineaBase
    administrarProyectos
    administrarRolesPermisos
    administrarTipoItem
-   administrarItems
    administrarUsuarios
    autenticacion
    is2
-   zar
    manage
+   zar

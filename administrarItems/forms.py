@@ -47,8 +47,8 @@ class itemForm(forms.ModelForm):
 
 class modificarDatosItemForm(forms.ModelForm):
     """
-    * Formulario de modificacion de la configuracion general del item.*
-    *Campos como el nombre del item, y su descripcion se incluyen en este formulario *
+    *Formulario de modificacion de la configuracion general del item.*
+    *Campos como el nombre del item, y su descripcion se incluyen en este formulario.*
 
     ::
 

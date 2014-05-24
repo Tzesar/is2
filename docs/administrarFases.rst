@@ -1,29 +1,28 @@
 Fases
-=======================
+===================================
 
-forms
+Formularios 
 -----------------------------
 
 .. automodule:: administrarFases.forms
     :members:
     :show-inheritance:
 
-
-models
+Modelos
 ------------------------------
 
 .. automodule:: administrarFases.models
     :members:
     :show-inheritance:
 
-tests
+Pruebas Unitarias
 -----------------------------
 
 .. automodule:: administrarFases.tests
     :members:
     :show-inheritance:
 
-views
+Vistas
 -----------------------------
 
 .. automodule:: administrarFases.views

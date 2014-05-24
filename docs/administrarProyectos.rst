@@ -1,36 +1,37 @@
 Proyectos
-============================
+==============================================
 
-forms 
----------------------------------
+
+Formularios
+----------------------------------------------
 
 .. automodule:: administrarProyectos.forms
     :members:
     :show-inheritance:
 
-models 
-----------------------------------
+Modelos
+----------------------------------------------
 
 .. automodule:: administrarProyectos.models
     :members:
     :show-inheritance:
 
-tables 
-----------------------------------
+Tablas
+----------------------------------------------
 
 .. automodule:: administrarProyectos.tables
     :members:
     :show-inheritance:
 
-tests 
----------------------------------
+Pruebas Unitarias
+----------------------------------------------
 
 .. automodule:: administrarProyectos.tests
     :members:
     :show-inheritance:
 
-views 
----------------------------------
+Vistas
+----------------------------------------------
 
 .. automodule:: administrarProyectos.views
     :members:

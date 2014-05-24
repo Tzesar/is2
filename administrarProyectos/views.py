@@ -149,7 +149,7 @@ def setUserToProject(request, id_proyecto):
     :param request: HttpRequest necesario para vincular los usuarios a proyectos, es la solicitud de la acción.
     :param id_proyecto: Identificador del proyecto dentro del sistema al cual se le vincularán usuarios para su desarrollo.
     :return: Proporciona la pagina ``setusertoproject.html`` con la lista de todos los usuarios existentes en el sistema para listar al proyecto
-            Usuarios vinculados correctamente al proyecto.
+             Usuarios vinculados correctamente al proyecto.
     """
     project = Proyecto.objects.get(pk=id_proyecto)
 
@@ -179,36 +179,21 @@ def setUserToProject(request, id_proyecto):
                                                               'user': request.user},)
 
 
-# TODO: eliminar luego si es necesario
 @login_required()
-def viewSetUserProject(request, id_proyecto):
-    """
-    *Vista para visualizar usuarios que se encuentren vinculados a un proyecto*
-
-    :param request: HttpRequest necesario para visualizar los usuarios a proyectos, es la solicitud de la acción.
-    :param id_proyecto: Identificador del proyecto dentro del sistema.
-    :return: Proporciona la pagina ``usersetproject.html`` con la lista de todos los usuarios vinculados al proyecto
-             Lista de los usuarios vinculados correctamente al proyecto.
-    """
-
-    project = Proyecto.objects.get(pk=id_proyecto)
-    userproject = UsuariosVinculadosProyectos.objects.filter(cod_proyecto=id_proyecto)
-
-    return render(request, "proyecto/usersetproject.html",
-                  {'project': project, 'userproject': userproject, 'user': request.user},)
-
-
-@login_required()
-def workProject(request, id_proyecto, error=None, message=None):
+def workProject(request, id_proyecto):
     """
     *Vista para el trabajo sobre un proyecto dentro del sistema.
-    Opción válida para usuarios asociados a un proyecto, ya sea como ``Líder de Proyecto`` o como participante.*
+    Opción válida para usuarios asociados a un proyecto, ya sea como* ``Líder de Proyecto`` *o como participante.*
 
     :param request: HttpRequest necesario para visualizar el área de trabajo de los usuarios en un proyectos, es la solicitud de la acción.
     :param id_proyecto: Identificador del proyecto dentro del sistema.
+    :param args: Argumentos para el modelo ``Proyecto``.
+    :param kwargs: Keyword Arguments para la el modelo ``Proyecto``.
     :return: Proporciona la pagina ``workProject.html``, página dedica al desarrollo del proyecto.
              Vista para el desarrollo del proyecto
     """
+    error = None
+    message = None
 
     # Esto sucede cuando se accede normalmente al template
     if request.method == 'GET':
@@ -266,15 +251,18 @@ def workProject(request, id_proyecto, error=None, message=None):
         return HttpResponse(json.dumps(responseDict), mimetype='application/javascript')
 
 
-def vistaDesarrollo(request, id_proyecto, error=None, message=None):
+def vistaDesarrollo(request, id_proyecto):
     """
-    * Vista para el área de desarrollo del proyecto.*
-    * En él se observan las principales fases e ítems que se encuentran en desarrollo dentro del proyecto*
+    *Vista para el área de desarrollo del proyecto.*
+    *En él se observan las principales fases e ítems que se encuentran en desarrollo dentro del proyecto*
 
-    :param id_proyecto:
+    :param request: HttpRequest necesario para vincular los usuarios a proyectos, es la solicitud de la acción.
+    :param id_proyecto: Identificador del proyecto que se encuentra actualmente en desarrollo.
     """
     proyecto = Proyecto.objects.get(pk=id_proyecto)
     fases = Fase.objects.filter(proyecto=proyecto).order_by('nro_orden')
+    error = None
+    message = None
 
     itemsPorFase = {}
 
@@ -290,7 +278,9 @@ def vistaDesarrollo(request, id_proyecto, error=None, message=None):
 @lider_requerido
 def startProject(request, id_proyecto):
     """
-    *Vista par inicar un proyecto*
+    *Vista para comenzar a desarrollar un proyecto dentro del sistema. *
+
+    :param id_proyecto: Identificador del proyecto, el cual pasa a un estado de Desarrollo
     """
 
     proyecto = Proyecto.objects.get(pk=id_proyecto)
@@ -346,7 +336,9 @@ def startProject(request, id_proyecto):
 @lider_requerido
 def cancelProject(request, id_proyecto):
     """
-    *Vista para anular un proyecto*
+    *Vista para cancelar un proyecto dentro del sistema. *
+
+    :param id_proyecto: Identificador del proyecto, el cual pasa a un estado de Anulado
     """
 
     proyecto = Proyecto.objects.get(pk=id_proyecto)
@@ -396,7 +388,9 @@ def cancelProject(request, id_proyecto):
 @lider_requerido
 def finProject(request, id_proyecto):
     """
-    *Vista par inicar un proyecto*
+    *Vista para finalizar un proyecto dentro del sistema. *
+
+    :param id_proyecto: Identificador del proyecto, el cual pasa a un estado de Finalizado
     """
     proyecto = Proyecto.objects.get(pk=id_proyecto)
     fases = proyecto.fase_set.all().order_by('nro_orden')

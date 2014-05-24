@@ -5,10 +5,14 @@ from administrarFases.models import Fase
 
 class TipoItem(models.Model):
     """
-    *Modelo para la representación de la entidad ``Tipo de ítem`` asociada a una fase* :
-        + *Nombre*: Nombre del tipo de ítem
-        + *Fase*: Identificador de la fase a la cual se encuentra asociada
-        + *Descripción*: Breve descripción del propósito del tipo de ítem
+    *Modelo para la representación de la entidad* ``Tipo de ítem`` *asociada a una fase* :
+        + **Nombre**: Nombre del tipo de ítem
+        + **Fase**: Identificador de la fase a la cual se encuentra asociada
+        + **Descripción**: Breve descripción del propósito del tipo de ítem
+
+    :param args: Argumentos para el modelo base ``Model``.
+    :param kwargs: Keyword Arguments para la función ``Model``.
+
     """
 
     nombre = models.CharField(max_length=100)
@@ -26,11 +30,15 @@ class TipoItem(models.Model):
 
 class Atributo(models.Model):
     """
-    * Modelo para representar a los* ``Atributos`` *de un * ``Tipo de Ítem`` :
-        + *Nombre*: Nombre descriptivo para el atributo
-        + *Tipo*: Tipo de dato al que corresponde el atributo
-        + *Tipo de Ítem*: Tipo de ítem al cual se encuentra asociado el atributo
-        + *Descripción*: Breve descripción del propósito del atributo
+    *Modelo para representar a los* ``Atributos``  de un ``Tipo de Ítem`` :
+        + **Nombre**: Nombre descriptivo para el atributo
+        + **Tipo**: Tipo de dato al que corresponde el atributo
+        + **Tipo de Ítem**: Tipo de ítem al cual se encuentra asociado el atributo
+        + **Descripción**: Breve descripción del propósito del atributo
+
+    :param args: Argumentos para el modelo base ``Model``.
+    :param kwargs: Keyword Arguments para la función ``Model``.
+
     """
 
     opciones_tipo = (
