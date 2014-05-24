@@ -10,6 +10,7 @@
    administrarProyectos
    administrarRolesPermisos
    administrarTipoItem
+   administrarLineaBase
    administrarItems
    administrarUsuarios
    autenticacion
