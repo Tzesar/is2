@@ -1,6 +1,7 @@
 #encoding:utf-8
 
 from django.contrib.auth.decorators import login_required
+from django.core.urlresolvers import reverse
 from django.http import HttpResponseRedirect
 from django.template import RequestContext
 from django.shortcuts import render
@@ -13,7 +14,7 @@ from administrarProyectos.views import workProject, vistaDesarrollo
 from administrarProyectos.models import Proyecto
 from administrarFases.models import Fase
 from administrarTipoItem.models import TipoItem, Atributo
-from administrarRolesPermisos.decorators import *
+from administrarRolesPermisos.decorators import user_passes_test, puede_crear_fase, puede_modificar_fase
 from django.db import IntegrityError
 from administrarItems.models import ItemBase
 
@@ -21,7 +22,7 @@ from administrarItems.models import ItemBase
 # logger = logging.getLogger(__name__)
 
 @login_required()
-@lider_requerido
+@user_passes_test(puede_crear_fase)
 def createPhase(request, id_proyecto):
     """
     *Vista para la creación de fases en el sistema.
@@ -54,25 +55,27 @@ def createPhase(request, id_proyecto):
                 err = format_html('<b><i>Datos Erróneos:</b></i><br>'
                                   '<i>El nombre especificado de fase ya existe. Verifiquelo y vuelva a intentarlo</i>')
                 return render(request, "fase/createphase.html", {'form': form, 'user': request.user,
-                                                                 'proyecto': project, "error": err },
-                                                                  context_instance=RequestContext(request) )
+                                                                 'proyecto': project, "error": err}, )
 
             # logger.info('El usuario ' + request.user.username + ' ha creado la fase ' +
             #             form["nombre"].value() + ' dentro del proyecto ' + project.nombre)
 
             # generarPermisosFase(project, fase)
 
-            mensaje ='Fase: ' + Fase.objects.last().nombre + ', creada exitosamente'
-            request.method = 'GET'
-            return workProject(request, id_proyecto, error=0, message=mensaje)
+            mensaje = list('Fase: ' + Fase.objects.last().nombre + ', creada exitosamente')
+            request.session['messages'] = mensaje
+            request.session['error'] = 0
+            return HttpResponseRedirect(reverse('administrarProyectos.views.workProject',
+                                                kwargs={'id_proyecto': id_proyecto}))
     else:
         form = NewPhaseForm()
     return render(request, 'fase/createphase.html', {'form': form, 'proyecto': project, 'user': request.user,
-                                                     'error': {} })
+                                                     'error': {}, })
 
 
 #TODO: Botones Iniciar Fase - Finalizar Fase
 @login_required()
+@user_passes_test(puede_modificar_fase)
 def changePhase(request, id_fase):
     """
     *Vista para la modificacion de una fase dentro del sistema.
@@ -103,15 +106,18 @@ def changePhase(request, id_fase):
             # logger.info('El usuario ' + request.user.username + ' ha modificado la fase PH-' +
             #             id_fase + ': ' + form["nombre"].value() + ' dentro del proyecto' + project.nombre + 'en el sistema.')
 
-            return HttpResponseRedirect('/workproject/'+str(project.id))
+            mensaje = list('Fase: ' + Fase.objects.last().nombre + ', creada exitosamente')
+            request.session['messages'] = mensaje
+            request.session['error'] = 0
+            return HttpResponseRedirect(reverse('administrarProyectos.views.workProject',
+                                                kwargs={'id_proyecto': project.id}))
     else:
         form = ChangePhaseForm(instance=phase)
-    return render(request, 'fase/changephase.html', {'phaseForm': form, 'phase': phase, 'project': project, 'tiposItem': tiposDeItem, 'user': request.user,
-                                                     'error': error, 'message': message}, context_instance=RequestContext(request))
+    return render(request, 'fase/changephase.html', {'phaseForm': form, 'phase': phase, 'project': project, 'tiposItem': tiposDeItem, 'user': request.user})
 
 
 @login_required
-@login_required
+# @lider_requerido
 def confirmar_eliminacion_fase(request, id_fase):
     """
     *Vista para la confirmar la eliminación definitiva de una fase del proyecto.
@@ -127,6 +133,7 @@ def confirmar_eliminacion_fase(request, id_fase):
                                                                'tipos': tiposItem},)
 
 @login_required
+# @lider_requerido
 def deletePhase(request, id_fase):
     """
     *Vista para la eliminación de una fase dentro del sistema.
@@ -155,8 +162,10 @@ def deletePhase(request, id_fase):
     # logger.info('El usuario '+ request.user.username +' ha eliminado la fase '+ phase_copy.nombre +
     #             ' dentro del proyecto: ' + project.nombre)
 
-    mensaje = 'Fase: ' + phase_copy.nombre + ', eliminada exitosamente'
-    return workProject(request, phase_copy.proyecto.id, error=0, message=mensaje )
+    mensaje = list('Fase: ' + phase_copy.nombre + ', eliminada exitosamente')
+    request.session['messages'] = mensaje
+    request.session['error'] = 0
+    return HttpResponseRedirect(reverse('administrarProyectos.views.workProject', kwargs={'id_proyecto': phase_copy.proyecto.id,}))
 
 
 @login_required

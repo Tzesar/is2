@@ -214,7 +214,7 @@ DATE_INPUT_FORMATS = (
 #         },
 #         'administrarTipoItem': {
 #             'handlers': ['tipo_item'],
-#             'level': 'INFO',
+#             'level': 'INFO',DATE_INPUT_FORMATS
 #         },
 #         'administrarRolesPermisos': {
 #             'handlers': ['rol'],

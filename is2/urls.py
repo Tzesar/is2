@@ -13,7 +13,7 @@ from autenticacion.views import main, myLogin
 from administrarUsuarios.views import createUser, changeUser, userList, userListJson, changePass, changeAnyUser
 from zar.views import about, contact
 from administrarProyectos.views import createProject, changeProject, projectList, workProject, setUserToProject,\
-    viewSetUserProject, changeProjectLeader, startProject, cancelProject, finProject, vistaDesarrollo
+    changeProjectLeader, startProject, cancelProject, finProject, vistaDesarrollo
 from administrarFases.views import changePhase, createPhase, phaseList, deletePhase, importMultiplePhase, finPhase, \
     startPhase, subirOrden, bajarOrden
 from administrarRolesPermisos.views import crearRol, eliminarRol, modificarRol, accesoDenegado
@@ -54,7 +54,6 @@ urlpatterns = patterns('',
                        url(r'^changeproject/(?P<id_proyecto>\d+)$', changeProject, name='changeproject'),
                        url(r'^changeprojectleader/(?P<id_proyecto>\d+)$', changeProjectLeader, name='changeprojectleader'),
                        url(r'^setusertoproject/(?P<id_proyecto>\d+)$', setUserToProject),
-                       url(r'^usersetproject/(?P<id_proyecto>\d+)$', viewSetUserProject),
                        url(r'^projectlist/$', projectList, name='projectlist'),
                        url(r'^workproject/(?P<id_proyecto>\d+)$', workProject, name='workproject'),
                        url(r'^startproject/(?P<id_proyecto>\d+)$', startProject, name='startproject'),
@@ -76,11 +75,12 @@ urlpatterns = patterns('',
                        url(r'^subir/(?P<id_fase>\d+)$', subirOrden),
                        url(r'^bajar/(?P<id_fase>\d+)$', bajarOrden),
 
+###################################################### ROLES ###########################################################
                        url(r'^createrole/(?P<id_proyecto>\d+)$', crearRol),
-                       # url(r'^rolelist/(?P<id_proyecto>\d+)$', roleList, name="rolelist"),
                        url(r'^changerole/(?P<id_proyecto>\d+)/(?P<id_rol>\d+)$', modificarRol),
                        url(r'^deleterole/(?P<id_proyecto>\d+)/(?P<id_rol>\d+)$', eliminarRol),
-
+                       url(r'^denegado/(?P<id_error>\d+)$', accesoDenegado),
+                       # TODO: Agregar pagina 403, parecida a la desplegada por accesoDenegado
 
 ###################################################### TIPO DE ITEMS ###################################################
                        url(r'^createitemtype/(?P<id_fase>\d+)$', createItemType),

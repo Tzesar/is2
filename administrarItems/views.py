@@ -10,7 +10,7 @@ from administrarItems.forms import itemForm, campoEnteroForm, campoImagenForm, c
     modificarDatosItemForm, campoTextoLargoForm, CustomInlineFormSet_NUM, CustomInlineFormSet_STR, \
     CustomInlineFormSet_TXT, CustomInlineFormSet_IMG, CustomInlineFormSet_FIL
 
-from django.forms.models import  inlineformset_factory
+from django.forms.models import inlineformset_factory
 from administrarItems.models import ItemBase, CampoImagen, CampoNumero, CampoFile, CampoTextoCorto, CampoTextoLargo, ItemRelacion
 from administrarRolesPermisos.decorators import *
 import reversion
@@ -84,6 +84,7 @@ def crearAtributos(item_id):
         nuevoAtributo = CampoImagen(atributo=a, item=nuevoItem)
         nuevoAtributo.save()
 
+
 @login_required()
 @reversion.create_revision()
 def changeItem(request, id_item):
@@ -127,6 +128,7 @@ def changeItem(request, id_item):
                                                     'tiposItem': tipoItem, 'user': request.user},
                                                     context_instance=RequestContext(request))
 
+
 @reversion.create_revision()
 def completarEnteros(request, id_atributo, id_item):
     """
@@ -155,6 +157,7 @@ def completarEnteros(request, id_atributo, id_item):
     return render(request, 'item/fillatributos.html', {'form': form, 'item': item, 'phase': phase, 'project': project,
                                                     'tiposItem': tipoItem, 'user': request.user, 'attr':atributo},
                                                     context_instance=RequestContext(request))
+
 
 @reversion.create_revision()
 def completarTexto(request, id_atributo, id_item):
@@ -186,6 +189,7 @@ def completarTexto(request, id_atributo, id_item):
                                                     'tiposItem': tipoItem, 'user': request.user, 'attr':atributo},
                                                     context_instance=RequestContext(request))
 
+
 @reversion.create_revision()
 def completarArchivo(request, id_atributo, id_item):
     """
@@ -212,6 +216,7 @@ def completarArchivo(request, id_atributo, id_item):
     return render(request, 'item/filesatributos.html', {'form': form, 'item': item, 'phase': phase, 'project': project,
                                                     'tiposItem': tipoItem, 'user': request.user, 'attr':atributo},
                                                     context_instance=RequestContext(request))
+
 
 @reversion.create_revision()
 def completarImagen(request, id_atributo, id_item):

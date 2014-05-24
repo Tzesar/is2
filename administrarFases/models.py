@@ -45,4 +45,5 @@ class Fase(models.Model):
             ('consultar_Item', 'Puede consultar items'),
             ('consultar_Fase', 'Puede consultar fases'),
             ('consultar_Tipo_Item', 'Puede consultar tipos de item'),
+            ('crear_Solicitud_Cambio', 'Puede crear solicitudes de cambio'),
         )

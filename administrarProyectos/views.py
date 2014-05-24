@@ -3,6 +3,8 @@ import json
 import logging
 
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth.models import Group
+from django.core.urlresolvers import reverse
 from django.http import HttpResponseRedirect, HttpResponse
 from django.shortcuts import render
 from django_tables2 import RequestConfig
@@ -11,11 +13,13 @@ from django.utils import timezone
 from administrarItems.models import ItemBase
 
 from administrarProyectos.forms import NewProjectForm, ChangeProjectForm, setUserToProjectForm, ChangeProjectLeaderForm
-from administrarProyectos.models import UsuariosVinculadosProyectos
+from administrarProyectos.models import UsuariosVinculadosProyectos, Proyecto
 from administrarProyectos.tables import ProyectoTablaAdmin
+from administrarRolesPermisos.decorators import user_passes_test, vinculadoProyecto, admin_requerido
+from administrarRolesPermisos.forms import asignarUsuariosRolForm, asignarMiembrosComiteForm
 from administrarRolesPermisos.models import Rol
-from administrarRolesPermisos.decorators import *
 from administrarFases.models import Fase
+from administrarTipoItem.models import TipoItem, Atributo
 from autenticacion.models import Usuario
 
 
@@ -49,6 +53,14 @@ def createProject(request):
             #             form["nombre"].value() + ' dentro del sistema')
 
             vincularLider(proyectoNuevo, form["lider_proyecto"].value())
+
+            # Crea el rol Comite de cambios y asigna al Lider a este grupo.
+            grupoComite = Group(name="ComiteDeCambios-"+str(proyectoNuevo.nombre))
+            grupoComite.save()
+            rolComite = Rol(grupo=grupoComite, proyecto=proyectoNuevo)
+            rolComite.save()
+
+            grupoComite.user_set.add(proyectoNuevo.lider_proyecto)
 
             return HttpResponseRedirect('/projectlist/')
     else:
@@ -95,7 +107,7 @@ def changeProject(request, id_proyecto):
 
 
 @login_required()
-@lider_requerido
+# @lider_requerido
 def changeProjectLeader(request, id_proyecto):
     """
     *Vista para la modificación de un proyecto dentro del sistema.
@@ -109,19 +121,34 @@ def changeProjectLeader(request, id_proyecto):
     """
 
     project = Proyecto.objects.get(pk=id_proyecto)
+    nombreComite = u'ComiteDeCambios-' + str(project.nombre)
+    rol = Rol.objects.get(grupo__name__contains=nombreComite)
+
     if request.method == 'POST':
         form = ChangeProjectLeaderForm(request.POST, instance=project)
-        if form.is_valid():
+        miembrosComiteForm = asignarMiembrosComiteForm(request.POST, id_proyecto=id_proyecto,
+                                                       id_lider=project.lider_proyecto_id)
+        if form.is_valid() and miembrosComiteForm.is_valid():
             form.save()
+
+            miembrosComite = miembrosComiteForm.get_cleaned_data()
+            for miembro in miembrosComite:
+                miembroNuevo = Usuario.objects.get(id=miembro)
+                rol.grupo.user_set.add(miembroNuevo)
 
             # logger.info('El Lider de Proyecto ' + request.user.username + ' ha modificado el proyecto PR-' +
             #             id_proyecto + form["nombre"].value() + ' dentro del sistema')
 
             return HttpResponseRedirect('/workproject/'+str(project.id))
-    else:
-        form = ChangeProjectLeaderForm(instance=project)
 
-    return render(request, 'proyecto/changeprojectleader.html', {'user': request.user, 'form': form, 'project': project})
+
+    form = ChangeProjectLeaderForm(instance=project)
+
+    miembrosComite = list(rol.grupo.user_set.all().values_list('id', flat=True))
+    miembrosComiteForm = asignarMiembrosComiteForm(id_proyecto=id_proyecto, id_lider=project.lider_proyecto_id,
+                                                   initial={'usuarios': miembrosComite})
+    return render(request, 'proyecto/changeprojectleader.html', {'user': request.user, 'form': form, 'project': project,
+                                                                 'miembrosComiteForm': miembrosComiteForm})
 
 
 @login_required()
@@ -142,7 +169,7 @@ def projectList(request, exitoCrear=False, exitoModif=False, proyecto=None):
 
 
 @login_required()
-@lider_requerido
+# @lider_requerido
 def setUserToProject(request, id_proyecto):
     """
     *Vista para vincular usuarios a un proyecto existente.
@@ -181,27 +208,9 @@ def setUserToProject(request, id_proyecto):
                                                               'user': request.user},)
 
 
-# TODO: eliminar luego si es necesario
 @login_required()
-def viewSetUserProject(request, id_proyecto):
-    """
-    *Vista para visualizar usuarios que se encuentren vinculados a un proyecto*
-
-    :param request: HttpRequest necesario para visualizar los usuarios a proyectos, es la solicitud de la acción.
-    :param id_proyecto: Identificador del proyecto dentro del sistema.
-    :return: Proporciona la pagina ``usersetproject.html`` con la lista de todos los usuarios vinculados al proyecto
-             Lista de los usuarios vinculados correctamente al proyecto.
-    """
-
-    project = Proyecto.objects.get(pk=id_proyecto)
-    userproject = UsuariosVinculadosProyectos.objects.filter(cod_proyecto=id_proyecto)
-
-    return render(request, "proyecto/usersetproject.html",
-                  {'project': project, 'userproject': userproject, 'user': request.user},)
-
-
-@login_required()
-def workProject(request, id_proyecto, error=None, message=None):
+@user_passes_test(vinculadoProyecto)
+def workProject(request, id_proyecto):
     """
     *Vista para el trabajo sobre un proyecto dentro del sistema.
     Opción válida para usuarios asociados a un proyecto, ya sea como ``Líder de Proyecto`` o como participante.*
@@ -217,18 +226,24 @@ def workProject(request, id_proyecto, error=None, message=None):
         proyecto = Proyecto.objects.get(id=id_proyecto)
         usuario = request.user
         fases = Fase.objects.filter(proyecto=proyecto).order_by('nro_orden')
-        cantFases = fases.count()
 
         if usuario == proyecto.lider_proyecto:
             fases = proyecto.fase_set.all().order_by('id')
-            # rolesFases = RolFase.objects.filter(proyecto=proyecto).order_by('nombre')
-            roles = Rol.objects.filter(proyecto=proyecto)
+            roles = Rol.objects.filter(proyecto=proyecto)[1:]
 
             usuariosInactivos = Usuario.objects.filter(is_active=False).values_list('id', flat=True)
             usuariosAsociados = proyecto.usuariosvinculadosproyectos_set.exclude(cod_usuario__in=usuariosInactivos)
+
+            error = None
+            messages = None
+            if 'error' in request.session:
+                error = request.session.pop('error')
+            if 'messages' in request.session:
+                messages = request.session.pop('messages')
             return render(request, 'proyecto/workProjectLeader.html', {'user': request.user, 'proyecto': proyecto,
                                                                        'fases': fases, 'roles': roles,
-                                                                       'usuariosAsociados': usuariosAsociados})
+                                                                       'usuariosAsociados': usuariosAsociados,
+                                                                       'error': error, 'messages': messages})
         else:
             return render(request, 'proyecto/workProject.html', {'user': request.user, 'proyecto': proyecto, 'fases': fases, })
 
@@ -263,6 +278,7 @@ def workProject(request, id_proyecto, error=None, message=None):
         return HttpResponse(json.dumps(responseDict), mimetype='application/javascript')
 
     usuario.save()
+    # TODO: cancelar todas las solicitudes de cambio creadas por este usuario
 
     if xhr:
         responseDict = {'exito': True}
@@ -286,10 +302,10 @@ def vistaDesarrollo(request, id_proyecto, error=None, message=None):
 
 
 @login_required()
-@lider_requerido
+# @lider_requerido
 def startProject(request, id_proyecto):
     """
-    *Vista par inicar un proyecto*
+    *Vista par iniciar un proyecto*
     """
 
     proyecto = Proyecto.objects.get(pk=id_proyecto)
@@ -299,49 +315,54 @@ def startProject(request, id_proyecto):
     usuariosInactivos = Usuario.objects.filter(is_active=False).values_list('id', flat=True)
     usuariosAsociados = proyecto.usuariosvinculadosproyectos_set.exclude(cod_usuario__in=usuariosInactivos)
 
-    message = ''
+    message = []
     error = 0
     if proyecto.estado != 'PEN':
         message = 'No se puede Iniciar un proyecto que se encuentra en el estado: ' + proyecto.get_estado_display()
         error = 1
     else:
         if roles and fases:
-            for f in fases:
-                tipos = TipoItem.objects.filter(fase=f)
+            for fase in fases:
+                tipos = TipoItem.objects.filter(fase=fase)
                 if not tipos:
                     error = 1
+                    message.append('La fase ' + fase.nombre + ' debe tener un Tipo de Item asociado.')
                 else:
-                    for t in tipos:
-                        atributos = Atributo.objects.filter(tipoDeItem=t)
+                    for tipo in tipos:
+                        atributos = Atributo.objects.filter(tipoDeItem=tipo)
                         if not atributos:
                             error = 1
-
-            if error == 1:
-                message = 'No se dan las condiciones para iniciar el proyecto. Existen fases sin tipos de item,' \
-                          ' o tipos de item sin atributos.'
-            else:
-                proyecto.estado = 'ACT'
-                proyecto.fecha_inicio = timezone.now()
-                proyecto.save()
-
-                primeraFase = Fase.objects.get(proyecto=proyecto, nro_orden=1)
-                primeraFase.estado = 'DES'
-                primeraFase.save()
-
-                message = 'El proyecto ha sido iniciado exitosamente.'
+                            message.append('El tipo de item ' + tipo.nombre + ' debe tener por lo menos un atributo'
+                                                                              ' definido por el usuario.')
         else:
-            message = 'Debe especificar al menos un rol y una fase para que el proyecto se considere válido y pueda iniciarse.'
+            message.append(u'Debe especificar al menos un rol y una fase para que el proyecto se considere válido'
+                           u' y pueda iniciarse.')
             error = 1
 
-    fases = proyecto.fase_set.all().order_by('id')
-    return render(request, 'proyecto/workProjectLeader.html', {'user': request.user, 'proyecto': proyecto,
-                                                                'fases': fases, 'roles': roles,
-                                                                'usuariosAsociados': usuariosAsociados,
-                                                                'message': message, 'error': error})
+        nombreComite = u'ComiteDeCambios-' + proyecto.nombre
+        comite = Rol.objects.get(grupo__name__contains=nombreComite)
+        if comite.grupo.user_set.all().count() < 3:
+            message.append(u'El Comite de cambios debe tener tres miembros.')
+            error = 1
+
+        if error != 1:
+            proyecto.estado = 'ACT'
+            proyecto.fecha_inicio = timezone.now()
+            proyecto.save()
+
+            primeraFase = Fase.objects.get(proyecto=proyecto, nro_orden=1)
+            primeraFase.estado = 'DES'
+            primeraFase.save()
+
+            message.append(u'El proyecto ha sido iniciado exitosamente.')
+
+    request.session['messages'] = message
+    request.session['error'] = error
+    return HttpResponseRedirect(reverse('administrarProyectos.views.workProject', kwargs={'id_proyecto': id_proyecto}))
 
 
 @login_required()
-@lider_requerido
+# @lider_requerido
 def cancelProject(request, id_proyecto):
     """
     *Vista para anular un proyecto*
@@ -391,7 +412,7 @@ def cancelProject(request, id_proyecto):
 
 
 @login_required()
-@lider_requerido
+# @lider_requerido
 def finProject(request, id_proyecto):
     """
     *Vista par inicar un proyecto*

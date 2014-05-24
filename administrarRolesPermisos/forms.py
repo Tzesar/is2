@@ -131,6 +131,7 @@ class NuevoRolForm(forms2.ModelForm):
             'name': forms2.TextInput(attrs={'class': 'form-control'}),
         }
 
+
 class asignarUsuariosRolForm(forms2.Form):
     """
     *Formulario para vincular usuarios a un rol.
@@ -159,5 +160,38 @@ class asignarUsuariosRolForm(forms2.Form):
         """
 
         opciones = self.cleaned_data.get('usuarios')
+
+        return opciones
+
+
+class asignarMiembrosComiteForm(forms2.Form):
+    """
+    *Formulario para vincular usuarios a un rol.
+    *Establece las opciones a los usuarios vinculados al proyecto que estén **activos** y no sean el* **administrador**.
+
+    :param id_proyecto: Argumento keyword que contiene el ``id`` del proyecto al cual se desea asignar a los usuarios.
+    """
+
+    miembros = forms2.MultipleChoiceField()
+
+    def __init__(self, *args, **kwargs):
+        id_proyecto = kwargs.pop('id_proyecto')
+        id_lider = kwargs.pop('id_lider')
+        self.proyecto = Proyecto.objects.get(id=id_proyecto)
+        super(asignarMiembrosComiteForm, self).__init__(*args, **kwargs)
+
+        usuariosHabilitados = list(UsuariosVinculadosProyectos.objects.filter(cod_proyecto=self.proyecto.id, habilitado=True).values_list('cod_usuario', flat=True))
+        opciones = list(Usuario.objects.filter(pk__in=usuariosHabilitados).exclude(id=id_lider).values_list('id', 'username'))
+        self.fields['miembros'] = forms2.MultipleChoiceField(choices=opciones, required=False)
+
+        super(asignarMiembrosComiteForm, self).full_clean()
+
+    def get_cleaned_data(self):
+        """
+        Retorna las opciones seleccionadas en la vista.
+        :return: opciones: ``Lista`` de opciones del seleccionadas que existen dentro de las opciones iniciales del ``Form``.
+        """
+
+        opciones = self.cleaned_data.get('miembros')
 
         return opciones

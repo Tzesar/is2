@@ -7,16 +7,15 @@
 
     {% block title %}Modificar Proyecto{% endblock %}
     {% block errorBlock %}
-        {% if error == 1 %}
+        {% if messages %}
             <div class="container-fluid">
-                <div class="alert alert-danger alert-dismissable">
+                <div class="alert {% if error == 1 %} alert-danger {% else %} alert-success {% endif %} alert-dismissable">
                     <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
-                    {{ message }}
-                </div>
-            {% elif error == 0 %}
-                <div class="alert alert-success alert-dismissable">
-                    <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
-                    {{ message }}
+                    <ul>
+                        {% for message in messages %}
+                            <li>{{ message }}</li>
+                        {% endfor %}
+                    </ul>
                 </div>
             </div>
         {% endif %}
