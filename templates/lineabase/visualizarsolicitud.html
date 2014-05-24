@@ -6,38 +6,95 @@
     {% block breadContent %}
         <li><a href="{% url 'autenticacion.views.main' %}">Inicio</a></li>
         <li><a href="{% url 'administrarProyectos.views.workProject' proyecto.id %}">{{ proyecto.nombre }}</a></li>
-        <li><a href="{% url 'administrarLineaBase.views.workApplication' fase.id %}">{{ fase.nombre }}</a></li>
+        <li><a href="{% url 'administrarFases.views.workphase' fase.id %}">Fase: {{ fase.nombre }} - Área de Trabajo</a></li>
+        <li><a href="{% url 'administrarLineaBase.views.workApplication' fase.id %}">Fase: {{ fase.nombre }} - Solicitudes</a></li>
         <li class="active">Solicitud de Cambio</li>
     {% endblock breadContent %}
 
     {% block padTop %}{% endblock padTop %}
     {% block panelCentral %}
         <div class="panel-heading">
-            <h1 class="text-info" style="display: inline-block">Solicitud de Cambio <small>DETALLES</small></h1>
+            <h1 class="text-info" style="display: inline-block">Solicitud de Cambios <small>DETALLES</small></h1>
+        </div>
+        {% for solicitud in solicitud %}
+        <div class="list-group-item list-group-item-info">
+
+            <b>Motivo de la Solicitud: </b>{{ solicitud.motivo }}<br>
+            <b>Usuario Solicitante: </b>{{ solicitud.usuario.get_full_name }}<br>
+            <b>Fase: </b> {{ solicitud.fase }}<br>
+            <b>Fecha de Creación: </b>{{ solicitud.fecha_creacion }}<br>
+            <b>Estado: </b>{{ solicitud.get_estado_display }}<br>
+
+
         </div>
         <div class="panel-body">
-            <div class="col-lg-5 col-md-5 col-sm-5"> {% csrf_token %}
-                {% for solicitud in solicitud %}
-                    <p> <b>Usuario</b> : {{ solicitud.usuario }}</p>
-                    <p><b>Fase</b> : {{ solicitud.fase }}</p>
-                    <p><b>Motivo</b> : {{ solicitud.motivo }}</p>
-                    <p><b>Fecha de Creación</b> : {{ solicitud.fecha_creacion }}</p>
-                    <p><b>Estado</b> : {{ solicitud.get_estado_display }}</p>
-                    <p><b>Costo</b> : {{ solicitud.costo }}</p>
-                    <p><b>Tiempo</b> : {{ solicitud.tiempo }}</p>
-                    <p><b>Items Solicitados</b>  <br> {% for item in items %}
-                                    {{ item.nombre }}
-                                    <br>
-                                {% endfor %}
-                    </p>
-                {% endfor %}
+            <div class="row">
+                <div class="col-lg-offset-3 col-lg-6 col-md-6 col-sm-6">
+                    <div class="panel panel-danger">
+                        <div class="panel-heading">
+                            IMPACTO DE LA MODIFICACIÓN
+                        </div>
+                        <div class="list-group-item">
+                            <div class="row">
+                                <div class="col-sm-6 col-md-6 col-lg-6">
+                                    <b>Costo de Modificación:</b>
+                                </div>
+                                <div class="col-sm-6 col-md-6 col-lg-6">
+                                    {{ solicitud.costo }}
+                                </div>
+                            </div>
+                        </div>
+                        <div class="list-group-item">
+                            <div class="row">
+                                <div class="col-sm-6 col-md-6 col-lg-6">
+                                    <b>Tiempo Estimado:</b>
+                                </div>
+                                <div class="col-sm-6 col-md-6 col-lg-6">
+                                    {{ solicitud.tiempo }}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
-            <div class="col-sm-3">
-               <h3>Grafo de Relaciones</h3>
-                    {% for grafo in grafos %}
-                        <img src={{ grafo }}>
-                        <hr>
-                    {% endfor %}
+            <div class="row">
+                <div class="col-cm-12 col-md-12 col-lg-12">
+                    <div class="panel panel-info">
+                        <div class="panel-heading">
+                            ITEMS CUYA MODIFICACION SE SOLICITA
+                        </div>
+                        {% for item, grafo in items %}
+                            <div class="row">
+                                <div class="col-sm-4 col-md-4 col-lg-4">
+                                    <div class="panel" style="padding-top: 5%; padding-left: 5%">
+                                    <p class="list-group-item-info" style="padding: 3%; font-size: 90%">
+                                        <b>Nombre: </b>{{ item.nombre }}<br>
+                                        <b>Descripción: </b>{{ item.descripcion }}<br>
+                                        <b>Costo: </b>{{ item.costo }}<br>
+                                        <b>Complejidad: </b>{{ item.complejidad }}<br>
+                                        <b>Tiempo Estimado: </b>{{ item.tiempo }}<br>
+                                        <br>Ítems afectados por esta modificación pueden verse en el grafo proporcionado
+                                        a su derecha. Si no puede ver el grafo, significa que no existen ítems afectados.
+                                    </p>
+                                    </div>
+                                </div>
+                                <div class="col-sm-8 col-md-8 col-lg-8">
+                                    <p align="center" style="padding: 3%">
+                                        <img src="{{ grafo }}">
+                                    </p>
+                                </div>
+                            </div>
+                            {% if forloop.last %}{% else %}<hr>{% endif %}
+                        {% endfor %}
+
+                    </div>
+                </div>
+
             </div>
+        <a href="{% url 'administrarLineaBase.views.workApplication' fase.id %}" class="btn btn-md btn-success">Finalizar revisión</a>
         </div>
+
+
+
+        {% endfor %}
     {% endblock panelCentral %}>>

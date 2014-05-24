@@ -156,7 +156,7 @@
                                         <a href="{% url 'administrarItems.views.restaurarItem' item.id %}" class="btn btn-xs btn-primary">Restaurar Ítem</a>
                                     {% endif %}
                                     {% if item.estado == 'ELB' %}
-                                        <a href="#" class="btn btn-xs btn-success">Ver Ítem</a>
+                                        <a href="{% url 'administrarItems.views.verItem' item.id %}" class="btn btn-xs btn-success">Ver Ítem</a>
                                         <a href="{% url 'administrarItems.views.historialItemBase' fase.id item.id %}" class="btn btn-xs btn-warning">Historial de Versiones</a>
                                     {% endif %}
                                 {% endif %}

@@ -21,7 +21,7 @@ from administrarFases.views import changePhase, createPhase, phaseList, deletePh
 from administrarRolesPermisos.views import crearRol, eliminarRol, modificarRol, accesoDenegado
 from administrarItems.views import createItem,\
     historialItemBase, relacionarItemBaseView, reversionItemBase, relacionarItemBase, \
-    finalizarItem, validarItem, dardebajaItem, workItem, restaurarItem
+    finalizarItem, validarItem, dardebajaItem, workItem, restaurarItem, verItem
 
 
 admin.autodiscover()
@@ -108,6 +108,10 @@ urlpatterns = patterns('',
                        url(r'^dardebajaitem/(?P<id_item>\d+)$', dardebajaItem ),
                        url(r'^restauraritem/(?P<id_item>\d+)$', restaurarItem ),
                        url(r'^media/(?P<path>.*)$', 'django.views.static.serve',
+		                                                    {'document_root':settings.MEDIA_ROOT, 'show_indexes': True}
+                       ),
+                       url(r'^veritem/(?P<id_item>\d+)$', verItem ),
+                       url(r'^veritem/(?P<path>.*)$', 'django.views.static.serve',
 		                                                    {'document_root':settings.MEDIA_ROOT, 'show_indexes': True}
                        ),
 

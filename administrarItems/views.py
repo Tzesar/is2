@@ -12,6 +12,7 @@ from administrarItems.forms import itemForm, campoEnteroForm, campoImagenForm, c
 
 from django.forms.models import  inlineformset_factory
 from administrarItems.models import ItemBase, CampoImagen, CampoNumero, CampoFile, CampoTextoCorto, CampoTextoLargo, ItemRelacion
+from administrarLineaBase.views import generarCalculoImpacto
 from administrarRolesPermisos.decorators import *
 import reversion
 
@@ -115,7 +116,6 @@ def reversionItemBase(request, id_item, id_fase, id_version):
     tipoitem = item.tipoitem
     atributos = Atributo.objects.filter(tipoDeItem=tipoitem)
     id_new_version = int('0'+id_version)
-    print id_new_version
     campos = []
     lista_version = reversion.get_unique_for_object(item)
 
@@ -694,3 +694,23 @@ def changeItem(request, id_item):
     return render(request, 'item/changeitem.html', {'form': form, 'item': item, 'phase': phase, 'project': project,
                                                     'tiposItem': tipoItem, 'user': request.user},
                                                     context_instance=RequestContext(request))
+
+
+def verItem(request, id_item):
+    item = ItemBase.objects.get(pk=id_item)
+    tipoItem = item.tipoitem
+    fase = tipoItem.fase
+    proyecto = fase.proyecto
+
+    numericos = CampoNumero.objects.filter(item=item)
+    cadenas = CampoTextoCorto.objects.filter(item=item)
+    textos = CampoTextoLargo.objects.filter(item=item)
+    imagenes = CampoImagen.objects.filter(item=item)
+    archivos = CampoFile.objects.filter(item=item)
+
+    generarCalculoImpacto(request, id_item)
+    grafoRelaciones = '/static/grafos/' + item.nombre
+
+    return render(request, 'item/veritem.html', {'proyecto': proyecto, 'fase': fase, 'item': item, 'user': request.user,
+                                                 'numericos': numericos, 'cadenas': cadenas, 'textosextensos': textos,
+                                                 'imagenes': imagenes, 'archivos': archivos, 'grafo': grafoRelaciones})
