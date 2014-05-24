@@ -8,7 +8,7 @@ from administrarItems.models import ItemBase
 from administrarProyectos.models import Proyecto
 from administrarTipoItem.models import TipoItem
 from autenticacion.models import Usuario
-from administrarItems.views import createItem, changeItem, finalizarItem, validarItem
+from administrarItems.views import createItem, changeItem
 from administrarFases.models import Fase
 from administrarItems.forms import itemForm
 
@@ -64,9 +64,9 @@ class TipoItemFactory(factory.DjangoModelFactory):
 class TestAdministrarItems_modificacion(TestCase):
     """
     *Test para Administración de usuarios, pruebas realizadas:*
-        + **Creación de Item **: Test de vista y creación de los items dentro de un proyecto.
+        + **Creación de Item**: Test de vista y creación de los items dentro de un proyecto.
         + **Modificacion de Item**: Test de Vista y modificación de los items.
-        + **Modificar Estados del item**: Test de vista y diferentes cambios de un ítem através de su desarrollo
+        + **Modificar Estados del item**: Test de vista y diferentes cambios de un ítem através de su desarrollo.
     """
 
     def setUp(self):
@@ -86,7 +86,7 @@ class TestAdministrarItems_modificacion(TestCase):
 
     def test_changeItem_response(self):
         """
-          *Test para la vista de modificacion de fases en el sistema.*
+            *Test para la vista de modificacion de fases en el sistema.*
         """
         print '\nInicio - Prueba: changeItem'
         login = self.client.login(username='admin', password='admin')
@@ -168,7 +168,7 @@ class TestAdministrarItems_creacion(TestCase):
 
     def setUp(self):
         """
-        *Creamos las estructuras necesarias para las pruebas.*
+            *Creamos las estructuras necesarias para las pruebas.*
         """
         UsuarioFactory.create()
         self.user = Usuario.objects.get(username='admin')
@@ -182,7 +182,7 @@ class TestAdministrarItems_creacion(TestCase):
 
     def test_createItem_response(self):
         """
-        *Test para la vista de creacion de proyectos en el sistema*
+            *Test para la vista de creacion de proyectos en el sistema*
         """
         print '\nInicio - Prueba: Creacion de Item'
         login = self.client.login(username='admin', password='admin')

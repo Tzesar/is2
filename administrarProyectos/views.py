@@ -114,9 +114,6 @@ def changeProjectLeader(request, id_proyecto):
         if form.is_valid():
             form.save()
 
-            # logger.info('El Lider de Proyecto ' + request.user.username + ' ha modificado el proyecto PR-' +
-            #             id_proyecto + form["nombre"].value() + ' dentro del sistema')
-
             return HttpResponseRedirect('/workproject/'+str(project.id))
     else:
         form = ChangeProjectLeaderForm(instance=project)
@@ -270,7 +267,12 @@ def workProject(request, id_proyecto, error=None, message=None):
 
 
 def vistaDesarrollo(request, id_proyecto, error=None, message=None):
+    """
+    * Vista para el área de desarrollo del proyecto.*
+    * En él se observan las principales fases e ítems que se encuentran en desarrollo dentro del proyecto*
 
+    :param id_proyecto:
+    """
     proyecto = Proyecto.objects.get(pk=id_proyecto)
     fases = Fase.objects.filter(proyecto=proyecto).order_by('nro_orden')
 

@@ -59,7 +59,7 @@ reversion.register(ItemBase)
 
 class ItemRelacion(models.Model):
     """
-    Modelo útilizado para especificar las relaciones existentes entre los ítems.
+    *Modelo útilizado para especificar las relaciones existentes entre los ítems.*
         + *Item Padre*: Es el ítem que posee el rol de ser Padre o Antecesor de otro ítem.
         + *Item Hijo*: Es el ítem que posee el rol de ser Hijo o Sucesor de otro ítem.
         + *Estado*: Indica el estado de la relación, una relación puede ser Deshabilitada.
@@ -76,7 +76,7 @@ reversion.register(ItemRelacion)
 
 class CampoNumero(models.Model):
     """
-    *Modelo especifícado para todos los atributos que pertenecen al tipo ``Numérico``
+    *Modelo especifícado para todos los atributos que pertenecen al tipo* ``Numérico``
         + *Item*: Item al que pertence el atributo.
         + *Atributo*: Atributo al que pertenece el campo numérico.
         + *Valor*: Valor del campo.
@@ -90,7 +90,7 @@ reversion.register(CampoNumero)
 
 class CampoTextoCorto(models.Model):
     """
-   *Modelo especifícado para todos los atributos que pertenecen al tipo ``Alfanumérico``
+   *Modelo especifícado para todos los atributos que pertenecen al tipo* ``Alfanumérico``
         + *Item*: Item al que pertence el atributo.
         + *Atributo*: Atributo al que pertenece el campo alfanumérico.
         + *Valor*: Valor del campo.
@@ -104,7 +104,7 @@ reversion.register(CampoTextoCorto)
 
 class CampoTextoLargo(models.Model):
     """
-    *Modelo especifícado para todos los atributos que pertenecen al tipo ``Alfanumérico``
+    *Modelo especifícado para todos los atributos que pertenecen al tipo* ``Alfanumérico``
         + *Item*: Item al que pertence el atributo.
         + *Atributo*: Atributo al que pertenece el campo alfanumérico.
         + *Valor*: Valor del campo.
@@ -118,7 +118,7 @@ reversion.register(CampoTextoLargo)
 
 class CampoFile(models.Model):
     """
-    *Modelo especifícado para todos los atributos que pertenecen al tipo ``Archivo``
+    *Modelo especifícado para todos los atributos que pertenecen al tipo* ``Archivo``
         + *Item*: Item al que pertence el atributo.
         + *Atributo*: Atributo al que pertenece el campo archivo.
         + *Archivo*: Dirección y nombre del archivo.
@@ -132,7 +132,7 @@ reversion.register(CampoFile)
 
 class CampoImagen(models.Model):
     """
-    *Modelo especifícado para todos los atributos que pertenecen al tipo ``Imagen``
+    *Modelo especifícado para todos los atributos que pertenecen al tipo* ``Imagen``
         + *Item*: Item al que pertence el atributo.
         + *Atributo*: Atributo al que pertenece el campo imagen.
         + *Imagen*: Dirección y nombre de la iamgen.

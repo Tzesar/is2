@@ -53,6 +53,7 @@ def createLB(request, id_fase):
                 request.method = 'GET'
                 return workphase(request, id_fase, error=error, message=mensaje)
         else:
+
             form = createLBForm()
         return render(request, 'lineabase/createlb.html', {'form': form, 'proyecto': proyecto,
                                                         'user': request.user, 'fase':fase, })

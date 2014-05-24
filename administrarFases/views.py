@@ -11,11 +11,7 @@ from administrarLineaBase.models import LineaBase
 from administrarProyectos.views import workProject, vistaDesarrollo
 from administrarRolesPermisos.decorators import *
 from administrarItems.models import ItemRelacion, ItemBase
-from administrarRolesPermisos.models import Rol
-from autenticacion.models import Usuario
 
-
-# logger = logging.getLogger(__name__)
 
 
 @login_required()
@@ -53,12 +49,7 @@ def createPhase(request, id_proyecto):
                                   '<i>El nombre especificado de fase ya existe. Verifiquelo y vuelva a intentarlo</i>')
                 return render(request, "fase/createphase.html", {'form': form, 'user': request.user,
                                                                  'proyecto': project, "error": err },
-                                                                  context_instance=RequestContext(request) )
-
-            # logger.info('El usuario ' + request.user.username + ' ha creado la fase ' +
-            #             form["nombre"].value() + ' dentro del proyecto ' + project.nombre)
-
-            # generarPermisosFase(project, fase)
+                                                                  context_instance=RequestContext(request))
 
             mensaje ='Fase: ' + Fase.objects.last().nombre + ', creada exitosamente'
             request.method = 'GET'
@@ -97,17 +88,15 @@ def changePhase(request, id_fase, error=None, message=None):
         if form.is_valid():
             form.save()
 
-            # logger.info('El usuario ' + request.user.username + ' ha modificado la fase PH-' +
-            #             id_fase + ': ' + form["nombre"].value() + ' dentro del proyecto' + project.nombre + 'en el sistema.')
 
             return HttpResponseRedirect('/workproject/'+str(project.id))
     else:
         form = ChangePhaseForm(instance=phase)
-    return render(request, 'fase/changephase.html', {'phaseForm': form, 'phase': phase, 'project': project, 'tiposItem': tiposDeItem, 'user': request.user,
-                                                     'error': error, 'message': message}, context_instance=RequestContext(request))
+    return render(request, 'fase/changephase.html', {'phaseForm': form, 'phase': phase, 'project': project,
+                                                     'tiposItem': tiposDeItem, 'user': request.user, 'error': error,
+                                                     'message': message}, context_instance=RequestContext(request))
 
 
-@login_required
 @login_required
 def confirmar_eliminacion_fase(request, id_fase):
     """
@@ -137,7 +126,6 @@ def deletePhase(request, id_fase):
     phase = Fase.objects.get(pk=id_fase)
     tiposItem = TipoItem.objects.filter(fase=phase)
 
-    # eliminarPermisos(phase)
 
     for ti in tiposItem:
         attrs = Atributo.objects.filter(tipoDeItem=ti)
@@ -146,18 +134,13 @@ def deletePhase(request, id_fase):
         ti.delete()
 
     phase_copy = phase
-    project = Proyecto.objects.get(pk=phase.proyecto.id)
     phase.delete()
-
-    # logger.info('El usuario '+ request.user.username +' ha eliminado la fase '+ phase_copy.nombre +
-    #             ' dentro del proyecto: ' + project.nombre)
 
     mensaje = 'Fase: ' + phase_copy.nombre + ', eliminada exitosamente'
     return workProject(request, phase_copy.proyecto.id, error=0, message=mensaje )
 
 
 @login_required
-# @lider_requerido
 def phaseList(request, id_proyecto):
     """
     *Vista para la listar todas las fases dentro de algún proyecto.
@@ -209,7 +192,6 @@ def importMultiplePhase(request, id_fase, id_proyecto_destino):
     """
     *Vista para la importación de un tipo de ítem a otra fase*
     """
-
     phase = Fase.objects.get(pk=id_fase)
     phase.id = None
     phase.proyecto = Proyecto.objects.get(pk=id_proyecto_destino)
@@ -219,16 +201,12 @@ def importMultiplePhase(request, id_fase, id_proyecto_destino):
         phase.save()
     except IntegrityError as e:
         return render(request, "keyduplicate_fase.html", {'project': project, "message": e.message },
-          context_instance=RequestContext(request) )
+                      context_instance=RequestContext(request))
 
-    # logger.info('El usuario '+ request.user.username +' ha importado la fase '+  phase.nombre +
-    #             ' al proyecto destino: ' + phase.proyecto.nombre)
 
     return HttpResponseRedirect('/phaselist/' + str(project.id))
 
 
-#TODO: Al modificar los atributos crear una nueva version.
-#TODO: Boton para iniciar una fase y trabajr en fases paralelas
 def workphase(request, id_fase, error=None, message=None):
     """
     *Vista para el trabajo sobre una fase de un proyecto.
@@ -320,7 +298,6 @@ def finPhase(request, id_fase):
     return vistaDesarrollo(request, proyecto.id, error=error, message=message)
 
 
-#TODO: Si no se utiliza eliminar, verificar con Gerardo
 def startPhase(request, id_fase):
     """
     Vista para iniciar una fase
