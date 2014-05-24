@@ -241,6 +241,9 @@ def workProject(request, id_proyecto):
 
             usuariosInactivos = Usuario.objects.filter(is_active=False).values_list('id', flat=True)
             usuariosAsociados = proyecto.usuariosvinculadosproyectos_set.exclude(cod_usuario__in=usuariosInactivos)
+            return render(request, 'proyecto/workProjectLeader.html', {'user': request.user, 'proyecto': proyecto,
+                                                                       'fases': fases, 'roles': roles, 'cantFases':cantFases,
+                                                                       'usuariosAsociados': usuariosAsociados, 'error': error, 'message': message})
 
             error = None
             messages = None
@@ -298,9 +301,8 @@ def vistaDesarrollo(request, id_proyecto):
     """
     * Vista para el área de desarrollo del proyecto.*
     * En él se observan las principales fases e ítems que se encuentran en desarrollo dentro del proyecto*
-
-    :param id_proyecto:
     """
+
     proyecto = Proyecto.objects.get(pk=id_proyecto)
     fases = Fase.objects.filter(proyecto=proyecto).order_by('nro_orden')
 
@@ -330,6 +332,7 @@ def startProject(request, id_proyecto):
     proyecto = Proyecto.objects.get(pk=id_proyecto)
     roles = Rol.objects.filter(proyecto=proyecto)
     fases = proyecto.fase_set.all().order_by('nro_orden')
+    cantFases = fases.count()
 
     message = []
     error = 0

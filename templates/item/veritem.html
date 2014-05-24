@@ -1,0 +1,206 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+
+    {% block title %}Item: {{ item.nombre }}{% endblock %}
+    {% block errorBlock %}{% endblock errorBlock %}
+
+    {% block breadContent %}
+        <li xmlns="http://www.w3.org/1999/html"><a href="{% url 'autenticacion.views.main' %}">Inicio</a></li>
+        <li><a href="{% url 'administrarProyectos.views.workProject' proyecto.id %}">{{ proyecto.nombre|capfirst }}</a></li>
+        <li><a href="{% url 'administrarFases.views.workphase' fase.id %}">Fase: {{ fase.nombre|capfirst }}</a></li>
+        <li class="active">Ítem: {{ item.nombre|capfirst }}</li>
+    {% endblock breadContent %}
+
+    {% block padTop %}{% endblock padTop %}
+    {% block panelCentral %}
+        <div class="panel-heading">
+            <h1 class="text-info" style="display: inline-block">
+                Ítem: {{ item.nombre|capfirst }}
+            </h1>
+        </div>
+        <div class="list-group-item-info" style="padding-left: 2%; padding-top: 1%; padding-bottom: 1%">
+            <b>Descripción:</b> <i>{{ item.descripcion }}</i><br>
+            <b>Tipo:</b> <i>{{ item.tipoitem.nombre|capfirst }}</i><br>
+            <b>Estado:</b> <i> {{ item.get_estado_display }} </i><br>
+            <b>Creado por:</b> <i>{{ item.usuario.username }}, {{ item.fecha_creacion }}</i><br>
+            <b>Última modificación:</b> <i>{{ item.fecha_modificacion }}, por {{ item.usuario_modificacion.username }}</i>
+
+        </div>
+
+        <div class="panel-body">
+            <div class="row">
+                <div class="col-sm-4 col-md-4 col-lg-4">
+                    <div class="panel panel-info">
+                        <div class="panel-heading">
+                            ATRIBUTOS BÁSICOS
+                        </div>
+                        <div class="list-group-item">
+                            <div class="row">
+                                <div class="col-sm-6 col-md-6 col-lg-6">
+                                    <i>Costo Unitario:</i>
+                                </div>
+                                <div class="col-sm-6 col-md-6 col-lg-6">
+                                    {{ item.costo }}
+                                </div>
+                            </div>
+                        </div>
+                        <div class="list-group-item">
+                            <div class="row">
+                                <div class="col-sm-6 col-md-6 col-lg-6">
+                                    <i>Complejidad:</i>
+                                </div>
+                                <div class="col-sm-6 col-md-6 col-lg-6">
+                                    {{ item.complejidad }}
+                                </div>
+                            </div>
+                        </div>
+                        <div class="list-group-item">
+                            <div class="row">
+                                <div class="col-sm-6 col-md-6 col-lg-6">
+                                    <i>Costo Temporal:</i>
+                                </div>
+                                <div class="col-sm-6 col-md-6 col-lg-6">
+                                    {{ item.tiempo }}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-8 col-md-8 col-lg-8">
+                    <div class="panel panel-info">
+                        <div class="panel-heading">
+                            ARCHIVOS ASOCIADOS
+                        </div>
+                        {% if archivos %}
+                            {% for file in archivos %}
+                                <div class="list-group-item">
+                                    <div class="row">
+                                        <div class="col-sm-2 col-md-2 col-lg-2">
+                                            <i>{{ file.atributo.nombre }}:</i>
+                                        </div>
+                                        <div class="col-sm-10 col-md-10 col-lg-10">
+                                            <a href="{% static file.archivo %}">{{ file.archivo }}</a>
+                                        </div>
+                                    </div>
+                                </div>
+                            {% endfor %}
+                        {% else %}
+                            <div class="list-group-item">
+                                No existen archivos asociados a este ítem
+                            </div>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-4 col-md-4 col-lg-4">
+                    <div class="panel panel-info">
+                        <div class="panel-heading">
+                            ATRIBUTOS NUMÉRICOS
+                        </div>
+                        {% if numericos %}
+                            {% for campo in numericos %}
+                                <div class="list-group-item">
+                                    <div class="row">
+                                        <div class="col-sm-6 col-md-6 col-lg-6">
+                                            <i>{{ campo.atributo.nombre }}:</i>
+                                        </div>
+                                        <div class="col-sm-6 col-md-6 col-lg-6">
+                                            {{ campo.valor }}
+                                        </div>
+                                    </div>
+                                </div>
+                            {% endfor %}
+                        {% else %}
+                            <div class="list-group-item">
+                                Este ítem no posee atributos del tipo numérico.
+                            </div>
+                        {% endif %}
+                    </div>
+                </div>
+                <div class="col-sm-8 col-md-8 col-lg-8">
+                    <div class="panel panel-info">
+                        <div class="panel-heading">
+                            CADENAS DE TEXTO
+                        </div>
+                        {% if cadenas %}
+                            {% for campo in cadenas %}
+                                <div class="list-group-item">
+                                    <div class="row">
+                                        <div class="col-sm-2 col-md-2 col-lg-2">
+                                            <i>{{ campo.atributo.nombre }}:</i>
+                                        </div>
+                                        <div class="col-sm-10 col-md-10 col-lg-10">
+                                            {{ campo.valor }}
+                                        </div>
+                                    </div>
+                                </div>
+                            {% endfor %}
+                        {% else %}
+                            <div class="list-group-item">
+                                Este ítem no posee atributos del tipo <i>cadena de texto corta</i>.
+                            </div>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+            {% if textosextensos %}
+                {% for txt in textosextensos %}
+                <div class="row">
+                    <div class="col-sm-12 col-md-12 col-lg-12">
+                        <div class="panel panel-info">
+                            <div class="panel-heading">
+                                {{ txt.atributo.nombre|capfirst }}
+                            </div>
+                            <div class="list-group-item">
+                               {{ txt.valor }}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            {% endif %}
+            {% if imagenes %}
+                <div class="row">
+                    <div class="col-sm-12 col-md-12 col-lg-12">
+                        <div class="panel panel-info">
+                            <div class="panel-heading">
+                                GALERIA DE IMÁGENES
+                            </div>
+                            <div class="panel-body">
+                                {% for img in imagenes %}
+                                    {% if forloop.counter0|divisibleby:"4" %}<div class="row">{% endif %}
+                                    <div class="col-sm-3 col-md-3 col-lg-3">
+                                        <a href={{ MEDIA_URL }}{{ img.imagen }}>
+                                            <p class="text-primary" align="center">{{ img.atributo.nombre }}</p>
+                                            <img src="{% static img.imagen %}" width="100%" height="100%">
+                                        </a>
+                                    </div>
+                                    {% if forloop.last or forloop.counter|divisibleby:"4" %}</div>{% endif %}
+                                {% endfor %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            {% endif %}
+            <div class="row">
+                <div class="col-sm-12 col-md-12 col-lg-12">
+                    <div class="panel panel-info">
+                        <div class="panel-heading">
+                            GRAFO DE RELACIONES
+                        </div>
+                        <div class="panel-body">
+                            <p align="center">
+                                <img src="{{ grafo }}">
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="panel-footer">
+            <a href="{% url 'administrarFases.views.workphase' fase.id %}" class="btn btn-md btn-success">Finalizar revisión</a>
+        </div>
+
+    {% endblock panelCentral %}

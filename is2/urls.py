@@ -3,8 +3,8 @@ Descripcion de las diferentes URLs utilizadas en el proyecto ZAPpm
 """
 
 from django.conf.urls import patterns, url
-from django.conf import settings
 from django.contrib import admin
+from django.conf import settings
 from django.contrib.auth.views import logout_then_login
 
 from administrarLineaBase.views import generarCalculoImpacto, createLB, visualizarLB, workApplication, \
@@ -15,15 +15,13 @@ from autenticacion.views import main, myLogin
 from administrarUsuarios.views import createUser, changeUser, userList, userListJson, changePass, changeAnyUser
 from zar.views import about, contact
 from administrarProyectos.views import createProject, changeProject, projectList, workProject, setUserToProject,\
-    changeProjectLeader, startProject, cancelProject, finProject, vistaDesarrollo
+    viewSetUserProject, changeProjectLeader, startProject, cancelProject, finProject, vistaDesarrollo
 from administrarFases.views import changePhase, createPhase, phaseList, deletePhase, importMultiplePhase,\
     confirmar_eliminacion_fase, workphase, finPhase, startPhase, subirOrden, bajarOrden
 from administrarRolesPermisos.views import crearRol, eliminarRol, modificarRol, accesoDenegado
-from administrarFases.views import changePhase, createPhase, phaseList, deletePhase, importPhase, importMultiplePhase,\
-    confirmar_eliminacion_fase, workphase
 from administrarItems.views import createItem,\
     historialItemBase, relacionarItemBaseView, reversionItemBase, relacionarItemBase, \
-    finalizarItem, validarItem, dardebajaItem, workItem, restaurarItem
+    finalizarItem, validarItem, dardebajaItem, workItem, restaurarItem, verItem
 
 
 admin.autodiscover()
@@ -56,6 +54,7 @@ urlpatterns = patterns('',
                        url(r'^changeproject/(?P<id_proyecto>\d+)$', changeProject, name='changeproject'),
                        url(r'^changeprojectleader/(?P<id_proyecto>\d+)$', changeProjectLeader, name='changeprojectleader'),
                        url(r'^setusertoproject/(?P<id_proyecto>\d+)$', setUserToProject),
+                       url(r'^usersetproject/(?P<id_proyecto>\d+)$', viewSetUserProject),
                        url(r'^projectlist/$', projectList, name='projectlist'),
                        url(r'^workproject/(?P<id_proyecto>\d+)$', workProject, name='workproject'),
                        url(r'^startproject/(?P<id_proyecto>\d+)$', startProject, name='startproject'),
@@ -109,6 +108,10 @@ urlpatterns = patterns('',
                        url(r'^dardebajaitem/(?P<id_item>\d+)$', dardebajaItem ),
                        url(r'^restauraritem/(?P<id_item>\d+)$', restaurarItem ),
                        url(r'^media/(?P<path>.*)$', 'django.views.static.serve',
+		                                                    {'document_root':settings.MEDIA_ROOT, 'show_indexes': True}
+                       ),
+                       url(r'^veritem/(?P<id_item>\d+)$', verItem ),
+                       url(r'^veritem/(?P<path>.*)$', 'django.views.static.serve',
 		                                                    {'document_root':settings.MEDIA_ROOT, 'show_indexes': True}
                        ),
 

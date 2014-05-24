@@ -225,13 +225,13 @@ def visualizarSolicitud(request, id_solicitud, id_fase):
 
     itemsSolicitud = ItemBase.objects.filter(solicitudes__in=solicitud)
 
-    grafos = []
+    items_grafos = {}
     for item in itemsSolicitud:
         direccion = '/static/grafos/' + item.nombre
-        grafos.append(direccion)
+        items_grafos[item] = direccion
 
     return render(request, 'lineabase/visualizarsolicitud.html', {'user': request.user, 'fase': fase, 'proyecto': proyecto,
-                                                             'solicitud': solicitud, 'items': itemsSolicitud, 'grafos':grafos})
+                                                             'solicitud': solicitud, 'items': items_grafos.items()})
 
 
 def crearSolicitudCambios(request, id_fase):

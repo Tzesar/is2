@@ -74,8 +74,6 @@ def createPhase(request, id_proyecto):
     return render(request, 'fase/createphase.html', {'form': form, 'proyecto': project, 'user': request.user,
                                                      'error': {}, })
 
-
-#TODO: Botones Iniciar Fase - Finalizar Fase
 @login_required()
 @user_passes_test(puede_modificar_fase)
 def changePhase(request, id_fase):
@@ -164,10 +162,8 @@ def deletePhase(request, id_fase):
         ti.delete()
 
     phase_copy = phase
+    project = Proyecto.objects.get(pk=phase.proyecto.id)
     phase.delete()
-
-    # logger.info('El usuario '+ request.user.username +' ha eliminado la fase '+ phase_copy.nombre +
-    #             ' dentro del proyecto: ' + project.nombre)
 
     mensaje = 'Fase: ' + phase_copy.nombre + ', eliminada exitosamente'
     mensajes = []
@@ -178,7 +174,6 @@ def deletePhase(request, id_fase):
 
 
 @login_required
-# @lider_requerido
 def phaseList(request, id_proyecto):
     """
     *Vista para la listar todas las fases dentro de algún proyecto.
@@ -230,6 +225,7 @@ def importMultiplePhase(request, id_fase, id_proyecto_destino):
     """
     *Vista para la importación de un tipo de ítem a otra fase*
     """
+
     phase = Fase.objects.get(pk=id_fase)
     phase.id = None
     phase.proyecto = Proyecto.objects.get(pk=id_proyecto_destino)
@@ -269,6 +265,12 @@ def workphase(request, id_fase):
             except:
                 relaciones[i] = None
 
+        if faseTrabajo.estado == 'DES':
+            return render(request, 'fase/workPhase.html', {'proyecto': proyectoTrabajo, 'fase': faseTrabajo, 'user': request.user,
+                                                           'listaItems': itemsFase, 'relaciones': relaciones.items()})
+        else:
+            return render(request, 'fase/workphase_finalizada.html', {'proyecto': proyectoTrabajo, 'fase': faseTrabajo, 'user': request.user,
+                                                           'listaItems': itemsFase, 'relaciones': relaciones.items()})
 
         usuario = request.user
         objetos = get_objects_for_user(usuario, 'crear_Solicitud_Cambio', klass=Fase)

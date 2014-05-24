@@ -12,6 +12,7 @@ from administrarItems.forms import itemForm, campoEnteroForm, campoImagenForm, c
 
 from django.forms.models import inlineformset_factory
 from administrarItems.models import ItemBase, CampoImagen, CampoNumero, CampoFile, CampoTextoCorto, CampoTextoLargo, ItemRelacion
+from administrarLineaBase.views import generarCalculoImpacto
 from administrarRolesPermisos.decorators import *
 import reversion
 from administrarTipoItem.models import TipoItem, Atributo
@@ -88,163 +89,6 @@ def crearAtributos(item_id):
         nuevoAtributo = CampoImagen(atributo=a, item=nuevoItem)
         nuevoAtributo.save()
 
-@login_required()
-@reversion.create_revision()
-def changeItem(request, id_item):
-    """
-    *Vista para la modificacion de una fase dentro del sistema.
-    Opción válida para usuarios con los roles correspondientes.*
-
-    :param request: HttpRequest necesario para modificar la fase, es la solicitud de la acción.
-    :param id_fase: Identificador de la fase dentro del sistema la cual se desea modificar.
-    :param args: Argumentos para el modelo ``Fase``.
-    :param kwargs: Keyword Arguments para la el modelo ``Fase``.
-    :return: Proporciona la pagina ``changephase.html`` con el formulario correspondiente.
-             Modifica la fase especifica  y luego regresa al menu principal
-    """
-    items = ItemBase.objects.filter(pk=id_item)
-    if items:
-        print 'Inicio de Proceso de Modificacion'
-    else:
-        return
-
-    item = ItemBase.objects.get(pk=id_item)
-    tipoItem = item.tipoitem
-    phase = tipoItem.fase
-    project = phase.proyecto
-
-    if request.method == 'POST':
-        form = itemForm(request.POST, instance=item)
-        form.fields['tipoitem'].queryset = TipoItem.objects.filter(fase=phase.id)
-        if form.is_valid():
-            item = form.save(commit=False)
-            item.fecha_modificacion = timezone.now()
-            item.usuario_modificacion = request.user
-            item.version = reversion.get_unique_for_object(item).__len__() + 1
-            item.save()
-
-            return HttpResponseRedirect('/workphase/' + str(phase.id))
-    else:
-        form = itemForm(instance=item)
-        form.fields['tipoitem'].queryset = TipoItem.objects.filter(fase=phase.id)
-    return render(request, 'item/changeitem.html', {'form': form, 'item': item, 'phase': phase, 'project': project,
-                                                    'tiposItem': tipoItem, 'user': request.user},
-                                                    context_instance=RequestContext(request))
-
-@reversion.create_revision()
-def completarEnteros(request, id_atributo, id_item):
-    """
-    Vista para completar el atributo de numeros
-    :rtype : object
-    """
-    id_atributo = 10
-    atributo = Atributo.objects.get(pk=id_atributo)
-    tipoItem = atributo.tipoDeItem
-    item = ItemBase.objects.get(pk=id_item)
-
-    phase = tipoItem.fase
-    project = phase.proyecto
-    if request.method == 'POST':
-        form = campoEnteroForm(request.POST)
-        if form.is_valid():
-            articulo = form.save(commit=False)
-            articulo.item = item
-            articulo.atributo = atributo
-            articulo.save()
-
-
-            return HttpResponseRedirect('/workproject/' + str(project.id))
-    else:
-        form = campoEnteroForm()
-    return render(request, 'item/fillatributos.html', {'form': form, 'item': item, 'phase': phase, 'project': project,
-                                                    'tiposItem': tipoItem, 'user': request.user, 'attr':atributo},
-                                                    context_instance=RequestContext(request))
-
-@reversion.create_revision()
-def completarTexto(request, id_atributo, id_item):
-    """
-    Vista para completar el atributo de numeros
-    :rtype : object
-    """
-    id_atributo = 12
-    atributo = Atributo.objects.get(pk=id_atributo)
-    tipoItem = atributo.tipoDeItem
-    item = ItemBase.objects.get(pk=id_item)
-
-    phase = tipoItem.fase
-    project = phase.proyecto
-    if request.method == 'POST':
-        form = campoTextoCortoForm(request.POST)
-        if form.is_valid():
-            articulo = form.save(commit=False)
-            articulo.item = item
-            articulo.atributo = atributo
-            articulo.save()
-
-
-
-            return HttpResponseRedirect('/workproject/' + str(project.id))
-    else:
-        form = campoTextoCortoForm()
-    return render(request, 'item/fillatributos.html', {'form': form, 'item': item, 'phase': phase, 'project': project,
-                                                    'tiposItem': tipoItem, 'user': request.user, 'attr':atributo},
-                                                    context_instance=RequestContext(request))
-
-@reversion.create_revision()
-def completarArchivo(request, id_atributo, id_item):
-    """
-    Vista para completar el atributo de numeros
-    :rtype : object
-    """
-    id_atributo = 13
-    atributo = Atributo.objects.get(pk=id_atributo)
-    tipoItem = atributo.tipoDeItem
-    item = ItemBase.objects.get(pk=id_item)
-
-    phase = tipoItem.fase
-    project = phase.proyecto
-    if request.method == 'POST':
-        form = campoFileForm(request.POST, request.FILES)
-        if form.is_valid():
-            articulo = form.save(commit=False)
-            articulo.item = item
-            articulo.atributo = atributo
-            articulo.save()
-            return HttpResponseRedirect('/workproject/' + str(project.id))
-    else:
-        form = campoFileForm()
-    return render(request, 'item/filesatributos.html', {'form': form, 'item': item, 'phase': phase, 'project': project,
-                                                    'tiposItem': tipoItem, 'user': request.user, 'attr':atributo},
-                                                    context_instance=RequestContext(request))
-
-@reversion.create_revision()
-def completarImagen(request, id_atributo, id_item):
-    """
-    Vista para completar el atributo de numeros
-    :rtype : object
-    """
-    id_atributo = 14
-    id_item = 5
-    atributo = Atributo.objects.get(pk=id_atributo)
-    item = ItemBase.objects.get(pk=id_item)
-    tipoItem = atributo.tipoDeItem
-    phase = tipoItem.fase
-    project = phase.proyecto
-
-    if request.method == 'POST':
-        form = campoImagenForm(request.POST, request.FILES)
-        if form.is_valid():
-            imagen = form.save(commit=False)
-            imagen.item = item
-            imagen.atributo = atributo
-            imagen.save()
-            return HttpResponseRedirect('/workproject/' + str(project.id))
-    else:
-        form = campoImagenForm()
-    return render_to_response('item/filesatributos.html', {'form': form, 'item': item, 'phase': phase, 'project': project,
-                                                    'tiposItem': tipoItem, 'user': request.user, 'attr':atributo},
-                                                    context_instance=RequestContext(request))
-
 
 def historialItemBase(request, id_fase, id_item):
     """
@@ -273,7 +117,6 @@ def reversionItemBase(request, id_item, id_fase, id_version):
     tipoitem = item.tipoitem
     atributos = Atributo.objects.filter(tipoDeItem=tipoitem)
     id_new_version = int('0'+id_version)
-    print id_new_version
     campos = []
     lista_version = reversion.get_unique_for_object(item)
 
@@ -861,3 +704,23 @@ def changeItem(request, id_item):
     return render(request, 'item/changeitem.html', {'form': form, 'item': item, 'phase': phase, 'project': project,
                                                     'tiposItem': tipoItem, 'user': request.user},
                                                     context_instance=RequestContext(request))
+
+
+def verItem(request, id_item):
+    item = ItemBase.objects.get(pk=id_item)
+    tipoItem = item.tipoitem
+    fase = tipoItem.fase
+    proyecto = fase.proyecto
+
+    numericos = CampoNumero.objects.filter(item=item)
+    cadenas = CampoTextoCorto.objects.filter(item=item)
+    textos = CampoTextoLargo.objects.filter(item=item)
+    imagenes = CampoImagen.objects.filter(item=item)
+    archivos = CampoFile.objects.filter(item=item)
+
+    generarCalculoImpacto(request, id_item)
+    grafoRelaciones = '/static/grafos/' + item.nombre
+
+    return render(request, 'item/veritem.html', {'proyecto': proyecto, 'fase': fase, 'item': item, 'user': request.user,
+                                                 'numericos': numericos, 'cadenas': cadenas, 'textosextensos': textos,
+                                                 'imagenes': imagenes, 'archivos': archivos, 'grafo': grafoRelaciones})
