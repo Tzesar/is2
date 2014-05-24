@@ -15,7 +15,7 @@ from administrarItems.models import ItemBase
 from administrarProyectos.forms import NewProjectForm, ChangeProjectForm, setUserToProjectForm, ChangeProjectLeaderForm
 from administrarProyectos.models import UsuariosVinculadosProyectos, Proyecto
 from administrarProyectos.tables import ProyectoTablaAdmin
-from administrarRolesPermisos.decorators import user_passes_test, vinculadoProyecto, admin_requerido
+from administrarRolesPermisos.decorators import user_passes_test, vinculadoProyecto, admin_requerido, puede_trabajar
 from administrarRolesPermisos.forms import asignarUsuariosRolForm, asignarMiembrosComiteForm
 from administrarRolesPermisos.models import Rol
 from administrarFases.models import Fase
@@ -40,11 +40,11 @@ def createProject(request):
              Crea el proyecto en el sistema regresando al menu principal
     """
 
-    admin = Usuario.objects.filter(is_superuser=True)
+    admin = request.user
 
     if request.method == 'POST':
         form = NewProjectForm(request.POST)
-        form.fields["lider_proyecto"].queryset = Usuario.objects.exclude(pk__in=admin)
+        form.fields["lider_proyecto"].queryset = Usuario.objects.exclude(pk__in=(admin.id, -1), is_active=True)
         if form.is_valid():
             form.save()
             proyectoNuevo = Proyecto.objects.get(nombre=form["nombre"].value())
@@ -65,7 +65,7 @@ def createProject(request):
             return HttpResponseRedirect('/projectlist/')
     else:
         form = NewProjectForm()
-        form.fields["lider_proyecto"].queryset = Usuario.objects.exclude(pk__in=admin)
+        form.fields["lider_proyecto"].queryset = Usuario.objects.exclude(pk__in=(admin.id, -1), is_active=True)
     return render(request, 'proyecto/createproject.html', {'user': request.user, 'form': form},)
 
 
@@ -92,8 +92,17 @@ def changeProject(request, id_proyecto):
 
     project = Proyecto.objects.get(pk=id_proyecto)
     if request.method == 'POST':
+        liderAnterior = project.lider_proyecto
         form = ChangeProjectForm(request.POST, instance=project)
         if form.is_valid():
+            if 'lider_proyecto' in form.changed_data:
+                liderNuevo = form.cleaned_data['lider_proyecto']
+
+                nombreComite = u'ComiteDeCambios-'+project.nombre
+                comite = Rol.objects.get(grupo__name__contains=nombreComite)
+
+                comite.grupo.user_set.remove(liderAnterior)
+                comite.grupo.user_set.add(liderNuevo)
             form.save()
 
             proyectoModificado = Proyecto.objects.get(nombre=form["nombre"].value())
@@ -139,21 +148,24 @@ def changeProjectLeader(request, id_proyecto):
             # logger.info('El Lider de Proyecto ' + request.user.username + ' ha modificado el proyecto PR-' +
             #             id_proyecto + form["nombre"].value() + ' dentro del sistema')
 
-            return HttpResponseRedirect('/workproject/'+str(project.id))
+            messages = []
+            messages.append(u'El proyecto se ha modificado correctamente.')
+            request.session['messages'] = messages
+            return HttpResponseRedirect(reverse('administrarProyectos.views.workProject', kwargs={'id_proyecto': id_proyecto}))
 
 
     form = ChangeProjectLeaderForm(instance=project)
 
     miembrosComite = list(rol.grupo.user_set.all().values_list('id', flat=True))
     miembrosComiteForm = asignarMiembrosComiteForm(id_proyecto=id_proyecto, id_lider=project.lider_proyecto_id,
-                                                   initial={'usuarios': miembrosComite})
+                                                   initial={'miembros': miembrosComite})
     return render(request, 'proyecto/changeprojectleader.html', {'user': request.user, 'form': form, 'project': project,
                                                                  'miembrosComiteForm': miembrosComiteForm})
 
 
 @login_required()
 @admin_requerido
-def projectList(request, exitoCrear=False, exitoModif=False, proyecto=None):
+def projectList(request):
     """
     *Vista para listar todos los proyectos dentro del sistema.
     Opción válida para usuarios con los roles correspondientes.*
@@ -163,7 +175,8 @@ def projectList(request, exitoCrear=False, exitoModif=False, proyecto=None):
     :param kwargs: Keyword Arguments para la el modelo ``Proyecto``.
     :return: Proporciona la pagina ``projectlist.html`` con la lista de todos los proyectos existentes en el sistema
     """
-    proyectos = ProyectoTablaAdmin( Proyecto.objects.all().order_by('nombre') )
+
+    proyectos = ProyectoTablaAdmin(Proyecto.objects.all().order_by('nombre'))
     RequestConfig(request, paginate={"per_page": 25}).configure(proyectos)
     return render(request, "proyecto/projectlist.html", {'user': request.user, 'proyectos': proyectos}, )
 
@@ -182,13 +195,8 @@ def setUserToProject(request, id_proyecto):
     """
     project = Proyecto.objects.get(pk=id_proyecto)
 
-    u = UsuariosVinculadosProyectos.objects.filter(cod_proyecto=project)
-    usersInProject = u.values_list('cod_usuario', flat=True)
-
     # Obtiene una lista de los usuarios ya vinculados al proyecto y una lista de los usuarios con estado
     # Inactivo dentro del sistema para luego unir las dos listas en una.
-    # usuariosExcluidos = list(UsuariosVinculadosProyectos.objects.filter(cod_proyecto=project).values_list('cod_usuario', flat=True))
-    # usuariosExcluidos.append(-1,)
 
     if request.method == 'POST':
         form = setUserToProjectForm(request.POST, id_proyecto=project.id)
@@ -200,7 +208,7 @@ def setUserToProject(request, id_proyecto):
                 usuarioVinculado.cod_proyecto = project
                 usuarioVinculado.save()
 
-            return HttpResponseRedirect('/workproject/' + str(project.id))
+            return HttpResponseRedirect(reverse('administrarProyectos.views.workProject', kwargs={'id_proyecto': id_proyecto}))
     else:
         form = setUserToProjectForm(id_proyecto=project.id)
     return render(request, 'proyecto/setUserToProject.html', {'form': form, 'projecto': project,
@@ -228,7 +236,7 @@ def workProject(request, id_proyecto):
         fases = Fase.objects.filter(proyecto=proyecto).order_by('nro_orden')
 
         if usuario == proyecto.lider_proyecto:
-            fases = proyecto.fase_set.all().order_by('id')
+            cantFases = fases.count()
             roles = Rol.objects.filter(proyecto=proyecto)[1:]
 
             usuariosInactivos = Usuario.objects.filter(is_active=False).values_list('id', flat=True)
@@ -241,7 +249,7 @@ def workProject(request, id_proyecto):
             if 'messages' in request.session:
                 messages = request.session.pop('messages')
             return render(request, 'proyecto/workProjectLeader.html', {'user': request.user, 'proyecto': proyecto,
-                                                                       'fases': fases, 'roles': roles,
+                                                                       'fases': fases, 'cantFases': cantFases, 'roles': roles,
                                                                        'usuariosAsociados': usuariosAsociados,
                                                                        'error': error, 'messages': messages})
         else:
@@ -285,8 +293,14 @@ def workProject(request, id_proyecto):
         return HttpResponse(json.dumps(responseDict), mimetype='application/javascript')
 
 
-def vistaDesarrollo(request, id_proyecto, error=None, message=None):
+@user_passes_test(puede_trabajar)
+def vistaDesarrollo(request, id_proyecto):
+    """
+    * Vista para el área de desarrollo del proyecto.*
+    * En él se observan las principales fases e ítems que se encuentran en desarrollo dentro del proyecto*
 
+    :param id_proyecto:
+    """
     proyecto = Proyecto.objects.get(pk=id_proyecto)
     fases = Fase.objects.filter(proyecto=proyecto).order_by('nro_orden')
 
@@ -296,9 +310,14 @@ def vistaDesarrollo(request, id_proyecto, error=None, message=None):
         ti = TipoItem.objects.filter(fase=f)
         itemsPorFase[f.id] = ItemBase.objects.filter(tipoitem__in=ti)
 
-    print itemsPorFase.items()
+    error = None
+    messages = None
+    if 'error' in request.session:
+        error = request.session.pop('error')
+    if 'messages' in request.session:
+        messages = request.session.pop('messages')
     return render(request, 'proyecto/workProject.html', {'user': request.user, 'proyecto': proyecto, 'fases': fases,
-                                                         'itemsPorFase': itemsPorFase.items(), 'error': error, 'message': message})
+                                                         'itemsPorFase': itemsPorFase.items(), 'error': error, 'messages': messages})
 
 
 @login_required()
@@ -311,9 +330,6 @@ def startProject(request, id_proyecto):
     proyecto = Proyecto.objects.get(pk=id_proyecto)
     roles = Rol.objects.filter(proyecto=proyecto)
     fases = proyecto.fase_set.all().order_by('nro_orden')
-
-    usuariosInactivos = Usuario.objects.filter(is_active=False).values_list('id', flat=True)
-    usuariosAsociados = proyecto.usuariosvinculadosproyectos_set.exclude(cod_usuario__in=usuariosInactivos)
 
     message = []
     error = 0
@@ -369,46 +385,28 @@ def cancelProject(request, id_proyecto):
     """
 
     proyecto = Proyecto.objects.get(pk=id_proyecto)
-    fases = proyecto.fase_set.all().order_by('id')
-    roles = Rol.objects.filter(proyecto=proyecto)
 
-    usuariosInactivos = Usuario.objects.filter(is_active=False).values_list('id', flat=True)
-    usuariosAsociados = proyecto.usuariosvinculadosproyectos_set.exclude(cod_usuario__in=usuariosInactivos)
-
+    messages = []
     #TODO: Insertar mensajes de exitos/fallos en el template
     if proyecto.estado == 'ANU':
-        message = 'No se puede anular un proyecto que ya se encuentra anulado'
+        messages.append('No se puede anular un proyecto que ya se encuentra anulado')
         error = 1
-        return render(request, 'proyecto/workProjectLeader.html', {'user': request.user, 'proyecto': proyecto,
-                                                                       'fases': fases, 'roles': roles,
-                                                                       'usuariosAsociados': usuariosAsociados,
-                                                                       'message': message, 'error': error})
-
     elif proyecto.estado == 'FIN':
-        message = 'No se puede anular un proyecto que ya se encuentra finalizado'
+        messages.append('No se puede anular un proyecto que ya se encuentra finalizado')
         error = 1
-        return render(request, 'proyecto/workProjectLeader.html', {'user': request.user, 'proyecto': proyecto,
-                                                                       'fases': fases, 'roles': roles,
-                                                                       'usuariosAsociados': usuariosAsociados,
-                                                                       'message': message, 'error': error})
-
     elif proyecto.estado == 'ACT':
-        message = 'No se puede anular un proyecto que se encuentra en estado ACTIVO. Favor comunicarse con el Administrador'
+        messages.append('No se puede anular un proyecto que se encuentra en estado ACTIVO. Favor comunicarse con el Administrador')
         error = 1
-        return render(request, 'proyecto/workProjectLeader.html', {'user': request.user, 'proyecto': proyecto,
-                                                                       'fases': fases, 'roles': roles,
-                                                                       'usuariosAsociados': usuariosAsociados,
-                                                                       'message': message, 'error': error})
-
     else:
         proyecto.estado = 'ANU'
         proyecto.save()
         error = 0
-        message = 'El proyecto ha sido anulado'
-        return render(request, 'proyecto/workProjectLeader.html', {'user': request.user, 'proyecto': proyecto,
-                                                                       'fases': fases, 'roles': roles,
-                                                                       'usuariosAsociados': usuariosAsociados,
-                                                                       'message': message, 'error': error})
+        messages.append('El proyecto ha sido anulado')
+
+    request.session['messages'] = messages
+    request.session['error'] = error
+    return HttpResponseRedirect(reverse('administrarProyectos.views.workProject', kwargs={'id_proyecto': id_proyecto}))
+    # return render(request, 'proyecto/workProjectLeader.html', {'user': request.user, 'proyecto': proyecto,
 
 
 @login_required()
@@ -418,36 +416,25 @@ def finProject(request, id_proyecto):
     *Vista par inicar un proyecto*
     """
     proyecto = Proyecto.objects.get(pk=id_proyecto)
-    fases = proyecto.fase_set.all().order_by('id')
-    roles = Rol.objects.filter(proyecto=proyecto)
+    fases = proyecto.fase_set.all().order_by('nro_orden')
 
-    usuariosInactivos = Usuario.objects.filter(is_active=False).values_list('id', flat=True)
-    usuariosAsociados = proyecto.usuariosvinculadosproyectos_set.exclude(cod_usuario__in=usuariosInactivos)
-
+    error = 0
+    messages = []
     for fase in fases:
         if fase.estado != 'FIN':
-            message = 'No se puede Finalizar el Proyecto. Aún existen fases en desarrollo'
+            messages.append('No se puede Finalizar el Proyecto. Aún existen fases en desarrollo')
             error = 1
-            return render(request, 'proyecto/workProjectLeader.html', {'user': request.user, 'proyecto': proyecto,
-                                                                'fases': fases, 'roles': roles,
-                                                                'usuariosAsociados': usuariosAsociados,
-                                                                'message': message, 'error': error})
-
     if proyecto.estado != 'ACT':
         message = 'No se puede Finalizar un proyecto que se encuentra en el estado: ' + proyecto.get_estado_display()
+        messages.append(message)
         error = 1
-        return render(request, 'proyecto/workProjectLeader.html', {'user': request.user, 'proyecto': proyecto,
-                                                                       'fases': fases, 'roles': roles,
-                                                                       'usuariosAsociados': usuariosAsociados,
-                                                                       'message': message, 'error': error})
-
     else:
         proyecto.estado = 'FIN'
         proyecto.fecha_inicio = timezone.now()
         proyecto.save()
-        message = 'El proyecto ha sido Finalizdo exitosamente.'
+        messages.append('El proyecto ha sido Finalizdo exitosamente.')
         error = 0
-        return render(request, 'proyecto/workProjectLeader.html', {'user': request.user, 'proyecto': proyecto,
-                                                                       'fases': fases, 'roles': roles,
-                                                                       'usuariosAsociados': usuariosAsociados,
-                                                                       'message': message, 'error': error})
+
+    request.session['messages'] = messages
+    request.session['error'] = error
+    return HttpResponseRedirect(reverse('administrarProyectos.views.workProject', kwargs={'id_proyecto': id_proyecto}))

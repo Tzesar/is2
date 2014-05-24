@@ -1,4 +1,6 @@
 #encoding:utf-8
+from django.core.urlresolvers import reverse
+from django.http import HttpResponseRedirect
 from django.template import RequestContext
 from django.utils import timezone
 import pydot
@@ -7,12 +9,15 @@ from django.shortcuts import render
 from administrarFases.models import Fase
 from administrarFases.views import workphase
 from administrarItems.models import ItemBase, ItemRelacion
-from administrarLineaBase.forms import createLBForm
-from administrarLineaBase.models import LineaBase
+from administrarLineaBase.forms import createLBForm, createSCForm, asignarItemSolicitudForm, emitirVotoForm
+from administrarLineaBase.models import LineaBase, SolicitudCambios, Votacion
+from administrarProyectos.views import vistaDesarrollo
 from administrarTipoItem.models import TipoItem
+from administrarRolesPermisos.decorators import user_passes_test, crear_linea_base
 from is2.settings import MEDIA_ROOT
 
 
+@user_passes_test(crear_linea_base)
 def createLB(request, id_fase):
     """
     Esta es la vista para la creación de Linea Base
@@ -47,18 +52,24 @@ def createLB(request, id_fase):
                         faseSgte.estado = 'DES'
                         faseSgte.save()
 
-                mensaje = 'Linea Base establecida'
+                mensaje = 'Linea Base establecida para la fase: ' + fase.nombre
                 error = 0
                 request.method = 'GET'
                 return workphase(request, id_fase, error=error, message=mensaje)
         else:
+
             form = createLBForm()
-        return render(request, 'createLineaBase.html', {'form': form, 'proyecto': proyecto,
+        return render(request, 'lineabase/createlb.html', {'form': form, 'proyecto': proyecto,
                                                         'user': request.user, 'fase':fase, })
     else:
-        mensaje = 'Error al crear Linea Base. No existen items VALIDADOS en la fase'
+
         error = 1
-        return workphase(request, id_fase, error=error, message=mensaje)
+        messages = []
+        messages.append(u'Error al crear Linea Base. No existen items VALIDADOS en la fase.')
+        request.session['messages'] = messages
+        request.session['error'] = error
+        return HttpResponseRedirect(reverse('administrarFases.views.workphase', kwargs={'id_fase': id_fase}))
+        # return workphase(request, id_fase)
 
 
 def calculoImpacto(padres, hijos, costo, tiempo, grafo):
@@ -77,13 +88,42 @@ def calculoImpacto(padres, hijos, costo, tiempo, grafo):
         padres.extend(item_hijos)
 
         for articulo in item_hijos:
-            arista = pydot.Edge(padre, articulo )
+            itemHijo = ItemBase.objects.get(pk=articulo)
+            arista = pydot.Edge(item.nombre, itemHijo.nombre)
             grafo.add_edge(arista)
 
-        calculoImpacto(padres, hijos, costo, tiempo, grafo )
+        calculoImpacto(padres, hijos, costo, tiempo, grafo)
 
     else:
         return (costo, tiempo)
+
+
+def generarCalculoImpactoHTML(request, id_item):
+    """
+    Vista para la creación del resumen del calculo de impacto de relaciones
+    """
+    usuario = request.user
+    item = ItemBase.objects.get(pk=id_item)
+    tipoitem = item.tipoitem
+    fase = tipoitem.fase
+    proyecto = fase.proyecto
+
+    grafo = pydot.Dot(graph_type='graph')
+    costo = []
+    tiempo = []
+    padres = [id_item]
+    hijos = []
+
+    calculoImpacto(padres, hijos, costo, tiempo, grafo)
+    costo = sum(costo)
+    tiempo = sum(tiempo)
+    direccion = MEDIA_ROOT + 'grafos/' + item.nombre
+    graph = grafo.write(direccion, format='png')
+    direccion = '/static/grafos/' + item.nombre
+
+    return render(request, 'lineabase/visualizarsolicitud.html', {'user':usuario, 'fase':fase, 'item':item, 'proyecto':proyecto,
+                                                            'costo': costo, 'tiempo':tiempo, 'grafo':graph, 'direccion':direccion },
+                                                            context_instance=RequestContext(request))
 
 
 def generarCalculoImpacto(request, id_item):
@@ -106,13 +146,189 @@ def generarCalculoImpacto(request, id_item):
     costo = sum(costo)
     tiempo = sum(tiempo)
     direccion = MEDIA_ROOT + 'grafos/' + item.nombre
-    graph = grafo.write(direccion, format='png')
-    direccion = 'grafos/' + item.nombre
+    grafo.write(direccion, format='png')
+    direccion = '/static/grafos/' + item.nombre
+
+    return costo, tiempo
 
 
-    return render(request, 'lineabase/calculoimpacto.html', {'user':usuario, 'fase':fase, 'item':item, 'proyecto':proyecto,
-                                                            'costo': costo, 'tiempo':tiempo, 'grafo':graph, 'direccion':direccion },
-                                                            context_instance=RequestContext(request))
+def visualizarLB(request, id_fase):
+    """
+    Esta es la vista para visualizar Líneas Bases existentes en la fase actual
+    """
+    fase = Fase.objects.get(pk=id_fase)
+    proyecto = fase.proyecto
+    LB = LineaBase.objects.filter(fase=fase)
+    items = ItemBase.objects.filter(linea_base__in=LB)
+    if LB:
+        return render(request, 'lineabase/visualizarlb.html', {'user': request.user, 'proyecto': proyecto, 'fase': fase,
+                                                               'items': items, 'lb': LB})
+    else:
+        mensaje = 'Aun no se han creado Lineas Base en la fase: ' + fase.nombre
+        error = 1
+        return vistaDesarrollo(request, fase.proyecto.id, error=error, message=mensaje)
 
+
+def cancelarSolicitudCambios(request, id_solicitud, id_fase):
+    """
+    Vista para cancelar una solicitud de cambios expedida
+    """
+
+    solicitud = SolicitudCambios.objects.get(pk=id_solicitud)
+
+    if solicitud.estado == 'VOT':
+        solicitud.estado = 'CAN'
+        solicitud.save()
+        mensaje = 'La solicitud ha sido cancelada con éxito'
+        error = 0
+        return workApplication(request, id_fase, error=error, mensaje=mensaje)
+
+    else:
+        mensaje = 'No se puede cancelar la solicitud.'
+        error = 1
+        return workApplication(request, id_fase, error=error, mensaje=mensaje)
+
+
+def workApplication(request, id_fase, error=None, mensaje=None):
+    """
+    Vista para la gestión de Solicitud de Cambios Creada por el usuario
+    """
+    usuario = request.user
+    fase = Fase.objects.get(pk=id_fase)
+    proyecto = fase.proyecto
+    misSolicitudes = SolicitudCambios.objects.filter(usuario=usuario, fase=fase)
+    misPK = misSolicitudes.values_list('id', flat=True)
+    otrasSolicitudes = SolicitudCambios.objects.filter(fase=fase).exclude(pk__in=misPK)
+
+    misSolicitudes_lista = {}
+    for s in misSolicitudes:
+        misSolicitudes_lista[s] = s.votacion_set.filter(usuario=request.user)
+
+    otrasSolicitudes_lista = {}
+    for s in otrasSolicitudes:
+        otrasSolicitudes_lista[s] = s.votacion_set.filter(usuario=request.user)
+
+
+    return render(request, 'lineabase/workapplication.html', {'proyecto': proyecto, 'fase': fase, 'user': usuario,
+                                                              'misSolicitudes': misSolicitudes_lista.items(), 'error': error,
+                                                              'otrasSolicitudes': otrasSolicitudes_lista.items()})
+
+
+def visualizarSolicitud(request, id_solicitud, id_fase):
+    """
+    Vista para visualizar las Solicitudes creadas
+    """
+    fase = Fase.objects.get(pk=id_fase)
+    proyecto = fase.proyecto
+
+    solicitud = SolicitudCambios.objects.filter(pk=id_solicitud)
+
+    itemsSolicitud = ItemBase.objects.filter(solicitudes__in=solicitud)
+
+    grafos = []
+    for item in itemsSolicitud:
+        direccion = '/static/grafos/' + item.nombre
+        grafos.append(direccion)
+
+    return render(request, 'lineabase/visualizarsolicitud.html', {'user': request.user, 'fase': fase, 'proyecto': proyecto,
+                                                             'solicitud': solicitud, 'items': itemsSolicitud, 'grafos':grafos})
+
+
+def crearSolicitudCambios(request, id_fase):
+    """
+    Vista para la creación de solicitudes de cambios del sistema
+    """
+    fase = Fase.objects.get(pk=id_fase)
+    proyecto = fase.proyecto
+
+    if request.method == 'POST':
+        form = createSCForm(request.POST)
+        if form.is_valid():
+            solicitud = form.save(commit=False)
+            solicitud.usuario = request.user
+            solicitud.fase = fase
+            solicitud.costo = 0
+            solicitud.tiempo = 0
+
+            asignarItemSolicitud = asignarItemSolicitudForm(request.POST, id_fase=id_fase)
+
+            # Asigna los items a la solicitud
+            if asignarItemSolicitud.is_valid():
+                solicitud.save()
+                items = asignarItemSolicitud.get_cleaned_data()
+                for item in items:
+                    itemNuevo = ItemBase.objects.get(id=item)
+                    itemNuevo.solicitudes.add(solicitud)
+                    itemNuevo.save()
+                    costo, tiempo = generarCalculoImpacto(request, itemNuevo.id)
+                    solicitud.costo = solicitud.costo + costo
+                    solicitud.tiempo = solicitud.tiempo + tiempo
+
+                solicitud.save()
+                mensaje = 'Solicitud Creada y Enviada satisfactoriamente al comité de cambios'
+                error = 0
+                return workApplication(request, fase.id, error=error, mensaje=mensaje)
+
+    form = createSCForm()
+    asignarItemSolicitud = asignarItemSolicitudForm(id_fase=id_fase)
+
+    return render(request, 'lineabase/createsolicitud.html', {'form': form, 'fase': fase, 'proyecto': proyecto,
+                                                    'user': request.user, 'asignarItemSolicitud': asignarItemSolicitud, },
+                                                    context_instance=RequestContext(request))
+
+
+def votarSolicitud(request, id_solicitud, voto):
+    """
+    *Vista para realizar las votaciones correspondientes a una solicitud de cambio *
+    """
+
+    solicitud = SolicitudCambios.objects.get(pk=id_solicitud)
+    fase = solicitud.fase
+    proyecto = fase.proyecto
+
+    if request.method == 'POST':
+        form = emitirVotoForm(request.POST)
+        if form.is_valid():
+            if str(voto) == "1":
+                votacion = form.save(commit=False)
+                votacion.usuario = request.user
+                votacion.solicitud = solicitud
+                votacion.voto = 'GOOD'
+                votacion.save()
+            else:
+                votacion = form.save(commit=False)
+                votacion.usuario = request.user
+                votacion.solicitud = solicitud
+                votacion.voto = 'EVIL'
+                votacion.save()
+
+            votos = Votacion.objects.filter(solicitud=solicitud)
+            aceptado = 0
+            rechazado = 0
+            if votos.count() == 3:
+                for voto in votos:
+                    if voto.voto == 'GOOD':
+                        aceptado = aceptado + 1
+                    else:
+                        rechazado = rechazado + 1
+
+                if aceptado > rechazado:
+                    solicitud.estado = 'ACP'
+                else:
+                    solicitud.estado = 'RCH'
+
+                solicitud.save()
+
+
+            mensaje = 'Voto confirmado para la solicitud ' + str(solicitud.id)
+            error = 0
+            request.method = 'GET'
+            return workApplication(request, fase.id, error=error, mensaje=mensaje)
+    else:
+        form = emitirVotoForm()
+    return render(request, 'lineabase/createvote.html', {'form': form, 'proyecto': proyecto,
+                                                         'user': request.user, 'fase': fase,
+                                                         'solicitud': solicitud},
+                  context_instance=RequestContext(request))
 
 

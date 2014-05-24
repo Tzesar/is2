@@ -1,0 +1,52 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+{% load floppyforms %}
+
+    {% block cssAdicional %}
+        <link href="{% static 'bootstrap/css/jquery-theme/jquery-ui-1.10.3.custom.css' %}" rel="stylesheet">
+        <link href="{% static 'bootstrap/css/multi-select.css' %}" rel="stylesheet">
+    {% endblock cssAdicional %}
+
+    {% block title %}Crear Solicitud de Cambios{% endblock %}
+
+    {% block errorBlock %}
+        {% if form.errors %}
+            <div class="container-fluid">
+                <div class="alert alert-danger alert-dismissable">
+                    <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+                    {{ form.errors }}
+                </div>
+            </div>
+        {% endif %}
+    {% endblock errorBlock %}
+
+    {% block breadContent %}
+        <li><a href="{% url 'autenticacion.views.main' %}">Inicio</a></li>
+        <li><a href="{% url 'administrarProyectos.views.workProject' proyecto.id %}">{{ proyecto.nombre }}</a></li>
+        <li><a href="{% url 'administrarFases.views.workphase' fase.id %}">{{ fase.nombre }}</a> </li>
+        <li class="active">Crear Solicitud de Cambios </li>
+    {% endblock breadContent %}
+
+    {% block padTop %}{% endblock padTop %}
+    {% block panelCentral %}
+        <div class="panel-heading">
+            <h1 class="text-info" style="display: inline-block">Solicitud de Cambios: {{ fase.nombre }} </h1>
+        </div>
+        <div class="panel-body">
+            <div class="col-lg-4 col-md-4 col-sm-4">
+                <form action="" class="form-signin" role="form" method="post">
+                    {% csrf_token %}
+                    {% form form using "formsLayouts/div.html" %}
+                    {% form asignarItemSolicitud using "formsLayouts/div.html" %}
+                        <a href="{% url 'administrarLineaBase.views.workApplication' fase.id %}" class="btn btn-lg btn-warning" type="submit">Cancelar</a>
+                        <button class="btn btn-lg btn-success " type="submit">Crear Solicitud</button>
+                </form>
+            </div>
+        </div>
+    {% endblock %}>
+
+    {% block jsAdicional %}
+        <script src="{% static 'bootstrap/js/jquery-ui-1.10.4.min.js' %}" type="application/javascript"></script>
+        <script src="{% static 'bootstrap/js/jquery.multi-select.js' %}" type="application/javascript"></script>
+        <script src="{% static "bootstrap/js/crearSolicitud.js" %}"></script>
+    {% endblock jsAdicional %}

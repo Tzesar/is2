@@ -1,0 +1,43 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+
+    {% block title %}Solicitud de Cambio{% endblock %}
+
+    {% block breadContent %}
+        <li><a href="{% url 'autenticacion.views.main' %}">Inicio</a></li>
+        <li><a href="{% url 'administrarProyectos.views.workProject' proyecto.id %}">{{ proyecto.nombre }}</a></li>
+        <li><a href="{% url 'administrarLineaBase.views.workApplication' fase.id %}">{{ fase.nombre }}</a></li>
+        <li class="active">Solicitud de Cambio</li>
+    {% endblock breadContent %}
+
+    {% block padTop %}{% endblock padTop %}
+    {% block panelCentral %}
+        <div class="panel-heading">
+            <h1 class="text-info" style="display: inline-block">Solicitud de Cambio <small>DETALLES</small></h1>
+        </div>
+        <div class="panel-body">
+            <div class="col-lg-5 col-md-5 col-sm-5"> {% csrf_token %}
+                {% for solicitud in solicitud %}
+                    <p> <b>Usuario</b> : {{ solicitud.usuario }}</p>
+                    <p><b>Fase</b> : {{ solicitud.fase }}</p>
+                    <p><b>Motivo</b> : {{ solicitud.motivo }}</p>
+                    <p><b>Fecha de Creación</b> : {{ solicitud.fecha_creacion }}</p>
+                    <p><b>Estado</b> : {{ solicitud.get_estado_display }}</p>
+                    <p><b>Costo</b> : {{ solicitud.costo }}</p>
+                    <p><b>Tiempo</b> : {{ solicitud.tiempo }}</p>
+                    <p><b>Items Solicitados</b>  <br> {% for item in items %}
+                                    {{ item.nombre }}
+                                    <br>
+                                {% endfor %}
+                    </p>
+                {% endfor %}
+            </div>
+            <div class="col-sm-3">
+               <h3>Grafo de Relaciones</h3>
+                    {% for grafo in grafos %}
+                        <img src={{ grafo }}>
+                        <hr>
+                    {% endfor %}
+            </div>
+        </div>
+    {% endblock panelCentral %}>>

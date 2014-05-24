@@ -13,6 +13,18 @@
                 </div>
             </div>
         {% endif %}
+        {% if messages %}
+            <div class="container-fluid">
+                <div class="alert {% if error == 1 %} alert-danger {% else %} alert-success {% endif %} alert-dismissable">
+                    <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+                    <ul>
+                        {% for message in messages %}
+                            <li>{{ message }}</li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            </div>
+        {% endif %}
     {% endblock errorBlock %}
 
     {% block breadContent %}

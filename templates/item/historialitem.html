@@ -35,27 +35,27 @@
         <div class="panel panel-default" style="padding-top: 2%; padding-left: 2%; padding-right: 2%">
             <div class="panel panel-default">
                 <!-- Default panel contents -->
-                <div class="panel-heading"><h1>Versiones del Item: {{ item.nombre }}</h1></div>
+                <div class="panel-heading"><h1 class="text-info">Versiones del Item: {{ item.nombre }}</h1></div>
                 <table class="table">
                     <thead>
                         <tr>
                             <td>Nombre</td>
                             <td>Descripcion</td>
                             <td>Fecha de Modificacion</td>
-                            <td>Version del Item</td>
+                            <td>Version</td>
                         </tr>
                     </thead>
                     <tbody>
                         {% for version in lista_versiones  %}
                             <tr>
-                                <td>{{ version.field_dict.nombre }}</td>
-                                <td>{{ version.field_dict.descripcion}}</td>
-                                <td>{{ version.field_dict.fecha_modificacion }}</td>
-                                <td>{{ version.field_dict.version }}</td>
-                                <td>
+                                <td style="width: 15%">{{ version.field_dict.nombre }}</td>
+                                <td style="width: 45%">{{ version.field_dict.descripcion}}</td>
+                                <td style="width: 30%">{{ version.field_dict.fecha_modificacion }}</td>
+                                <td style="width: 5%">{{ version.field_dict.version }} </td>
+                                <td style="width: 5%">
                                     {% if item.estado == 'ACT' or item.estado == 'REV'   %}
                                         <div class="btn-group pull-right">
-                                            <a href="{% url 'administrarItems.views.reversionItemBase' item.id fase.id version.id  %}" type="button" class="btn btn-danger">Recuperar esta version</a>
+                                            <a href="{% url 'administrarItems.views.reversionItemBase' item.id fase.id version.revision.id  %}" type="button" class="btn btn-danger">Revertir</a>
                                         </div>
                                     {% endif %}
                                  </td>
@@ -64,13 +64,11 @@
                     </tbody>
                 </table>
             </div>
-            <div class="btn-group btn-group-justified">
-                <div class="col-lg-4 col-md-4 col-sm-4" >
-                    <div class="btn-group" style="padding-bottom: 5%">
-                        <a href="{% url 'administrarFases.views.workphase' fase.id %}" class="btn btn-lg btn-success" type="submit">Finalizar</a>
-                    </div>
-                </div>
+
+            <div class="btn-group" style="padding-bottom: 5%">
+                <a href="{% url 'administrarFases.views.workphase' fase.id %}" class="btn btn-lg btn-success" type="submit">Finalizar</a>
             </div>
+
         </div>
     </div>
 {% endblock %}

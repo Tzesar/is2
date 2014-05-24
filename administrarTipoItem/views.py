@@ -2,10 +2,10 @@
 import logging
 
 from django.contrib.auth.decorators import login_required
+from django.core.urlresolvers import reverse
 from django.http import HttpResponseRedirect
 from django.template import RequestContext
 from django.shortcuts import render
-from administrarFases.views import changePhase
 
 from administrarProyectos.models import Proyecto
 from administrarFases.models import Fase
@@ -43,15 +43,19 @@ def createItemType(request, id_fase):
             try:
                 tipoitem.save()
             except IntegrityError as e:
-                return render(request, "keyduplicate_tipoitem.html", {'phase': phase, "message": e.message},
-                  context_instance=RequestContext(request))
+                return render(request, "keyduplicate_tipoitem.html", {'phase': phase, "message": e.message})
 
-            mensaje = 'Tipo de Item: ' + TipoItem.objects.last().nombre + ', creado exitosamente'
-            request.method = 'GET'
-            return changePhase(request, id_fase, error=0, message=mensaje)
+            mensajes = []
+            mensajes.append('Tipo de Item: ' + TipoItem.objects.last().nombre + ', creado exitosamente')
+            # return changePhase(request, id_fase)
+
+            request.session['messages'] = mensajes
+            request.session['error'] = 0
+            return HttpResponseRedirect(reverse('administrarFases.views.changePhase', kwargs={'id_fase': id_fase}))
     else:
         form = NewItemTypeForm()
-    return render(request, 'tipo_item/createitemtype.html', {'user': request.user, 'form': form, 'project': project, 'fase': phase})
+    return render(request, 'tipo_item/createitemtype.html', {'user': request.user, 'form': form,
+                                                             'project': project, 'fase': phase})
 
 
 @login_required()
@@ -153,8 +157,8 @@ def importItemType(request, id_fase, id_itemtype):
     try:
         tipoItemNuevo.save()
     except IntegrityError as e:
-        return render(request, "keyduplicate_tipoitem.html", { 'phase': fase , 'itemtype': tipoItemNuevo, "message": e.message},
-                  context_instance=RequestContext(request))
+        return render(request, "keyduplicate_tipoitem.html", {'phase': fase, 'itemtype': tipoItemNuevo,
+                                                              "message": e.message})
 
     for atributo in tipoItemExistente.atributo_set.all():
         atributo.id = None
@@ -164,8 +168,6 @@ def importItemType(request, id_fase, id_itemtype):
     # logger.info('El usuario '+request.user.username + ' ha importado el tipo de ítem ' +tipoItemExistente.nombre +
     #             ' de la fase ' +tipoItemExistente.fase.nombre + ' del proyecto ' +tipoItemExistente.fase.proyecto.nombre+
     #             ' a la fase' + fase.nombre +' del proyecto ' + fase.proyecto.nombre )
-
-
 
     return HttpResponseRedirect('/changeitemtype/' + str(tipoItemNuevo.id))
 
@@ -201,7 +203,6 @@ def createAtribute(request, id_tipoitem):
 
             # logger.info('El usuario '+request.user.username+'  ha creado el atributo ' + atributo.nombre +
             #             ' perteneciente al tipo de item: '+ itemtype.nombre )
-
 
         return HttpResponseRedirect('/changeitemtype/'+str(id_tipoitem))
     else:

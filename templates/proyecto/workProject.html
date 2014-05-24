@@ -3,16 +3,15 @@
 
     {% block title %}Proyecto: {{ proyecto.nombre }}{% endblock %}
     {% block errorBlock %}
-        {% if error == 1 %}
+        {% if messages %}
             <div class="container-fluid">
-                <div class="alert alert-danger alert-dismissable">
+                <div class="alert {% if error == 1 %} alert-danger {% else %} alert-success {% endif %} alert-dismissable">
                     <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
-                    {{ message }}
-                </div>
-            {% elif error == 0 %}
-                <div class="alert alert-success alert-dismissable">
-                    <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
-                    {{ message }}
+                    <ul>
+                        {% for message in messages %}
+                            <li>{{ message }}</li>
+                        {% endfor %}
+                    </ul>
                 </div>
             </div>
         {% endif %}
@@ -29,7 +28,7 @@
             <h1 class="text-info" style="display: inline-block">
                 {{ proyecto.nombre|capfirst }} - Área de Trabajo
             </h1>
-                        <span class="pull-right" style="padding-top: 2%">
+            <span class="pull-right" style="padding-top: 2%">
                 {% if user == proyecto.lider_proyecto %}
                     <a href="{% url 'administrarProyectos.views.workProject' proyecto.id %}" class="btn btn-md btn-primary btn-md" role="button">Vista de Líder</a>
                 {% endif %}
@@ -98,8 +97,11 @@
                             <div class="panel-heading">
                                 {% if fase.estado == 'DES' %}
                                     <a href="{% url 'administrarFases.views.workphase' fase.id %}" class="btn btn-primary btn-sm">Gestionar Ítems</a>
-                                    {% if user == proyecto.lider_proyecto %}<a href="{% url 'administrarFases.views.finPhase' fase.id %}" class="btn btn-success btn-sm">Finalizar Fase</a>{% endif %}
-                                {% else %}<a href="#"class="btn btn-success btn-sm">Ver Ítems</a>{% endif %}
+                                    {% if user == proyecto.lider_proyecto %}<a href="{% url 'administrarFases.views.finPhase' fase.id %}" class="btn btn-success btn-sm">Fin Fase</a>{% endif %}
+                                    <a href="{% url 'administrarLineaBase.views.visualizarLB' fase.id %}" class="btn btn-gray btn-sm">Lineas Base</a>
+                                {% else %}
+                                    <a href="{% url 'administrarFases.views.workphase' fase.id %}"class="btn btn-success btn-sm">Ver Ítems</a>
+                                {% endif %}
                             </div>
                         </div>
                     </div>

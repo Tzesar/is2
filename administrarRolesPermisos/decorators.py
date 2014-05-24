@@ -3,9 +3,12 @@
 from functools import wraps
 
 from django.contrib.auth import REDIRECT_FIELD_NAME
+from django.contrib.auth.models import Group
 from django.core.urlresolvers import reverse
-from django.http import HttpResponseRedirect
+from django.core.exceptions import ObjectDoesNotExist
+from django.http import HttpResponseRedirect, Http404
 from django.utils.decorators import available_attrs
+from guardian.shortcuts import get_perms, get_objects_for_user
 
 from administrarProyectos.models import Proyecto
 from administrarProyectos.models import UsuariosVinculadosProyectos
@@ -71,8 +74,10 @@ def vinculadoProyecto(request, **kwargs):
 
     if usuario.id == -1:
         return False
-
-    proyecto = Proyecto.objects.get(id=id_proyecto)
+    try:
+        proyecto = Proyecto.objects.get(id=id_proyecto)
+    except ObjectDoesNotExist:
+        raise Http404
 
     if not proyecto:
         return False
@@ -98,7 +103,12 @@ def puede_crear_fase(request, **kwargs):
         if not id_proyecto:
             return False
 
-        lider = Proyecto.objects.get(pk=id_proyecto).lider_proyecto
+        try:
+            proyecto = Proyecto.objects.get(id=id_proyecto)
+        except ObjectDoesNotExist:
+            raise Http404
+
+        lider = proyecto.lider_proyecto
         currentUser = request.user
 
         if currentUser == lider:
@@ -119,7 +129,11 @@ def puede_modificar_fase(request, **kwargs):
         if not id_fase:
             return False
 
-        fase = Fase.objects.get(id=id_fase)
+        try:
+            fase = Fase.objects.get(id=id_fase)
+        except ObjectDoesNotExist:
+            raise Http404
+
         lider = Usuario.objects.get(id=fase.proyecto.lider_proyecto_id)
         currentUser = request.user
 
@@ -127,3 +141,67 @@ def puede_modificar_fase(request, **kwargs):
             return True
 
         return False
+
+
+def puede_trabajar(request, **kwargs):
+    """
+
+    :param request:
+    :param kwargs:
+    :return:
+    """
+
+    id_proyecto = kwargs.pop('id_proyecto', None)
+    if not id_proyecto:
+        return False
+
+    try:
+        proyecto = Proyecto.objects.get(id=id_proyecto)
+    except ObjectDoesNotExist:
+        raise Http404
+
+    usuario = request.user
+
+    if usuario.id == -1:
+        return False
+
+    objetos = get_objects_for_user(usuario, 'consultar_Proyecto', klass=Proyecto)
+
+    if proyecto in objetos:
+        return True
+
+    return False
+
+
+def crear_linea_base(request, **kwargs):
+    """
+
+    :param request:
+    :param kwargs:
+    :return:
+    """
+
+    id_fase = kwargs.pop('id_fase', None)
+    if not id_fase:
+        return False
+
+    try:
+        fase = Fase.objects.get(id=id_fase)
+    except ObjectDoesNotExist:
+        raise Http404
+
+    usuario = request.user
+    proyecto = fase.proyecto
+
+    if usuario.id == -1:
+        return False
+
+    if usuario == proyecto.lider_proyecto:
+        return True
+
+    objetos = get_objects_for_user(usuario, 'crear_Linea_base', klass=Fase)
+
+    if fase in objetos:
+        return True
+
+    return False

@@ -3,10 +3,12 @@ Descripcion de las diferentes URLs utilizadas en el proyecto ZAPpm
 """
 
 from django.conf.urls import patterns, url
+from django.conf import settings
 from django.contrib import admin
 from django.contrib.auth.views import logout_then_login
 
-from administrarLineaBase.views import generarCalculoImpacto, createLB
+from administrarLineaBase.views import generarCalculoImpacto, createLB, visualizarLB, workApplication, \
+    crearSolicitudCambios, cancelarSolicitudCambios, visualizarSolicitud, votarSolicitud
 from administrarTipoItem.views import createItemType, deleteItemType, itemTypeList, changeItemType, changeAtribute,\
     createAtribute, deleteAtribute, importItemType
 from autenticacion.views import main, myLogin
@@ -14,13 +16,13 @@ from administrarUsuarios.views import createUser, changeUser, userList, userList
 from zar.views import about, contact
 from administrarProyectos.views import createProject, changeProject, projectList, workProject, setUserToProject,\
     changeProjectLeader, startProject, cancelProject, finProject, vistaDesarrollo
-from administrarFases.views import changePhase, createPhase, phaseList, deletePhase, importMultiplePhase, finPhase, \
-    startPhase, subirOrden, bajarOrden
+from administrarFases.views import changePhase, createPhase, phaseList, deletePhase, importMultiplePhase,\
+    confirmar_eliminacion_fase, workphase, finPhase, startPhase, subirOrden, bajarOrden
 from administrarRolesPermisos.views import crearRol, eliminarRol, modificarRol, accesoDenegado
 from administrarFases.views import changePhase, createPhase, phaseList, deletePhase, importPhase, importMultiplePhase,\
     confirmar_eliminacion_fase, workphase
-from administrarItems.views import createItem, changeItem, completarEnteros, completarArchivo, \
-    completarImagen, completarTexto, historialItemBase, relacionarItemBaseView, reversionItemBase, relacionarItemBase, \
+from administrarItems.views import createItem,\
+    historialItemBase, relacionarItemBaseView, reversionItemBase, relacionarItemBase, \
     finalizarItem, validarItem, dardebajaItem, workItem, restaurarItem
 
 
@@ -89,26 +91,14 @@ urlpatterns = patterns('',
                        url(r'^importitemtype/(?P<id_fase>\d+)/(?P<id_itemtype>\d+)$', importItemType),
                        url(r'^deleteitemtype/(?P<id_tipoitem>\d+)$', deleteItemType),
 
-                       url(r'^forgot_password/$', 'django.contrib.auth.views.password_reset', {'template_name':'autenticacion/forgot_password.html',\
-                               'post_reset_redirect' : 'registration/password_reset_done'}, name="reset_password"),
-                       url(r'^forgot_password/registration/password_reset_done/$', 'django.contrib.auth.views.password_reset_done'),
-                       url(r'^password_reset_confirm/(?P<uidb64>[0-9A-Za-z]+)-(?P<token>.+)/$',
-                           'django.contrib.auth.views.password_reset_confirm', {'post_reset_redirect': 'registration/password_reset_complete'}),
-                       url(r'^/password_reset_complete/$', 'django.contrib.auth.views.password_reset_complete'),
-
-                       # url(r'^asignrole/(?P<id_proyecto>\d+)/(?P<id_rol>\d+)$', asignRole),
+###################################################### ATRIBUTOS #######################################################
                        url(r'^createatribute/(?P<id_tipoitem>\d+)$', createAtribute),
                        url(r'^changeatribute/(?P<id_atribute>\d+)$', changeAtribute),
                        url(r'^deleteatribute/(?P<id_atribute>\d+)$', deleteAtribute),
 
 ###################################################### ITEMS ###########################################################
                        url(r'^createitem/(?P<id_fase>\d+)$', createItem),
-                       url(r'^changeitem/(?P<id_item>\d+)$', changeItem),
                        url(r'^workitem/(?P<id_item>\d+)$', workItem),
-                       url(r'^completarenteros/(?P<id_atributo>\d+)/(?P<id_item>\d+)$', completarEnteros),
-                       url(r'^completatexto/(?P<id_atributo>\d+)/(?P<id_item>\d+)$', completarTexto),
-                       url(r'^completararchivo/(?P<id_atributo>\d+)/(?P<id_item>\d+)$', completarArchivo),
-                       url(r'^completarimagen/(?P<id_atributo>\d+)/(?P<id_item>\d+)$', completarImagen),
                        url(r'^historialitem/(?P<id_fase>\d+)/(?P<id_item>\d+)$', historialItemBase),
                        url(r'^relacionaritemvista/(?P<id_fase_actual>\d+)/(?P<id_item_actual>\d+)$', relacionarItemBaseView),
                        url(r'^revertiritem/(?P<id_item>\d+)/(?P<id_fase>\d+)/(?P<id_version>\d+)/$', reversionItemBase),
@@ -118,6 +108,18 @@ urlpatterns = patterns('',
                        url(r'^validaritem/(?P<id_item>\d+)$', validarItem ),
                        url(r'^dardebajaitem/(?P<id_item>\d+)$', dardebajaItem ),
                        url(r'^restauraritem/(?P<id_item>\d+)$', restaurarItem ),
+                       url(r'^media/(?P<path>.*)$', 'django.views.static.serve',
+		                                                    {'document_root':settings.MEDIA_ROOT, 'show_indexes': True}
+                       ),
+
 ###################################################### LINEA BASE ######################################################
                        url(r'^createlb/(?P<id_fase>\d+)$', createLB ),
+                       url(r'^visualizarlb/(?P<id_fase>\d+)$', visualizarLB ),
+
+###################################################### SOLICITUD DE CAMBIOS ############################################
+                       url(r'^crearsolicitud/(?P<id_fase>\d+)$', crearSolicitudCambios ),
+                       url(r'^cancelarsolicitud/(?P<id_solicitud>\d+)/(?P<id_fase>\d+)$', cancelarSolicitudCambios ),
+                       url(r'^workapplication/(?P<id_fase>\d+)$', workApplication ),
+                       url(r'^visualizarsolicitud/(?P<id_solicitud>\d+)/(?P<id_fase>\d+)$', visualizarSolicitud ),
+                       url(r'^createvote/(?P<id_solicitud>\d+)/(?P<voto>\d+)$', votarSolicitud),
                        )

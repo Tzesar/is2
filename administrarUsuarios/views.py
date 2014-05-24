@@ -170,7 +170,7 @@ def userListJson(request, tipoUsuario):
     if tipoUsuario == 'LP':
         # query es la pregunta que envia el js
         query = request.GET['query']
-        usuarios = Usuario.objects.filter(is_active=True, is_superuser=False, username__contains=query).values_list('username', 'pk').order_by('username')
+        usuarios = Usuario.objects.filter(is_active=True, is_superuser=False, username__contains=query).exclude(id=-1).values_list('username', 'pk').order_by('username')
 
 
     # Crea una lista del objeto usuarios

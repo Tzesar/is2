@@ -1,0 +1,55 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+{% load floppyforms %}
+
+    {% block title %}Lineas Base{% endblock %}
+
+    {% block breadContent %}
+        <li><a href="{% url 'autenticacion.views.main' %}">Inicio</a></li>
+        <li><a href="{% url 'administrarProyectos.views.vistaDesarrollo' proyecto.id %}">{{ proyecto.nombre }}</a></li>
+        <li class="active">Fase: {{ fase.nombre }}</li>
+    {% endblock breadContent %}
+
+{% block mainBody %}
+    <div class="container col-lg-offset-1 col-lg-10 col-xs-12" style="padding-top: 2%">
+        <div class="panel panel-default" style="padding-top: 2%; padding-left: 2%; padding-right: 2%">
+            <div class="panel panel-default">
+                <!-- Default panel contents -->
+                <div class="panel-heading"><h1 class="text-info">Lineas Base: {{ fase.nombre }} </h1></div>
+                <div class="panel-body">
+                    {% for lineas in lb %}
+                        <div class="panel panel-default">
+                            <div class="panel-heading">
+                                <p class="text-info">
+                                    <b>Id. Línea Base:</b> {{ lineas.id }}<br> <b>Descripción:</b> {{ lineas.observaciones }}
+                                </p>
+                            </div>
+                            <div class="panel-body">
+                                <table class="table" style="width: 100%">
+                                    <thead>
+                                        <tr>
+                                            <th>Nombre del Item</th>
+                                            <th>Versión</th>
+                                            <th>Descripción</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                            {% for item in items %}
+                                                <tr>
+                                                {% if item.linea_base_id == lineas.id %}
+                                                        <td style="width: 20%" ><a href='#'>{{item.nombre}}</a></td>
+                                                        <td style="width: 10%">{{ item.version }}</td>
+                                                        <td style="width: 60%">{{ item.descripcion }}</td>
+                                                {% endif %}
+                                                </tr>
+                                            {% endfor %}
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock mainBody %}

@@ -71,6 +71,9 @@ class Rol(models.Model):
     class Meta:
         unique_together = ('grupo', 'proyecto')
 
+    def __unicode__(self):
+        return self.grupo.name
+
 
 # class PermisoFase(models.Model):
 #     """

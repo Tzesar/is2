@@ -34,7 +34,7 @@
                     {% form form using "formsLayouts/div.html" %}
                     <div class="btn-group btn-group-justified">
                         <div class="btn-group">
-                            <a href="{% url 'administrarProyectos.views.workProject' proyecto.id %}" class="btn btn-lg btn-warning" type="submit">Volver al Proyecto</a>
+                            <a href="{% url 'administrarProyectos.views.workphase' fase.id %}" class="btn btn-lg btn-warning" type="submit">Volver al Proyecto</a>
                         </div>
                         <div class="btn-group">
                             <button class="btn btn-lg btn-success btn-lg" type="submit">Guardar cambios</button>
@@ -43,4 +43,4 @@
                 </form>
             </div>
         </div>
-    {% endblock panelCentral %}>>
+    {% endblock panelCentral %}

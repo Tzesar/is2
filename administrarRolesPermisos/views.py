@@ -28,7 +28,6 @@ def crearRol(request, id_proyecto):
     fases = Fase.objects.filter(proyecto=proyecto)
 
     if request.method == 'POST':
-
         # Se crea el formulario para crear el rol con los datos del POST
         rolGrupoForm = NuevoRolForm(request.POST)
 
@@ -65,7 +64,8 @@ def crearRol(request, id_proyecto):
                 rol = Rol(grupo=rolGrupo, proyecto=proyecto)
                 rol.save()
 
-                return HttpResponseRedirect('/workproject/'+str(proyecto.id))
+                return HttpResponseRedirect(reverse('administrarProyectos.views.workProject',
+                                                    kwargs={'id_proyecto': id_proyecto}))
 
     # Formulario para crear un nuevo rol. Definicion de rol en models de esta app.
     rolGrupoForm = NuevoRolForm()
@@ -166,7 +166,8 @@ def modificarRol(request, id_proyecto, id_rol):
                 rol = Rol(grupo=rolGrupo, proyecto=proyecto)
                 rol.save()
 
-                return HttpResponseRedirect('/workproject/'+str(proyecto.id))
+                return HttpResponseRedirect(reverse('administrarProyectos.views.workProject',
+                                                    kwargs={'id_proyecto': id_proyecto}))
 
     # Formulario para crear un nuevo rol. Definicion de rol en models de esta app.
     rolGrupoForm = NuevoRolForm(instance=rol.grupo)
@@ -208,7 +209,7 @@ def eliminarRol(request, id_proyecto, id_rol):
     rol.delete()
     rol.grupo.delete()
 
-    return HttpResponseRedirect('/workproject/'+str(id_proyecto))
+    return HttpResponseRedirect(reverse('administrarProyectos.views.workProject', kwargs={'id_proyecto': id_proyecto}))
 
 
 @login_required()

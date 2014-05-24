@@ -1,4 +1,4 @@
-#encoding=utf-8
+ #encoding=utf-8
 
 from django import forms
 from guardian.forms import BaseObjectPermissionsForm
@@ -132,6 +132,7 @@ class NuevoRolForm(forms2.ModelForm):
         }
 
 
+
 class asignarUsuariosRolForm(forms2.Form):
     """
     *Formulario para vincular usuarios a un rol.
@@ -182,7 +183,8 @@ class asignarMiembrosComiteForm(forms2.Form):
 
         usuariosHabilitados = list(UsuariosVinculadosProyectos.objects.filter(cod_proyecto=self.proyecto.id, habilitado=True).values_list('cod_usuario', flat=True))
         opciones = list(Usuario.objects.filter(pk__in=usuariosHabilitados).exclude(id=id_lider).values_list('id', 'username'))
-        self.fields['miembros'] = forms2.MultipleChoiceField(choices=opciones, required=False)
+        self.fields['miembros'] = forms2.MultipleChoiceField(choices=opciones, required=False,
+                                                             label=u'Miembros del Comité')
 
         super(asignarMiembrosComiteForm, self).full_clean()
 

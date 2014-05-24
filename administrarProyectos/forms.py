@@ -104,6 +104,7 @@ class ChangeProjectLeaderForm(forms2.ModelForm):
         if f is not None:
             f.queryset = f.queryset.select_related('content_type')
 
+
 class setUserToProjectForm(forms2.Form):
     """
     *Formulario para vincular usuarios a un proyecto*
