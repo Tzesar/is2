@@ -20,7 +20,6 @@ from django.db import IntegrityError
 from administrarItems.models import ItemRelacion, ItemBase
 
 
-
 @login_required()
 @user_passes_test(puede_crear_fase)
 def createPhase(request, id_proyecto):
@@ -266,28 +265,29 @@ def workphase(request, id_fase):
                 relaciones[i] = None
 
         if faseTrabajo.estado == 'DES':
-            return render(request, 'fase/workPhase.html', {'proyecto': proyectoTrabajo, 'fase': faseTrabajo, 'user': request.user,
-                                                           'listaItems': itemsFase, 'relaciones': relaciones.items()})
+
+            usuario = request.user
+            objetos = get_objects_for_user(usuario, 'crear_Solicitud_Cambio', klass=Fase)
+            puedeCrearSC = False
+            if faseTrabajo in objetos:
+                puedeCrearSC = True
+
+            error = None
+            messages = None
+            if 'error' in request.session:
+                error = request.session.pop('error')
+            if 'messages' in request.session:
+                messages = request.session.pop('messages')
+            return render(request, 'fase/workPhase.html', {'proyecto': proyectoTrabajo, 'fase': faseTrabajo,
+                                                           'user': request.user, 'listaItems': itemsFase,
+                                                           'relaciones': relaciones.items(), 'error': error,
+                                                           'messages': messages, 'puedeCrearSC': puedeCrearSC})
+
+            # return render(request, 'fase/workPhase.html', {'proyecto': proyectoTrabajo, 'fase': faseTrabajo, 'user': request.user,
+            #                                                'listaItems': itemsFase, 'relaciones': relaciones.items()})
         else:
             return render(request, 'fase/workphase_finalizada.html', {'proyecto': proyectoTrabajo, 'fase': faseTrabajo, 'user': request.user,
                                                            'listaItems': itemsFase, 'relaciones': relaciones.items()})
-
-        usuario = request.user
-        objetos = get_objects_for_user(usuario, 'crear_Solicitud_Cambio', klass=Fase)
-        puedeCrearLB = False
-        if faseTrabajo in objetos:
-            puedeCrearLB = True
-
-        error = None
-        messages = None
-        if 'error' in request.session:
-            error = request.session.pop('error')
-        if 'messages' in request.session:
-            messages = request.session.pop('messages')
-        return render(request, 'fase/workPhase.html', {'proyecto': proyectoTrabajo, 'fase': faseTrabajo,
-                                                       'user': request.user, 'listaItems': itemsFase,
-                                                       'relaciones': relaciones.items(), 'error': error,
-                                                       'messages': messages, 'puedeCrearLB': puedeCrearLB})
 
 
 @user_passes_test(puede_modificar_fase)

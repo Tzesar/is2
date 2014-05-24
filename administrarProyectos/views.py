@@ -241,9 +241,6 @@ def workProject(request, id_proyecto):
 
             usuariosInactivos = Usuario.objects.filter(is_active=False).values_list('id', flat=True)
             usuariosAsociados = proyecto.usuariosvinculadosproyectos_set.exclude(cod_usuario__in=usuariosInactivos)
-            return render(request, 'proyecto/workProjectLeader.html', {'user': request.user, 'proyecto': proyecto,
-                                                                       'fases': fases, 'roles': roles, 'cantFases':cantFases,
-                                                                       'usuariosAsociados': usuariosAsociados, 'error': error, 'message': message})
 
             error = None
             messages = None

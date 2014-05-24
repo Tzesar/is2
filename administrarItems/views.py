@@ -498,7 +498,7 @@ def workItem(request, id_item, error=None, message=None):
             request.method = 'GET'
             no_error = 0
             mensaje = 'Item: ' + item.nombre + '. Modificacion exitosa.'
-            return workphase(request, faseActual.id, error=no_error, message=mensaje)
+            return workphase(request, faseActual.id)
     else:
         formAtributosBasicos = modificarAtributosBasicosForm(instance=item)
         formDatosItem = modificarDatosItemForm(instance=item)

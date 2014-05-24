@@ -27,7 +27,7 @@
     {% block panelCentral %}
         <div class="panel-heading">
             <h1 class="text-info" style="display: inline-block">Fase: {{ fase.nombre|capfirst }}</h1>
-            {% if puedeCrearLB %}
+            {% if puedeCrearSC %}
                 <span class="pull-right" style="padding-top: 2%">
                         <a href="{% url 'administrarLineaBase.views.workApplication' fase.id %}" class="btn btn-sm btn-info"> Gestionar Solicitud Cambios</a>
                 </span>
@@ -78,14 +78,14 @@
                                                     </span>
                                                 </span>
                                             {% endif %}
-                                            {% else %}
-                                                <span class="pull-right" data-toggle="tooltip" title="Ítem Activo" id="tooltip">
-                                                    <span class="pull-right" style="padding-right: 5%">
-                                                        <span class="text-success glyphicon glyphicon-record"></span>
-                                                    </span>
+                                        {% else %}
+                                            <span class="pull-right" data-toggle="tooltip" title="Ítem Activo" id="tooltip">
+                                                <span class="pull-right" style="padding-right: 5%">
+                                                    <span class="text-success glyphicon glyphicon-record"></span>
                                                 </span>
-                                            {% endif %}
+                                            </span>
                                         {% endif %}
+{#                                        {% endif %}#}
                                         {% if item.estado == 'FIN' %}
                                             {% if user == proyecto.lider_proyecto %}
                                                 <span class="pull-right" data-toggle="tooltip" title="Validar Ítem" id="tooltip">

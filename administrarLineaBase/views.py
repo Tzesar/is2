@@ -55,7 +55,7 @@ def createLB(request, id_fase):
                 mensaje = 'Linea Base establecida para la fase: ' + fase.nombre
                 error = 0
                 request.method = 'GET'
-                return workphase(request, id_fase, error=error, message=mensaje)
+                return workphase(request, id_fase)
         else:
 
             form = createLBForm()
@@ -164,9 +164,12 @@ def visualizarLB(request, id_fase):
         return render(request, 'lineabase/visualizarlb.html', {'user': request.user, 'proyecto': proyecto, 'fase': fase,
                                                                'items': items, 'lb': LB})
     else:
-        mensaje = 'Aun no se han creado Lineas Base en la fase: ' + fase.nombre
+        mensaje = []
+        mensaje.append('Aun no se han creado Lineas Base en la fase: ' + fase.nombre)
         error = 1
-        return vistaDesarrollo(request, fase.proyecto.id, error=error, message=mensaje)
+        request.session['messages'] = mensaje
+        request.session['error'] = error
+        return vistaDesarrollo(request, id_proyecto=fase.proyecto_id)
 
 
 def cancelarSolicitudCambios(request, id_solicitud, id_fase):

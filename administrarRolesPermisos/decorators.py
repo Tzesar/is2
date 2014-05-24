@@ -165,6 +165,9 @@ def puede_trabajar(request, **kwargs):
     if usuario.id == -1:
         return False
 
+    if usuario == proyecto.lider_proyecto:
+        return True
+
     objetos = get_objects_for_user(usuario, 'consultar_Proyecto', klass=Proyecto)
 
     if proyecto in objetos:
