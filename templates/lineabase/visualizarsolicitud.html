@@ -99,7 +99,9 @@
                     {% for voto in votaciones %}
                         <div class="col-sm-4 col-md-4 col-lg-4">
                             <div class="list-group" style="padding-bottom: 5% ; padding-top: 5%; padding-left: 5%; padding-right: 5%; " >
-                                <div class="list-group-item-info" style="padding: 3%; font-size: 100%">
+                                <div class="{% if voto.voto == 'GOOD' %}list-group-item-success
+                                            {% elif voto.voto == 'EVIL' %}list-group-item-danger
+                                            {% endif %}" style="padding: 3%; font-size: 100%">
                                     <b>Usuario: </b>{{ voto.usuario.get_full_name }}<br>
                                     <b>Voto: </b>{{ voto.get_voto_display }}<br>
                                     <b>Justificacion: </b>{{ voto.justificacion }}<br>

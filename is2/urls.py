@@ -17,7 +17,7 @@ from zar.views import about, contact
 from administrarProyectos.views import createProject, changeProject, projectList, workProject, setUserToProject, \
     changeProjectLeader, startProject, cancelProject, finProject, vistaDesarrollo
 from administrarFases.views import changePhase, createPhase, phaseList, deletePhase, importMultiplePhase,\
-    confirmar_eliminacion_fase, workphase, finPhase, startPhase, subirOrden, bajarOrden
+    confirmar_eliminacion_fase, workphase, finPhase, startPhase, subirOrden, bajarOrden, verFase
 from administrarRolesPermisos.views import crearRol, eliminarRol, modificarRol, accesoDenegado
 from administrarItems.views import createItem,\
     historialItemBase, relacionarItemBaseView, reversionItemBase, relacionarItemBase, \
@@ -89,6 +89,7 @@ urlpatterns = patterns('',
                        url(r'^itemtypelist/(?P<id_fase>\d+)$', itemTypeList),
                        url(r'^importitemtype/(?P<id_fase>\d+)/(?P<id_itemtype>\d+)$', importItemType),
                        url(r'^deleteitemtype/(?P<id_tipoitem>\d+)$', deleteItemType),
+                       url(r'^infophase/(?P<id_fase>\d+)$', verFase),
 
 ###################################################### ATRIBUTOS #######################################################
                        url(r'^createatribute/(?P<id_tipoitem>\d+)$', createAtribute),

@@ -10,17 +10,20 @@
         <li class="active">Proyectos</li>
     {% endblock breadContent %}
 
-    {% block successBlock %}
-        {% if exitoCreacion or exitoModif %}
+    {% block errorBlock %}
+        {% if messages %}
             <div class="container-fluid">
-                <div class="alert alert-success alert-dismissable">
+                <div class="alert {% if error == 1 %} alert-danger {% else %} alert-success {% endif %} alert-dismissable">
                     <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
-                    {% if exitoCreacion %}<b>Proyecto <i>{{ proyecto.nombre|capfirst }}</i>:</b> Creado exitosamente. {% endif %}
-                    {% if exitoModif %}<b>Proyecto <i>{{ proyecto.nombre|capfirst }}</i>:</b> Configuración actualizada con exito. {% endif %}
+                    <ul>
+                        {% for message in messages %}
+                            <li>{{ message }}</li>
+                        {% endfor %}
+                    </ul>
                 </div>
             </div>
         {% endif %}
-    {% endblock successBlock %}
+    {% endblock errorBlock %}
 
     {% block padTop %}{% endblock padTop %}
     {% block panelCentral %}

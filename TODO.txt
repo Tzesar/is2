@@ -1,11 +1,4 @@
 
-- Arreglar Change Role - PENDIENTE
-- Boton para visualizar el resultado de la votacion (mejorar en el template =D)
-- Mensaje de modificacion/creacion de proyectos para el admin
-- Gestionar Solicitud de cambios no muestra aunque tenga permisos
 - Agregar filtros para TODOS los templates en caso de que un proyecto ha sido anulado
-- Añadir un boton para CONSULTAR Roles y Fases de los proyectos en estado ACT/ANU/FIN
+- Añadir un boton para CONSULTAR Roles ANU/FIN - En curso
 - VERIFICAR TODOS LOS MENSAJES DE EXITOS/FALLOS EN TODOS LOS TEMPLATES Y VISTAS
-- Verificar los Permisos, algunos fallan (ejemplo Importar Fase)
-- DOCUMENTACION
-- Informar sobre la solicitud de cambios al comite y el resultado de esta a los usuarios vinculados del proyecto

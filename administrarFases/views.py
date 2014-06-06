@@ -379,20 +379,48 @@ def startPhase(request, id_fase):
     :param id_fase: Es el identificador de la fase que pasará a un estado de Desarrollo.
     """
     fase = Fase.objects.get(pk=id_fase)
+    messages = []
 
     fase_anterior = Fase.objects.get(nro_orden=fase.nro_orden-1)
     LB = LineaBase.objects.filter(fase=fase_anterior)
     if LB:
         fase.estado = 'DES'
         fase.save()
-        mensaje = 'La fase ' + fase.nombre + ' se ha iniciado coorrectamente.'
+        messages.append('La fase ' + fase.nombre + ' se ha iniciado coorrectamente.')
         error = 0
-        return vistaDesarrollo(request, fase.proyecto.id, error=error, message=mensaje)
+        request.session['messages'] = messages
+        request.session['error'] = error
+        return HttpResponseRedirect(reverse('administrarProyectos.views.vistaDesarrollo',
+                                        kwargs={'id_proyecto': fase.proyecto.id}))
 
     else:
-        mensaje = 'La fase ' + fase.nombre + ' no se ha iniciado coorrectamente. Favor verifique la existencia ' \
-                                             'de Lineas Base en la Fase Anterior: ' + fase_anterior.nombre
+        messages.append('La fase ' + fase.nombre + ' no se ha iniciado coorrectamente. Favor verifique la existencia ' \
+                                             'de Lineas Base en la Fase Anterior: ' + fase_anterior.nombre)
         error = 1
-        return vistaDesarrollo(request, fase.proyecto.id, error=error, message=mensaje)
+        request.session['messages'] = messages
+        request.session['error'] = error
+        return HttpResponseRedirect(reverse('administrarProyectos.views.vistaDesarrollo',
+                                        kwargs={'id_proyecto': fase.proyecto.id}))
+
+
+def verFase(request, id_fase):
+    """
+    Función para visualizar detalles de una fase dentro de un proyecto que ya ha entrado en ejecución,
+    ha sido cancelado o ha finalizado.
+
+    :param request: HttpRequest es la solicitud de la acción.
+    :param id_fase: Es el identificador de la fase que se viualiza.
+    """
+    fase = Fase.objects.get(pk=id_fase)
+
+    tiposItem = {}
+
+    tipos = TipoItem.objects.filter(fase=fase)
+    for t in tipos:
+        atributos = Atributo.objects.filter(tipoDeItem=t)
+        tiposItem[t] = atributos
+
+    return render(request, 'fase/infophase.html', {'proyecto': fase.proyecto, 'fase': fase, 'user': request.user,
+                                                   'tiposItem': tiposItem.items()})
 
 

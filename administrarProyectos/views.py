@@ -41,6 +41,7 @@ def createProject(request):
     """
 
     admin = request.user
+    mensajes = []
 
     if request.method == 'POST':
         form = NewProjectForm(request.POST)
@@ -61,6 +62,12 @@ def createProject(request):
             rolComite.save()
 
             grupoComite.user_set.add(proyectoNuevo.lider_proyecto)
+
+            error = 0
+            mensaje = 'Proyecto: ' + proyectoNuevo.nombre + '. Creado con exito. Configuracion inicial aplicada.'
+            mensajes.append(mensaje)
+            request.session['messages'] = mensajes
+            request.session['error'] = error
 
             return HttpResponseRedirect('/projectlist/')
     else:
@@ -107,7 +114,7 @@ def changeProject(request, id_proyecto):
 
             proyectoModificado = Proyecto.objects.get(nombre=form["nombre"].value())
             error = 0
-            mensaje = 'El proyecto ' + proyectoModificado.nombre + ' ha sido modificado exitosamente'
+            mensaje = 'Proyecto: ' + proyectoModificado.nombre + '. Configuracion actualizada correctamente.'
             mensajes.append(mensaje)
             request.session['messages'] = mensajes
             request.session['error'] = error
@@ -182,7 +189,15 @@ def projectList(request):
 
     proyectos = ProyectoTablaAdmin(Proyecto.objects.all().order_by('nombre'))
     RequestConfig(request, paginate={"per_page": 25}).configure(proyectos)
-    return render(request, "proyecto/projectlist.html", {'user': request.user, 'proyectos': proyectos}, )
+
+    error = None
+    messages = None
+    if 'error' in request.session:
+        error = request.session.pop('error')
+    if 'messages' in request.session:
+        messages = request.session.pop('messages')
+    return render(request, "proyecto/projectlist.html", {'user': request.user, 'proyectos': proyectos,
+                                                         'error': error, 'messages': messages}, )
 
 
 @login_required()
@@ -401,7 +416,7 @@ def cancelProject(request, id_proyecto):
         proyecto.estado = 'ANU'
         proyecto.save()
         error = 0
-        messages.append('El proyecto ha sido anulado')
+        messages.append('El proyecto ' + proyecto.nombre + ' ha sido anulado')
 
     request.session['messages'] = messages
     request.session['error'] = error

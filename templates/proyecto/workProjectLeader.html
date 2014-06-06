@@ -47,7 +47,8 @@
                 {% endif %}
             </span>
         </div>
-        <div class="{% if proyecto.estado != 'FIN' %}list-group-item-info
+        <div class="{% if proyecto.estado == 'PEN' or proyecto.estado == 'ACT' %}list-group-item-info
+                    {% elif proyecto.estado == 'ANU' %}list-group-item-danger
                     {% else %}list-group-item-success
                     {% endif %}"
              style="padding-left: 2%; padding-top: 1%; padding-bottom: 1%">
@@ -117,7 +118,7 @@
                                     <div class="list-group-item">
                                         <div class="row">
                                             <div class="col-sm-12">
-                                                <span class="text-primary">{{ fase.nombre }}</span> <span class="text-muted">(Estado: {{ fase.get_estado_display }})</span>
+                                                <a href="{% url 'administrarFases.views.verFase' fase.id %}" class="text-primary">{{ fase.nombre }}</a> <span class="text-muted">(Estado: {{ fase.get_estado_display }})</span>
                                             </div>
                                         </div>
                                     </div>

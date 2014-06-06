@@ -63,7 +63,11 @@
                                             <i><u>Fecha Creación</u>:</i> {{ solicitud.fecha_creacion }}<br>
                                             <i><u>Motivo</u>:</i> {{ solicitud.motivo }} <br>
                                             <br>
-                                            <p class="list-group-item-warning" style="font-size: 10px; line-height: 2">
+                                            <p class="{% if solicitud.estado == 'ACP' %}list-group-item-success
+                                                      {% elif solicitud.estado == 'RCH' %}list-group-item-danger
+                                                      {% elif solicitud.estado == 'VOT' %}list-group-item-warning
+                                                      {% else %}list-group-item-gray
+                                                      {% endif %}" style="font-size: 10px; line-height: 2">
                                                 <b>Información general</b><br>
                                                 <b> + Estado:</b> {{ solicitud.get_estado_display }}
                                                 <br><b> + Costo total de trabajo:</b> {{ solicitud.costo }}
@@ -141,7 +145,11 @@
                                             <i><u>Usuario Responable</u>:</i> {{ solicitud.usuario.get_full_name }}<br>
                                             <i><u>Motivo</u>:</i> {{ solicitud.motivo }} <br>
                                             <br>
-                                            <p class="list-group-item-warning" style="font-size: 10px; line-height: 2">
+                                            <p class="{% if solicitud.estado == 'ACP' %}list-group-item-success
+                                                      {% elif solicitud.estado == 'RCH' %}list-group-item-danger
+                                                      {% elif solicitud.estado == 'VOT' %}list-group-item-warning
+                                                      {% else %}list-group-item-gray
+                                                      {% endif %}" style="font-size: 10px; line-height: 2">
                                                 <b>Información general</b><br>
                                                 <b> + Estado:</b> {{ solicitud.get_estado_display }}
                                                 <br><b> + Costo total de trabajo:</b> {{ solicitud.costo }}
