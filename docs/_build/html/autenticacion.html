@@ -1,117 +1,124 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
-  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 
 
-<html xmlns="http://www.w3.org/1999/xhtml">
-  <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    
-    <title>Autenticacion &mdash; ZARpm - Documentation</title>
-    
-    <link rel="stylesheet" href="_static/nature.css" type="text/css" />
-    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
-    
-    <script type="text/javascript">
-      var DOCUMENTATION_OPTIONS = {
-        URL_ROOT:    './',
-        VERSION:     '1.0',
-        COLLAPSE_INDEX: false,
-        FILE_SUFFIX: '.html',
-        HAS_SOURCE:  true
-      };
-    </script>
-    <script type="text/javascript" src="_static/jquery.js"></script>
-    <script type="text/javascript" src="_static/underscore.js"></script>
-    <script type="text/javascript" src="_static/doctools.js"></script>
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Autenticacion &mdash; ZARpm - Documentation</title>
+  
+
+  
+  
     <link rel="shortcut icon" href="_static/favicon.ico"/>
-    <link rel="top" title="ZARpm - Documentation" href="index.html" />
-    <link rel="next" title="Usuarios" href="administrarUsuarios.html" />
-    <link rel="prev" title="Contenidos:" href="index.html" /> 
-  </head>
-  <body>
-    <div class="related">
-      <h3>Navegación</h3>
-      <ul>
-        <li class="right" style="margin-right: 10px">
-          <a href="genindex.html" title="Índice General"
-             accesskey="I">índice</a></li>
-        <li class="right" >
-          <a href="py-modindex.html" title="Índice de Módulos Python"
-             >módulos</a> |</li>
-        <li class="right" >
-          <a href="administrarUsuarios.html" title="Usuarios"
-             accesskey="N">siguiente</a> |</li>
-        <li class="right" >
-          <a href="index.html" title="Contenidos:"
-             accesskey="P">anterior</a> |</li>
-        <li><a href="index.html">ZARpm - Documentation</a> &raquo;</li> 
-      </ul>
-    </div>  
+  
 
-    <div class="document">
-      <div class="documentwrapper">
-        <div class="bodywrapper">
-          <div class="body">
+  
+  <link href='https://fonts.googleapis.com/css?family=Lato:400,700|Roboto+Slab:400,700|Inconsolata:400,700' rel='stylesheet' type='text/css'>
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  
+
+  
+    <link rel="top" title="ZARpm - Documentation" href="index.html"/>
+        <link rel="up" title="Modulos" href="modules.html"/>
+        <link rel="next" title="ZARpm" href="is2.html"/>
+        <link rel="prev" title="Usuarios" href="administrarUsuarios.html"/> 
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/modernizr/2.6.2/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-nav-search">
+        <a href="index.html" class="fa fa-home"> ZARpm</a>
+        <div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+        
+        
+            <ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="modules.html">Modulos</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="administrarFases.html">Fases</a></li>
+<li class="toctree-l2"><a class="reference internal" href="administrarItems.html">Items</a></li>
+<li class="toctree-l2"><a class="reference internal" href="administrarLineaBase.html">LineaBase</a></li>
+<li class="toctree-l2"><a class="reference internal" href="administrarProyectos.html">Proyectos</a></li>
+<li class="toctree-l2"><a class="reference internal" href="administrarRolesPermisos.html">Roles y Permisos</a></li>
+<li class="toctree-l2"><a class="reference internal" href="administrarTipoItem.html">Tipo de Item</a></li>
+<li class="toctree-l2"><a class="reference internal" href="administrarUsuarios.html">Usuarios</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="">Autenticacion</a></li>
+<li class="toctree-l2"><a class="reference internal" href="is2.html">ZARpm</a></li>
+<li class="toctree-l2"><a class="reference internal" href="manage.html">manage module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="zar.html">zar package</a></li>
+</ul>
+</li>
+</ul>
+
+        
+      </div>
+      &nbsp;
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="index.html">ZARpm</a>
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="index.html">Docs</a> &raquo;</li>
+      
+          <li><a href="modules.html">Modulos</a> &raquo;</li>
+      
+    <li>Autenticacion</li>
+      <li class="wy-breadcrumbs-aside">
+        
+          <a href="_sources/autenticacion.txt" rel="nofollow"> View page source</a>
+        
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main">
             
   <div class="section" id="autenticacion">
 <h1>Autenticacion<a class="headerlink" href="#autenticacion" title="Enlazar permanentemente con este título">¶</a></h1>
 <div class="section" id="module-autenticacion.models">
-<span id="models"></span><h2>models<a class="headerlink" href="#module-autenticacion.models" title="Enlazar permanentemente con este título">¶</a></h2>
-<dl class="class">
-<dt id="autenticacion.models.AbstractUser">
-<em class="property">class </em><tt class="descclassname">autenticacion.models.</tt><tt class="descname">AbstractUser</tt><big>(</big><em>*args</em>, <em>**kwargs</em><big>)</big><a class="headerlink" href="#autenticacion.models.AbstractUser" title="Enlazar permanentemente con esta definición">¶</a></dt>
-<dd><p>Clases base: <tt class="xref py py-class docutils literal"><span class="pre">django.contrib.auth.models.AbstractBaseUser</span></tt></p>
-<p><em>Clase Abstracta que posse todas las funciones a ser implementadas por el modelo Usuario,</em>
-<em>sin los permisos de administrador. El cual tiene como base el modelo</em> <tt class="docutils literal"><span class="pre">AbstractBaseUser</span></tt>.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parámetros:</th><td class="field-body"><ul class="first last simple">
-<li><strong>args</strong> &#8211; Argumentos para el modelo <tt class="docutils literal"><span class="pre">AbstractBaseUser</span></tt>.</li>
-<li><strong>kwargs</strong> &#8211; Keyword Arguments para el modelo <tt class="docutils literal"><span class="pre">AbstractBaseUser</span></tt>.</li>
-</ul>
-</td>
-</tr>
-</tbody>
-</table>
-<div class="highlight-python"><div class="highlight"><pre><span class="k">class</span> <span class="nc">Meta</span><span class="p">:</span>
-    <span class="n">verbose_name</span> <span class="o">=</span> <span class="s">&#39;user&#39;</span>
-    <span class="n">verbose_name_plural</span> <span class="o">=</span> <span class="s">&#39;users&#39;</span>
-    <span class="n">abstract</span> <span class="o">=</span> <span class="bp">True</span>
-</pre></div>
-</div>
-<dl class="method">
-<dt id="autenticacion.models.AbstractUser.email_user">
-<tt class="descname">email_user</tt><big>(</big><em>subject</em>, <em>message</em>, <em>from_email=None</em><big>)</big><a class="headerlink" href="#autenticacion.models.AbstractUser.email_user" title="Enlazar permanentemente con esta definición">¶</a></dt>
-<dd><p>Envia un email al usuario.</p>
-</dd></dl>
-
-<dl class="method">
-<dt id="autenticacion.models.AbstractUser.get_full_name">
-<tt class="descname">get_full_name</tt><big>(</big><big>)</big><a class="headerlink" href="#autenticacion.models.AbstractUser.get_full_name" title="Enlazar permanentemente con esta definición">¶</a></dt>
-<dd><p>Retorna el nombre completo del usuario.</p>
-</dd></dl>
-
-<dl class="method">
-<dt id="autenticacion.models.AbstractUser.get_profile">
-<tt class="descname">get_profile</tt><big>(</big><big>)</big><a class="headerlink" href="#autenticacion.models.AbstractUser.get_profile" title="Enlazar permanentemente con esta definición">¶</a></dt>
-<dd><p>Retorna el perfil del usuario.</p>
-</dd></dl>
-
-<dl class="method">
-<dt id="autenticacion.models.AbstractUser.get_short_name">
-<tt class="descname">get_short_name</tt><big>(</big><big>)</big><a class="headerlink" href="#autenticacion.models.AbstractUser.get_short_name" title="Enlazar permanentemente con esta definición">¶</a></dt>
-<dd><p>&#8221;
-Retorna el primer nombre del usuario.</p>
-</dd></dl>
-
-</dd></dl>
-
+<span id="modelos"></span><h2>Modelos<a class="headerlink" href="#module-autenticacion.models" title="Enlazar permanentemente con este título">¶</a></h2>
 <dl class="class">
 <dt id="autenticacion.models.Usuario">
 <em class="property">class </em><tt class="descclassname">autenticacion.models.</tt><tt class="descname">Usuario</tt><big>(</big><em>*args</em>, <em>**kwargs</em><big>)</big><a class="headerlink" href="#autenticacion.models.Usuario" title="Enlazar permanentemente con esta definición">¶</a></dt>
-<dd><p>Clases base: <a class="reference internal" href="#autenticacion.models.AbstractUser" title="autenticacion.models.AbstractUser"><tt class="xref py py-class docutils literal"><span class="pre">autenticacion.models.AbstractUser</span></tt></a></p>
+<dd><p>Clases base: <tt class="xref py py-class docutils literal"><span class="pre">django.contrib.auth.models.AbstractUser</span></tt></p>
 <p><em>Extension de la clase User de Django. Extiende del modelo definido</em> <tt class="docutils literal"><span class="pre">AbstractUser</span></tt>
 <em>Agrega los campos telefono y otros.</em></p>
 <table class="docutils field-list" frame="void" rules="none">
@@ -130,7 +137,7 @@ Retorna el primer nombre del usuario.</p>
 
 </div>
 <div class="section" id="module-autenticacion.tests">
-<span id="tests"></span><h2>tests<a class="headerlink" href="#module-autenticacion.tests" title="Enlazar permanentemente con este título">¶</a></h2>
+<span id="pruebas-unitarias"></span><h2>Pruebas Unitarias<a class="headerlink" href="#module-autenticacion.tests" title="Enlazar permanentemente con este título">¶</a></h2>
 <dl class="class">
 <dt id="autenticacion.tests.TestAutenticacionViewsMyLogin">
 <em class="property">class </em><tt class="descclassname">autenticacion.tests.</tt><tt class="descname">TestAutenticacionViewsMyLogin</tt><big>(</big><em>methodName='runTest'</em><big>)</big><a class="headerlink" href="#autenticacion.tests.TestAutenticacionViewsMyLogin" title="Enlazar permanentemente con esta definición">¶</a></dt>
@@ -170,7 +177,7 @@ Retorna el primer nombre del usuario.</p>
 
 </div>
 <div class="section" id="module-autenticacion.views">
-<span id="views"></span><h2>views<a class="headerlink" href="#module-autenticacion.views" title="Enlazar permanentemente con este título">¶</a></h2>
+<span id="vistas-funciones"></span><h2>Vistas(Funciones)<a class="headerlink" href="#module-autenticacion.views" title="Enlazar permanentemente con este título">¶</a></h2>
 <dl class="function">
 <dt id="autenticacion.views.UserResetPassword">
 <tt class="descclassname">autenticacion.views.</tt><tt class="descname">UserResetPassword</tt><big>(</big><em>request</em><big>)</big><a class="headerlink" href="#autenticacion.views.UserResetPassword" title="Enlazar permanentemente con esta definición">¶</a></dt>
@@ -256,72 +263,67 @@ Retorna el primer nombre del usuario.</p>
 
 
           </div>
-        </div>
-      </div>
-      <div class="sphinxsidebar">
-        <div class="sphinxsidebarwrapper">
-            <p class="logo"><a href="index.html">
-              <img class="logo" src="_static/logoZARpm.jpg" alt="Logo"/>
-            </a></p>
-  <h3><a href="index.html">Tabla de Contenidos</a></h3>
-  <ul>
-<li><a class="reference internal" href="#">Autenticacion</a><ul>
-<li><a class="reference internal" href="#module-autenticacion.models">models</a></li>
-<li><a class="reference internal" href="#module-autenticacion.tests">tests</a></li>
-<li><a class="reference internal" href="#module-autenticacion.views">views</a></li>
-</ul>
-</li>
-</ul>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="is2.html" class="btn btn-neutral float-right" title="ZARpm"/>Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="administrarUsuarios.html" class="btn btn-neutral" title="Usuarios"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
 
-  <h4>Tema anterior</h4>
-  <p class="topless"><a href="index.html"
-                        title="capítulo anterior">Contenidos:</a></p>
-  <h4>Próximo tema</h4>
-  <p class="topless"><a href="administrarUsuarios.html"
-                        title="próximo capítulo">Usuarios</a></p>
-  <h3>Esta página</h3>
-  <ul class="this-page-menu">
-    <li><a href="_sources/autenticacion.txt"
-           rel="nofollow">Mostrar el código</a></li>
-  </ul>
-<div id="searchbox" style="display: none">
-  <h3>Búsqueda rápida</h3>
-    <form class="search" action="search.html" method="get">
-      <input type="text" name="q" />
-      <input type="submit" value="Ir a" />
-      <input type="hidden" name="check_keywords" value="yes" />
-      <input type="hidden" name="area" value="default" />
-    </form>
-    <p class="searchtip" style="font-size: 90%">
-    Introduzca los términos de búsqueda o un nombre de módulo, clase o función.
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2014, Augusto Amarilla, Gerardo Ramos y Saúl Zalimben.
     </p>
-</div>
-<script type="text/javascript">$('#searchbox').show(0);</script>
+  </div>
+
+  <a href="https://github.com/snide/sphinx_rtd_theme">Sphinx theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>
+</footer>
         </div>
       </div>
-      <div class="clearer"></div>
-    </div>
-    <div class="related">
-      <h3>Navegación</h3>
-      <ul>
-        <li class="right" style="margin-right: 10px">
-          <a href="genindex.html" title="Índice General"
-             >índice</a></li>
-        <li class="right" >
-          <a href="py-modindex.html" title="Índice de Módulos Python"
-             >módulos</a> |</li>
-        <li class="right" >
-          <a href="administrarUsuarios.html" title="Usuarios"
-             >siguiente</a> |</li>
-        <li class="right" >
-          <a href="index.html" title="Contenidos:"
-             >anterior</a> |</li>
-        <li><a href="index.html">ZARpm - Documentation</a> &raquo;</li> 
-      </ul>
-    </div>
-    <div class="footer">
-        &copy; Copyright 2014, Augusto Amarilla, Gerardo Ramos y Saúl Zalimben.
-      Creado con <a href="http://sphinx-doc.org/">Sphinx</a> 1.2.2.
-    </div>
-  </body>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'./',
+            VERSION:'1.0',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true
+        };
+    </script>
+      <script type="text/javascript" src="_static/jquery.js"></script>
+      <script type="text/javascript" src="_static/underscore.js"></script>
+      <script type="text/javascript" src="_static/doctools.js"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
 </html>

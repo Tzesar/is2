@@ -1,62 +1,145 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
-  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 
 
-<html xmlns="http://www.w3.org/1999/xhtml">
-  <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    
-    <title>Fases &mdash; ZARpm - Documentation</title>
-    
-    <link rel="stylesheet" href="_static/nature.css" type="text/css" />
-    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
-    
-    <script type="text/javascript">
-      var DOCUMENTATION_OPTIONS = {
-        URL_ROOT:    './',
-        VERSION:     '1.0',
-        COLLAPSE_INDEX: false,
-        FILE_SUFFIX: '.html',
-        HAS_SOURCE:  true
-      };
-    </script>
-    <script type="text/javascript" src="_static/jquery.js"></script>
-    <script type="text/javascript" src="_static/underscore.js"></script>
-    <script type="text/javascript" src="_static/doctools.js"></script>
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Fases &mdash; ZARpm - Documentation</title>
+  
+
+  
+  
     <link rel="shortcut icon" href="_static/favicon.ico"/>
-    <link rel="top" title="ZARpm - Documentation" href="index.html" />
-    <link rel="next" title="administrarTipoItem package" href="administrarTipoItem.html" />
-    <link rel="prev" title="Proyectos" href="administrarProyectos.html" /> 
-  </head>
-  <body>
-    <div class="related">
-      <h3>Navegación</h3>
-      <ul>
-        <li class="right" style="margin-right: 10px">
-          <a href="genindex.html" title="Índice General"
-             accesskey="I">índice</a></li>
-        <li class="right" >
-          <a href="py-modindex.html" title="Índice de Módulos Python"
-             >módulos</a> |</li>
-        <li class="right" >
-          <a href="administrarTipoItem.html" title="administrarTipoItem package"
-             accesskey="N">siguiente</a> |</li>
-        <li class="right" >
-          <a href="administrarProyectos.html" title="Proyectos"
-             accesskey="P">anterior</a> |</li>
-        <li><a href="index.html">ZARpm - Documentation</a> &raquo;</li> 
-      </ul>
-    </div>  
+  
 
-    <div class="document">
-      <div class="documentwrapper">
-        <div class="bodywrapper">
-          <div class="body">
+  
+  <link href='https://fonts.googleapis.com/css?family=Lato:400,700|Roboto+Slab:400,700|Inconsolata:400,700' rel='stylesheet' type='text/css'>
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  
+
+  
+    <link rel="top" title="ZARpm - Documentation" href="index.html"/>
+        <link rel="up" title="Modulos" href="modules.html"/>
+        <link rel="next" title="Items" href="administrarItems.html"/>
+        <link rel="prev" title="Modulos" href="modules.html"/> 
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/modernizr/2.6.2/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-nav-search">
+        <a href="index.html" class="fa fa-home"> ZARpm</a>
+        <div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+        
+        
+            <ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="modules.html">Modulos</a><ul class="current">
+<li class="toctree-l2 current"><a class="current reference internal" href="">Fases</a></li>
+<li class="toctree-l2"><a class="reference internal" href="administrarItems.html">Items</a></li>
+<li class="toctree-l2"><a class="reference internal" href="administrarLineaBase.html">LineaBase</a></li>
+<li class="toctree-l2"><a class="reference internal" href="administrarProyectos.html">Proyectos</a></li>
+<li class="toctree-l2"><a class="reference internal" href="administrarRolesPermisos.html">Roles y Permisos</a></li>
+<li class="toctree-l2"><a class="reference internal" href="administrarTipoItem.html">Tipo de Item</a></li>
+<li class="toctree-l2"><a class="reference internal" href="administrarUsuarios.html">Usuarios</a></li>
+<li class="toctree-l2"><a class="reference internal" href="autenticacion.html">Autenticacion</a></li>
+<li class="toctree-l2"><a class="reference internal" href="is2.html">ZARpm</a></li>
+<li class="toctree-l2"><a class="reference internal" href="manage.html">manage module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="zar.html">zar package</a></li>
+</ul>
+</li>
+</ul>
+
+        
+      </div>
+      &nbsp;
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="index.html">ZARpm</a>
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="index.html">Docs</a> &raquo;</li>
+      
+          <li><a href="modules.html">Modulos</a> &raquo;</li>
+      
+    <li>Fases</li>
+      <li class="wy-breadcrumbs-aside">
+        
+          <a href="_sources/administrarFases.txt" rel="nofollow"> View page source</a>
+        
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main">
             
   <div class="section" id="fases">
 <h1>Fases<a class="headerlink" href="#fases" title="Enlazar permanentemente con este título">¶</a></h1>
+<div class="section" id="module-administrarFases.decorators">
+<span id="decoradores"></span><h2>Decoradores<a class="headerlink" href="#module-administrarFases.decorators" title="Enlazar permanentemente con este título">¶</a></h2>
+<dl class="function">
+<dt id="administrarFases.decorators.puede_modificar_fase">
+<tt class="descclassname">administrarFases.decorators.</tt><tt class="descname">puede_modificar_fase</tt><big>(</big><em>request</em>, <em>**kwargs</em><big>)</big><a class="headerlink" href="#administrarFases.decorators.puede_modificar_fase" title="Enlazar permanentemente con esta definición">¶</a></dt>
+<dd><p><tt class="docutils literal"><span class="pre">Metodo</span> <span class="pre">del</span> <span class="pre">Decorador</span></tt> : <em>Es llamado por el decorador ``lider_requerido`` para comprobar que el usuario logueado
+sea Líder del proyecto al cual la vista intenta acceder.</em></p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parámetros:</th><td class="field-body"><ul class="first simple">
+<li><strong>request</strong> &#8211; HttpRequest con los datos del usuario actual.</li>
+<li><strong>id_proyecto</strong> &#8211; Id del proyecto al cual se intenta acceder.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Devuelve:</th><td class="field-body"><p class="first last">La <tt class="docutils literal"><span class="pre">vista</span></tt> en el caso de que el usuario sea el <tt class="docutils literal"><span class="pre">Líder</span></tt> del proyecto, caso contrario se redirige a <tt class="docutils literal"><span class="pre">/acceso_denegado/</span></tt>.</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
 <div class="section" id="module-administrarFases.forms">
-<span id="forms"></span><h2>forms<a class="headerlink" href="#module-administrarFases.forms" title="Enlazar permanentemente con este título">¶</a></h2>
+<span id="formularios"></span><h2>Formularios<a class="headerlink" href="#module-administrarFases.forms" title="Enlazar permanentemente con este título">¶</a></h2>
 <dl class="class">
 <dt id="administrarFases.forms.ChangePhaseForm">
 <em class="property">class </em><tt class="descclassname">administrarFases.forms.</tt><tt class="descname">ChangePhaseForm</tt><big>(</big><em>*args</em>, <em>**kwargs</em><big>)</big><a class="headerlink" href="#administrarFases.forms.ChangePhaseForm" title="Enlazar permanentemente con esta definición">¶</a></dt>
@@ -79,7 +162,7 @@
 </table>
 <div class="highlight-python"><div class="highlight"><pre><span class="k">class</span> <span class="nc">Meta</span><span class="p">:</span>
     <span class="n">model</span> <span class="o">=</span> <span class="n">Fase</span>
-    <span class="n">fields</span> <span class="o">=</span> <span class="p">(</span><span class="s">&#39;nombre&#39;</span><span class="p">,</span> <span class="s">&#39;estado&#39;</span><span class="p">,</span> <span class="s">&#39;descripcion&#39;</span><span class="p">,)</span>
+    <span class="n">fields</span> <span class="o">=</span> <span class="p">(</span><span class="s">&#39;nombre&#39;</span><span class="p">,</span> <span class="s">&#39;descripcion&#39;</span><span class="p">,)</span>
 </pre></div>
 </div>
 </dd></dl>
@@ -114,7 +197,7 @@
 
 </div>
 <div class="section" id="module-administrarFases.models">
-<span id="models"></span><h2>models<a class="headerlink" href="#module-administrarFases.models" title="Enlazar permanentemente con este título">¶</a></h2>
+<span id="modelos"></span><h2>Modelos<a class="headerlink" href="#module-administrarFases.models" title="Enlazar permanentemente con este título">¶</a></h2>
 <dl class="class">
 <dt id="administrarFases.models.Fase">
 <em class="property">class </em><tt class="descclassname">administrarFases.models.</tt><tt class="descname">Fase</tt><big>(</big><em>*args</em>, <em>**kwargs</em><big>)</big><a class="headerlink" href="#administrarFases.models.Fase" title="Enlazar permanentemente con esta definición">¶</a></dt>
@@ -146,7 +229,7 @@
 
 </div>
 <div class="section" id="module-administrarFases.tests">
-<span id="tests"></span><h2>tests<a class="headerlink" href="#module-administrarFases.tests" title="Enlazar permanentemente con este título">¶</a></h2>
+<span id="pruebas-unitarias"></span><h2>Pruebas Unitarias<a class="headerlink" href="#module-administrarFases.tests" title="Enlazar permanentemente con este título">¶</a></h2>
 <dl class="class">
 <dt id="administrarFases.tests.TestAdministrarFases">
 <em class="property">class </em><tt class="descclassname">administrarFases.tests.</tt><tt class="descname">TestAdministrarFases</tt><big>(</big><em>methodName='runTest'</em><big>)</big><a class="headerlink" href="#administrarFases.tests.TestAdministrarFases" title="Enlazar permanentemente con esta definición">¶</a></dt>
@@ -188,38 +271,22 @@
 
 </div>
 <div class="section" id="module-administrarFases.views">
-<span id="views"></span><h2>views<a class="headerlink" href="#module-administrarFases.views" title="Enlazar permanentemente con este título">¶</a></h2>
+<span id="vistas-funciones"></span><h2>Vistas(Funciones)<a class="headerlink" href="#module-administrarFases.views" title="Enlazar permanentemente con este título">¶</a></h2>
 <dl class="function">
-<dt id="administrarFases.views.eliminarPermisos">
-<tt class="descclassname">administrarFases.views.</tt><tt class="descname">eliminarPermisos</tt><big>(</big><em>phase</em><big>)</big><a class="headerlink" href="#administrarFases.views.eliminarPermisos" title="Enlazar permanentemente con esta definición">¶</a></dt>
-<dd><p><em>Vista para la eliminacion de permisos correspondientes a la fase</em></p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parámetros:</th><td class="field-body"><strong>phase</strong> &#8211; Recibe la instancia de la fase que se eliminará.</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Devuelve:</th><td class="field-body">Los permisos vinculados son eliminados correctamente.</td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
-<dl class="function">
-<dt id="administrarFases.views.generarPermisosFase">
-<tt class="descclassname">administrarFases.views.</tt><tt class="descname">generarPermisosFase</tt><big>(</big><em>project</em>, <em>fase</em><big>)</big><a class="headerlink" href="#administrarFases.views.generarPermisosFase" title="Enlazar permanentemente con esta definición">¶</a></dt>
-<dd><p><em>Vista para generación de permisos correspondientes a la fase</em></p>
+<dt id="administrarFases.views.bajarOrden">
+<tt class="descclassname">administrarFases.views.</tt><tt class="descname">bajarOrden</tt><big>(</big><em>request</em>, <em>*args</em>, <em>**kwargs</em><big>)</big><a class="headerlink" href="#administrarFases.views.bajarOrden" title="Enlazar permanentemente con esta definición">¶</a></dt>
+<dd><p><em>Función para &#8220;Bajar&#8221; el número de orden de una Fase que pertenece a algún proyecto</em></p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parámetros:</th><td class="field-body"><ul class="first simple">
-<li><strong>project</strong> &#8211; Recibe la instancia del proyecto al cual pertenece la fase.</li>
-<li><strong>fase</strong> &#8211; Recibe la instancia de la fase en la cual se crearán los permisos.</li>
+<li><strong>request</strong> &#8211; HttpRequest es la solicitud de la acción.</li>
+<li><strong>id_fase</strong> &#8211; Identificador de la fase la cual se desea modificar su orden</li>
 </ul>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">Devuelve:</th><td class="field-body"><p class="first last">Los permisos generados se vinculan correctamente a la fase creada.</p>
+<tr class="field-even field"><th class="field-name">Devuelve:</th><td class="field-body"><p class="first last">La fase se ha modificado correctamente</p>
 </td>
 </tr>
 </tbody>
@@ -227,9 +294,229 @@
 </dd></dl>
 
 <dl class="function">
-<dt id="administrarFases.views.importPhase">
-<tt class="descclassname">administrarFases.views.</tt><tt class="descname">importPhase</tt><big>(</big><em>request</em>, <em>id_fase</em>, <em>id_proyecto_destino</em><big>)</big><a class="headerlink" href="#administrarFases.views.importPhase" title="Enlazar permanentemente con esta definición">¶</a></dt>
+<dt id="administrarFases.views.changePhase">
+<tt class="descclassname">administrarFases.views.</tt><tt class="descname">changePhase</tt><big>(</big><em>request</em>, <em>*args</em>, <em>**kwargs</em><big>)</big><a class="headerlink" href="#administrarFases.views.changePhase" title="Enlazar permanentemente con esta definición">¶</a></dt>
+<dd><p><em>Vista para la modificacion de una fase dentro del sistema.
+Opción válida para usuarios con los roles correspondientes.</em></p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parámetros:</th><td class="field-body"><ul class="first simple">
+<li><strong>request</strong> &#8211; HttpRequest necesario para modificar la fase, es la solicitud de la acción.</li>
+<li><strong>id_fase</strong> &#8211; Identificador de la fase dentro del sistema la cual se desea modificar.</li>
+<li><strong>args</strong> &#8211; Argumentos para el modelo <tt class="docutils literal"><span class="pre">Fase</span></tt>.</li>
+<li><strong>kwargs</strong> &#8211; Keyword Arguments para la el modelo <tt class="docutils literal"><span class="pre">Fase</span></tt>.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Devuelve:</th><td class="field-body"><p class="first last">Proporciona la pagina <tt class="docutils literal"><span class="pre">changephase.html</span></tt> con el formulario correspondiente.
+Modifica la fase especifica  y luego regresa al menu principal</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="administrarFases.views.confirmar_eliminacion_fase">
+<tt class="descclassname">administrarFases.views.</tt><tt class="descname">confirmar_eliminacion_fase</tt><big>(</big><em>request</em>, <em>*args</em>, <em>**kwargs</em><big>)</big><a class="headerlink" href="#administrarFases.views.confirmar_eliminacion_fase" title="Enlazar permanentemente con esta definición">¶</a></dt>
+<dd><p><em>Vista para la confirmar la eliminación definitiva de una fase del proyecto.
+Opción válida para usuarios con los roles correspondientes.</em></p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parámetros:</th><td class="field-body"><ul class="first simple">
+<li><strong>request</strong> &#8211; HttpRequest - Solicitud de eliminación.</li>
+<li><strong>id_fase</strong> &#8211; Identificador de la fase dentro del sistema la cual se desea eliminar.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Devuelve:</th><td class="field-body"><p class="first last">Elimina la fase especifica  y luego regresa al menu de fases.</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="administrarFases.views.createPhase">
+<tt class="descclassname">administrarFases.views.</tt><tt class="descname">createPhase</tt><big>(</big><em>request</em>, <em>*args</em>, <em>**kwargs</em><big>)</big><a class="headerlink" href="#administrarFases.views.createPhase" title="Enlazar permanentemente con esta definición">¶</a></dt>
+<dd><p><em>Vista para la creación de fases en el sistema.
+Opción válida para usuarios con los roles correspondientes.</em></p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parámetros:</th><td class="field-body"><ul class="first simple">
+<li><strong>request</strong> &#8211; HttpRequest necesario para crear fases dentro de los proyectos, es la solicitud de la acción.</li>
+<li><strong>id_proyecto</strong> &#8211; Identificador del proyecto dentro del sistema al cual se le vincularán las fases creadas.</li>
+<li><strong>args</strong> &#8211; Argumentos para el modelo <tt class="docutils literal"><span class="pre">Fase</span></tt>.</li>
+<li><strong>kwargs</strong> &#8211; Keyword Arguments para la el modelo <tt class="docutils literal"><span class="pre">Fase</span></tt>.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Devuelve:</th><td class="field-body"><p class="first last">Proporciona la pagina <tt class="docutils literal"><span class="pre">createphase.html</span></tt> con el formulario correspondiente.
+Crea la fase dentro del proyecto especificando y luego regresa al menu principal</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="administrarFases.views.deletePhase">
+<tt class="descclassname">administrarFases.views.</tt><tt class="descname">deletePhase</tt><big>(</big><em>request</em>, <em>*args</em>, <em>**kwargs</em><big>)</big><a class="headerlink" href="#administrarFases.views.deletePhase" title="Enlazar permanentemente con esta definición">¶</a></dt>
+<dd><p><em>Vista para la eliminación de una fase dentro del sistema.
+Opción válida para usuarios con los roles correspondientes.</em></p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parámetros:</th><td class="field-body"><ul class="first simple">
+<li><strong>request</strong> &#8211; HttpRequest necesario para eliminar fases de un proyectos, es la solicitud de la acción.</li>
+<li><strong>id_fase</strong> &#8211; Identificador de la fase dentro del sistema la cual se desea eliminar.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Devuelve:</th><td class="field-body"><p class="first last">Elimina la fase especifica  y luego regresa al menu de fases.</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="administrarFases.views.finPhase">
+<tt class="descclassname">administrarFases.views.</tt><tt class="descname">finPhase</tt><big>(</big><em>request</em>, <em>*args</em>, <em>**kwargs</em><big>)</big><a class="headerlink" href="#administrarFases.views.finPhase" title="Enlazar permanentemente con esta definición">¶</a></dt>
+<dd><p><em>Función para finalizar una fase. La cual se encarga de analizar todas las restricciones y requisitos para
+finalizar una fase correctamente dentro del sistema</em></p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parámetros:</th><td class="field-body"><ul class="first simple">
+<li><strong>request</strong> &#8211; HttpRequest es la solicitud de la acción.</li>
+<li><strong>id_fase</strong> &#8211; Es el identificador de la fase la cual se desea finalizar</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Devuelve:</th><td class="field-body"><p class="first last">La fase se finaliza correctamente una vez válidado los requisitos</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="administrarFases.views.importMultiplePhase">
+<tt class="descclassname">administrarFases.views.</tt><tt class="descname">importMultiplePhase</tt><big>(</big><em>request</em>, <em>id_fase</em>, <em>id_proyecto_destino</em><big>)</big><a class="headerlink" href="#administrarFases.views.importMultiplePhase" title="Enlazar permanentemente con esta definición">¶</a></dt>
 <dd><p><em>Vista para la importación de un tipo de ítem a otra fase</em></p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parámetros:</th><td class="field-body"><ul class="first simple">
+<li><strong>request</strong> &#8211; HttpRequest necesario para visualizar las fases dentro de los proyectos, es la solicitud de la acción.</li>
+<li><strong>id_fase</strong> &#8211; Identificador de la fase que se desea importar</li>
+<li><strong>id_proyecto_destino</strong> &#8211; Identificador del Proyecto destino al cual se le importará la fase seleccionada.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Devuelve:</th><td class="field-body"><p class="first last">La fase se importá correctamente con todos sus componentes</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="administrarFases.views.phaseList">
+<tt class="descclassname">administrarFases.views.</tt><tt class="descname">phaseList</tt><big>(</big><em>request</em>, <em>*args</em>, <em>**kwargs</em><big>)</big><a class="headerlink" href="#administrarFases.views.phaseList" title="Enlazar permanentemente con esta definición">¶</a></dt>
+<dd><p><em>Vista para la listar todas las fases dentro de algún proyecto.
+Opción válida para usuarios con los roles correspondientes.</em></p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parámetros:</th><td class="field-body"><ul class="first simple">
+<li><strong>request</strong> &#8211; HttpRequest necesario para visualizar las fases dentro de los proyectos, es la solicitud de la acción.</li>
+<li><strong>id_proyecto</strong> &#8211; Identificador del proyecto dentro del sistema.</li>
+<li><strong>args</strong> &#8211; Argumentos para el modelo <tt class="docutils literal"><span class="pre">Fase</span></tt>.</li>
+<li><strong>kwargs</strong> &#8211; Keyword Arguments para la el modelo <tt class="docutils literal"><span class="pre">Fase</span></tt>.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Devuelve:</th><td class="field-body"><p class="first last">Proporciona la pagina <tt class="docutils literal"><span class="pre">phaselist.html</span></tt> con la lista todas las fases pertenecientes al proyecto especificado</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="administrarFases.views.startPhase">
+<tt class="descclassname">administrarFases.views.</tt><tt class="descname">startPhase</tt><big>(</big><em>request</em>, <em>*args</em>, <em>**kwargs</em><big>)</big><a class="headerlink" href="#administrarFases.views.startPhase" title="Enlazar permanentemente con esta definición">¶</a></dt>
+<dd><p><a href="#id1"><span class="problematic" id="id2">*</span></a>Función para iniciar una nueva fase dentro del proyecto. Función que se ejecuta inmediatamente con la existencia
+de una Línea Base en la Fase inmediata anterior. En caso de ser la primera fase, esta entra en Desarrollo
+automáticamente cuando el proyecto es iniciado.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parámetros:</th><td class="field-body"><ul class="first last simple">
+<li><strong>request</strong> &#8211; HttpRequest es la solicitud de la acción.</li>
+<li><strong>id_fase</strong> &#8211; Es el identificador de la fase que pasará a un estado de Desarrollo.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="administrarFases.views.subirOrden">
+<tt class="descclassname">administrarFases.views.</tt><tt class="descname">subirOrden</tt><big>(</big><em>request</em>, <em>*args</em>, <em>**kwargs</em><big>)</big><a class="headerlink" href="#administrarFases.views.subirOrden" title="Enlazar permanentemente con esta definición">¶</a></dt>
+<dd><p><em>Función para &#8220;Subir&#8221; el número de orden de una Fase que pertenece a algún proyecto</em></p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parámetros:</th><td class="field-body"><ul class="first simple">
+<li><strong>request</strong> &#8211; HttpRequest es la solicitud de la acción.</li>
+<li><strong>id_fase</strong> &#8211; Identificador de la fase la cual se desea modificar su orden</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Devuelve:</th><td class="field-body"><p class="first last">La fase se ha modificado correctamente</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="administrarFases.views.workphase">
+<tt class="descclassname">administrarFases.views.</tt><tt class="descname">workphase</tt><big>(</big><em>request</em>, <em>id_fase</em><big>)</big><a class="headerlink" href="#administrarFases.views.workphase" title="Enlazar permanentemente con esta definición">¶</a></dt>
+<dd><p><em>Vista para el trabajo sobre una fase de un proyecto.
+Opción válida para usuarios asociados a un proyecto, con permisos de trabajo sobre items de la fase en cuestion</em></p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parámetros:</th><td class="field-body"><ul class="first simple">
+<li><strong>request</strong> &#8211; HttpRequest necesario para visualizar el área de trabajo de los usuarios en la fase, es la solicitud de la acción.</li>
+<li><strong>id_fase</strong> &#8211; Identificador de la fase sobre la cual se trabaja.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Devuelve:</th><td class="field-body"><p class="first last">Proporciona la pagina <tt class="docutils literal"><span class="pre">workPhase.html</span></tt>, página dedicada al desarrollo de la fase.
+Vista para el desarrollo de fases</p>
+</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 </div>
@@ -237,73 +524,67 @@
 
 
           </div>
-        </div>
-      </div>
-      <div class="sphinxsidebar">
-        <div class="sphinxsidebarwrapper">
-            <p class="logo"><a href="index.html">
-              <img class="logo" src="_static/logoZARpm.jpg" alt="Logo"/>
-            </a></p>
-  <h3><a href="index.html">Tabla de Contenidos</a></h3>
-  <ul>
-<li><a class="reference internal" href="#">Fases</a><ul>
-<li><a class="reference internal" href="#module-administrarFases.forms">forms</a></li>
-<li><a class="reference internal" href="#module-administrarFases.models">models</a></li>
-<li><a class="reference internal" href="#module-administrarFases.tests">tests</a></li>
-<li><a class="reference internal" href="#module-administrarFases.views">views</a></li>
-</ul>
-</li>
-</ul>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="administrarItems.html" class="btn btn-neutral float-right" title="Items"/>Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="modules.html" class="btn btn-neutral" title="Modulos"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
 
-  <h4>Tema anterior</h4>
-  <p class="topless"><a href="administrarProyectos.html"
-                        title="capítulo anterior">Proyectos</a></p>
-  <h4>Próximo tema</h4>
-  <p class="topless"><a href="administrarTipoItem.html"
-                        title="próximo capítulo">administrarTipoItem package</a></p>
-  <h3>Esta página</h3>
-  <ul class="this-page-menu">
-    <li><a href="_sources/administrarFases.txt"
-           rel="nofollow">Mostrar el código</a></li>
-  </ul>
-<div id="searchbox" style="display: none">
-  <h3>Búsqueda rápida</h3>
-    <form class="search" action="search.html" method="get">
-      <input type="text" name="q" />
-      <input type="submit" value="Ir a" />
-      <input type="hidden" name="check_keywords" value="yes" />
-      <input type="hidden" name="area" value="default" />
-    </form>
-    <p class="searchtip" style="font-size: 90%">
-    Introduzca los términos de búsqueda o un nombre de módulo, clase o función.
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2014, Augusto Amarilla, Gerardo Ramos y Saúl Zalimben.
     </p>
-</div>
-<script type="text/javascript">$('#searchbox').show(0);</script>
+  </div>
+
+  <a href="https://github.com/snide/sphinx_rtd_theme">Sphinx theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>
+</footer>
         </div>
       </div>
-      <div class="clearer"></div>
-    </div>
-    <div class="related">
-      <h3>Navegación</h3>
-      <ul>
-        <li class="right" style="margin-right: 10px">
-          <a href="genindex.html" title="Índice General"
-             >índice</a></li>
-        <li class="right" >
-          <a href="py-modindex.html" title="Índice de Módulos Python"
-             >módulos</a> |</li>
-        <li class="right" >
-          <a href="administrarTipoItem.html" title="administrarTipoItem package"
-             >siguiente</a> |</li>
-        <li class="right" >
-          <a href="administrarProyectos.html" title="Proyectos"
-             >anterior</a> |</li>
-        <li><a href="index.html">ZARpm - Documentation</a> &raquo;</li> 
-      </ul>
-    </div>
-    <div class="footer">
-        &copy; Copyright 2014, Augusto Amarilla, Gerardo Ramos y Saúl Zalimben.
-      Creado con <a href="http://sphinx-doc.org/">Sphinx</a> 1.2.2.
-    </div>
-  </body>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'./',
+            VERSION:'1.0',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true
+        };
+    </script>
+      <script type="text/javascript" src="_static/jquery.js"></script>
+      <script type="text/javascript" src="_static/underscore.js"></script>
+      <script type="text/javascript" src="_static/doctools.js"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
 </html>

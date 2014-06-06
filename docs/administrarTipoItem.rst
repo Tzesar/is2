@@ -1,24 +1,25 @@
-Usuarios 
+Tipo de Item 
 ===========================
 
 
 Formularios
 --------------------------------
 
-.. automodule:: administrarUsuarios.forms
+.. automodule:: administrarTipoItem.forms
     :members:
     :show-inheritance:
 
-Pruebas Unitarias
---------------------------------
+Modelos
+---------------------------------
 
-.. automodule:: administrarUsuarios.tests
+.. automodule:: administrarTipoItem.models
     :members:
     :show-inheritance:
 
 Vistas(Funciones)
 --------------------------------
 
-.. automodule:: administrarUsuarios.views
+.. automodule:: administrarTipoItem.views
     :members:
     :show-inheritance:
+

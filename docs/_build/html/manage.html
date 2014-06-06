@@ -1,100 +1,185 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
-  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 
 
-<html xmlns="http://www.w3.org/1999/xhtml">
-  <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    
-    <title>manage module &mdash; ZARpm - Documentation</title>
-    
-    <link rel="stylesheet" href="_static/nature.css" type="text/css" />
-    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
-    
-    <script type="text/javascript">
-      var DOCUMENTATION_OPTIONS = {
-        URL_ROOT:    './',
-        VERSION:     '1.0',
-        COLLAPSE_INDEX: false,
-        FILE_SUFFIX: '.html',
-        HAS_SOURCE:  true
-      };
-    </script>
-    <script type="text/javascript" src="_static/jquery.js"></script>
-    <script type="text/javascript" src="_static/underscore.js"></script>
-    <script type="text/javascript" src="_static/doctools.js"></script>
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Manage &mdash; ZARpm - Documentation</title>
+  
+
+  
+  
     <link rel="shortcut icon" href="_static/favicon.ico"/>
-    <link rel="top" title="ZARpm - Documentation" href="index.html" /> 
-  </head>
-  <body>
-    <div class="related">
-      <h3>Navegación</h3>
-      <ul>
-        <li class="right" style="margin-right: 10px">
-          <a href="genindex.html" title="Índice General"
-             accesskey="I">índice</a></li>
-        <li class="right" >
-          <a href="py-modindex.html" title="Índice de Módulos Python"
-             >módulos</a> |</li>
-        <li><a href="index.html">ZARpm - Documentation</a> &raquo;</li> 
-      </ul>
-    </div>  
+  
 
-    <div class="document">
-      <div class="documentwrapper">
-        <div class="bodywrapper">
-          <div class="body">
+  
+  <link href='https://fonts.googleapis.com/css?family=Lato:400,700|Roboto+Slab:400,700|Inconsolata:400,700' rel='stylesheet' type='text/css'>
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  
+
+  
+    <link rel="top" title="ZARpm - Documentation" href="index.html"/>
+        <link rel="up" title="Modulos" href="modules.html"/>
+        <link rel="next" title="Acerca" href="zar.html"/>
+        <link rel="prev" title="ZARpm" href="is2.html"/> 
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/modernizr/2.6.2/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-nav-search">
+        <a href="index.html" class="fa fa-home"> ZARpm</a>
+        <div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+        
+        
+            <ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="modules.html">Modulos</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="administrarFases.html">Fases</a></li>
+<li class="toctree-l2"><a class="reference internal" href="administrarItems.html">Items</a></li>
+<li class="toctree-l2"><a class="reference internal" href="administrarLineaBase.html">LineaBase</a></li>
+<li class="toctree-l2"><a class="reference internal" href="administrarProyectos.html">Proyectos</a></li>
+<li class="toctree-l2"><a class="reference internal" href="administrarRolesPermisos.html">Roles y Permisos</a></li>
+<li class="toctree-l2"><a class="reference internal" href="administrarTipoItem.html">Tipo de Item</a></li>
+<li class="toctree-l2"><a class="reference internal" href="administrarUsuarios.html">Usuarios</a></li>
+<li class="toctree-l2"><a class="reference internal" href="autenticacion.html">Autenticacion</a></li>
+<li class="toctree-l2"><a class="reference internal" href="is2.html">ZARpm</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="">Manage</a></li>
+<li class="toctree-l2"><a class="reference internal" href="zar.html">Acerca</a></li>
+</ul>
+</li>
+</ul>
+
+        
+      </div>
+      &nbsp;
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="index.html">ZARpm</a>
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="index.html">Docs</a> &raquo;</li>
+      
+          <li><a href="modules.html">Modulos</a> &raquo;</li>
+      
+    <li>Manage</li>
+      <li class="wy-breadcrumbs-aside">
+        
+          <a href="_sources/manage.txt" rel="nofollow"> View page source</a>
+        
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main">
             
   <div class="section" id="module-manage">
-<span id="manage-module"></span><h1>manage module<a class="headerlink" href="#module-manage" title="Enlazar permanentemente con este título">¶</a></h1>
+<span id="manage"></span><h1>Manage<a class="headerlink" href="#module-manage" title="Enlazar permanentemente con este título">¶</a></h1>
+<p><em>Es el código que permite interactuar con el proyecto Django.</em></p>
+<p><em>Contiene la especificación de la dirección del archivo de configuración del Proyecto ZARpm</em></p>
 </div>
 
 
           </div>
-        </div>
-      </div>
-      <div class="sphinxsidebar">
-        <div class="sphinxsidebarwrapper">
-            <p class="logo"><a href="index.html">
-              <img class="logo" src="_static/logoZARpm.jpg" alt="Logo"/>
-            </a></p>
-  <h3>Esta página</h3>
-  <ul class="this-page-menu">
-    <li><a href="_sources/manage.txt"
-           rel="nofollow">Mostrar el código</a></li>
-  </ul>
-<div id="searchbox" style="display: none">
-  <h3>Búsqueda rápida</h3>
-    <form class="search" action="search.html" method="get">
-      <input type="text" name="q" />
-      <input type="submit" value="Ir a" />
-      <input type="hidden" name="check_keywords" value="yes" />
-      <input type="hidden" name="area" value="default" />
-    </form>
-    <p class="searchtip" style="font-size: 90%">
-    Introduzca los términos de búsqueda o un nombre de módulo, clase o función.
-    </p>
-</div>
-<script type="text/javascript">$('#searchbox').show(0);</script>
-        </div>
-      </div>
-      <div class="clearer"></div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="zar.html" class="btn btn-neutral float-right" title="Acerca"/>Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="is2.html" class="btn btn-neutral" title="ZARpm"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
     </div>
-    <div class="related">
-      <h3>Navegación</h3>
-      <ul>
-        <li class="right" style="margin-right: 10px">
-          <a href="genindex.html" title="Índice General"
-             >índice</a></li>
-        <li class="right" >
-          <a href="py-modindex.html" title="Índice de Módulos Python"
-             >módulos</a> |</li>
-        <li><a href="index.html">ZARpm - Documentation</a> &raquo;</li> 
-      </ul>
-    </div>
-    <div class="footer">
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
         &copy; Copyright 2014, Augusto Amarilla, Gerardo Ramos y Saúl Zalimben.
-      Creado con <a href="http://sphinx-doc.org/">Sphinx</a> 1.2.2.
-    </div>
-  </body>
+    </p>
+  </div>
+
+  <a href="https://github.com/snide/sphinx_rtd_theme">Sphinx theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'./',
+            VERSION:'1.0',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true
+        };
+    </script>
+      <script type="text/javascript" src="_static/jquery.js"></script>
+      <script type="text/javascript" src="_static/underscore.js"></script>
+      <script type="text/javascript" src="_static/doctools.js"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
 </html>

@@ -1,38 +1,31 @@
-Fases
+Items 
 ========================
 
-
-Decoradores
------------------------------
-
-.. automodule:: administrarFases.decorators
-    :members:
-    :show-inheritance:
 
 Formularios
 -----------------------------
 
-.. automodule:: administrarFases.forms
+.. automodule:: administrarItems.forms
     :members:
     :show-inheritance:
 
 Modelos
 ------------------------------
 
-.. automodule:: administrarFases.models
+.. automodule:: administrarItems.models
     :members:
     :show-inheritance:
 
 Pruebas Unitarias
 -----------------------------
 
-.. automodule:: administrarFases.tests
+.. automodule:: administrarItems.tests
     :members:
     :show-inheritance:
 
 Vistas(Funciones)
 -----------------------------
 
-.. automodule:: administrarFases.views
+.. automodule:: administrarItems.views
     :members:
     :show-inheritance:

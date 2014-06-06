@@ -1,22 +1,22 @@
 Usuarios 
 ===========================
 
-forms 
+
+Formularios
 --------------------------------
 
 .. automodule:: administrarUsuarios.forms
     :members:
     :show-inheritance:
 
-tests 
+Pruebas Unitarias
 --------------------------------
 
 .. automodule:: administrarUsuarios.tests
     :members:
     :show-inheritance:
 
-
-views 
+Vistas(Funciones)
 --------------------------------
 
 .. automodule:: administrarUsuarios.views

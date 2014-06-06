@@ -6,17 +6,17 @@ from django.http import HttpResponseRedirect, Http404
 from django.template import RequestContext
 from django.shortcuts import render
 from django.utils.html import format_html
-from django.db import IntegrityError
 from guardian.shortcuts import get_objects_for_user
+from django.db import IntegrityError
 
 from administrarFases.forms import NewPhaseForm, ChangePhaseForm
 from administrarLineaBase.models import LineaBase
-from administrarProyectos.views import workProject, vistaDesarrollo
+from administrarProyectos.views import vistaDesarrollo
 from administrarProyectos.models import Proyecto
 from administrarFases.models import Fase
 from administrarTipoItem.models import TipoItem, Atributo
+from administrarTipoItem.views import importItemType
 from administrarRolesPermisos.decorators import user_passes_test, puede_crear_fase, puede_modificar_fase
-from django.db import IntegrityError
 from administrarItems.models import ItemRelacion, ItemBase
 
 
@@ -193,35 +193,16 @@ def phaseList(request, id_proyecto):
                   context_instance=RequestContext(request) )
 
 
-#TODO: No debería existir caso particular de importar multiples fases
-@login_required
-@user_passes_test(puede_modificar_fase)
-def importPhase(request, id_fase, id_proyecto_destino):
-    """
-    *Vista para la importación de un tipo de ítem a otra fase*
-    """
-
-    phase = Fase.objects.get(pk=id_fase)
-    phase.id = None
-    phase.proyecto = Proyecto.objects.get(pk=id_proyecto_destino)
-    project = phase.proyecto
-
-    try:
-        phase.save()
-    except IntegrityError as e:
-        return render(request, "keyduplicate_fase.html", {'project': project, "message": e.message}, )
-
-    # logger.info('El usuario '+ request.user.username +' ha importado la fase '+  phase.nombre +
-    #             ' al proyecto destino: ' + phase.proyecto.nombre)
-
-    return HttpResponseRedirect('/changephase/' + str(phase.id))
-
-
 #TODO: Revisar funcional pero ineficiente
-@user_passes_test(puede_modificar_fase)
+#@user_passes_test(puede_modificar_fase)
 def importMultiplePhase(request, id_fase, id_proyecto_destino):
     """
     *Vista para la importación de un tipo de ítem a otra fase*
+
+    :param request: HttpRequest necesario para visualizar las fases dentro de los proyectos, es la solicitud de la acción.
+    :param id_fase: Identificador de la fase que se desea importar
+    :param id_proyecto_destino: Identificador del Proyecto destino al cual se le importará la fase seleccionada.
+    :return: La fase se importá correctamente con todos sus componentes
     """
 
     phase = Fase.objects.get(pk=id_fase)
@@ -233,6 +214,10 @@ def importMultiplePhase(request, id_fase, id_proyecto_destino):
         phase.save()
     except IntegrityError as e:
         return render(request, "keyduplicate_fase.html", {'project': project, "message": e.message})
+
+    tipos_items = TipoItem.objects.filter(fase=Fase.objects.get(pk=id_fase))
+    for tipo in tipos_items:
+        importItemType(request, phase.id, tipo.id)
 
     return HttpResponseRedirect('/phaselist/' + str(project.id))
 
@@ -263,7 +248,7 @@ def workphase(request, id_fase):
             except:
                 relaciones[i] = None
 
-        if faseTrabajo.estado == 'DES':
+        if proyectoTrabajo.estado == 'ACT':
 
             usuario = request.user
             objetos = get_objects_for_user(usuario, 'crear_Solicitud_Cambio', klass=Fase)
@@ -282,8 +267,6 @@ def workphase(request, id_fase):
                                                            'relaciones': relaciones.items(), 'error': error,
                                                            'messages': messages, 'puedeCrearSC': puedeCrearSC})
 
-            # return render(request, 'fase/workPhase.html', {'proyecto': proyectoTrabajo, 'fase': faseTrabajo, 'user': request.user,
-            #                                                'listaItems': itemsFase, 'relaciones': relaciones.items()})
         else:
             return render(request, 'fase/workphase_finalizada.html', {'proyecto': proyectoTrabajo, 'fase': faseTrabajo, 'user': request.user,
                                                            'listaItems': itemsFase, 'relaciones': relaciones.items()})
@@ -291,6 +274,13 @@ def workphase(request, id_fase):
 
 @user_passes_test(puede_modificar_fase)
 def subirOrden(request, id_fase):
+    """
+    *Función para "Subir" el número de orden de una Fase que pertenece a algún proyecto*
+
+    :param request: HttpRequest es la solicitud de la acción.
+    :param id_fase: Identificador de la fase la cual se desea modificar su orden
+    :return: La fase se ha modificado correctamente
+    """
     fase = Fase.objects.get(pk=id_fase)
 
     if fase.nro_orden == 1:
@@ -309,6 +299,13 @@ def subirOrden(request, id_fase):
 
 @user_passes_test(puede_modificar_fase)
 def bajarOrden(request, id_fase):
+    """
+    *Función para "Bajar" el número de orden de una Fase que pertenece a algún proyecto*
+
+    :param request: HttpRequest es la solicitud de la acción.
+    :param id_fase: Identificador de la fase la cual se desea modificar su orden
+    :return: La fase se ha modificado correctamente
+    """
     fase = Fase.objects.get(pk=id_fase)
 
     if fase.nro_orden == Fase.objects.filter(proyecto=fase.proyecto).count():
@@ -328,7 +325,13 @@ def bajarOrden(request, id_fase):
 @user_passes_test(puede_modificar_fase)
 def finPhase(request, id_fase):
     """
-    Vista para finalizar una fase
+    *Función para finalizar una fase. La cual se encarga de analizar todas las restricciones y requisitos para
+    finalizar una fase correctamente dentro del sistema*
+
+    :param request: HttpRequest es la solicitud de la acción.
+    :param id_fase: Es el identificador de la fase la cual se desea finalizar
+    :return: La fase se finaliza correctamente una vez válidado los requisitos
+
     """
     fase = Fase.objects.get(pk=id_fase)
     proyecto = fase.proyecto
@@ -343,6 +346,11 @@ def finPhase(request, id_fase):
                 message = 'Fase:' + fase.nombre + '. No se pudo finalizar. Aun existen items fuera de Linea Base. Verifique esto y vuelva a intentarlo.'
                 messages.append(message)
                 error = 1
+            elif item.estado == 'REV':
+                message = 'Fase:' + fase.nombre + '. No se pudo finalizar. Aun existen items en estado de REVISION. Verifique esto y vuelva a intentarlo.'
+                messages.append(message)
+                error = 1
+
     else:
         error = 1
         message = 'Fase: ' + fase.nombre + '. No se pudo finalizar. No se han creado items en la misma. Verifiquela y vuelva a intentarlo.'
@@ -359,13 +367,16 @@ def finPhase(request, id_fase):
     return HttpResponseRedirect(reverse('administrarProyectos.views.vistaDesarrollo',
                                         kwargs={'id_proyecto': proyecto.id}))
 
-    # return vistaDesarrollo(request, proyecto.id)
-
 
 @user_passes_test(puede_modificar_fase)
 def startPhase(request, id_fase):
     """
-    Vista para iniciar una fase
+    *Función para iniciar una nueva fase dentro del proyecto. Función que se ejecuta inmediatamente con la existencia
+    de una Línea Base en la Fase inmediata anterior. En caso de ser la primera fase, esta entra en Desarrollo
+    automáticamente cuando el proyecto es iniciado.
+
+    :param request: HttpRequest es la solicitud de la acción.
+    :param id_fase: Es el identificador de la fase que pasará a un estado de Desarrollo.
     """
     fase = Fase.objects.get(pk=id_fase)
 
