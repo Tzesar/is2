@@ -3,6 +3,7 @@ from django.core.urlresolvers import reverse
 from django.http import HttpResponseRedirect
 from django.template import RequestContext
 from django.utils import timezone
+from guardian.shortcuts import assign_perm
 import pydot
 from django.shortcuts import render
 
@@ -121,9 +122,10 @@ def generarCalculoImpactoHTML(request, id_item):
     graph = grafo.write(direccion, format='png')
     direccion = '/static/grafos/' + item.nombre
 
-    return render(request, 'lineabase/visualizarsolicitud.html', {'user':usuario, 'fase':fase, 'item':item, 'proyecto':proyecto,
-                                                            'costo': costo, 'tiempo':tiempo, 'grafo':graph, 'direccion':direccion },
-                                                            context_instance=RequestContext(request))
+    return render(request, 'lineabase/visualizarsolicitud.html', {'user': usuario, 'fase': fase, 'item': item,
+                                                                  'proyecto': proyecto, 'costo': costo,
+                                                                  'tiempo': tiempo, 'grafo': graph,
+                                                                  'direccion': direccion},)
 
 
 def generarCalculoImpacto(request, id_item):
@@ -167,9 +169,12 @@ def visualizarLB(request, id_fase):
         mensaje = []
         mensaje.append('Aun no se han creado Lineas Base en la fase: ' + fase.nombre)
         error = 1
+
         request.session['messages'] = mensaje
         request.session['error'] = error
-        return vistaDesarrollo(request, id_proyecto=fase.proyecto_id)
+        return HttpResponseRedirect(reverse('administrarProyectos.views.vistaDesarrollo',
+                                            kwargs={'id_proyecto': fase.proyecto_id}))
+        # return vistaDesarrollo(request, id_proyecto=fase.proyecto_id)
 
 
 def cancelarSolicitudCambios(request, id_solicitud, id_fase):
@@ -184,15 +189,21 @@ def cancelarSolicitudCambios(request, id_solicitud, id_fase):
         solicitud.save()
         mensaje = 'La solicitud ha sido cancelada con éxito'
         error = 0
-        return workApplication(request, id_fase, error=error, mensaje=mensaje)
 
+        request.session['messages'] = mensaje
+        request.session['error'] = error
     else:
         mensaje = 'No se puede cancelar la solicitud.'
         error = 1
-        return workApplication(request, id_fase, error=error, mensaje=mensaje)
+
+        request.session['messages'] = mensaje
+        request.session['error'] = error
+
+    return HttpResponseRedirect(reverse('administrarLineaBase.views.workApplication', kwargs={'id_fase': id_fase}))
+    # return workApplication(request, id_fase)
 
 
-def workApplication(request, id_fase, error=None, mensaje=None):
+def workApplication(request, id_fase):
     """
     Vista para la gestión de Solicitud de Cambios Creada por el usuario
     """
@@ -211,9 +222,15 @@ def workApplication(request, id_fase, error=None, mensaje=None):
     for s in otrasSolicitudes:
         otrasSolicitudes_lista[s] = s.votacion_set.filter(usuario=request.user)
 
-
+    error = None
+    messages = None
+    if 'error' in request.session:
+        error = request.session.pop('error')
+    if 'messages' in request.session:
+        messages = request.session.pop('messages')
     return render(request, 'lineabase/workapplication.html', {'proyecto': proyecto, 'fase': fase, 'user': usuario,
-                                                              'misSolicitudes': misSolicitudes_lista.items(), 'error': error,
+                                                              'misSolicitudes': misSolicitudes_lista.items(),
+                                                              'error': error, 'messages': messages,
                                                               'otrasSolicitudes': otrasSolicitudes_lista.items()})
 
 
@@ -226,7 +243,7 @@ def visualizarSolicitud(request, id_solicitud, id_fase):
 
     solicitud = SolicitudCambios.objects.filter(pk=id_solicitud)
 
-    itemsSolicitud = ItemBase.objects.filter(solicitudes__in=solicitud)
+    itemsSolicitud = solicitud[0].items.all()
 
     items_grafos = {}
     for item in itemsSolicitud:
@@ -270,7 +287,11 @@ def crearSolicitudCambios(request, id_fase):
                 solicitud.save()
                 mensaje = 'Solicitud Creada y Enviada satisfactoriamente al comité de cambios'
                 error = 0
-                return workApplication(request, fase.id, error=error, mensaje=mensaje)
+
+                request.session['messages'] = mensaje
+                request.session['error'] = error
+                # return workApplication(request, fase.id, error=error, mensaje=mensaje)
+                return HttpResponseRedirect(reverse('administrarLineaBase.views.workApplication', kwargs={'id_fase': id_fase}))
 
     form = createSCForm()
     asignarItemSolicitud = asignarItemSolicitudForm(id_fase=id_fase)
@@ -317,6 +338,9 @@ def votarSolicitud(request, id_solicitud, voto):
 
                 if aceptado > rechazado:
                     solicitud.estado = 'ACP'
+                    for item in solicitud.items.all():
+                        assign_perm("credencial", request.user, item)
+                        # TODO: Aqui se hace el llamado a marcar_items_revisar
                 else:
                     solicitud.estado = 'RCH'
 
@@ -325,13 +349,16 @@ def votarSolicitud(request, id_solicitud, voto):
 
             mensaje = 'Voto confirmado para la solicitud ' + str(solicitud.id)
             error = 0
-            request.method = 'GET'
-            return workApplication(request, fase.id, error=error, mensaje=mensaje)
+            # request.method = 'GET'
+
+            request.session['messages'] = mensaje
+            request.session['error'] = error
+            return HttpResponseRedirect(reverse('administrarLineaBase.views.workApplication', kwargs={'id_fase': fase.id}))
+            # return workApplication(request, fase.id, error=error, mensaje=mensaje)
     else:
         form = emitirVotoForm()
     return render(request, 'lineabase/createvote.html', {'form': form, 'proyecto': proyecto,
                                                          'user': request.user, 'fase': fase,
-                                                         'solicitud': solicitud},
-                  context_instance=RequestContext(request))
+                                                         'solicitud': solicitud}, )
 
 

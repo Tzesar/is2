@@ -141,6 +141,7 @@ def changeProjectLeader(request, id_proyecto):
             form.save()
 
             miembrosComite = miembrosComiteForm.get_cleaned_data()
+            rol.grupo.user_set.clear()
             for miembro in miembrosComite:
                 miembroNuevo = Usuario.objects.get(id=miembro)
                 rol.grupo.user_set.add(miembroNuevo)

@@ -40,7 +40,6 @@ class SolicitudCambios(models.Model):
     costo = models.IntegerField(help_text='Costo total por realizar las modificaciones')
     tiempo = models.IntegerField(help_text='Tiempo total empleado en realizar las modificaciones')
 
-
     def __unicode__(self):
         return self.fecha_creacion
 
@@ -58,7 +57,6 @@ class Votacion(models.Model):
     solicitud = models.ForeignKey(SolicitudCambios)
     voto = models.CharField(max_length=4, choices=opciones_voto, help_text='Estado del item')
     justificacion = models.TextField(max_length=240, help_text='Favor justificar su decisión')
-
 
     def __unicode__(self):
         return self.usuario

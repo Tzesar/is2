@@ -54,6 +54,11 @@ class ItemBase(models.Model):
     def __unicode__(self):
         return self.nombre
 
+    class Meta:
+        permissions = (
+            ('credencial', 'Modificar Item de LB'),
+        )
+
 reversion.register(ItemBase)
 
 

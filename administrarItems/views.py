@@ -177,14 +177,14 @@ def relacionarItemBase(request, id_item_hijo, id_item_padre, id_fase):
         item_hijo.save()
         mensaje = 'Relacion establecida entre ' + item_hijo.nombre + ' y ' + item_padre.nombre + '.'
         error = 0
-        return workphase(request, id_fase, error=error, message=mensaje)
+        return workphase(request, id_fase)
 
     relacion = ItemRelacion.objects.get(itemHijo=item_hijo)
     padre = relacion.itemPadre
     if padre == item_padre:
         mensaje = 'El item ' + item_hijo.nombre + ' ya cuenta con una relacion hacia el item especificado.'
         duplicado = 1
-        return workphase(request, id_fase, error=duplicado, message=mensaje)
+        return workphase(request, id_fase)
     else:
         relacion.itemPadre = item_padre
         relacion.save()
