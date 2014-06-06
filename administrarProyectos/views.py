@@ -421,20 +421,22 @@ def finProject(request, id_proyecto):
 
     error = 0
     messages = []
-    for fase in fases:
-        if fase.estado != 'FIN':
-            messages.append('No se puede Finalizar el Proyecto. Aún existen fases en desarrollo')
-            error = 1
     if proyecto.estado != 'ACT':
         message = 'No se puede Finalizar un proyecto que se encuentra en el estado: ' + proyecto.get_estado_display()
         messages.append(message)
         error = 1
     else:
-        proyecto.estado = 'FIN'
-        proyecto.fecha_inicio = timezone.now()
-        proyecto.save()
-        messages.append('El proyecto ha sido Finalizdo exitosamente.')
-        error = 0
+        for fase in fases:
+            if fase.estado != 'FIN':
+                mensaje = 'Error finalizando el proyecto. Fase: ' + fase.nombre + ', en estado ' + fase.get_estado_display() + '.'
+                messages.append(mensaje)
+                error = 1
+
+        if error == 0:
+            proyecto.estado = 'FIN'
+            proyecto.fecha_fin = timezone.now()
+            proyecto.save()
+            messages.append('El proyecto ha sido Finalizdo exitosamente.')
 
     request.session['messages'] = messages
     request.session['error'] = error

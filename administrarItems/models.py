@@ -147,4 +147,3 @@ class CampoImagen(models.Model):
     imagen = models.ImageField(verbose_name='Imagen', upload_to='archivos')
 
 reversion.register(CampoImagen)
-
