@@ -10,7 +10,14 @@ from administrarTipoItem.models import TipoItem
 
 class createLBForm(forms.ModelForm):
     """
-    Formulario para la creación de líneas base
+    *Formulario para la creación de líneas base.*
+
+    ::
+
+        class Meta:
+            model = LineaBase
+            fields = ('observaciones',)
+
     """
     class Meta:
         model = LineaBase
@@ -22,7 +29,14 @@ class createLBForm(forms.ModelForm):
 
 class createSCForm(forms.ModelForm):
     """
-    Formulario para la creación de Solicitud de Cambios en el Sistema
+    *Formulario para la creación de Solicitud de Cambios en el Sistema.*
+
+    ::
+
+        class Meta:
+            model = SolicitudCambios
+            fields = ('motivo',)
+
     """
     class Meta:
         model = SolicitudCambios
@@ -70,7 +84,14 @@ class asignarItemSolicitudForm(forms2.Form):
 
 class emitirVotoForm(forms.ModelForm):
     """
-    *Formulario para realizar la justificación en la decisión tomada sobre una solicitud de cambio*
+    *Formulario para realizar la justificación en la decisión tomada sobre una solicitud de cambio.*
+
+    ::
+
+        class Meta:
+            model = Votacion
+            fields = ('justificacion',)
+
     """
     class Meta:
         model = Votacion

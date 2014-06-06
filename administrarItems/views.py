@@ -26,8 +26,8 @@ def createItem(request, id_fase):
 
     :param request: HttpRequest necesario para crear fases dentro de los proyectos, es la solicitud de la acción.
     :param id_proyecto: Identificador del proyecto dentro del sistema al cual se le vincularán las fases creadas.
-    :param args: Argumentos para el modelo ``Fase``.
-    :param kwargs: Keyword Arguments para la el modelo ``Fase``.
+    :param args: Argumentos para el modelo ``Item``.
+    :param kwargs: Keyword Arguments para la el modelo ``Item``.
     :return: Proporciona la pagina ``createphase.html`` con el formulario correspondiente.
             Crea la fase dentro del proyecto especificando y luego regresa al menu principal
     """
@@ -59,6 +59,11 @@ def createItem(request, id_fase):
 def crearAtributos(item_id):
     """
     *Vista para la creación de atributos correspondientes según el tipo de ítem al que pertenece el ítem*
+
+    :param item_id: Identificador del Item al cual se le vincularán los atributos creados
+    :param args: Argumentos para el modelo ``Item``.
+    :param kwargs: Keyword Arguments para la el modelo ``Item``.
+    :return: Los atributos son vinculados exitosamente al Item
     """
 
     nuevoItem = ItemBase.objects.get(pk=item_id)
@@ -91,8 +96,15 @@ def crearAtributos(item_id):
 
 def historialItemBase(request, id_fase, id_item):
     """
-    *Vista para el historial de versiones de los ítems*
+    *Funcion para visualizar el historial de versiones de los ítems. *
     Obs. Cada modificación realizada en el ítem es una nueva versión del ítem.
+
+    :param request: HttpRequest necesario para visualizar las versiones de un ítem, es la solicitud de la acción.
+    :param id_fase: Identificador de la fase dentro del proyecto a la cual pertenece el ítem.
+    :param id_item: Identificador del Item al cual se esta consultando su historial de versiones
+    :param args: Argumentos para el modelo ``Item``.
+    :param kwargs: Keyword Arguments para la el modelo ``Item``.
+    :return: Regresa una lista de todas las versiones del ítem.
     """
 
     usuario = request.user
@@ -108,7 +120,16 @@ def historialItemBase(request, id_fase, id_item):
 
 def reversionItemBase(request, id_item, id_fase, id_version):
     """
-    *Vista para realizar la reversión de un ítem*
+    *Funcion para realizar la reversión de un ítem. Una reversión consiste en recuperar todos los
+    atributos definidos y la relación establecida para la versión a la cual se esta reversionando el item*
+
+    :param request: HttpRequest necesario para establecer la reversión, es la solicitud de la acción.
+    :param id_fase: Identificador de la fase dentro del proyecto a la cual pertenece el ítem.
+    :param id_item: Identificador del Item al cual se desea realizar una reversion.
+    :param id_version: Identificador de la versión a la cual se desea realizar una reversion.
+    :param args: Argumentos para el modelo ``Item``.
+    :param kwargs: Keyword Arguments para la el modelo ``Item``.
+    :return: El ítem es reversionado exitosamente.
     """
     fase = Fase.objects.get(pk=id_fase)
     item = ItemBase.objects.get(pk=id_item)
@@ -160,7 +181,16 @@ def reversionItemBase(request, id_item, id_fase, id_version):
 @reversion.create_revision()
 def relacionarItemBase(request, id_item_hijo, id_item_padre, id_fase):
     """
-    Vista para relaciones los items
+    *Funcion para establecer relaciones entre los items. Se pueden establecer relaciones del tipo Padre-Hijo
+    cuando los ítems pertenecen a la misma fase y del tipo Antecesor-Sucesor cuando los ítem pertenecen a
+    fases consecutivas.*
+
+    :param request: HttpRequest necesario para establecer las relaciones entre ítems, es la solicitud de la acción.
+    :param id_item_hijo: Identificador del ítem que cumplirá con el rol de Hijo/Sucesor en la relación.
+    :param id_item_padre: Identificador del ítem que cumplirá con el rol de Padre/Antecesor en la relación.
+    :param args: Argumentos para el modelo ``Item``.
+    :param kwargs: Keyword Arguments para la el modelo ``Item``.
+    :return: Relación establecida correctamente
     """
     item_hijo = ItemBase.objects.get(pk=id_item_hijo)
     item_padre = ItemBase.objects.get(pk=id_item_padre)
@@ -209,7 +239,15 @@ def relacionarItemBase(request, id_item_hijo, id_item_padre, id_fase):
 
 def relacionarItemBaseView(request, id_fase_actual, id_item_actual):
     """
-    Vista para relacionar items
+    *Función que realiza el proceso de filtar los ítems disponibles para relacionar una relación, de tal forma,
+    que se verifica que no se creen ciclos en las relaciones, ni tampoco relaciones inconsistentes con el sistema.
+
+    :param request: HttpRequest necesario para filtrar los ítems dentro de las fases, es la solicitud de la acción.
+    :param id_fase_actual: Identificador de la fase a la que pertenece el ítem que se desea establecer una relación.
+    :param id_item_actual: Identificador del ítem al cual se le establecerá una nueva relación.
+    :param args: Argumentos para el modelo ``Item``.
+    :param kwargs: Keyword Arguments para la el modelo ``Item``.
+    :return: Despliega una lista de todos los ítems habilitados para establecer una relación.
     """
     item = ItemBase.objects.get(pk=id_item_actual)
     tipoitem = item.tipoitem
@@ -243,7 +281,16 @@ def relacionarItemBaseView(request, id_fase_actual, id_item_actual):
 
 def validarItem(request, id_item):
     """
-    Vista para validar un item, previa aprovación del cliente
+    *Función para realizar la validación correcta de un item. La validación consiste en realizar una entrevista
+     con el cliente de tal manera ha explicar el desarrollo del ítem y que se encuentre aprobado por él.*
+     Obs. Solo el Lider de Proyecto puede realizar esta operación.
+
+    :param request: HttpRequest necesario para marcar el ítem que se desea validar, es la solicitud de la acción.
+    :param id_item: Identificador del Item, el cual se desea Validar por el cliente.
+    :param args: Argumentos para el modelo ``Item``.
+    :param kwargs: Keyword Arguments para la el modelo ``Item``.
+    :return: El ítem es validado exitosamente.
+
     """
     item = ItemBase.objects.get(pk=id_item)
     error = 0
@@ -268,7 +315,16 @@ def validarItem(request, id_item):
 
 def finalizarItem(request, id_item):
     """
-    Vista para validar un item, previa aprovación del cliente
+    *Función para realizar la finalización correcta de un item. La finalización consiste en finalizar el
+    desarrollo de un ítem, y luego espera a ser validado por parte del cliente.*
+    Obs. Solo el Lider de Proyecto puede realizar esta operación.
+
+    :param request: HttpRequest necesario para marcar el ítem que se desea finalizar, es la solicitud de la acción.
+    :param id_item: Identificador del Item, el cual se desea Finalizar.
+    :param args: Argumentos para el modelo ``Item``.
+    :param kwargs: Keyword Arguments para la el modelo ``Item``.
+    :return: El ítem es finalizado exitosamente.
+
     """
     item = ItemBase.objects.get(pk=id_item)
     fase = item.tipoitem.fase
@@ -308,7 +364,17 @@ def finalizarItem(request, id_item):
 
 def dardebajaItem(request, id_item):
     """
-    Vista para dar de baja un item
+    *Función para Dar de Baja un item. Dar de Baja consiste en el borrado lógico del ítem, es decir, este pasa
+    a un estado de inactividad en donde el ítem ya no puede ser desarrollado. Y si se desea volver a trabajar con
+    él se debe realizar una restauración. Cuando se Da de Baja un ítem, tambíen sucede con la relación que pasa
+    a un estado inactivo.*
+    Obs. No se pueden dar de baja ítems que poseen un rol de Padre/Antecesor en alguna relación.
+
+    :param request: HttpRequest necesario para marcar el ítem que se desea Dar de Baja, es la solicitud de la acción.
+    :param id_item: Identificador del Item, el cual se desea Dar de Baja.
+    :param args: Argumentos para el modelo ``Item``.
+    :param kwargs: Keyword Arguments para la el modelo ``Item``.
+    :return: El ítem es dado de baja exitosamente.
     """
     item = ItemBase.objects.get(pk=id_item)
     fase = item.tipoitem.fase
@@ -379,7 +445,18 @@ def dardebajaItem(request, id_item):
 
 def restaurarItem(request, id_item):
     """
-    Vista para restaurar un item que fue dado de baja
+    *Función para Restaurar un item que fue Dado de Baja. Restaurar consiste en realizar una activación del
+    ítem que fue dado de baja anteriormente de tal manera a recuperar la realción que y los atributos del ítem.
+    En caso de ocurrir una inconsistencia al realizar una recuperación, el sistema automaticamento lo relacionará
+    con el ancestro más próximo.*
+    Obs. No se pueden dar de baja ítems que poseen un rol de Padre/Antecesor en alguna relación.
+
+    :param request: HttpRequest necesario para marcar el ítem que se desea Restaurar, es la solicitud de la acción.
+    :param id_item: Identificador del Item, el cual se desea Dar de Baja.
+    :param args: Argumentos para el modelo ``Item``.
+    :param kwargs: Keyword Arguments para la el modelo ``Item``.
+    :return: El ítem es restaurado correctamente.
+
     """
     item = ItemBase.objects.get(pk=id_item)
     fase = item.tipoitem.fase
@@ -419,7 +496,12 @@ def restaurarItem(request, id_item):
 
 def restaurarItemRelacion(padres, hijos):
     """
-    *Función auxiliar de la restauración de ítems que permite restaurar la relación del mismo.*
+    *Función auxiliar de la restauración de ítems que permite restaurar la relación del mismo.
+    Cumple con la función de realizar el recorrido entre todos los ancestros de un ítem en caso de que
+    el padre no se encuentre en estado disponible para establecer una nueva relación.*
+
+    :param padres: Lista que contiene el identificador de los ítems que cumplen con el rol de Padre en la relación.
+    :param hijos: Lista que contiene el identificador de los ítems que cumplen con el rol de Hijo en la relación.
     """
 
     if hijos:
@@ -706,7 +788,6 @@ def saveForms(formDatosItem, formAtributosBasicos, formNum_list, formSTR_list, f
         formFile_list.save()
 
 
-#TODO: No borrar se usa en las pruebas =D
 def changeItem(request, id_item):
     """
         *Vista para la modificacion de una fase dentro del sistema.*
@@ -750,6 +831,13 @@ def changeItem(request, id_item):
 
 
 def verItem(request, id_item):
+    """
+    *Función que permite visualizar un ítem junto con sus atributos y su grafo de relaciones.*
+
+    :param request: HttpRequest necesario para seleccionar el ítem que se desea visualizar, es la solicitud de la acción.
+    :param id_item: Identificador del ítem el cual se desea visualizar.
+    :return: Regresa el los datos del ítem para su consulta.
+    """
     item = ItemBase.objects.get(pk=id_item)
     tipoItem = item.tipoitem
     fase = tipoItem.fase
@@ -771,7 +859,16 @@ def verItem(request, id_item):
 
 def finRevisionItem(request, id_fase, id_item):
     """
-    *Vista para finalizar un ítem que ha pasado de un estado "En linea base" a un estado en "Revision" *
+    *Función para Finalizar de un ítem que ha entrado en una estado de Revision.
+     Obs. Solo el Lider de Proyecto puede realizar esta operación. *
+
+    :param request: HttpRequest necesario para visualizar las versiones de un ítem, es la solicitud de la acción.
+    :param id_fase: Identificador de la fase dentro del proyecto a la cual pertenece el ítem.
+    :param id_item: Identificador del Item al cual se esta consultando su historial de versiones
+    :param args: Argumentos para el modelo ``Item``.
+    :param kwargs: Keyword Arguments para la el modelo ``Item``.
+    :return: Regresa una lista de todos los ítems, con el ítem finalizado correctamente e incluido nuevamente en la Base de Datos.
+
     """
     item = ItemBase.objects.get(pk=id_item)
     mensajes = []
