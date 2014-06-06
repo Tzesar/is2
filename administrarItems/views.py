@@ -319,13 +319,19 @@ def dardebajaItem(request, id_item):
             itemRelacion.save()
             mensaje = 'Item: ' + item.nombre + '. Dado de Baja correctamente.'
             error = 0
-            return workphase(request, fase.id, error=error, message=mensaje)
+            mensajes = list(mensaje)
+            request.session['messages'] = mensajes
+            request.session['error'] = error
+            return workphase(request, fase.id)
 
     esPadre = ItemRelacion.objects.filter(itemPadre=item, estado='ACT')
     if esPadre:
         mensaje = 'Item no puede darse de baja, el item posse una relación de Padre con algún otro item. Favor verificar las relaciones del ítem '
         error = 1
-        return workphase(request, fase.id, error=error, message=mensaje)
+        mensajes = list(mensaje)
+        request.session['messages'] = mensajes
+        request.session['error'] = error
+        return workphase(request, fase.id)
     else:
         item.fecha_modificacion = timezone.now()
         item.usuario_modificacion = request.user
@@ -336,14 +342,21 @@ def dardebajaItem(request, id_item):
         except:
             mensaje = 'Item: ' + item.nombre + '. Dado de Baja correctamente.'
             error = 0
-            return workphase(request, fase.id, error=error, message=mensaje)
+            mensajes = list(mensaje)
+            request.session['messages'] = mensajes
+            request.session['error'] = error
+            return workphase(request, fase.id)
 
         itemRelacion = ItemRelacion.objects.get(itemHijo=item)
         itemRelacion.estado = 'DES'
         itemRelacion.save()
+
         mensaje = 'Item: ' + item.nombre + '. Dado de Baja correctamente.'
         error = 0
-        return workphase(request, fase.id, error=error, message=mensaje)
+        mensajes = list(mensaje)
+        request.session['messages'] = mensajes
+        request.session['error'] = error
+        return workphase(request, fase.id)
 
 
 def restaurarItem(request, id_item):
@@ -358,9 +371,13 @@ def restaurarItem(request, id_item):
     except:
         item.estado = 'ACT'
         item.save()
+
         mensaje = 'Item ' + item.nombre + ' restaurado exitosamente'
         error = 0
-        return workphase(request, fase.id, error=error, message=mensaje)
+        mensajes = list(mensaje)
+        request.session['messages'] = mensajes
+        request.session['error'] = error
+        return workphase(request, fase.id)
 
     padres = []
     hijos = [id_item]
@@ -376,7 +393,10 @@ def restaurarItem(request, id_item):
 
     mensaje = 'Item ' + item.nombre + ' restaurado exitosamente'
     error = 0
-    return workphase(request, fase.id, error=error, message=mensaje)
+    mensajes = list(mensaje)
+    request.session['messages'] = mensajes
+    request.session['error'] = error
+    return workphase(request, fase.id)
 
 
 def restaurarItemRelacion(padres, hijos):
@@ -400,7 +420,7 @@ def restaurarItemRelacion(padres, hijos):
 
 
 @reversion.create_revision()
-def workItem(request, id_item, error=None, message=None):
+def workItem(request, id_item):
     """
     *Vista para el desarrollo de ítems creados en una Fase de un Proyecto.
     Opción válida para usuarios asociados a un proyecto, con permisos de creación
@@ -495,9 +515,11 @@ def workItem(request, id_item, error=None, message=None):
             item.version = reversion.get_unique_for_object(item).__len__() +1
             item.save()
 
-            request.method = 'GET'
             no_error = 0
             mensaje = 'Item: ' + item.nombre + '. Modificacion exitosa.'
+            mensajes = list(mensaje)
+            request.session['messages'] = mensajes
+            request.session['error'] = no_error
             return workphase(request, faseActual.id)
     else:
         formAtributosBasicos = modificarAtributosBasicosForm(instance=item)
@@ -521,10 +543,11 @@ def workItem(request, id_item, error=None, message=None):
     return render(request, 'item/workItem.html', {'user': request.user, 'fase': faseActual, 'proyecto': proyectoActual,
                                                   'item': item, 'formAtributosBasicos': formAtributosBasicos,
                                                   'formDatosItem': formDatosItem, 'formNumericos': formNum_list,
-                                                  'formTXT': formTXT_list, 'formSTR': formSTR_list, 'formFile': formFile_list,
-                                                  'formIMG': formIMG_list, 'existen_formNumericos': existen_NUM, 'existen_formSTR': existen_STR,
-                                                  'existen_formTXT': existen_TXT, 'existen_formIMG': existen_IMG, 'existen_formFile': existen_FIL},
-                  context_instance=RequestContext(request))
+                                                  'formTXT': formTXT_list, 'formSTR': formSTR_list,
+                                                  'formFile': formFile_list, 'formIMG': formIMG_list,
+                                                  'existen_formNumericos': existen_NUM, 'existen_formSTR': existen_STR,
+                                                  'existen_formTXT': existen_TXT, 'existen_formIMG': existen_IMG,
+                                                  'existen_formFile': existen_FIL},)
 
 
 def formsValidos(formDatosItem, formAtributosBasicos, formNum_list, formSTR_list, formTXT_list,
@@ -661,6 +684,7 @@ def saveForms(formDatosItem, formAtributosBasicos, formNum_list, formSTR_list, f
 
     if existen_FIL:
         formFile_list.save()
+
 
 #TODO: No borrar se usa en las pruebas =D
 def changeItem(request, id_item):
