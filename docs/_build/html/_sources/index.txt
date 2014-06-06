@@ -8,20 +8,9 @@ Contenidos:
 
 .. toctree::
    :maxdepth: 1
-   
-   autenticacion
-   =======================
-   administrarUsuarios
-   =======================
-   administrarRolesPermisos
-   =======================
-   administrarProyectos
-   =======================
-   administrarFases
-   =======================
-   administrarTipoItem
-   =======================
 
+   modules
+   
 
 Indices & Tablas
 ==================

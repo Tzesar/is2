@@ -18,8 +18,10 @@ class ProyectoTablaAdmin(tables.Table):
     def render_modificar(self, record):
         modificar_url = reverse("administrarProyectos.views.changeProject", args=[record.pk])
         cancelar_url = reverse("administrarProyectos.views.cancelProject", args=[record.pk])
-        return mark_safe('<a href="%s" class="text-info"><span class="glyphicon glyphicon-eye-open"></span></a> '
+        return mark_safe('<span data-toggle="tooltip" title="Modificar Proyecto" id="tooltip"> '
+                         '<a href="%s" class="text-info"><span class="glyphicon glyphicon-eye-open"></span></a></span> '
                          % modificar_url +
+                         '<span data-toggle="tooltip" title="Anular Proyecto" id="tooltip"> '
                          '<a href="%s" class="text-danger"><span class="glyphicon glyphicon-remove-sign"></span></a> '
                          % cancelar_url)
 
@@ -45,7 +47,8 @@ class ProyectoTabla(tables.Table):
 
     def render_modificar(self, record):
         modificar_url = reverse("administrarProyectos.views.workProject", args=[record.pk])
-        return mark_safe('<a href="%s" class="text-info"><span class="glyphicon glyphicon-eye-open"></span></a> '
+        return mark_safe('<span data-toggle="tooltip" title="Trabajar en Proyecto" id="tooltip"> '
+                         '<a href="%s" class="text-info"><span class="glyphicon glyphicon-eye-open"></span></a> '
                          % modificar_url )
 
 

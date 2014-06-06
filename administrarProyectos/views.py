@@ -89,7 +89,7 @@ def changeProject(request, id_proyecto):
              Modifica el proyecto y luego regresa al menu principal
     """
     # TODO: Agregar referencia a los autores de autocomplete.js
-
+    mensajes = []
     project = Proyecto.objects.get(pk=id_proyecto)
     if request.method == 'POST':
         liderAnterior = project.lider_proyecto
@@ -105,9 +105,14 @@ def changeProject(request, id_proyecto):
                 comite.grupo.user_set.add(liderNuevo)
             form.save()
 
-            #proyectoModificado = Proyecto.objects.get(nombre=form["nombre"].value())
-
+            proyectoModificado = Proyecto.objects.get(nombre=form["nombre"].value())
+            error = 0
+            mensaje = 'El proyecto ' + proyectoModificado.nombre + ' ha sido modificado exitosamente'
+            mensajes.append(mensaje)
+            request.session['messages'] = mensajes
+            request.session['error'] = error
             return HttpResponseRedirect(reverse('administrarProyectos.views.projectList'))
+
     else:
         form = ChangeProjectForm(instance=project)
     return render(request, 'proyecto/changeproject.html', {'user': request.user, 'form': form, 'project': project})
