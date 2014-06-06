@@ -1445,7 +1445,7 @@ COPY "administrarItems_itembase" (id, usuario_id, usuario_modificacion_id, nombr
 3	10	10	Plan de limpieza del terreno	algo	ACT	2014-05-24 04:22:08.23545-04	2014-05-24 04:22:08.233813-04	1	2	1	1	1	\N
 1	10	10	Plano del puente 1	descripcion	ELB	2014-05-24 04:13:55.688774-04	2014-05-24 04:52:59.443251-04	1	3	2	5	2	1
 2	10	10	Plano del alumbrado	descripcion	ELB	2014-05-24 04:20:36.635506-04	2014-05-24 06:27:54.891877-04	1	2	2	3	1	2
-4	2	2	Plan económico	asd	ELB	2014-05-24 06:36:55.766508-04	2014-05-24 06:38:11.65743-04	4	2	5	4	2	3
+4	2	2	Plan economico	asd	ELB	2014-05-24 06:36:55.766508-04	2014-05-24 06:38:11.65743-04	4	2	5	4	2	3
 \.
 
 
@@ -1994,9 +1994,9 @@ COPY reversion_version (id, revision_id, object_id, object_id_int, content_type_
 6	3	1	1	16	json	[{"pk": 1, "model": "administrarItems.itembase", "fields": {"tiempo": 5, "usuario": 10, "fecha_creacion": "2014-05-24T08:13:55.688Z", "linea_base": null, "solicitudes": [], "tipoitem": 1, "version": 2, "complejidad": 3, "descripcion": "descripcion", "nombre": "Plano del puente 1", "costo": 2, "estado": "ACT", "fecha_modificacion": "2014-05-24T08:20:44.414Z", "usuario_modificacion": 10}}]	Plano del puente 1
 7	4	3	3	16	json	[{"pk": 3, "model": "administrarItems.itembase", "fields": {"tiempo": 1, "usuario": 10, "fecha_creacion": "2014-05-24T08:22:08.235Z", "linea_base": null, "solicitudes": [], "tipoitem": 1, "version": 1, "complejidad": 2, "descripcion": "algo", "nombre": "Plan de limpieza del terreno", "costo": 1, "estado": "ACT", "fecha_modificacion": "2014-05-24T08:22:08.233Z", "usuario_modificacion": 10}}]	Plan de limpieza del terreno
 8	4	3	3	18	json	[{"pk": 3, "model": "administrarItems.camponumero", "fields": {"item": 3, "atributo": 1, "valor": 0}}]	CampoNumero object
-9	5	4	4	16	json	[{"pk": 4, "model": "administrarItems.itembase", "fields": {"tiempo": 4, "usuario": 2, "fecha_creacion": "2014-05-24T10:36:55.766Z", "linea_base": null, "solicitudes": [], "tipoitem": 4, "version": 1, "complejidad": 2, "descripcion": "asd", "nombre": "Plan econ\\u00f3mico", "costo": 5, "estado": "ACT", "fecha_modificacion": "2014-05-24T10:36:55.766Z", "usuario_modificacion": 2}}]	Plan económico
+9	5	4	4	16	json	[{"pk": 4, "model": "administrarItems.itembase", "fields": {"tiempo": 4, "usuario": 2, "fecha_creacion": "2014-05-24T10:36:55.766Z", "linea_base": null, "solicitudes": [], "tipoitem": 4, "version": 1, "complejidad": 2, "descripcion": "asd", "nombre": "Plan economico", "costo": 5, "estado": "ACT", "fecha_modificacion": "2014-05-24T10:36:55.766Z", "usuario_modificacion": 2}}]	Plan economico
 10	5	4	4	18	json	[{"pk": 4, "model": "administrarItems.camponumero", "fields": {"item": 4, "atributo": 4, "valor": 0}}]	CampoNumero object
-11	6	4	4	16	json	[{"pk": 4, "model": "administrarItems.itembase", "fields": {"tiempo": 4, "usuario": 2, "fecha_creacion": "2014-05-24T10:36:55.766Z", "linea_base": null, "solicitudes": [], "tipoitem": 4, "version": 2, "complejidad": 2, "descripcion": "asd", "nombre": "Plan econ\\u00f3mico", "costo": 5, "estado": "ACT", "fecha_modificacion": "2014-05-24T10:38:00.608Z", "usuario_modificacion": 2}}]	Plan económico
+11	6	4	4	16	json	[{"pk": 4, "model": "administrarItems.itembase", "fields": {"tiempo": 4, "usuario": 2, "fecha_creacion": "2014-05-24T10:36:55.766Z", "linea_base": null, "solicitudes": [], "tipoitem": 4, "version": 2, "complejidad": 2, "descripcion": "asd", "nombre": "Plan economico", "costo": 5, "estado": "ACT", "fecha_modificacion": "2014-05-24T10:38:00.608Z", "usuario_modificacion": 2}}]	Plan economico
 \.
 
 

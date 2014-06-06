@@ -339,7 +339,7 @@ def votarSolicitud(request, id_solicitud, voto):
                 if aceptado > rechazado:
                     solicitud.estado = 'ACP'
                     for item in solicitud.items.all():
-                        assign_perm("credencial", request.user, item)
+                        assign_perm("credencial", solicitud.usuario, item)
                         # TODO: Aqui se hace el llamado a marcar_items_revisar
                 else:
                     solicitud.estado = 'RCH'

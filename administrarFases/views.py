@@ -209,8 +209,7 @@ def importPhase(request, id_fase, id_proyecto_destino):
     try:
         phase.save()
     except IntegrityError as e:
-        return render(request, "keyduplicate_fase.html", {'project': project, "message": e.message },
-          context_instance=RequestContext(request) )
+        return render(request, "keyduplicate_fase.html", {'project': project, "message": e.message}, )
 
     # logger.info('El usuario '+ request.user.username +' ha importado la fase '+  phase.nombre +
     #             ' al proyecto destino: ' + phase.proyecto.nombre)
@@ -377,12 +376,20 @@ def startPhase(request, id_fase):
         fase.save()
         mensaje = 'La fase ' + fase.nombre + ' se ha iniciado coorrectamente.'
         error = 0
-        return vistaDesarrollo(request, fase.proyecto.id, error=error, message=mensaje)
+
+        mensajes = []
+        mensajes.append(mensaje)
+        request.session['messages'] = mensajes
+        request.session['error'] = error
+        return vistaDesarrollo(request, fase.proyecto.id)
 
     else:
         mensaje = 'La fase ' + fase.nombre + ' no se ha iniciado coorrectamente. Favor verifique la existencia ' \
                                              'de Lineas Base en la Fase Anterior: ' + fase_anterior.nombre
         error = 1
-        return vistaDesarrollo(request, fase.proyecto.id, error=error, message=mensaje)
 
-
+        mensajes = []
+        mensajes.append(mensaje)
+        request.session['messages'] = mensajes
+        request.session['error'] = error
+        return vistaDesarrollo(request, fase.proyecto.id)

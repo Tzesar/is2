@@ -85,7 +85,6 @@
                                                 </span>
                                             </span>
                                         {% endif %}
-{#                                        {% endif %}#}
                                         {% if item.estado == 'FIN' %}
                                             {% if user == proyecto.lider_proyecto %}
                                                 <span class="pull-right" data-toggle="tooltip" title="Validar Ítem" id="tooltip">
@@ -154,7 +153,7 @@
                             </div>
                             <div class="panel-heading">
                                 {% if fase.estado != 'FIN' %}
-                                    {% if item.estado != 'DDB' and item.estado != 'ELB' %}
+                                    {% if item.estado == 'ACT' %}
                                         <a href="{% url 'administrarItems.views.workItem' item.id %}" class="btn btn-xs btn-success">Ir al ítem</a>
                                         <a href="{% url 'administrarItems.views.historialItemBase' fase.id item.id %}" class="btn btn-xs btn-warning">Historial de Versiones</a>
                                         <a href="{% url 'administrarItems.views.dardebajaItem' item.id %}" class="btn btn-xs btn-danger">Dar de Baja</a>
