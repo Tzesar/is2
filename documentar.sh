@@ -13,7 +13,7 @@ sphinx-apidoc -o docs/ .
 # Cambiar el titulo del archivo modules.rst
 cd docs/
 echo -e "\nArreglando 'modules.rst'."
-sed -i.bak s/^'\.'$/========/ modules.rst
+sed -i.bak s/^'\.'$/Modulos/ modules.rst
 sed -i.bak s/^=$/========/ modules.rst
 
 # Crear los archivos html

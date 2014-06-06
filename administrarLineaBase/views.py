@@ -99,15 +99,11 @@ def calculoImpacto(padres, hijos, costo, tiempo, grafo):
         return (costo, tiempo)
 
 
-def generarCalculoImpactoHTML(request, id_item):
+def generarGrafo(id_item):
     """
     Vista para la creación del resumen del calculo de impacto de relaciones
     """
-    usuario = request.user
     item = ItemBase.objects.get(pk=id_item)
-    tipoitem = item.tipoitem
-    fase = tipoitem.fase
-    proyecto = fase.proyecto
 
     grafo = pydot.Dot(graph_type='graph')
     costo = []
@@ -116,40 +112,31 @@ def generarCalculoImpactoHTML(request, id_item):
     hijos = []
 
     calculoImpacto(padres, hijos, costo, tiempo, grafo)
-    costo = sum(costo)
-    tiempo = sum(tiempo)
-    direccion = MEDIA_ROOT + 'grafos/' + item.nombre
-    graph = grafo.write(direccion, format='png')
-    direccion = '/static/grafos/' + item.nombre
-
-    return render(request, 'lineabase/visualizarsolicitud.html', {'user': usuario, 'fase': fase, 'item': item,
-                                                                  'proyecto': proyecto, 'costo': costo,
-                                                                  'tiempo': tiempo, 'grafo': graph,
-                                                                  'direccion': direccion},)
-
-
-def generarCalculoImpacto(request, id_item):
-    """
-    Vista para la creación del resumen del calculo de impacto de relaciones
-    """
-    usuario = request.user
-    item = ItemBase.objects.get(pk=id_item)
-    tipoitem = item.tipoitem
-    fase = tipoitem.fase
-    proyecto = fase.proyecto
-
-    grafo = pydot.Dot(graph_type='graph')
-    costo = []
-    tiempo = []
-    padres = [id_item]
-    hijos = []
-
-    calculoImpacto(padres, hijos, costo, tiempo, grafo)
-    costo = sum(costo)
-    tiempo = sum(tiempo)
     direccion = MEDIA_ROOT + 'grafos/' + item.nombre
     grafo.write(direccion, format='png')
-    direccion = '/static/grafos/' + item.nombre
+
+    return
+
+
+def generarCalculoImpacto(id_item, id_solicitud):
+    """
+    Vista para la creación del resumen del calculo de impacto de relaciones
+    """
+    item = ItemBase.objects.get(pk=id_item)
+    tipoitem = item.tipoitem
+    fase = tipoitem.fase
+
+    grafo = pydot.Dot(graph_type='graph')
+    costo = []
+    tiempo = []
+    padres = [id_item]
+    hijos = []
+
+    calculoImpacto(padres, hijos, costo, tiempo, grafo)
+    costo = sum(costo)
+    tiempo = sum(tiempo)
+    direccion = MEDIA_ROOT + 'grafos/' + item.nombre + '_' + str(id_solicitud)
+    grafo.write(direccion, format='png')
 
     return costo, tiempo
 
@@ -174,7 +161,6 @@ def visualizarLB(request, id_fase):
         request.session['error'] = error
         return HttpResponseRedirect(reverse('administrarProyectos.views.vistaDesarrollo',
                                             kwargs={'id_proyecto': fase.proyecto_id}))
-        # return vistaDesarrollo(request, id_proyecto=fase.proyecto_id)
 
 
 def cancelarSolicitudCambios(request, id_solicitud, id_fase):
@@ -245,13 +231,17 @@ def visualizarSolicitud(request, id_solicitud, id_fase):
 
     itemsSolicitud = solicitud[0].items.all()
 
+    resultado_votacion = Votacion.objects.filter(solicitud=solicitud)
+
     items_grafos = {}
     for item in itemsSolicitud:
-        direccion = '/static/grafos/' + item.nombre
+        direccion = '/static/grafos/' + item.nombre + '_' + str(id_solicitud)
         items_grafos[item] = direccion
 
-    return render(request, 'lineabase/visualizarsolicitud.html', {'user': request.user, 'fase': fase, 'proyecto': proyecto,
-                                                             'solicitud': solicitud, 'items': items_grafos.items()})
+    return render(request, 'lineabase/visualizarsolicitud.html', {'user': request.user, 'fase': fase,
+                                                                  'proyecto': proyecto, 'solicitud': solicitud,
+                                                                  'items': items_grafos.items(),
+                                                                  'votaciones': resultado_votacion})
 
 
 def crearSolicitudCambios(request, id_fase):
@@ -280,7 +270,7 @@ def crearSolicitudCambios(request, id_fase):
                     itemNuevo = ItemBase.objects.get(id=item)
                     itemNuevo.solicitudes.add(solicitud)
                     itemNuevo.save()
-                    costo, tiempo = generarCalculoImpacto(request, itemNuevo.id)
+                    costo, tiempo = generarCalculoImpacto(itemNuevo.id, solicitud.id)
                     solicitud.costo = solicitud.costo + costo
                     solicitud.tiempo = solicitud.tiempo + tiempo
 
@@ -329,7 +319,7 @@ def votarSolicitud(request, id_solicitud, voto):
             votos = Votacion.objects.filter(solicitud=solicitud)
             aceptado = 0
             rechazado = 0
-            if votos.count() == 3:
+            if votos.count() >= 3:
                 for voto in votos:
                     if voto.voto == 'GOOD':
                         aceptado = aceptado + 1
@@ -339,8 +329,11 @@ def votarSolicitud(request, id_solicitud, voto):
                 if aceptado > rechazado:
                     solicitud.estado = 'ACP'
                     for item in solicitud.items.all():
-                        assign_perm("credencial", request.user, item)
-                        # TODO: Aqui se hace el llamado a marcar_items_revisar
+                        #assign_perm("credencial", solicitud.usuario, item)
+                        padres = [item.id]
+                        hijos = []
+                        buscarHijos(padres, hijos)
+
                 else:
                     solicitud.estado = 'RCH'
 
@@ -362,3 +355,26 @@ def votarSolicitud(request, id_solicitud, voto):
                                                          'solicitud': solicitud}, )
 
 
+def buscarHijos(padres, hijos):
+    """
+    Vista para realizar el calculo de impacto
+    """
+    if padres:
+        padre = padres.pop()
+        item = ItemBase.objects.get(pk=padre)
+        if item.estado == 'ELB':
+            item.estado = 'REV'
+            item.save()
+            fase = item.tipoitem.fase
+            if fase.estado == 'FIN':
+                fase.estado = 'REV'
+                fase.save()
+
+        item_hijos = list(ItemRelacion.objects.filter(itemPadre=padre).values_list('itemHijo', flat=True))
+        hijos.extend(item_hijos)
+        padres.extend(item_hijos)
+
+        buscarHijos(padres, hijos)
+
+    else:
+        return

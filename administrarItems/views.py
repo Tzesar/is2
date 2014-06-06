@@ -11,7 +11,7 @@ from administrarItems.forms import itemForm, campoEnteroForm, campoImagenForm, c
 
 from django.forms.models import inlineformset_factory
 from administrarItems.models import ItemBase, CampoImagen, CampoNumero, CampoFile, CampoTextoCorto, CampoTextoLargo, ItemRelacion
-from administrarLineaBase.views import generarCalculoImpacto
+from administrarLineaBase.views import generarCalculoImpacto, generarGrafo
 from administrarRolesPermisos.decorators import *
 import reversion
 from administrarTipoItem.models import TipoItem, Atributo
@@ -164,6 +164,7 @@ def relacionarItemBase(request, id_item_hijo, id_item_padre, id_fase):
     """
     item_hijo = ItemBase.objects.get(pk=id_item_hijo)
     item_padre = ItemBase.objects.get(pk=id_item_padre)
+    mensajes = []
 
     try:
         ItemRelacion.objects.get(itemHijo=item_hijo)
@@ -177,7 +178,10 @@ def relacionarItemBase(request, id_item_hijo, id_item_padre, id_fase):
         item_hijo.version = reversion.get_unique_for_object(item_hijo).__len__() + 1
         item_hijo.save()
         mensaje = 'Relacion establecida entre ' + item_hijo.nombre + ' y ' + item_padre.nombre + '.'
+        mensajes.append(mensaje)
         error = 0
+        request.session['messages'] = mensajes
+        request.session['error'] = error
         return workphase(request, id_fase)
 
     relacion = ItemRelacion.objects.get(itemHijo=item_hijo)
@@ -185,6 +189,9 @@ def relacionarItemBase(request, id_item_hijo, id_item_padre, id_fase):
     if padre == item_padre:
         mensaje = 'El item ' + item_hijo.nombre + ' ya cuenta con una relacion hacia el item especificado.'
         duplicado = 1
+        mensajes.append(mensaje)
+        request.session['messages'] = mensajes
+        request.session['error'] = duplicado
         return workphase(request, id_fase)
     else:
         relacion.itemPadre = item_padre
@@ -194,7 +201,7 @@ def relacionarItemBase(request, id_item_hijo, id_item_padre, id_fase):
 
         mensaje = 'Relacion establecida entre ' + item_hijo.nombre + ' y ' + item_padre.nombre + '.'
         error = 0
-        mensajes = list(mensaje)
+        mensajes.append(mensaje)
         request.session['messages'] = mensajes
         request.session['error'] = error
         return workphase(request, id_fase)
@@ -210,6 +217,7 @@ def relacionarItemBaseView(request, id_fase_actual, id_item_actual):
     proyecto = fase_actual.proyecto
     item_hijos = ItemRelacion.objects.filter(itemPadre=id_item_actual).values_list('itemHijo', flat=True)
     item_lista_fase_actual = ItemBase.objects.filter(tipoitem=tipoitem).exclude(pk=id_item_actual).exclude(pk__in=item_hijos)
+    mensajes = []
 
     if fase_actual.nro_orden == 1:
         if item_lista_fase_actual:
@@ -218,7 +226,7 @@ def relacionarItemBaseView(request, id_fase_actual, id_item_actual):
         else:
             error=1
             mensaje= 'No existen items con los cuales relacionarse'
-            mensajes = list(mensaje)
+            mensajes.append(mensaje)
             request.session['messages'] = mensajes
             request.session['error'] = error
             return workphase(request, id_fase_actual)
@@ -227,6 +235,7 @@ def relacionarItemBaseView(request, id_fase_actual, id_item_actual):
         fase_anterior = Fase.objects.get(proyecto=proyecto, nro_orden=orden_anterior)
         tipoitem_anterior = TipoItem.objects.filter(fase=fase_anterior)
         item_lista_fase_anterior = ItemBase.objects.filter(tipoitem__in=tipoitem_anterior, estado='ELB')
+
         return render(request, 'item/relacionaritemvista.html', {'item': item, 'fase': fase_actual, 'proyecto': proyecto,
                       'itemlistaanterior': item_lista_fase_anterior, 'fase_anterior': fase_anterior,
                       'itemlista': item_lista_fase_actual, 'user': request.user}, )
@@ -255,7 +264,6 @@ def validarItem(request, id_item):
     request.session['messages'] = mensajes
     request.session['error'] = error
     return HttpResponseRedirect(reverse('administrarFases.views.workphase', kwargs={'id_fase': item.tipoitem.fase_id}))
-    # return workphase(request, item.tipoitem.fase.id, error=error, message=mensaje)
 
 
 def finalizarItem(request, id_item):
@@ -521,7 +529,8 @@ def workItem(request, id_item):
 
             item.fecha_modificacion = timezone.now()
             item.usuario_modificacion = request.user
-            item.estado = 'ACT'
+            if item.estado != 'REV':
+                item.estado = 'ACT'
             item.version = reversion.get_unique_for_object(item).__len__() +1
             item.save()
 
@@ -530,7 +539,8 @@ def workItem(request, id_item):
             mensajes = list(mensaje)
             request.session['messages'] = mensajes
             request.session['error'] = no_error
-            return workphase(request, faseActual.id)
+            return HttpResponseRedirect(reverse('administrarFases.views.workphase',
+                                                kwargs={'id_fase': faseActual.id}))
     else:
         formAtributosBasicos = modificarAtributosBasicosForm(instance=item)
         formDatosItem = modificarDatosItemForm(instance=item)
@@ -751,9 +761,27 @@ def verItem(request, id_item):
     imagenes = CampoImagen.objects.filter(item=item)
     archivos = CampoFile.objects.filter(item=item)
 
-    generarCalculoImpacto(request, id_item)
+    generarGrafo(id_item)
     grafoRelaciones = '/static/grafos/' + item.nombre
 
     return render(request, 'item/veritem.html', {'proyecto': proyecto, 'fase': fase, 'item': item, 'user': request.user,
                                                  'numericos': numericos, 'cadenas': cadenas, 'textosextensos': textos,
                                                  'imagenes': imagenes, 'archivos': archivos, 'grafo': grafoRelaciones})
+
+
+def finRevisionItem(request, id_fase, id_item):
+    """
+    *Vista para finalizar un ítem que ha pasado de un estado "En linea base" a un estado en "Revision" *
+    """
+    item = ItemBase.objects.get(pk=id_item)
+    mensajes = []
+
+    item.estado = 'ELB'
+    item.save()
+
+    message = 'Revision Finalizada para el Item:' + item.nombre
+    error = 0
+    mensajes.append(message)
+    request.session['messages'] = mensajes
+    request.session['error'] = error
+    return HttpResponseRedirect(reverse('administrarFases.views.workphase', kwargs={'id_fase': id_fase}))

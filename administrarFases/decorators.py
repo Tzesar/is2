@@ -1,4 +1,4 @@
-
+#encoding:utf-8
 from django.core.exceptions import ObjectDoesNotExist
 from django.http import Http404
 
@@ -8,7 +8,7 @@ from administrarFases.models import Fase
 
 def puede_modificar_fase(request, **kwargs):
         """
-        *``Metodo del Decorador``: Es llamado por el decorador ``lider_requerido`` para comprobar que el usuario logueado
+        ``Metodo del Decorador`` : *Es llamado por el decorador* ``lider_requerido`` *para comprobar que el usuario logueado
         sea Líder del proyecto al cual la vista intenta acceder.*
 
         :param request: HttpRequest con los datos del usuario actual.

@@ -1,22 +1,29 @@
-is2 
-====
+ZARpm 
+===========
 
 
-settings
+Configuraciones
 -------------------
 
 .. automodule:: is2.settings
     :members:
     :show-inheritance:
 
-urls
+Configuracion de Produccion
+------------------------------
+
+.. automodule:: is2.settings_produccion
+    :members:
+    :show-inheritance:
+
+URLs (Localizador de Recursos Uniforme)
 ---------------
 
 .. automodule:: is2.urls
     :members:
     :show-inheritance:
 
-wsgi
+WSGI ( Web Server Gateway Interface)
 ---------------
 
 .. automodule:: is2.wsgi

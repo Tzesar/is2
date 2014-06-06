@@ -78,7 +78,10 @@
                                 <i><u>Estado</u></i>
                                 <p>{{ fase.get_estado_display }}</p>
 
-                                <p class="list-group-item-info" style="font-size: 11px; line-height: 2">
+                                <p class="{% if fase.estado == 'DES' %}list-group-item-info
+                                          {% elif fase.estado == 'PEN' %}list-group-item-warning
+                                          {% elif fase.estado == 'FIN' %}list-group-item-success
+                                          {% else %}list-group-item-danger{% endif %}" style="font-size: 11px; line-height: 2">
                                     <b>Lista de ítems:</b>
                                     {% for fase_id, items in itemsPorFase %}
                                         {% if fase.id == fase_id %}
@@ -100,7 +103,14 @@
                                     {% if user == proyecto.lider_proyecto %}<a href="{% url 'administrarFases.views.finPhase' fase.id %}" class="btn btn-success btn-sm">Fin Fase</a>{% endif %}
                                     <a href="{% url 'administrarLineaBase.views.visualizarLB' fase.id %}" class="btn btn-gray btn-sm">Lineas Base</a>
                                 {% else %}
-                                    <a href="{% url 'administrarFases.views.workphase' fase.id %}"class="btn btn-success btn-sm">Ver Ítems</a>
+                                    {% if fase.estado != 'PEN' %}
+                                        <a href="{% url 'administrarFases.views.workphase' fase.id %}"class="btn btn-primary btn-sm">Ver Ítems</a>
+                                    {% endif %}
+                                {% endif %}
+                                {% if fase.estado == 'REV' %}
+                                    {% if user == proyecto.lider_proyecto %}
+                                        <a href="{% url 'administrarFases.views.finPhase' fase.id %}" class="btn btn-danger btn-sm">Fin Revisión Fase</a>
+                                    {% endif %}
                                 {% endif %}
                             </div>
                         </div>

@@ -10,10 +10,15 @@ class LineaBase(models.Model):
     Este es el modelo para la Linea Base
     """
 
+    opciones_estado = (
+        ('CER', 'Cerrado'),
+        ('ABT', 'Abierto'), )
+
     fase = models.ForeignKey(Fase)
     fecha_creacion = models.DateField(auto_now_add=True, help_text='Fecha de creacion de la Linea Base', null=True)
     fecha_modificacion = models.DateField(help_text='Fecha de Modificacion de la Linea Base', null=True)
     observaciones = models.TextField(max_length=140, null=True)
+    estado = models.CharField(max_length=3, choices=opciones_estado, default='CER', help_text='Estado de la Linea Base')
 
     def __unicode__(self):
         return self.fecha_creacion

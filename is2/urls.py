@@ -21,7 +21,7 @@ from administrarFases.views import changePhase, createPhase, phaseList, deletePh
 from administrarRolesPermisos.views import crearRol, eliminarRol, modificarRol, accesoDenegado
 from administrarItems.views import createItem,\
     historialItemBase, relacionarItemBaseView, reversionItemBase, relacionarItemBase, \
-    finalizarItem, validarItem, dardebajaItem, workItem, restaurarItem, verItem
+    finalizarItem, validarItem, dardebajaItem, workItem, restaurarItem, verItem, finRevisionItem
 
 
 admin.autodiscover()
@@ -81,6 +81,7 @@ urlpatterns = patterns('',
                        url(r'^deleterole/(?P<id_proyecto>\d+)/(?P<id_rol>\d+)$', eliminarRol),
                        url(r'^denegado/(?P<id_error>\d+)$', accesoDenegado),
                        # TODO: Agregar pagina 403, parecida a la desplegada por accesoDenegado
+                       # TODO: Agregar paginas 404 y 500
 
 ###################################################### TIPO DE ITEMS ###################################################
                        url(r'^createitemtype/(?P<id_fase>\d+)$', createItemType),
@@ -113,6 +114,7 @@ urlpatterns = patterns('',
                        url(r'^veritem/(?P<path>.*)$', 'django.views.static.serve',
 		                                                    {'document_root':settings.MEDIA_ROOT, 'show_indexes': True}
                        ),
+                       url(r'^finrevisionitem/(?P<id_fase>\d+)/(?P<id_item>\d+)$', finRevisionItem ),
 
 ###################################################### LINEA BASE ######################################################
                        url(r'^createlb/(?P<id_fase>\d+)$', createLB ),

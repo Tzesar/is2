@@ -1,21 +1,22 @@
 Autenticacion 
 =====================
 
-models 
+
+Modelos
 ---------------------------
 
 .. automodule:: autenticacion.models
     :members:
     :show-inheritance:
 
-tests 
+Pruebas Unitarias
 --------------------------
 
 .. automodule:: autenticacion.tests
     :members:
     :show-inheritance:
 
-views 
+Vistas(Funciones)
 --------------------------
 
 .. automodule:: autenticacion.views
