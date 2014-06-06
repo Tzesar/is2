@@ -1,8 +1,7 @@
 #encoding:utf-8
 
 from django.contrib.auth.decorators import login_required
-from django.template import RequestContext
-from django.shortcuts import render, render_to_response
+from django.shortcuts import render
 from django.utils import timezone
 from administrarFases.views import workphase
 
@@ -54,7 +53,7 @@ def createItem(request, id_fase):
         form = itemForm()
         form.fields['tipoitem'].queryset = TipoItem.objects.filter(fase=id_fase)
     return render(request, 'item/createitem.html', {'form': form, 'fase': fase, 'proyecto': proyecto,
-                                                    'user': usuario}, context_instance=RequestContext(request))
+                                                    'user': usuario}, )
 
 
 def crearAtributos(item_id):
@@ -104,8 +103,7 @@ def historialItemBase(request, id_fase, id_item):
     lista_versiones = reversion.get_unique_for_object(item)
 
     return render(request, 'item/historialitem.html', {'lista_versiones': lista_versiones, 'item': item,
-                                              'proyecto': proyecto, 'fase': fase, 'user': usuario},
-                                               context_instance=RequestContext(request))
+                                              'proyecto': proyecto, 'fase': fase, 'user': usuario}, )
 
 
 def reversionItemBase(request, id_item, id_fase, id_version):
@@ -153,7 +151,10 @@ def reversionItemBase(request, id_item, id_fase, id_version):
             version.revert()
             mensaje = 'Item: ' + item.nombre + '. Reversionado correctamente.'
             error = 0
-            return workphase(request, fase.id, error=error, message=mensaje)
+            mensajes = list(mensaje)
+            request.session['messages'] = mensajes
+            request.session['error'] = error
+            return workphase(request, fase.id)
 
 
 @reversion.create_revision()
@@ -193,7 +194,10 @@ def relacionarItemBase(request, id_item_hijo, id_item_padre, id_fase):
 
         mensaje = 'Relacion establecida entre ' + item_hijo.nombre + ' y ' + item_padre.nombre + '.'
         error = 0
-        return workphase(request, id_fase, error=error, message=mensaje)
+        mensajes = list(mensaje)
+        request.session['messages'] = mensajes
+        request.session['error'] = error
+        return workphase(request, id_fase)
 
 
 def relacionarItemBaseView(request, id_fase_actual, id_item_actual):
@@ -210,11 +214,14 @@ def relacionarItemBaseView(request, id_fase_actual, id_item_actual):
     if fase_actual.nro_orden == 1:
         if item_lista_fase_actual:
             return render(request, 'item/relacionaritemvista.html', {'item': item, 'fase': fase_actual, 'proyecto': proyecto,
-                      'itemlista': item_lista_fase_actual, 'user': request.user}, context_instance=RequestContext(request))
+                      'itemlista': item_lista_fase_actual, 'user': request.user}, )
         else:
             error=1
             mensaje= 'No existen items con los cuales relacionarse'
-            return workphase(request, id_fase_actual, error=error, message=mensaje)
+            mensajes = list(mensaje)
+            request.session['messages'] = mensajes
+            request.session['error'] = error
+            return workphase(request, id_fase_actual)
     else:
         orden_anterior = fase_actual.nro_orden - 1
         fase_anterior = Fase.objects.get(proyecto=proyecto, nro_orden=orden_anterior)
@@ -222,7 +229,7 @@ def relacionarItemBaseView(request, id_fase_actual, id_item_actual):
         item_lista_fase_anterior = ItemBase.objects.filter(tipoitem__in=tipoitem_anterior, estado='ELB')
         return render(request, 'item/relacionaritemvista.html', {'item': item, 'fase': fase_actual, 'proyecto': proyecto,
                       'itemlistaanterior': item_lista_fase_anterior, 'fase_anterior': fase_anterior,
-                      'itemlista': item_lista_fase_actual, 'user': request.user}, context_instance=RequestContext(request))
+                      'itemlista': item_lista_fase_actual, 'user': request.user}, )
 
 
 def validarItem(request, id_item):
@@ -312,7 +319,10 @@ def dardebajaItem(request, id_item):
             except:
                 mensaje = 'Item: ' + item.nombre + '. Dado de Baja correctamente.'
                 error = 0
-                return workphase(request, fase.id, error=error, message=mensaje)
+                mensajes = list(mensaje)
+                request.session['messages'] = mensajes
+                request.session['error'] = error
+                return workphase(request, fase.id)
 
             itemRelacion = ItemRelacion.objects.get(itemHijo=item)
             itemRelacion.estado = 'DES'
@@ -726,8 +736,7 @@ def changeItem(request, id_item):
         form = itemForm(instance=item)
         form.fields['tipoitem'].queryset = TipoItem.objects.filter(fase=phase.id)
     return render(request, 'item/changeitem.html', {'form': form, 'item': item, 'phase': phase, 'project': project,
-                                                    'tiposItem': tipoItem, 'user': request.user},
-                                                    context_instance=RequestContext(request))
+                                                    'tiposItem': tipoItem, 'user': request.user}, )
 
 
 def verItem(request, id_item):
