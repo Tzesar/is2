@@ -7,7 +7,12 @@ from autenticacion.models import Usuario
 
 class LineaBase(models.Model):
     """
-    *Este es el modelo para la Linea Base. En el cual se encuentras todos los atributos de una fase:**
+    *Este es el modelo para la Linea Base. En el cual se encuentras todos los atributos de una Linea Base:*
+        + *Codigo*: Identificador Único dentro del Sistema
+        + *Fase*: Identificador de la fase
+        + *Fecha de Creacion*: Fecha de creación de la Linea Base
+        + *Fecha de Modificacion*: Fecha de modificación de la Linea Base
+        + *Observaciones*: Notas importantes con respecto a los ítems que pertenecen a la Linea Base.
 
     """
 
@@ -23,7 +28,16 @@ class LineaBase(models.Model):
 
 class SolicitudCambios(models.Model):
     """
-    Modelo para la solicitud de cambios
+    *Modelo para la solicitud de cambios. En el cual se encuentras todos los atributos de una Solicitud:*
+        + *Codigo*: Identificador Único dentro del Sistema
+        + *Usuario*: Identificador del Usuario quien ha expedido la solicitud.
+        + *Fase*: Identificador de la Fase a la cual se encuentra vinculada la Solicitud.
+        + *Motivo*: Justificación de los cambios solicitados.
+        + *Fecha de Creacion*: Fecha de creación de la Solicitud.
+        + *Estado*: Estado en que se encuentra la Solicitud.
+        + *Costo*: Costo estimado de las modificaciones de solicitadas.
+        + *Tiempo*: Tiempo estimado de las modificaciones de solicitadas.
+
     """
 
     opciones_estado = (
@@ -48,7 +62,13 @@ class SolicitudCambios(models.Model):
 
 class Votacion(models.Model):
     """
-    *Modelo para almacenar las votaciones expedidas sobre una solictud de cambios*
+    *Modelo para almacenar las votaciones expedidas sobre una solictud de cambios.*
+    * En el cual se encuentras todos los atributos de una Linea Base:*
+        + *Codigo*: Identificador Único dentro del Sistema.
+        + *Usuario*: Identificador del Usuario quien ha expedido el voto.
+        + *Solicitud*: Identificador de la Solicitud de Cambios.
+        + *Voto*: Voto a favor/contra de la Solicitud.
+        + *Justificación*: Explicación de la postura tomada con respecto a la Solicitud de Cambios.
     """
 
     opciones_voto = (
