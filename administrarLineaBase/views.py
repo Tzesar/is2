@@ -329,7 +329,7 @@ def votarSolicitud(request, id_solicitud, voto):
                 if aceptado > rechazado:
                     solicitud.estado = 'ACP'
                     for item in solicitud.items.all():
-                        #assign_perm("credencial", solicitud.usuario, item)
+                        assign_perm("credencial", solicitud.usuario, item)
                         padres = [item.id]
                         hijos = []
                         buscarHijos(padres, hijos)

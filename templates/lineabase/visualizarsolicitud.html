@@ -91,28 +91,24 @@
                 </div>
             </div>
             {% if solicitud.estado != 'VOT' and solicitud.estado != 'CAN' %}
-                <div class="row">
-                <div class="col-cm-12 col-md-12 col-lg-12">
-                    <div class="panel panel-primary">
-                        <div class="panel-heading">
-                            RESULTADO DE LA VOTACIÓN
-                        </div>
-                        {% for voto in votaciones %}
-                            <div class="col-sm-4 col-md-4 col-lg-4">
-
-                                    <div class="list-group" style="padding-bottom: 5% ; padding-top: 5%; padding-left: 5%; padding-right: 5%; " >
-                                        <div class="list-group-item-info" style="padding: 3%; font-size: 100%">
-                                            <b>Usuario: </b>{{ voto.usuario.get_full_name }}<br>
-                                            <b>Voto: </b>{{ voto.get_voto_display }}<br>
-                                            <b>Justificacion: </b>{{ voto.justificacion }}<br>
-                                        </div>
-                                    </div>
-
+                <div class="panel panel-primary">
+                    <div class="panel-heading">
+                        RESULTADO DE LA VOTACIÓN
+                    </div>
+                    <div class="panel-body">
+                    {% for voto in votaciones %}
+                        <div class="col-sm-4 col-md-4 col-lg-4">
+                            <div class="list-group" style="padding-bottom: 5% ; padding-top: 5%; padding-left: 5%; padding-right: 5%; " >
+                                <div class="list-group-item-info" style="padding: 3%; font-size: 100%">
+                                    <b>Usuario: </b>{{ voto.usuario.get_full_name }}<br>
+                                    <b>Voto: </b>{{ voto.get_voto_display }}<br>
+                                    <b>Justificacion: </b>{{ voto.justificacion }}<br>
+                                </div>
                             </div>
-                        {% endfor %}
+                        </div>
+                    {% endfor %}
                     </div>
                 </div>
-            </div>
             {% endif %}
         <a href="{% url 'administrarLineaBase.views.workApplication' fase.id %}" class="btn btn-md btn-success">Finalizar revisión</a>
         </div>
