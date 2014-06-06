@@ -1,5 +1,5 @@
 
-- Arreglar Change Role
+- Arreglar Change Role - PENDIENTE
 - Boton para visualizar el resultado de la votacion (mejorar en el template =D)
 - Mensaje de modificacion/creacion de proyectos para el admin
 - Utilizar finproyecto de gerardo
