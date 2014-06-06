@@ -1,4 +1,6 @@
 #encoding:utf-8
+from django.contrib.auth.models import Group
+from django.core.mail import send_mail, send_mass_mail
 from django.core.urlresolvers import reverse
 from django.http import HttpResponseRedirect
 from django.template import RequestContext
@@ -12,10 +14,12 @@ from administrarFases.views import workphase
 from administrarItems.models import ItemBase, ItemRelacion
 from administrarLineaBase.forms import createLBForm, createSCForm, asignarItemSolicitudForm, emitirVotoForm
 from administrarLineaBase.models import LineaBase, SolicitudCambios, Votacion
+from administrarProyectos.models import UsuariosVinculadosProyectos
 from administrarProyectos.views import vistaDesarrollo
 from administrarTipoItem.models import TipoItem
 from administrarRolesPermisos.decorators import user_passes_test, crear_linea_base
-from is2.settings import MEDIA_ROOT
+from autenticacion.models import Usuario
+from is2.settings import MEDIA_ROOT, DEFAULT_FROM_EMAIL
 
 
 @user_passes_test(crear_linea_base)
@@ -336,7 +340,8 @@ def crearSolicitudCambios(request, id_fase):
 
                 request.session['messages'] = mensaje
                 request.session['error'] = error
-                # return workApplication(request, fase.id, error=error, mensaje=mensaje)
+                enviarNotificacionesComite(solicitud.id)
+
                 return HttpResponseRedirect(reverse('administrarLineaBase.views.workApplication', kwargs={'id_fase': id_fase}))
 
     form = createSCForm()
@@ -388,6 +393,8 @@ def votarSolicitud(request, id_solicitud, voto):
 
                 if aceptado > rechazado:
                     solicitud.estado = 'ACP'
+                    solicitud.save()
+                    enviarNotificacionSolicitudAprobada(solicitud.id)
                     for item in solicitud.items.all():
                         assign_perm("credencial", solicitud.usuario, item)
                         padres = [item.id]
@@ -396,14 +403,12 @@ def votarSolicitud(request, id_solicitud, voto):
 
                 else:
                     solicitud.estado = 'RCH'
-
-                solicitud.save()
-
+                    solicitud.save()
 
             mensaje = 'Voto confirmado para la solicitud ' + str(solicitud.id)
             error = 0
             # request.method = 'GET'
-
+            enviarSolicitudRespuesta(solicitud.id)
             request.session['messages'] = mensaje
             request.session['error'] = error
             return HttpResponseRedirect(reverse('administrarLineaBase.views.workApplication', kwargs={'id_fase': fase.id}))
@@ -441,3 +446,75 @@ def buscarHijos(padres, hijos):
 
     else:
         return
+
+
+def enviarNotificacionesComite(id_solicitud):
+    """
+    *Función para notificar al Comite de Cambios que se ha emitido una nueva solicitud de cambios y esta
+    lista para su votación*
+
+    :param id_solicitud: Identificador de la solicitud que se ha creado y notificado a los miembros del comite.
+    """
+    solicitud = SolicitudCambios.objects.get(pk=id_solicitud)
+    fase = solicitud.fase
+    proyecto = fase.proyecto
+
+    nombre = 'ComiteDeCambios-' + proyecto.nombre
+    grupo = Group.objects.get(name=nombre)
+    miembros = grupo.user_set.all()
+    asunto = 'Notificacion: Nueva Solicitud de Cambios'
+
+    for user in miembros:
+        mensaje =   'Estimado ' + user.get_full_name() + ':\n\n' \
+                    'Usted ha recibido este correo por que forma parte del Comite de Cambios del Proyecto ' + \
+                     proyecto.nombre + ' y esto es una notificacion sobre la nueva solicitud de cambios recibida.' \
+                    '\nSolicitud Numero: ' + str(solicitud.id) + '\nSolicitante: ' + solicitud.usuario.get_full_name()\
+                    + '\n\nAtte.\nZARpm Team'
+        send_mail(asunto, mensaje, DEFAULT_FROM_EMAIL, [user.email] )
+
+
+def enviarNotificacionSolicitudAprobada(id_solicitud):
+    """
+    *Función para notificar a todos los usuarios vinculados al proyecto que se ha Aceptado una solicitud de cambios.*
+
+    :param id_solicitud: Identificador de la solicitud que se ha creado y notificado a los miembros del comite.
+    """
+    solicitud = SolicitudCambios.objects.get(pk=id_solicitud)
+    fase = solicitud.fase
+    proyecto = fase.proyecto
+
+    mensajes = []
+    usuarios = UsuariosVinculadosProyectos.objects.filter(cod_proyecto=proyecto).exclude(cod_usuario=solicitud.usuario)
+    users = Usuario.objects.filter(pk__in=usuarios)
+    for user in usuarios:
+        mensaje = ('Notificacion: Solicitud de Cambios Aprobada',  'Estimado Usuario:\n\n' \
+                    'Usted ha recibido este correo por que forma parte del equipo de Desarrollo del Proyecto ' + \
+                     proyecto.nombre + ' y esto es una notificacion sobre la solicitud de cambio que ha sido APROBADA.' \
+                    '\nSolicitud Numero: ' + str(solicitud.id) + '\nSolicitante: ' + solicitud.usuario.get_full_name()\
+                    + '\n\nAtte.\nZARpm Team', DEFAULT_FROM_EMAIL, [user.cod_usuario.email])
+        mensajes.append(mensaje)
+
+
+    send_mass_mail((mensajes))
+
+
+def enviarSolicitudRespuesta(id_solicitud):
+    """
+    *Función para notificar al emisor la respuesta del comite de cambios sobre la solicitud realizada.*
+
+    :param id_solicitud: Identificador de la solicitud que se ha creado y notificado a los miembros del comite.
+    """
+    solicitud = SolicitudCambios.objects.get(pk=id_solicitud)
+    fase = solicitud.fase
+    proyecto = fase.proyecto
+    user = solicitud.usuario
+
+    asunto = 'Notificacion: Respuesta del Comite de Cambios'
+
+    mensaje =   'Estimado ' + user.get_full_name() + ':\n\n' \
+                'Usted ha recibido este correo por que ha enviado una solicitud de cambios al Comite de Cambios del Proyecto ' + \
+                 proyecto.nombre + ' y esto es una notificacion con la respuesta de la solicitud de cambios expedida.' \
+                '\nSolicitud Numero: ' + str(solicitud.id) + '\nSolicitante: ' + solicitud.usuario.get_full_name()\
+                + '\nVotacion: ' + solicitud.estado + '\n\nAtte.\nZARpm Team'
+
+    send_mail(asunto, mensaje, DEFAULT_FROM_EMAIL, [user.email] )
