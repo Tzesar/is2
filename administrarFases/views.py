@@ -212,8 +212,6 @@ def importPhase(request, id_fase, id_proyecto_destino):
         return render(request, "keyduplicate_fase.html", {'project': project, "message": e.message },
           context_instance=RequestContext(request) )
 
-    # logger.info('El usuario '+ request.user.username +' ha importado la fase '+  phase.nombre +
-    #             ' al proyecto destino: ' + phase.proyecto.nombre)
 
     return HttpResponseRedirect('/changephase/' + str(phase.id))
 
@@ -264,7 +262,7 @@ def workphase(request, id_fase):
             except:
                 relaciones[i] = None
 
-        if faseTrabajo.estado == 'DES':
+        if proyectoTrabajo.estado == 'ACT':
 
             usuario = request.user
             objetos = get_objects_for_user(usuario, 'crear_Solicitud_Cambio', klass=Fase)
@@ -283,8 +281,6 @@ def workphase(request, id_fase):
                                                            'relaciones': relaciones.items(), 'error': error,
                                                            'messages': messages, 'puedeCrearSC': puedeCrearSC})
 
-            # return render(request, 'fase/workPhase.html', {'proyecto': proyectoTrabajo, 'fase': faseTrabajo, 'user': request.user,
-            #                                                'listaItems': itemsFase, 'relaciones': relaciones.items()})
         else:
             return render(request, 'fase/workphase_finalizada.html', {'proyecto': proyectoTrabajo, 'fase': faseTrabajo, 'user': request.user,
                                                            'listaItems': itemsFase, 'relaciones': relaciones.items()})
@@ -344,6 +340,11 @@ def finPhase(request, id_fase):
                 message = 'Fase:' + fase.nombre + '. No se pudo finalizar. Aun existen items fuera de Linea Base. Verifique esto y vuelva a intentarlo.'
                 messages.append(message)
                 error = 1
+            elif item.estado == 'REV':
+                message = 'Fase:' + fase.nombre + '. No se pudo finalizar. Aun existen items en estado de REVISION. Verifique esto y vuelva a intentarlo.'
+                messages.append(message)
+                error = 1
+
     else:
         error = 1
         message = 'Fase: ' + fase.nombre + '. No se pudo finalizar. No se han creado items en la misma. Verifiquela y vuelva a intentarlo.'

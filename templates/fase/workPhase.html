@@ -5,7 +5,9 @@
     {% block errorBlock %}
         {% if messages %}
             <div class="container-fluid">
-                <div class="alert {% if error == 1 %} alert-danger {% else %} alert-success {% endif %} alert-dismissable">
+                <div class="alert {% if error == 1 %} alert-danger
+                                  {% else %} alert-success
+                                  {% endif %} alert-dismissable">
                     <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
                     <ul>
                         {% for message in messages %}
@@ -27,7 +29,7 @@
     {% block panelCentral %}
         <div class="panel-heading">
             <h1 class="text-info" style="display: inline-block">Fase: {{ fase.nombre|capfirst }}</h1>
-            {% if puedeCrearSC %}
+            {% if puedeCrearSC or proyecto.lider_proyecto == user %}
                 <span class="pull-right" style="padding-top: 2%">
                         <a href="{% url 'administrarLineaBase.views.workApplication' fase.id %}" class="btn btn-sm btn-info"> Gestionar Solicitud Cambios</a>
                 </span>
@@ -38,7 +40,7 @@
             <b>Estado:</b> <i> {{ fase.get_estado_display }} </i>
         </div>
         <div class="panel-body">
-            {% if fase.estado != 'FIN' %}
+            {% if fase.estado != 'FIN' and fase.estado != 'REV' %}
                 <a href="{% url 'administrarItems.views.createItem' fase.id %}" class="btn btn-sm btn-warning"> Crear Ítem </a>
                 {% if user == proyecto.lider_proyecto %}
                     <a href="{% url 'administrarLineaBase.views.createLB' fase.id %}" class="btn btn-sm btn-gray">Establecer Línea Base</a>
@@ -47,8 +49,9 @@
                         <a href="{% url 'administrarFases.views.finPhase' fase.id %}" class="btn btn-sm btn-success">Finalizar Fase</a>
                     {% endif %}
                 {% endif %}
+                <hr>
             {% endif %}
-            <hr>
+
             {% if listaItems %}
                 {% for item, padre in relaciones %}
                     {% if forloop.counter0|divisibleby:"3" %}<div class="row">{% endif %}
@@ -78,14 +81,8 @@
                                                     </span>
                                                 </span>
                                             {% endif %}
-                                        {% else %}
-                                            <span class="pull-right" data-toggle="tooltip" title="Ítem Activo" id="tooltip">
-                                                <span class="pull-right" style="padding-right: 5%">
-                                                    <span class="text-success glyphicon glyphicon-record"></span>
-                                                </span>
-                                            </span>
                                         {% endif %}
-{#                                        {% endif %}#}
+
                                         {% if item.estado == 'FIN' %}
                                             {% if user == proyecto.lider_proyecto %}
                                                 <span class="pull-right" data-toggle="tooltip" title="Validar Ítem" id="tooltip">
@@ -124,6 +121,16 @@
                                                 </span>
                                             </span>
                                         {% endif %}
+                                        {% if item.estado == 'REV' %}
+                                            <span class="pull-right" data-toggle="tooltip" title="En Revision" id="tooltip">
+                                                <span class="pull-right" style="padding-right: 5%">
+                                                        <span class="text-success">
+                                                            <span class="glyphicon glyphicon-exclamation-sign"> </span>
+                                                        </span>
+                                                </span>
+                                            </span>
+                                        {% endif %}
+
                                     </div>
                                 </div>
                             </div>
@@ -139,9 +146,9 @@
                                     <br><b> + Costo:</b> {{ item.costo }}
                                     <br><b> + Tiempo estimado de trabajo:</b> {{ item.tiempo }}
                                     <br><b> + Ítem Relacionado:</b> {% if padre %}
-                                                                        {{ padre.nombre|capfirst }} {% if item.estado != 'DDB' and item.estado != 'ELB' %}[<a href="{% url 'administrarItems.views.relacionarItemBaseView' fase.id item.id %}">Modificar</a>]{% endif %}
+                                                                        {{ padre.nombre|capfirst }} {% if item.estado != 'DDB' and item.estado != 'ELB' and item.estado != 'REV' %}[<a href="{% url 'administrarItems.views.relacionarItemBaseView' fase.id item.id %}">Modificar</a>]{% endif %}
                                                                     {% else %}
-                                                                        No existe. {% if item.estado != 'DDB' and item.estado != 'ELB' %}[<a href="{% url 'administrarItems.views.relacionarItemBaseView' fase.id item.id %}">Relacionar</a>]{% endif %}
+                                                                        No existe. {% if item.estado != 'DDB' and item.estado != 'ELB' and item.estado != 'REV' %}[<a href="{% url 'administrarItems.views.relacionarItemBaseView' fase.id item.id %}">Relacionar</a>]{% endif %}
                                                                     {% endif %}
                                 </p>
 
@@ -154,7 +161,7 @@
                             </div>
                             <div class="panel-heading">
                                 {% if fase.estado != 'FIN' %}
-                                    {% if item.estado != 'DDB' and item.estado != 'ELB' %}
+                                    {% if item.estado != 'DDB' and item.estado != 'ELB' and item.estado != 'REV' %}
                                         <a href="{% url 'administrarItems.views.workItem' item.id %}" class="btn btn-xs btn-success">Ir al ítem</a>
                                         <a href="{% url 'administrarItems.views.historialItemBase' fase.id item.id %}" class="btn btn-xs btn-warning">Historial de Versiones</a>
                                         <a href="{% url 'administrarItems.views.dardebajaItem' item.id %}" class="btn btn-xs btn-danger">Dar de Baja</a>
@@ -167,6 +174,16 @@
                                         <a href="{% url 'administrarItems.views.verItem' item.id %}" class="btn btn-xs btn-success">Ver Ítem</a>
                                         <a href="{% url 'administrarItems.views.historialItemBase' fase.id item.id %}" class="btn btn-xs btn-warning">Historial de Versiones</a>
                                     {% endif %}
+                                    {% if item.estado == 'REV' %}
+                                        {% if proyecto.lider_proyecto == user %}
+                                            <a href="{% url 'administrarItems.views.verItem' item.id %}" class="btn btn-xs btn-success">Ver ítem</a>
+                                            <a href="{% url 'administrarItems.views.finRevisionItem' fase.id  item.id %}" class="btn btn-xs btn-info">Fin Revision</a>
+                                        {% endif %}
+                                        <a href="{% url 'administrarItems.views.historialItemBase' fase.id item.id %}" class="btn btn-xs btn-warning">Historial de Versiones</a>
+                                    {% endif %}
+                                {% else %}
+                                    <a href="{% url 'administrarItems.views.verItem' item.id %}" class="btn btn-xs btn-success">Ver ítem</a>
+                                    <a href="{% url 'administrarItems.views.historialItemBase' fase.id item.id %}" class="btn btn-xs btn-warning">Historial de Versiones</a>
                                 {% endif %}
                             </div>
                         </div>

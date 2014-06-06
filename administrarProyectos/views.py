@@ -105,11 +105,9 @@ def changeProject(request, id_proyecto):
                 comite.grupo.user_set.add(liderNuevo)
             form.save()
 
-            proyectoModificado = Proyecto.objects.get(nombre=form["nombre"].value())
-            # logger.info('El usuario ' + request.user.username + ' ha modificado el proyecto PR-' +
-            #             id_proyecto + proyectoModificado.nombre + ' dentro del sistema')
+            #proyectoModificado = Proyecto.objects.get(nombre=form["nombre"].value())
 
-            return projectList(request, False, True, proyectoModificado)
+            return HttpResponseRedirect(reverse('administrarProyectos.views.projectList'))
     else:
         form = ChangeProjectForm(instance=project)
     return render(request, 'proyecto/changeproject.html', {'user': request.user, 'form': form, 'project': project})
@@ -254,7 +252,7 @@ def workProject(request, id_proyecto):
                                                                        'usuariosAsociados': usuariosAsociados,
                                                                        'error': error, 'messages': messages})
         else:
-            return render(request, 'proyecto/workProject.html', {'user': request.user, 'proyecto': proyecto, 'fases': fases, })
+            return vistaDesarrollo(request, id_proyecto)
 
     # Esto sucede cuando se modifica el estado de un usuario dentro del proyecto
     #   cuando ajax envia una solicitud con el metodo POST
@@ -294,7 +292,7 @@ def workProject(request, id_proyecto):
         return HttpResponse(json.dumps(responseDict), mimetype='application/javascript')
 
 
-@user_passes_test(puede_trabajar)
+#@user_passes_test(puede_trabajar)
 def vistaDesarrollo(request, id_proyecto):
     """
     * Vista para el área de desarrollo del proyecto.*
@@ -306,9 +304,9 @@ def vistaDesarrollo(request, id_proyecto):
 
     itemsPorFase = {}
 
-    for f in fases:
-        ti = TipoItem.objects.filter(fase=f)
-        itemsPorFase[f.id] = ItemBase.objects.filter(tipoitem__in=ti)
+    for fase in fases:
+        ti = TipoItem.objects.filter(fase=fase)
+        itemsPorFase[fase.id] = ItemBase.objects.filter(tipoitem__in=ti)
 
     error = None
     messages = None
@@ -379,7 +377,6 @@ def startProject(request, id_proyecto):
 
 
 @login_required()
-# @lider_requerido
 def cancelProject(request, id_proyecto):
     """
     *Vista para anular un proyecto*
@@ -395,9 +392,6 @@ def cancelProject(request, id_proyecto):
     elif proyecto.estado == 'FIN':
         messages.append('No se puede anular un proyecto que ya se encuentra finalizado')
         error = 1
-    elif proyecto.estado == 'ACT':
-        messages.append('No se puede anular un proyecto que se encuentra en estado ACTIVO. Favor comunicarse con el Administrador')
-        error = 1
     else:
         proyecto.estado = 'ANU'
         proyecto.save()
@@ -406,8 +400,7 @@ def cancelProject(request, id_proyecto):
 
     request.session['messages'] = messages
     request.session['error'] = error
-    return HttpResponseRedirect(reverse('administrarProyectos.views.workProject', kwargs={'id_proyecto': id_proyecto}))
-    # return render(request, 'proyecto/workProjectLeader.html', {'user': request.user, 'proyecto': proyecto,
+    return HttpResponseRedirect(reverse('administrarProyectos.views.projectList'))
 
 
 @login_required()
