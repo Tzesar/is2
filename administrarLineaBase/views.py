@@ -1,4 +1,6 @@
 #encoding:utf-8
+from django.contrib.auth.models import Group
+from django.core.mail import send_mail, send_mass_mail
 from django.core.urlresolvers import reverse
 from django.http import HttpResponseRedirect
 from django.template import RequestContext
@@ -12,16 +14,24 @@ from administrarFases.views import workphase
 from administrarItems.models import ItemBase, ItemRelacion
 from administrarLineaBase.forms import createLBForm, createSCForm, asignarItemSolicitudForm, emitirVotoForm
 from administrarLineaBase.models import LineaBase, SolicitudCambios, Votacion
+from administrarProyectos.models import UsuariosVinculadosProyectos
 from administrarProyectos.views import vistaDesarrollo
 from administrarTipoItem.models import TipoItem
 from administrarRolesPermisos.decorators import user_passes_test, crear_linea_base
-from is2.settings import MEDIA_ROOT
+from autenticacion.models import Usuario
+from is2.settings import MEDIA_ROOT, DEFAULT_FROM_EMAIL
 
 
 @user_passes_test(crear_linea_base)
 def createLB(request, id_fase):
     """
-    Esta es la vista para la creación de Linea Base
+    *Función para la creación de Linea Base, la creación de una Linea Base consiste en registrar todos los ítems
+    validados de una fase, e introducirlos a una Linea Base, en donde estos se almacenan en su estado final dentro
+    del proyecto.*
+
+    :param request: HttpRequest, se utiliza para llamar a la función, es la solicitud de la acción.
+    :param id_fase: Identificador de la Fase, a la cual se encuentra vinculada la Liena Base.
+    :return: Crea una Liena Base y registra en ella todos los ítems validados dentro de la Fase.
     """
     fase = Fase.objects.get(pk=id_fase)
     tipoitem = TipoItem.objects.filter(fase=fase)
@@ -75,7 +85,18 @@ def createLB(request, id_fase):
 
 def calculoImpacto(padres, hijos, costo, tiempo, grafo):
     """
-    Vista para realizar el calculo de impacto
+    *Función que realiza el calculo de impacto, para todos aquellos ítems que son incluidos en una solicitud de cambios.
+    Se utiliza para formar el grafo de relaciones y establever el costo y tiempo estimados a utilizar para las modificaciones
+    especificadas. Realiza una búsqueda recursiva de todos los sucesores/hijos que se ecuentran afectados por los ítems
+    que se desean modificar.
+
+    :param padres: Lista que almacena todos los ancestros de un item.
+    :param hijos: Lista que almacena todos los descendientes de un ítem.
+    :param costo: Costo estimado(acumulado) para cumpliar con las modificaciones.
+    :param tiempo: Tiempo estimado(acumulado) para cumpliar con las modificaciones.
+    :param grafo: Grafo de relaciones de los ítems.
+    :return costo: Costo estimado(TOTAL) para cumpliar con las modificaciones.
+    :return tiempo: Tiempo estimado(TOTAL) para cumpliar con las modificaciones.
     """
 
     if padres:
@@ -101,7 +122,10 @@ def calculoImpacto(padres, hijos, costo, tiempo, grafo):
 
 def generarGrafo(id_item):
     """
-    Vista para la creación del resumen del calculo de impacto de relaciones
+    *Función que realiza la creación del grafo de relaciones de un ítem.*
+
+    :param id_item: Identificador del ítem del cual se desea formar su grafo de relaciones.
+
     """
     item = ItemBase.objects.get(pk=id_item)
 
@@ -120,7 +144,14 @@ def generarGrafo(id_item):
 
 def generarCalculoImpacto(id_item, id_solicitud):
     """
-    Vista para la creación del resumen del calculo de impacto de relaciones
+    *Función que realiza el llamado para realizar el calculo de impacto por los ítems especificados en la solicitud,
+    y genera el informe de impacto para todos los ítems con sus respectivos grafos de relaciones.
+
+    :param id_item: identificador del ítem especificado en la solicitud de cambios.
+    :param id_solicitud: Identificador de la Solicitud en la cual el ítem fue especificado para su modificación.
+    :return costo: Costo estimado(TOTAL) para cumpliar con las modificaciones.
+    :return tiempo: Tiempo estimado(TOTAL) para cumpliar con las modificaciones.
+
     """
     item = ItemBase.objects.get(pk=id_item)
     tipoitem = item.tipoitem
@@ -143,7 +174,10 @@ def generarCalculoImpacto(id_item, id_solicitud):
 
 def visualizarLB(request, id_fase):
     """
-    Esta es la vista para visualizar Líneas Bases existentes en la fase actual
+    *Función que cumple con el papel de visualizar una Linea Base existente dentro de una fase.*
+
+    :param request: HttpRequest, se utiliza para llamar a la función, es la solicitud de la acción.
+    :param id_fase: Identificador de la Fase, de la cual se desea visualizar las Lineas Bases Creadas.
     """
     fase = Fase.objects.get(pk=id_fase)
     proyecto = fase.proyecto
@@ -165,7 +199,14 @@ def visualizarLB(request, id_fase):
 
 def cancelarSolicitudCambios(request, id_solicitud, id_fase):
     """
-    Vista para cancelar una solicitud de cambios expedida
+    *Función para cancelar una solicitud de cambios, de forma que los cambios solicitados seas descartados
+    inmediatamente sin necesidad de realizar una votación.*
+    Obs. Solo puede ser Cancelado si la Solicitud aún no ha sido Aceptada o Rechazada
+
+    :param request: HttpRequest, se utiliza para llamar a la función, es la solicitud de la acción.
+    :param id_fase: Identificador de la Fase a la que pertenece la solicitud..
+    :param id_solicitud: Identificador de la Solicitud de Cambios que se desea cancelar.
+
     """
 
     solicitud = SolicitudCambios.objects.get(pk=id_solicitud)
@@ -191,7 +232,14 @@ def cancelarSolicitudCambios(request, id_solicitud, id_fase):
 
 def workApplication(request, id_fase):
     """
-    Vista para la gestión de Solicitud de Cambios Creada por el usuario
+    *Función que cumple con el rol de listar todas las Solicitudes de Cambios de los Usuarios dentro del Proyecto.
+    El usuario visualiza las Solicitudes creadas por él y por otros usuarios. Se listan todas las solicitudes con
+    sus atributos y estados respectivos.*
+    Obs. Aqui se realizan las votaciones sobre las solicitudes.
+
+    :param request: HttpRequest, se utiliza para llamar a la función, es la solicitud de la acción.
+    :param id_fase: Identificador de la Fase, de la cual se consultarán las solicitudes.
+
     """
     usuario = request.user
     fase = Fase.objects.get(pk=id_fase)
@@ -222,7 +270,14 @@ def workApplication(request, id_fase):
 
 def visualizarSolicitud(request, id_solicitud, id_fase):
     """
-    Vista para visualizar las Solicitudes creadas
+    *Funcion para visualizar las Solicitudes creadas. Se consulta explicitamente todos los atributos de la Solicitud
+    y en caso de finalizar la votación, nos muestra el resultado de esta junto con el usuario que emitio el voto y
+    su postura con respecto a la solicitud de cambios.*
+
+    :param request: HttpRequest, se utiliza para llamar a la función, es la solicitud de la acción.
+    :param id_fase: Identificador de la Fase a la que pertenece la solicitud..
+    :param id_solicitud: Identificador de la Solicitud de Cambios que se desea cancelar.
+
     """
     fase = Fase.objects.get(pk=id_fase)
     proyecto = fase.proyecto
@@ -246,7 +301,12 @@ def visualizarSolicitud(request, id_solicitud, id_fase):
 
 def crearSolicitudCambios(request, id_fase):
     """
-    Vista para la creación de solicitudes de cambios del sistema
+    *Función utilizada para la creación de solicitudes de cambios en el sistema. En ella se debe especificar
+    los ítems que se desean modificar, el motivo expreso de la solicitud y el informe de impacto.*
+
+    :param request: HttpRequest, se utiliza para llamar a la función, es la solicitud de la acción.
+    :param id_fase: Identificador de la Fase a la que pertenece la solicitud..
+
     """
     fase = Fase.objects.get(pk=id_fase)
     proyecto = fase.proyecto
@@ -280,7 +340,8 @@ def crearSolicitudCambios(request, id_fase):
 
                 request.session['messages'] = mensaje
                 request.session['error'] = error
-                # return workApplication(request, fase.id, error=error, mensaje=mensaje)
+                enviarNotificacionesComite(solicitud.id)
+
                 return HttpResponseRedirect(reverse('administrarLineaBase.views.workApplication', kwargs={'id_fase': id_fase}))
 
     form = createSCForm()
@@ -293,7 +354,11 @@ def crearSolicitudCambios(request, id_fase):
 
 def votarSolicitud(request, id_solicitud, voto):
     """
-    *Vista para realizar las votaciones correspondientes a una solicitud de cambio *
+    *Función para realizar las votaciones correspondientes a una solicitud de cambio. *
+
+    :param request: HttpRequest, se utiliza para llamar a la función, es la solicitud de la acción.
+    :param voto: Postura asumida por el miembro del Comite de Cambios.
+    :param id_solicitud: Identificador de la Solicitud de Cambios que se desea cancelar.
     """
 
     solicitud = SolicitudCambios.objects.get(pk=id_solicitud)
@@ -328,6 +393,8 @@ def votarSolicitud(request, id_solicitud, voto):
 
                 if aceptado > rechazado:
                     solicitud.estado = 'ACP'
+                    solicitud.save()
+                    enviarNotificacionSolicitudAprobada(solicitud.id)
                     for item in solicitud.items.all():
                         assign_perm("credencial", solicitud.usuario, item)
                         padres = [item.id]
@@ -336,14 +403,12 @@ def votarSolicitud(request, id_solicitud, voto):
 
                 else:
                     solicitud.estado = 'RCH'
-
-                solicitud.save()
-
+                    solicitud.save()
 
             mensaje = 'Voto confirmado para la solicitud ' + str(solicitud.id)
             error = 0
             # request.method = 'GET'
-
+            enviarSolicitudRespuesta(solicitud.id)
             request.session['messages'] = mensaje
             request.session['error'] = error
             return HttpResponseRedirect(reverse('administrarLineaBase.views.workApplication', kwargs={'id_fase': fase.id}))
@@ -357,7 +422,10 @@ def votarSolicitud(request, id_solicitud, voto):
 
 def buscarHijos(padres, hijos):
     """
-    Vista para realizar el calculo de impacto
+    *Vista para realizar una busqueda recursiva de todos los descendientes de un ítem.*
+
+    :param padres: Lista que almacena todos los ancestros de un item.
+    :param hijos: Lista que almacena todos los descendientes de un ítem.
     """
     if padres:
         padre = padres.pop()
@@ -378,3 +446,75 @@ def buscarHijos(padres, hijos):
 
     else:
         return
+
+
+def enviarNotificacionesComite(id_solicitud):
+    """
+    *Función para notificar al Comite de Cambios que se ha emitido una nueva solicitud de cambios y esta
+    lista para su votación*
+
+    :param id_solicitud: Identificador de la solicitud que se ha creado y notificado a los miembros del comite.
+    """
+    solicitud = SolicitudCambios.objects.get(pk=id_solicitud)
+    fase = solicitud.fase
+    proyecto = fase.proyecto
+
+    nombre = 'ComiteDeCambios-' + proyecto.nombre
+    grupo = Group.objects.get(name=nombre)
+    miembros = grupo.user_set.all()
+    asunto = 'Notificacion: Nueva Solicitud de Cambios'
+
+    for user in miembros:
+        mensaje =   'Estimado ' + user.get_full_name() + ':\n\n' \
+                    'Usted ha recibido este correo por que forma parte del Comite de Cambios del Proyecto ' + \
+                     proyecto.nombre + ' y esto es una notificacion sobre la nueva solicitud de cambios recibida.' \
+                    '\nSolicitud Numero: ' + str(solicitud.id) + '\nSolicitante: ' + solicitud.usuario.get_full_name()\
+                    + '\n\nAtte.\nZARpm Team'
+        send_mail(asunto, mensaje, DEFAULT_FROM_EMAIL, [user.email] )
+
+
+def enviarNotificacionSolicitudAprobada(id_solicitud):
+    """
+    *Función para notificar a todos los usuarios vinculados al proyecto que se ha Aceptado una solicitud de cambios.*
+
+    :param id_solicitud: Identificador de la solicitud que se ha creado y notificado a los miembros del comite.
+    """
+    solicitud = SolicitudCambios.objects.get(pk=id_solicitud)
+    fase = solicitud.fase
+    proyecto = fase.proyecto
+
+    mensajes = []
+    usuarios = UsuariosVinculadosProyectos.objects.filter(cod_proyecto=proyecto).exclude(cod_usuario=solicitud.usuario)
+    users = Usuario.objects.filter(pk__in=usuarios)
+    for user in usuarios:
+        mensaje = ('Notificacion: Solicitud de Cambios Aprobada',  'Estimado Usuario:\n\n' \
+                    'Usted ha recibido este correo por que forma parte del equipo de Desarrollo del Proyecto ' + \
+                     proyecto.nombre + ' y esto es una notificacion sobre la solicitud de cambio que ha sido APROBADA.' \
+                    '\nSolicitud Numero: ' + str(solicitud.id) + '\nSolicitante: ' + solicitud.usuario.get_full_name()\
+                    + '\n\nAtte.\nZARpm Team', DEFAULT_FROM_EMAIL, [user.cod_usuario.email])
+        mensajes.append(mensaje)
+
+
+    send_mass_mail((mensajes))
+
+
+def enviarSolicitudRespuesta(id_solicitud):
+    """
+    *Función para notificar al emisor la respuesta del comite de cambios sobre la solicitud realizada.*
+
+    :param id_solicitud: Identificador de la solicitud que se ha creado y notificado a los miembros del comite.
+    """
+    solicitud = SolicitudCambios.objects.get(pk=id_solicitud)
+    fase = solicitud.fase
+    proyecto = fase.proyecto
+    user = solicitud.usuario
+
+    asunto = 'Notificacion: Respuesta del Comite de Cambios'
+
+    mensaje =   'Estimado ' + user.get_full_name() + ':\n\n' \
+                'Usted ha recibido este correo por que ha enviado una solicitud de cambios al Comite de Cambios del Proyecto ' + \
+                 proyecto.nombre + ' y esto es una notificacion con la respuesta de la solicitud de cambios expedida.' \
+                '\nSolicitud Numero: ' + str(solicitud.id) + '\nSolicitante: ' + solicitud.usuario.get_full_name()\
+                + '\nVotacion: ' + solicitud.estado + '\n\nAtte.\nZARpm Team'
+
+    send_mail(asunto, mensaje, DEFAULT_FROM_EMAIL, [user.email] )
