@@ -234,7 +234,7 @@ def setUserToProject(request, id_proyecto):
                                                               'user': request.user},)
 
 
-@lider_requerido("id_proyecto")
+# @lider_requerido("id_proyecto")
 def workProject(request, id_proyecto):
     """
     *Vista para el trabajo sobre un proyecto dentro del sistema.
@@ -270,7 +270,8 @@ def workProject(request, id_proyecto):
                                                                        'usuariosAsociados': usuariosAsociados,
                                                                        'error': error, 'messages': messages})
         else:
-            return vistaDesarrollo(request, id_proyecto)
+            return HttpResponseRedirect(reverse('administrarProyectos.views.vistaDesarrollo',
+                                        kwargs={'id_proyecto': proyecto.id}))
 
     # Esto sucede cuando se modifica el estado de un usuario dentro del proyecto
     #   cuando ajax envia una solicitud con el metodo POST

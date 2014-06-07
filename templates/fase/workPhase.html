@@ -45,7 +45,7 @@
                 {% if "crear_Item" in permisosFase %}
                     <a href="{% url 'administrarItems.views.createItem' fase.id %}" class="btn btn-sm btn-warning"> Crear Ítem </a>
                 {% endif %}
-                {% if "crear_Linea_Base" in permisosItem %}
+                {% if "crear_Linea_Base" in permisosFase %}
                     <a href="{% url 'administrarLineaBase.views.createLB' fase.id %}" class="btn btn-sm btn-gray">Establecer Línea Base</a>
                 {% endif %}
                 {% if user == proyecto.lider_proyecto %}

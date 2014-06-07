@@ -111,7 +111,9 @@
                                 {% else %}
                                     {% if fase.estado != 'PEN' %}
                                         <a href="{% url 'administrarFases.views.workphase' fase.id %}"class="btn btn-primary btn-sm">Ver Ítems</a>
-                                        <a href="{% url 'administrarLineaBase.views.visualizarLB' fase.id %}" class="btn btn-gray btn-sm">Lineas Base</a>
+                                        {% if "consultar_Lineas_Base" in permisosFase %}
+                                            <a href="{% url 'administrarLineaBase.views.visualizarLB' fase.id %}" class="btn btn-gray btn-sm">Lineas Base</a>
+                                        {% endif %}
                                     {% endif %}
                                 {% endif %}
                                 {% if fase.estado == 'REV' %}

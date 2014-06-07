@@ -112,7 +112,7 @@
 
                                             {% get_obj_perms solicitud.usuario for solicitud.items.all.0 as "permisosItem" %}
 
-                                            {% if solicitud.fase.proyecto.lider_proyecto == user and "credencial" in permisosItem %}
+                                            {% if solicitud.fase.proyecto.lider_proyecto == user and "credencial" in permisosItem and solicitud.estado == "ACP" %}
                                                 <a href="{% url 'administrarLineaBase.views.revocarPermisos' solicitud.id %}" class="btn btn-xs btn-danger pull-right">Revocar Permisos</a>
                                             {% endif %}
                                         </div>
@@ -194,7 +194,7 @@
                                             <a href="{% url 'administrarLineaBase.views.visualizarSolicitud' solicitud.id fase.id %}" class="btn btn-xs btn-success">Ver Solicitud</a>
                                             {% get_obj_perms solicitud.usuario for solicitud.items.all.0 as "permisosItem" %}
 
-                                            {% if solicitud.fase.proyecto.lider_proyecto == user and "credencial" in permisosItem %}
+                                            {% if solicitud.fase.proyecto.lider_proyecto == user and "credencial" in permisosItem and solicitud.estado == "ACP" %}
                                                 <a href="{% url 'administrarLineaBase.views.revocarPermisos' solicitud.id %}" class="btn btn-xs btn-danger pull-right">Revocar Permisos</a>
                                             {% endif %}
                                         </div>

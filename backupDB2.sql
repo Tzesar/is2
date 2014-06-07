@@ -66,13 +66,6 @@ ALTER SEQUENCE "administrarFases_fase_id_seq" OWNED BY "administrarFases_fase".i
 
 
 --
--- Name: administrarFases_fase_id_seq; Type: SEQUENCE SET; Schema: public; Owner: zar
---
-
-SELECT pg_catalog.setval('"administrarFases_fase_id_seq"', 25, true);
-
-
---
 -- Name: administrarItems_campofile; Type: TABLE; Schema: public; Owner: zar; Tablespace: 
 --
 
@@ -105,13 +98,6 @@ ALTER TABLE public."administrarItems_campofile_id_seq" OWNER TO zar;
 --
 
 ALTER SEQUENCE "administrarItems_campofile_id_seq" OWNED BY "administrarItems_campofile".id;
-
-
---
--- Name: administrarItems_campofile_id_seq; Type: SEQUENCE SET; Schema: public; Owner: zar
---
-
-SELECT pg_catalog.setval('"administrarItems_campofile_id_seq"', 1, false);
 
 
 --
@@ -150,13 +136,6 @@ ALTER SEQUENCE "administrarItems_campoimagen_id_seq" OWNED BY "administrarItems_
 
 
 --
--- Name: administrarItems_campoimagen_id_seq; Type: SEQUENCE SET; Schema: public; Owner: zar
---
-
-SELECT pg_catalog.setval('"administrarItems_campoimagen_id_seq"', 1, false);
-
-
---
 -- Name: administrarItems_camponumero; Type: TABLE; Schema: public; Owner: zar; Tablespace: 
 --
 
@@ -189,13 +168,6 @@ ALTER TABLE public."administrarItems_camponumero_id_seq" OWNER TO zar;
 --
 
 ALTER SEQUENCE "administrarItems_camponumero_id_seq" OWNED BY "administrarItems_camponumero".id;
-
-
---
--- Name: administrarItems_camponumero_id_seq; Type: SEQUENCE SET; Schema: public; Owner: zar
---
-
-SELECT pg_catalog.setval('"administrarItems_camponumero_id_seq"', 7, true);
 
 
 --
@@ -234,13 +206,6 @@ ALTER SEQUENCE "administrarItems_campotextocorto_id_seq" OWNED BY "administrarIt
 
 
 --
--- Name: administrarItems_campotextocorto_id_seq; Type: SEQUENCE SET; Schema: public; Owner: zar
---
-
-SELECT pg_catalog.setval('"administrarItems_campotextocorto_id_seq"', 1, false);
-
-
---
 -- Name: administrarItems_campotextolargo; Type: TABLE; Schema: public; Owner: zar; Tablespace: 
 --
 
@@ -273,13 +238,6 @@ ALTER TABLE public."administrarItems_campotextolargo_id_seq" OWNER TO zar;
 --
 
 ALTER SEQUENCE "administrarItems_campotextolargo_id_seq" OWNED BY "administrarItems_campotextolargo".id;
-
-
---
--- Name: administrarItems_campotextolargo_id_seq; Type: SEQUENCE SET; Schema: public; Owner: zar
---
-
-SELECT pg_catalog.setval('"administrarItems_campotextolargo_id_seq"', 1, false);
 
 
 --
@@ -328,13 +286,6 @@ ALTER SEQUENCE "administrarItems_itembase_id_seq" OWNED BY "administrarItems_ite
 
 
 --
--- Name: administrarItems_itembase_id_seq; Type: SEQUENCE SET; Schema: public; Owner: zar
---
-
-SELECT pg_catalog.setval('"administrarItems_itembase_id_seq"', 7, true);
-
-
---
 -- Name: administrarItems_itembase_solicitudes; Type: TABLE; Schema: public; Owner: zar; Tablespace: 
 --
 
@@ -366,13 +317,6 @@ ALTER TABLE public."administrarItems_itembase_solicitudes_id_seq" OWNER TO zar;
 --
 
 ALTER SEQUENCE "administrarItems_itembase_solicitudes_id_seq" OWNED BY "administrarItems_itembase_solicitudes".id;
-
-
---
--- Name: administrarItems_itembase_solicitudes_id_seq; Type: SEQUENCE SET; Schema: public; Owner: zar
---
-
-SELECT pg_catalog.setval('"administrarItems_itembase_solicitudes_id_seq"', 10, true);
 
 
 --
@@ -411,13 +355,6 @@ ALTER SEQUENCE "administrarItems_itemrelacion_id_seq" OWNED BY "administrarItems
 
 
 --
--- Name: administrarItems_itemrelacion_id_seq; Type: SEQUENCE SET; Schema: public; Owner: zar
---
-
-SELECT pg_catalog.setval('"administrarItems_itemrelacion_id_seq"', 3, true);
-
-
---
 -- Name: administrarLineaBase_lineabase; Type: TABLE; Schema: public; Owner: zar; Tablespace: 
 --
 
@@ -451,13 +388,6 @@ ALTER TABLE public."administrarLineaBase_lineabase_id_seq" OWNER TO zar;
 --
 
 ALTER SEQUENCE "administrarLineaBase_lineabase_id_seq" OWNED BY "administrarLineaBase_lineabase".id;
-
-
---
--- Name: administrarLineaBase_lineabase_id_seq; Type: SEQUENCE SET; Schema: public; Owner: zar
---
-
-SELECT pg_catalog.setval('"administrarLineaBase_lineabase_id_seq"', 6, true);
 
 
 --
@@ -500,13 +430,6 @@ ALTER SEQUENCE "administrarLineaBase_solicitudcambios_id_seq" OWNED BY "administ
 
 
 --
--- Name: administrarLineaBase_solicitudcambios_id_seq; Type: SEQUENCE SET; Schema: public; Owner: zar
---
-
-SELECT pg_catalog.setval('"administrarLineaBase_solicitudcambios_id_seq"', 9, true);
-
-
---
 -- Name: administrarLineaBase_votacion; Type: TABLE; Schema: public; Owner: zar; Tablespace: 
 --
 
@@ -540,13 +463,6 @@ ALTER TABLE public."administrarLineaBase_votacion_id_seq" OWNER TO zar;
 --
 
 ALTER SEQUENCE "administrarLineaBase_votacion_id_seq" OWNED BY "administrarLineaBase_votacion".id;
-
-
---
--- Name: administrarLineaBase_votacion_id_seq; Type: SEQUENCE SET; Schema: public; Owner: zar
---
-
-SELECT pg_catalog.setval('"administrarLineaBase_votacion_id_seq"', 11, true);
 
 
 --
@@ -590,13 +506,6 @@ ALTER SEQUENCE "administrarProyectos_proyecto_id_seq" OWNED BY "administrarProye
 
 
 --
--- Name: administrarProyectos_proyecto_id_seq; Type: SEQUENCE SET; Schema: public; Owner: zar
---
-
-SELECT pg_catalog.setval('"administrarProyectos_proyecto_id_seq"', 3, true);
-
-
---
 -- Name: administrarProyectos_usuariosvinculadosproyectos; Type: TABLE; Schema: public; Owner: zar; Tablespace: 
 --
 
@@ -629,13 +538,6 @@ ALTER TABLE public."administrarProyectos_usuariosvinculadosproyectos_id_seq" OWN
 --
 
 ALTER SEQUENCE "administrarProyectos_usuariosvinculadosproyectos_id_seq" OWNED BY "administrarProyectos_usuariosvinculadosproyectos".id;
-
-
---
--- Name: administrarProyectos_usuariosvinculadosproyectos_id_seq; Type: SEQUENCE SET; Schema: public; Owner: zar
---
-
-SELECT pg_catalog.setval('"administrarProyectos_usuariosvinculadosproyectos_id_seq"', 16, true);
 
 
 --
@@ -674,13 +576,6 @@ ALTER SEQUENCE "administrarRolesPermisos_permiso_id_seq" OWNED BY "administrarRo
 
 
 --
--- Name: administrarRolesPermisos_permiso_id_seq; Type: SEQUENCE SET; Schema: public; Owner: zar
---
-
-SELECT pg_catalog.setval('"administrarRolesPermisos_permiso_id_seq"', 1, false);
-
-
---
 -- Name: administrarRolesPermisos_rol; Type: TABLE; Schema: public; Owner: zar; Tablespace: 
 --
 
@@ -712,13 +607,6 @@ ALTER TABLE public."administrarRolesPermisos_rol_id_seq" OWNER TO zar;
 --
 
 ALTER SEQUENCE "administrarRolesPermisos_rol_id_seq" OWNED BY "administrarRolesPermisos_rol".id;
-
-
---
--- Name: administrarRolesPermisos_rol_id_seq; Type: SEQUENCE SET; Schema: public; Owner: zar
---
-
-SELECT pg_catalog.setval('"administrarRolesPermisos_rol_id_seq"', 9, true);
 
 
 --
@@ -758,13 +646,6 @@ ALTER SEQUENCE "administrarTipoItem_atributo_id_seq" OWNED BY "administrarTipoIt
 
 
 --
--- Name: administrarTipoItem_atributo_id_seq; Type: SEQUENCE SET; Schema: public; Owner: zar
---
-
-SELECT pg_catalog.setval('"administrarTipoItem_atributo_id_seq"', 33, true);
-
-
---
 -- Name: administrarTipoItem_tipoitem; Type: TABLE; Schema: public; Owner: zar; Tablespace: 
 --
 
@@ -797,13 +678,6 @@ ALTER TABLE public."administrarTipoItem_tipoitem_id_seq" OWNER TO zar;
 --
 
 ALTER SEQUENCE "administrarTipoItem_tipoitem_id_seq" OWNED BY "administrarTipoItem_tipoitem".id;
-
-
---
--- Name: administrarTipoItem_tipoitem_id_seq; Type: SEQUENCE SET; Schema: public; Owner: zar
---
-
-SELECT pg_catalog.setval('"administrarTipoItem_tipoitem_id_seq"', 28, true);
 
 
 --
@@ -863,13 +737,6 @@ ALTER SEQUENCE autenticacion_usuario_groups_id_seq OWNED BY autenticacion_usuari
 
 
 --
--- Name: autenticacion_usuario_groups_id_seq; Type: SEQUENCE SET; Schema: public; Owner: zar
---
-
-SELECT pg_catalog.setval('autenticacion_usuario_groups_id_seq', 47, true);
-
-
---
 -- Name: autenticacion_usuario_id_seq; Type: SEQUENCE; Schema: public; Owner: zar
 --
 
@@ -888,13 +755,6 @@ ALTER TABLE public.autenticacion_usuario_id_seq OWNER TO zar;
 --
 
 ALTER SEQUENCE autenticacion_usuario_id_seq OWNED BY autenticacion_usuario.id;
-
-
---
--- Name: autenticacion_usuario_id_seq; Type: SEQUENCE SET; Schema: public; Owner: zar
---
-
-SELECT pg_catalog.setval('autenticacion_usuario_id_seq', 12, true);
 
 
 --
@@ -932,13 +792,6 @@ ALTER SEQUENCE autenticacion_usuario_user_permissions_id_seq OWNED BY autenticac
 
 
 --
--- Name: autenticacion_usuario_user_permissions_id_seq; Type: SEQUENCE SET; Schema: public; Owner: zar
---
-
-SELECT pg_catalog.setval('autenticacion_usuario_user_permissions_id_seq', 1, false);
-
-
---
 -- Name: auth_group; Type: TABLE; Schema: public; Owner: zar; Tablespace: 
 --
 
@@ -969,13 +822,6 @@ ALTER TABLE public.auth_group_id_seq OWNER TO zar;
 --
 
 ALTER SEQUENCE auth_group_id_seq OWNED BY auth_group.id;
-
-
---
--- Name: auth_group_id_seq; Type: SEQUENCE SET; Schema: public; Owner: zar
---
-
-SELECT pg_catalog.setval('auth_group_id_seq', 9, true);
 
 
 --
@@ -1013,13 +859,6 @@ ALTER SEQUENCE auth_group_permissions_id_seq OWNED BY auth_group_permissions.id;
 
 
 --
--- Name: auth_group_permissions_id_seq; Type: SEQUENCE SET; Schema: public; Owner: zar
---
-
-SELECT pg_catalog.setval('auth_group_permissions_id_seq', 1, false);
-
-
---
 -- Name: auth_permission; Type: TABLE; Schema: public; Owner: zar; Tablespace: 
 --
 
@@ -1052,13 +891,6 @@ ALTER TABLE public.auth_permission_id_seq OWNER TO zar;
 --
 
 ALTER SEQUENCE auth_permission_id_seq OWNED BY auth_permission.id;
-
-
---
--- Name: auth_permission_id_seq; Type: SEQUENCE SET; Schema: public; Owner: zar
---
-
-SELECT pg_catalog.setval('auth_permission_id_seq', 224, true);
 
 
 --
@@ -1102,13 +934,6 @@ ALTER SEQUENCE django_admin_log_id_seq OWNED BY django_admin_log.id;
 
 
 --
--- Name: django_admin_log_id_seq; Type: SEQUENCE SET; Schema: public; Owner: zar
---
-
-SELECT pg_catalog.setval('django_admin_log_id_seq', 1, false);
-
-
---
 -- Name: django_content_type; Type: TABLE; Schema: public; Owner: zar; Tablespace: 
 --
 
@@ -1141,13 +966,6 @@ ALTER TABLE public.django_content_type_id_seq OWNER TO zar;
 --
 
 ALTER SEQUENCE django_content_type_id_seq OWNED BY django_content_type.id;
-
-
---
--- Name: django_content_type_id_seq; Type: SEQUENCE SET; Schema: public; Owner: zar
---
-
-SELECT pg_catalog.setval('django_content_type_id_seq', 27, true);
 
 
 --
@@ -1200,13 +1018,6 @@ ALTER SEQUENCE guardian_groupobjectpermission_id_seq OWNED BY guardian_groupobje
 
 
 --
--- Name: guardian_groupobjectpermission_id_seq; Type: SEQUENCE SET; Schema: public; Owner: zar
---
-
-SELECT pg_catalog.setval('guardian_groupobjectpermission_id_seq', 74, true);
-
-
---
 -- Name: guardian_userobjectpermission; Type: TABLE; Schema: public; Owner: zar; Tablespace: 
 --
 
@@ -1240,13 +1051,6 @@ ALTER TABLE public.guardian_userobjectpermission_id_seq OWNER TO zar;
 --
 
 ALTER SEQUENCE guardian_userobjectpermission_id_seq OWNED BY guardian_userobjectpermission.id;
-
-
---
--- Name: guardian_userobjectpermission_id_seq; Type: SEQUENCE SET; Schema: public; Owner: zar
---
-
-SELECT pg_catalog.setval('guardian_userobjectpermission_id_seq', 2, true);
 
 
 --
@@ -1286,13 +1090,6 @@ ALTER SEQUENCE reversion_revision_id_seq OWNED BY reversion_revision.id;
 
 
 --
--- Name: reversion_revision_id_seq; Type: SEQUENCE SET; Schema: public; Owner: zar
---
-
-SELECT pg_catalog.setval('reversion_revision_id_seq', 16, true);
-
-
---
 -- Name: reversion_version; Type: TABLE; Schema: public; Owner: zar; Tablespace: 
 --
 
@@ -1329,13 +1126,6 @@ ALTER TABLE public.reversion_version_id_seq OWNER TO zar;
 --
 
 ALTER SEQUENCE reversion_version_id_seq OWNED BY reversion_version.id;
-
-
---
--- Name: reversion_version_id_seq; Type: SEQUENCE SET; Schema: public; Owner: zar
---
-
-SELECT pg_catalog.setval('reversion_version_id_seq', 28, true);
 
 
 --
@@ -1556,12 +1346,16 @@ COPY "administrarFases_fase" (id, nombre, descripcion, estado, proyecto_id, nro_
 6	Largo Plazo	Planeamientos con plazo mayores a un año	PEN	2	3
 4	Inicio	Planeamiento de las fases de Corto y Largo plazo	DES	2	1
 5	Corto Plazo	Planeamientos con plazo mayores a tres meses y menores a un año	DES	2	2
-12	Final	Cierre de Proyecto. Evaluación de Resultados	PEN	3	3
-24	Medio	Fase intermedia. Revisiones, operaciones sobre el producto.	DES	3	2
-7	Inicio	Fase Inicial del Proyecto	FIN	3	1
+2	Desarrollo	Desarrollo	DES	1	2
 1	Analisis	Analisis	FIN	1	1
-2	Desarrollo	Desarrollo	FIN	1	2
 \.
+
+
+--
+-- Name: administrarFases_fase_id_seq; Type: SEQUENCE SET; Schema: public; Owner: zar
+--
+
+SELECT pg_catalog.setval('"administrarFases_fase_id_seq"', 6, true);
 
 
 --
@@ -1573,11 +1367,25 @@ COPY "administrarItems_campofile" (id, item_id, atributo_id, archivo) FROM stdin
 
 
 --
+-- Name: administrarItems_campofile_id_seq; Type: SEQUENCE SET; Schema: public; Owner: zar
+--
+
+SELECT pg_catalog.setval('"administrarItems_campofile_id_seq"', 1, false);
+
+
+--
 -- Data for Name: administrarItems_campoimagen; Type: TABLE DATA; Schema: public; Owner: zar
 --
 
 COPY "administrarItems_campoimagen" (id, item_id, atributo_id, imagen) FROM stdin;
 \.
+
+
+--
+-- Name: administrarItems_campoimagen_id_seq; Type: SEQUENCE SET; Schema: public; Owner: zar
+--
+
+SELECT pg_catalog.setval('"administrarItems_campoimagen_id_seq"', 1, false);
 
 
 --
@@ -1589,10 +1397,14 @@ COPY "administrarItems_camponumero" (id, item_id, atributo_id, valor) FROM stdin
 2	2	1	0
 3	3	1	0
 4	4	4	9
-5	5	25	11
-6	6	25	23
-7	7	5	0
 \.
+
+
+--
+-- Name: administrarItems_camponumero_id_seq; Type: SEQUENCE SET; Schema: public; Owner: zar
+--
+
+SELECT pg_catalog.setval('"administrarItems_camponumero_id_seq"', 4, true);
 
 
 --
@@ -1604,11 +1416,25 @@ COPY "administrarItems_campotextocorto" (id, item_id, atributo_id, valor) FROM s
 
 
 --
+-- Name: administrarItems_campotextocorto_id_seq; Type: SEQUENCE SET; Schema: public; Owner: zar
+--
+
+SELECT pg_catalog.setval('"administrarItems_campotextocorto_id_seq"', 1, false);
+
+
+--
 -- Data for Name: administrarItems_campotextolargo; Type: TABLE DATA; Schema: public; Owner: zar
 --
 
 COPY "administrarItems_campotextolargo" (id, item_id, atributo_id, valor) FROM stdin;
 \.
+
+
+--
+-- Name: administrarItems_campotextolargo_id_seq; Type: SEQUENCE SET; Schema: public; Owner: zar
+--
+
+SELECT pg_catalog.setval('"administrarItems_campotextolargo_id_seq"', 1, false);
 
 
 --
@@ -1619,11 +1445,15 @@ COPY "administrarItems_itembase" (id, usuario_id, usuario_modificacion_id, nombr
 3	10	10	Plan de limpieza del terreno	algo	ACT	2014-05-24 04:22:08.23545-04	2014-05-24 04:22:08.233813-04	1	2	1	1	1	\N
 1	10	10	Plano del puente 1	descripcion	ELB	2014-05-24 04:13:55.688774-04	2014-05-24 04:52:59.443251-04	1	3	2	5	2	1
 2	10	10	Plano del alumbrado	descripcion	ELB	2014-05-24 04:20:36.635506-04	2014-05-24 06:27:54.891877-04	1	2	2	3	1	2
-7	2	2	Item0	descripcion0	ELB	2014-06-07 01:47:53.81776-04	2014-06-07 01:48:12.798455-04	5	2	11	1	2	6
 4	2	2	Plan economico	asd	ELB	2014-05-24 06:36:55.766508-04	2014-05-24 06:38:11.65743-04	4	2	5	4	2	3
-6	3	3	ItemDOS	Tercero xDD	ELB	2014-06-06 21:48:01.754674-04	2014-06-06 22:52:23.946548-04	26	5	3	3	3	5
-5	3	3	ItemUNO	Primer item de prueba	ELB	2014-06-06 21:22:13.753-04	2014-06-06 22:44:35.007563-04	26	2	2	2	5	4
 \.
+
+
+--
+-- Name: administrarItems_itembase_id_seq; Type: SEQUENCE SET; Schema: public; Owner: zar
+--
+
+SELECT pg_catalog.setval('"administrarItems_itembase_id_seq"', 4, true);
 
 
 --
@@ -1633,14 +1463,14 @@ COPY "administrarItems_itembase" (id, usuario_id, usuario_modificacion_id, nombr
 COPY "administrarItems_itembase_solicitudes" (id, itembase_id, solicitudcambios_id) FROM stdin;
 2	1	2
 3	2	3
-4	4	4
-5	4	5
-6	4	6
-7	6	7
-8	5	7
-9	4	8
-10	4	9
 \.
+
+
+--
+-- Name: administrarItems_itembase_solicitudes_id_seq; Type: SEQUENCE SET; Schema: public; Owner: zar
+--
+
+SELECT pg_catalog.setval('"administrarItems_itembase_solicitudes_id_seq"', 3, true);
 
 
 --
@@ -1649,9 +1479,14 @@ COPY "administrarItems_itembase_solicitudes" (id, itembase_id, solicitudcambios_
 
 COPY "administrarItems_itemrelacion" (id, "itemPadre_id", "itemHijo_id", estado) FROM stdin;
 1	2	1	ACT
-2	6	5	DES
-3	4	7	ACT
 \.
+
+
+--
+-- Name: administrarItems_itemrelacion_id_seq; Type: SEQUENCE SET; Schema: public; Owner: zar
+--
+
+SELECT pg_catalog.setval('"administrarItems_itemrelacion_id_seq"', 1, true);
 
 
 --
@@ -1662,10 +1497,14 @@ COPY "administrarLineaBase_lineabase" (id, fase_id, fecha_creacion, fecha_modifi
 1	4	2014-05-24	2014-05-24	Primera Linea base
 2	4	2014-05-24	2014-05-24	Linea base 2
 3	1	2014-05-24	2014-05-24	Linea base 1
-4	7	2014-06-06	2014-06-06	Línea base de prueba.
-5	7	2014-06-06	2014-06-06	Linea Base final de la fase.
-6	2	2014-06-07	2014-06-07	observacion0
 \.
+
+
+--
+-- Name: administrarLineaBase_lineabase_id_seq; Type: SEQUENCE SET; Schema: public; Owner: zar
+--
+
+SELECT pg_catalog.setval('"administrarLineaBase_lineabase_id_seq"', 3, true);
 
 
 --
@@ -1675,13 +1514,14 @@ COPY "administrarLineaBase_lineabase" (id, fase_id, fecha_creacion, fecha_modifi
 COPY "administrarLineaBase_solicitudcambios" (id, usuario_id, fase_id, motivo, fecha_creacion, estado, costo, tiempo) FROM stdin;
 2	10	4	Relación inconsistente	2014-05-24 06:23:40.029438-04	VOT	2	5
 3	10	4	Reestructuracion de cosas feas	2014-05-24 06:29:35.49352-04	VOT	4	8
-4	2	1	Discrepancias en relacion a campos del item con respecto a otros.	2014-06-06 14:05:16.280928-04	ACP	5	4
-6	9	1	Modificacion requerida.	2014-06-06 14:33:50.47805-04	CAN	5	4
-5	2	1	Alguna cosa.	2014-06-06 14:32:23.824535-04	RCH	5	4
-7	3	7	Esta solicitud de Cambios se ha creado a modo de prueba (verificación) del funcionamiento de este módulo.	2014-06-06 22:54:28.490898-04	VOT	7	7
-9	5	1	alog2	2014-06-07 01:28:35.661813-04	CAN	5	4
-8	5	1	ALog	2014-06-07 01:26:42.402762-04	ACP	5	4
 \.
+
+
+--
+-- Name: administrarLineaBase_solicitudcambios_id_seq; Type: SEQUENCE SET; Schema: public; Owner: zar
+--
+
+SELECT pg_catalog.setval('"administrarLineaBase_solicitudcambios_id_seq"', 3, true);
 
 
 --
@@ -1689,17 +1529,14 @@ COPY "administrarLineaBase_solicitudcambios" (id, usuario_id, fase_id, motivo, f
 --
 
 COPY "administrarLineaBase_votacion" (id, usuario_id, solicitud_id, voto, justificacion) FROM stdin;
-1	2	4	GOOD	OK
-2	8	4	EVIL	NO
-4	9	4	GOOD	Y si
-5	2	5	EVIL	NOPE
-6	9	5	EVIL	PARA NADA
-7	9	6	GOOD	SI
-8	8	5	EVIL	NO NO NO
-9	5	8	GOOD	alog\r\n
-10	8	8	GOOD	l
-11	2	8	GOOD	g
 \.
+
+
+--
+-- Name: administrarLineaBase_votacion_id_seq; Type: SEQUENCE SET; Schema: public; Owner: zar
+--
+
+SELECT pg_catalog.setval('"administrarLineaBase_votacion_id_seq"', 1, false);
 
 
 --
@@ -1707,10 +1544,16 @@ COPY "administrarLineaBase_votacion" (id, usuario_id, solicitud_id, voto, justif
 --
 
 COPY "administrarProyectos_proyecto" (id, nombre, lider_proyecto_id, descripcion, fecha_creacion, fecha_inicio, fecha_fin, estado, observaciones) FROM stdin;
-2	Proyecto02	10	proyecto 02	2014-05-24	2014-05-24	2014-06-28	ANU	Algo
-3	G-001	3	G-NRO#1	2014-06-06	2014-06-06	2014-06-30	ACT	Proyecto de Prueba.
-1	Proyecto01	2	Proyecto 01	2014-05-24	2014-05-24	2014-06-07	FIN	asd
+2	Proyecto02	10	proyecto 02	2014-05-24	2014-05-24	2014-06-28	ACT	Algo
+1	Proyecto01	2	proyecto 01	2014-05-24	2014-05-24	2014-06-28	ACT	asd
 \.
+
+
+--
+-- Name: administrarProyectos_proyecto_id_seq; Type: SEQUENCE SET; Schema: public; Owner: zar
+--
+
+SELECT pg_catalog.setval('"administrarProyectos_proyecto_id_seq"', 2, true);
 
 
 --
@@ -1726,15 +1569,14 @@ COPY "administrarProyectos_usuariosvinculadosproyectos" (id, cod_proyecto_id, co
 7	2	8	t
 8	2	9	t
 5	1	9	t
-9	3	3	t
-10	3	11	t
-11	3	12	t
-12	3	10	t
-13	3	5	t
-14	3	9	t
-15	3	8	t
-16	3	2	t
 \.
+
+
+--
+-- Name: administrarProyectos_usuariosvinculadosproyectos_id_seq; Type: SEQUENCE SET; Schema: public; Owner: zar
+--
+
+SELECT pg_catalog.setval('"administrarProyectos_usuariosvinculadosproyectos_id_seq"', 8, true);
 
 
 --
@@ -1746,6 +1588,13 @@ COPY "administrarRolesPermisos_permiso" (id, code, nombre, descripcion) FROM std
 
 
 --
+-- Name: administrarRolesPermisos_permiso_id_seq; Type: SEQUENCE SET; Schema: public; Owner: zar
+--
+
+SELECT pg_catalog.setval('"administrarRolesPermisos_permiso_id_seq"', 1, false);
+
+
+--
 -- Data for Name: administrarRolesPermisos_rol; Type: TABLE DATA; Schema: public; Owner: zar
 --
 
@@ -1753,11 +1602,14 @@ COPY "administrarRolesPermisos_rol" (id, grupo_id, proyecto_id) FROM stdin;
 1	1	1
 2	2	2
 3	3	2
-4	4	1
-5	5	3
-6	6	3
-9	9	1
 \.
+
+
+--
+-- Name: administrarRolesPermisos_rol_id_seq; Type: SEQUENCE SET; Schema: public; Owner: zar
+--
+
+SELECT pg_catalog.setval('"administrarRolesPermisos_rol_id_seq"', 3, true);
 
 
 --
@@ -1770,15 +1622,14 @@ COPY "administrarTipoItem_atributo" (id, nombre, tipo, "tipoDeItem_id", descripc
 3	Duración	NUM	3	Tiempo estimado de ejecución de la obra
 4	Duración	NUM	4	El tiempo estimado de planificación
 5	Duración	NUM	5	Tiempo estimado de ejecución de la obra
-25	Duración	NUM	26	Tiempo estimado de ejecución de la obra
-27	Orden de Trabajo	TXT	25	Detalle de actividades a ser desarrolladas durante el proceso de construcción de la edificación
-26	Plano de Obra	IMG	25	Imagen que representa el plano de la obra a ser llevada a cabo
-28	Duración	NUM	25	Tiempo estimado de ejecución de la obra.
-29	Duración Estimada	NUM	27	El tiempo estimado de planificación.
-31	Plano de Obra	IMG	28	Imagen que representa el plano de la obra a ser llevada a cabo
-32	Duración	NUM	28	Tiempo estimado de ejecución de la obra.
-33	Evaluación de Integridad	TXT	28	Planilla con indicadores de cumplimiento respecto a la integridad de la obra terminada.
 \.
+
+
+--
+-- Name: administrarTipoItem_atributo_id_seq; Type: SEQUENCE SET; Schema: public; Owner: zar
+--
+
+SELECT pg_catalog.setval('"administrarTipoItem_atributo_id_seq"', 5, true);
 
 
 --
@@ -1791,11 +1642,14 @@ COPY "administrarTipoItem_tipoitem" (id, nombre, fase_id, descripcion) FROM stdi
 3	Obras Grandes	6	Requerimientos para construcciones grandes
 4	Planes	1	planes
 5	Obras pequeñas	2	Requerimientos para construcciones pequeñas
-25	Obras Grandes	7	Requerimientos para construcciones grandes
-26	Obras pequeñas	7	Requerimientos para construcciones pequeñas
-27	Revisión	24	Revision de argumentos y parametros del proyecto.
-28	Test Obras Grandes	12	Requerimientos para construcciones grandes
 \.
+
+
+--
+-- Name: administrarTipoItem_tipoitem_id_seq; Type: SEQUENCE SET; Schema: public; Owner: zar
+--
+
+SELECT pg_catalog.setval('"administrarTipoItem_tipoitem_id_seq"', 5, true);
 
 
 --
@@ -1804,18 +1658,18 @@ COPY "administrarTipoItem_tipoitem" (id, nombre, fase_id, descripcion) FROM stdi
 
 COPY autenticacion_usuario (id, password, last_login, is_superuser, username, first_name, last_name, email, is_staff, is_active, date_joined, telefono) FROM stdin;
 -1		2014-05-24 00:08:53.450495-04	f	AnonymousUser				f	t	2014-05-24 00:08:53.450571-04	
+3	pbkdf2_sha256$12000$OvurLzU2fsz6$5sJPv+AHez6i4Fsd8mvjoedKhhNWvsDPy7pElAzeO0I=	2014-05-24 00:26:00.034489-04	f	gerardo	Gerardo	Ramos	gerardo.ramos@zarpm.org	f	t	2014-05-24 00:26:00.034848-04	12345
 4	pbkdf2_sha256$12000$qHdmACVDkCuX$Lb2hLsy5AuG4NyzCIWGBmGKpVusADMIsn1DBepDesnk=	2014-05-24 00:26:09.893862-04	f	saul	Saúl	Zalimben	saul.zalimben@zarpm.org	f	t	2014-05-24 00:26:09.894256-04	1354
 11	pbkdf2_sha256$12000$Ru9CxsozvSxu$vy3cuVP4S9IJS6OZMPlXiLFEUqheOvHM4kU6lXXzcGc=	2014-05-24 00:31:23.290906-04	f	juana	Juana	Alarcón	juana.alarcon@zarpm.org	f	t	2014-05-24 00:31:23.291196-04	12412
 12	pbkdf2_sha256$12000$imh0oPgEwmB6$zi66KcbY50NvjNuIgjVAB8XUM21TppnXNlxgJ+Jsrhw=	2014-05-24 00:31:40.053695-04	f	rebecca	Rebecca	López	rebecca.lopez@zarpm.org	f	t	2014-05-24 00:31:40.054038-04	123124
 7	pbkdf2_sha256$12000$gKjZR0mZrVe0$2TYpUMtbimksbX+Vxwi3HCvk0Xn7+8xyPnqvI4BzsKw=	2014-05-24 00:26:43.950842-04	f	pedro	Pedro	Perez	pedro.perez@zarpm.org	f	f	2014-05-24 00:26:43.951178-04	1684864
 6	pbkdf2_sha256$12000$3IIFnzgiT7ki$rbERpMWU6mrOgKXj/XPBWTGQQGtAyewE0yPVpJaLJno=	2014-05-24 00:26:34.375315-04	f	juan	Juan	Cardozo	juan.cardozo@zarpm.org	f	f	2014-05-24 00:26:34.375651-04	61548
+8	pbkdf2_sha256$12000$sjYt2xyEKKF4$weaeRMjTrkd9bjpakU41tuHmQvGDEO9CCECs9g0eiBE=	2014-05-24 05:04:45.388673-04	f	enzo	Enzo	Amarilla	enzo.amarilla@zarpm.org	f	t	2014-05-24 00:29:23.846231-04	651654
+1	pbkdf2_sha256$12000$0u2U6OPRPreh$pmJMX3k1XW9gZkhfSzL7Q/OHK3wfUlcd+xwm1AROKpU=	2014-05-24 06:10:17.968831-04	t	admin			admin@zarpm.org	t	t	2014-05-24 00:08:53.045254-04	
 10	pbkdf2_sha256$12000$EYEEmelvEOup$oK+5FrqKDaPESAJiDXSeFanDSsqWX6plqDkOkaj2nRQ=	2014-05-24 06:13:54.866392-04	f	rosa	Rosa	Irigoyen	rosa.irigoyen@zarpm.org	f	t	2014-05-24 00:31:12.96015-04	21423
-9	pbkdf2_sha256$12000$IagfPiEh9GoE$oOZp+BXdFgAP31RjobQZxWThOQgNFoYXm7q9Hzy5L2w=	2014-06-06 14:33:09.116737-04	f	gonzalo	Gonzalo	Cañete	gonzalo.canete@zarpm.org	f	t	2014-05-24 00:29:40.931951-04	12123
-1	pbkdf2_sha256$12000$0u2U6OPRPreh$pmJMX3k1XW9gZkhfSzL7Q/OHK3wfUlcd+xwm1AROKpU=	2014-06-06 23:21:00.674422-04	t	admin			admin@zarpm.org	t	t	2014-05-24 00:08:53.045254-04	
-3	pbkdf2_sha256$12000$OvurLzU2fsz6$5sJPv+AHez6i4Fsd8mvjoedKhhNWvsDPy7pElAzeO0I=	2014-06-06 23:25:10.67262-04	f	gerardo	Gerardo	Ramos	gerardo.ramos@zarpm.org	f	t	2014-05-24 00:26:00.034848-04	12345
-5	pbkdf2_sha256$12000$k7RStkLID7ym$yNHmvXRbl8z0AaoldGAQ6wqGaoMSj6U5VXQ3Xtv54js=	2014-06-07 01:24:11.012458-04	f	diego	Diego	Amarilla	diego.amarilla@zarpm.org	f	t	2014-05-24 00:26:20.640528-04	51651
-8	pbkdf2_sha256$12000$sjYt2xyEKKF4$weaeRMjTrkd9bjpakU41tuHmQvGDEO9CCECs9g0eiBE=	2014-06-07 01:30:37.828544-04	f	enzo	Enzo	Amarilla	enzo.amarilla@zarpm.org	f	t	2014-05-24 00:29:23.846231-04	651654
-2	pbkdf2_sha256$12000$uIzDmGIc2gM7$dwRapexhReL9d+PyCHkqHyN6jRcaZc8R/+b9nJpROs4=	2014-06-07 01:48:35.558643-04	f	augusto	Augusto	Amarilla	augusto.amarilla@zarpm.org	f	t	2014-05-24 00:25:51.053749-04	12313
+5	pbkdf2_sha256$12000$k7RStkLID7ym$yNHmvXRbl8z0AaoldGAQ6wqGaoMSj6U5VXQ3Xtv54js=	2014-05-24 06:30:52.209717-04	f	diego	Diego	Amarilla	diego.amarilla@zarpm.org	f	t	2014-05-24 00:26:20.640528-04	51651
+9	pbkdf2_sha256$12000$IagfPiEh9GoE$oOZp+BXdFgAP31RjobQZxWThOQgNFoYXm7q9Hzy5L2w=	2014-05-24 06:31:10.632263-04	f	gonzalo	Gonzalo	Cañete	gonzalo.canete@zarpm.org	f	t	2014-05-24 00:29:40.931951-04	12123
+2	pbkdf2_sha256$12000$uIzDmGIc2gM7$dwRapexhReL9d+PyCHkqHyN6jRcaZc8R/+b9nJpROs4=	2014-05-24 06:33:03.473101-04	f	augusto	Augusto	Amarilla	augusto.amarilla@zarpm.org	f	t	2014-05-24 00:25:51.053749-04	12313
 \.
 
 
@@ -1825,29 +1679,28 @@ COPY autenticacion_usuario (id, password, last_login, is_superuser, username, fi
 
 COPY autenticacion_usuario_groups (id, usuario_id, group_id) FROM stdin;
 2	10	2
+7	2	1
 8	5	3
 9	10	3
 10	5	2
 11	8	2
-19	11	6
-20	12	6
-21	10	6
-22	5	6
-23	9	6
-24	8	6
-25	2	6
-26	3	6
-29	3	5
-30	12	5
-31	9	5
-39	2	1
-40	8	1
-41	5	1
-42	5	9
-43	8	9
-46	5	4
-47	2	4
+12	8	1
+13	5	1
 \.
+
+
+--
+-- Name: autenticacion_usuario_groups_id_seq; Type: SEQUENCE SET; Schema: public; Owner: zar
+--
+
+SELECT pg_catalog.setval('autenticacion_usuario_groups_id_seq', 13, true);
+
+
+--
+-- Name: autenticacion_usuario_id_seq; Type: SEQUENCE SET; Schema: public; Owner: zar
+--
+
+SELECT pg_catalog.setval('autenticacion_usuario_id_seq', 12, true);
 
 
 --
@@ -1859,6 +1712,13 @@ COPY autenticacion_usuario_user_permissions (id, usuario_id, permission_id) FROM
 
 
 --
+-- Name: autenticacion_usuario_user_permissions_id_seq; Type: SEQUENCE SET; Schema: public; Owner: zar
+--
+
+SELECT pg_catalog.setval('autenticacion_usuario_user_permissions_id_seq', 1, false);
+
+
+--
 -- Data for Name: auth_group; Type: TABLE DATA; Schema: public; Owner: zar
 --
 
@@ -1866,11 +1726,14 @@ COPY auth_group (id, name) FROM stdin;
 1	ComiteDeCambios-Proyecto01
 2	ComiteDeCambios-Proyecto02
 3	Fundador
-4	SUPER
-5	ComiteDeCambios-G-001
-6	Super
-9	Analista
 \.
+
+
+--
+-- Name: auth_group_id_seq; Type: SEQUENCE SET; Schema: public; Owner: zar
+--
+
+SELECT pg_catalog.setval('auth_group_id_seq', 3, true);
 
 
 --
@@ -1879,6 +1742,13 @@ COPY auth_group (id, name) FROM stdin;
 
 COPY auth_group_permissions (id, group_id, permission_id) FROM stdin;
 \.
+
+
+--
+-- Name: auth_group_permissions_id_seq; Type: SEQUENCE SET; Schema: public; Owner: zar
+--
+
+SELECT pg_catalog.setval('auth_group_permissions_id_seq', 1, false);
 
 
 --
@@ -1979,90 +1849,14 @@ COPY auth_permission (id, name, content_type_id, codename) FROM stdin;
 91	Puede modificar group object permission	27	modificar_groupobjectpermission
 92	Puede borrar group object permission	27	borrar_groupobjectpermission
 93	Puede crear lineas base	11	crear_Linea_Base
-142	Modificar Item de LB	16	credencial
-143	Can add item relacion	17	add_itemrelacion
-144	Can change item relacion	17	change_itemrelacion
-145	Can delete item relacion	17	delete_itemrelacion
-146	Can add campo numero	18	add_camponumero
-147	Can change campo numero	18	change_camponumero
-148	Can delete campo numero	18	delete_camponumero
-149	Can add campo texto corto	19	add_campotextocorto
-150	Can change campo texto corto	19	change_campotextocorto
-151	Can delete campo texto corto	19	delete_campotextocorto
-152	Can add campo texto largo	20	add_campotextolargo
-153	Can change campo texto largo	20	change_campotextolargo
-154	Can delete campo texto largo	20	delete_campotextolargo
-155	Can add campo file	21	add_campofile
-156	Can change campo file	21	change_campofile
-157	Can delete campo file	21	delete_campofile
-158	Can add campo imagen	22	add_campoimagen
-159	Can change campo imagen	22	change_campoimagen
-160	Can delete campo imagen	22	delete_campoimagen
-161	Can add linea base	23	add_lineabase
-162	Can change linea base	23	change_lineabase
-163	Can delete linea base	23	delete_lineabase
-164	Can add solicitud cambios	24	add_solicitudcambios
-165	Can change solicitud cambios	24	change_solicitudcambios
-166	Can delete solicitud cambios	24	delete_solicitudcambios
-167	Can add votacion	25	add_votacion
-168	Can change votacion	25	change_votacion
-169	Can delete votacion	25	delete_votacion
-170	Can add user object permission	26	add_userobjectpermission
-171	Can change user object permission	26	change_userobjectpermission
-172	Can delete user object permission	26	delete_userobjectpermission
-173	Can add group object permission	27	add_groupobjectpermission
-174	Can change group object permission	27	change_groupobjectpermission
-175	Can delete group object permission	27	delete_groupobjectpermission
-176	Can add permission	1	add_permission
-177	Can change permission	1	change_permission
-178	Can delete permission	1	delete_permission
-179	Can add group	2	add_group
-180	Can change group	2	change_group
-181	Can delete group	2	delete_group
-182	Can add content type	3	add_contenttype
-183	Can change content type	3	change_contenttype
-184	Can delete content type	3	delete_contenttype
-185	Can add session	4	add_session
-186	Can change session	4	change_session
-187	Can delete session	4	delete_session
-188	Can add log entry	5	add_logentry
-189	Can change log entry	5	change_logentry
-190	Can delete log entry	5	delete_logentry
-191	Can add revision	6	add_revision
-192	Can change revision	6	change_revision
-193	Can delete revision	6	delete_revision
-194	Can add version	7	add_version
-195	Can change version	7	change_version
-196	Can delete version	7	delete_version
-197	Can add user	8	add_usuario
-198	Can change user	8	change_usuario
-199	Can delete user	8	delete_usuario
-200	Can add proyecto	9	add_proyecto
-201	Can change proyecto	9	change_proyecto
-202	Can delete proyecto	9	delete_proyecto
-203	Can add usuarios vinculados proyectos	10	add_usuariosvinculadosproyectos
-204	Can change usuarios vinculados proyectos	10	change_usuariosvinculadosproyectos
-205	Can delete usuarios vinculados proyectos	10	delete_usuariosvinculadosproyectos
-206	Can add fase	11	add_fase
-207	Can change fase	11	change_fase
-208	Can delete fase	11	delete_fase
-209	Puede consultar lineas base	11	consultar_Lineas_Base
-210	Can add permiso	12	add_permiso
-211	Can change permiso	12	change_permiso
-212	Can delete permiso	12	delete_permiso
-213	Can add rol	13	add_rol
-214	Can change rol	13	change_rol
-215	Can delete rol	13	delete_rol
-216	Can add TipoItem	14	add_tipoitem
-217	Can change TipoItem	14	change_tipoitem
-218	Can delete TipoItem	14	delete_tipoitem
-219	Can add Atributo	15	add_atributo
-220	Can change Atributo	15	change_atributo
-221	Can delete Atributo	15	delete_atributo
-222	Can add item base	16	add_itembase
-223	Can change item base	16	change_itembase
-224	Can delete item base	16	delete_itembase
 \.
+
+
+--
+-- Name: auth_permission_id_seq; Type: SEQUENCE SET; Schema: public; Owner: zar
+--
+
+SELECT pg_catalog.setval('auth_permission_id_seq', 93, true);
 
 
 --
@@ -2071,6 +1865,13 @@ COPY auth_permission (id, name, content_type_id, codename) FROM stdin;
 
 COPY django_admin_log (id, action_time, user_id, content_type_id, object_id, object_repr, action_flag, change_message) FROM stdin;
 \.
+
+
+--
+-- Name: django_admin_log_id_seq; Type: SEQUENCE SET; Schema: public; Owner: zar
+--
+
+SELECT pg_catalog.setval('django_admin_log_id_seq', 1, false);
 
 
 --
@@ -2109,14 +1910,18 @@ COPY django_content_type (id, name, app_label, model) FROM stdin;
 
 
 --
+-- Name: django_content_type_id_seq; Type: SEQUENCE SET; Schema: public; Owner: zar
+--
+
+SELECT pg_catalog.setval('django_content_type_id_seq', 27, true);
+
+
+--
 -- Data for Name: django_session; Type: TABLE DATA; Schema: public; Owner: zar
 --
 
 COPY django_session (session_key, session_data, expire_date) FROM stdin;
 07osbuz0etp85kwpypa3s45g74mh5wd2	ODZhODkyMWUyMWY4NDBiMmZhZmJhZGQyZjA3MTliMDU2YjYwNmYzMzp7Il9zZXNzaW9uX2V4cGlyeSI6MCwiX2F1dGhfdXNlcl9pZCI6MiwiX2F1dGhfdXNlcl9iYWNrZW5kIjoiZGphbmdvLmNvbnRyaWIuYXV0aC5iYWNrZW5kcy5Nb2RlbEJhY2tlbmQifQ==	2014-06-07 06:45:28.550536-04
-37sxgw4mjjgcmi4efbsa8n28iobnumno	NzczZTQxNTMzYTQzN2JmNWRhZTAyZjgzOGNjNmIxNDdlYWEzNWEzZDp7Il9hdXRoX3VzZXJfYmFja2VuZCI6ImRqYW5nby5jb250cmliLmF1dGguYmFja2VuZHMuTW9kZWxCYWNrZW5kIiwiX2F1dGhfdXNlcl9pZCI6OCwiX3Nlc3Npb25fZXhwaXJ5IjowfQ==	2014-06-19 21:16:09.354431-04
-umvyqta8a054nfnk94j8szo5syu8yrub	Y2JhZDRlZTE5MmEwOWZhOGQ4MDczNDA3NTE0NjIxMDZhMjVhZDc1ZDp7fQ==	2014-06-21 02:09:56.951467-04
-4h0axmc51c4k3elk5uekm4308zj5h5dk	ZDlkMTk5MjQyZTBjMjBmMDdhYjdhMjQzNWE3NTUyMmJlNzIyMGFlNzp7Il9hdXRoX3VzZXJfYmFja2VuZCI6ImRqYW5nby5jb250cmliLmF1dGguYmFja2VuZHMuTW9kZWxCYWNrZW5kIiwiX2F1dGhfdXNlcl9pZCI6MywiX3Nlc3Npb25fZXhwaXJ5IjowfQ==	2014-06-20 23:25:10.750474-04
 \.
 
 
@@ -2130,72 +1935,14 @@ COPY guardian_groupobjectpermission (id, permission_id, content_type_id, object_
 3	36	11	4	3
 4	37	11	4	3
 5	44	11	4	3
-6	28	9	1	4
-7	29	9	1	4
-8	36	11	2	4
-9	37	11	2	4
-10	38	11	2	4
-11	39	11	2	4
-12	40	11	2	4
-13	41	11	2	4
-14	42	11	2	4
-15	43	11	2	4
-16	44	11	2	4
-17	93	11	2	4
-18	36	11	1	4
-19	37	11	1	4
-20	38	11	1	4
-21	39	11	1	4
-22	40	11	1	4
-23	41	11	1	4
-24	42	11	1	4
-25	43	11	1	4
-26	44	11	1	4
-27	93	11	1	4
-28	28	9	3	6
-29	29	9	3	6
-30	36	11	7	6
-31	37	11	7	6
-32	38	11	7	6
-33	39	11	7	6
-34	40	11	7	6
-35	41	11	7	6
-36	42	11	7	6
-37	43	11	7	6
-38	44	11	7	6
-39	93	11	7	6
-40	36	11	12	6
-41	37	11	12	6
-42	38	11	12	6
-43	39	11	12	6
-44	40	11	12	6
-45	41	11	12	6
-46	42	11	12	6
-47	43	11	12	6
-48	44	11	12	6
-49	93	11	12	6
-50	36	11	24	6
-51	37	11	24	6
-52	38	11	24	6
-53	39	11	24	6
-54	40	11	24	6
-55	41	11	24	6
-56	42	11	24	6
-57	43	11	24	6
-58	44	11	24	6
-59	93	11	24	6
-64	36	11	1	9
-65	37	11	1	9
-66	38	11	1	9
-67	39	11	1	9
-68	41	11	1	9
-69	42	11	1	9
-70	43	11	1	9
-71	44	11	1	9
-72	93	11	1	9
-73	209	11	1	4
-74	209	11	2	4
 \.
+
+
+--
+-- Name: guardian_groupobjectpermission_id_seq; Type: SEQUENCE SET; Schema: public; Owner: zar
+--
+
+SELECT pg_catalog.setval('guardian_groupobjectpermission_id_seq', 5, true);
 
 
 --
@@ -2203,8 +1950,14 @@ COPY guardian_groupobjectpermission (id, permission_id, content_type_id, object_
 --
 
 COPY guardian_userobjectpermission (id, permission_id, content_type_id, object_pk, user_id) FROM stdin;
-1	142	16	4	2
 \.
+
+
+--
+-- Name: guardian_userobjectpermission_id_seq; Type: SEQUENCE SET; Schema: public; Owner: zar
+--
+
+SELECT pg_catalog.setval('guardian_userobjectpermission_id_seq', 1, false);
 
 
 --
@@ -2218,17 +1971,14 @@ COPY reversion_revision (id, manager_slug, date_created, user_id, comment) FROM 
 4	default	2014-05-24 04:22:08.324382-04	\N	
 5	default	2014-05-24 06:36:55.843511-04	\N	
 6	default	2014-05-24 06:38:00.681683-04	\N	
-7	default	2014-06-06 21:22:14.02512-04	\N	
-8	default	2014-06-06 21:48:02.081416-04	\N	
-9	default	2014-06-06 22:11:21.395829-04	\N	
-10	default	2014-06-06 22:11:49.799361-04	\N	
-11	default	2014-06-06 22:12:25.760746-04	\N	
-12	default	2014-06-06 22:44:22.603954-04	\N	
-13	default	2014-06-06 22:51:55.476162-04	\N	
-14	default	2014-06-06 22:52:05.005744-04	\N	
-15	default	2014-06-07 01:47:54.037983-04	\N	
-16	default	2014-06-07 01:48:05.868985-04	\N	
 \.
+
+
+--
+-- Name: reversion_revision_id_seq; Type: SEQUENCE SET; Schema: public; Owner: zar
+--
+
+SELECT pg_catalog.setval('reversion_revision_id_seq', 6, true);
 
 
 --
@@ -2244,27 +1994,17 @@ COPY reversion_version (id, revision_id, object_id, object_id_int, content_type_
 6	3	1	1	16	json	[{"pk": 1, "model": "administrarItems.itembase", "fields": {"tiempo": 5, "usuario": 10, "fecha_creacion": "2014-05-24T08:13:55.688Z", "linea_base": null, "solicitudes": [], "tipoitem": 1, "version": 2, "complejidad": 3, "descripcion": "descripcion", "nombre": "Plano del puente 1", "costo": 2, "estado": "ACT", "fecha_modificacion": "2014-05-24T08:20:44.414Z", "usuario_modificacion": 10}}]	Plano del puente 1
 7	4	3	3	16	json	[{"pk": 3, "model": "administrarItems.itembase", "fields": {"tiempo": 1, "usuario": 10, "fecha_creacion": "2014-05-24T08:22:08.235Z", "linea_base": null, "solicitudes": [], "tipoitem": 1, "version": 1, "complejidad": 2, "descripcion": "algo", "nombre": "Plan de limpieza del terreno", "costo": 1, "estado": "ACT", "fecha_modificacion": "2014-05-24T08:22:08.233Z", "usuario_modificacion": 10}}]	Plan de limpieza del terreno
 8	4	3	3	18	json	[{"pk": 3, "model": "administrarItems.camponumero", "fields": {"item": 3, "atributo": 1, "valor": 0}}]	CampoNumero object
-9	5	4	4	16	json	[{"pk": 4, "model": "administrarItems.itembase", "fields": {"tiempo": 4, "usuario": 2, "fecha_creacion": "2014-05-24T10:36:55.766Z", "linea_base": null, "solicitudes": [], "tipoitem": 4, "version": 1, "complejidad": 2, "descripcion": "asd", "nombre": "Plan econ\\u00f3mico", "costo": 5, "estado": "ACT", "fecha_modificacion": "2014-05-24T10:36:55.766Z", "usuario_modificacion": 2}}]	Plan económico
+9	5	4	4	16	json	[{"pk": 4, "model": "administrarItems.itembase", "fields": {"tiempo": 4, "usuario": 2, "fecha_creacion": "2014-05-24T10:36:55.766Z", "linea_base": null, "solicitudes": [], "tipoitem": 4, "version": 1, "complejidad": 2, "descripcion": "asd", "nombre": "Plan economico", "costo": 5, "estado": "ACT", "fecha_modificacion": "2014-05-24T10:36:55.766Z", "usuario_modificacion": 2}}]	Plan economico
 10	5	4	4	18	json	[{"pk": 4, "model": "administrarItems.camponumero", "fields": {"item": 4, "atributo": 4, "valor": 0}}]	CampoNumero object
-11	6	4	4	16	json	[{"pk": 4, "model": "administrarItems.itembase", "fields": {"tiempo": 4, "usuario": 2, "fecha_creacion": "2014-05-24T10:36:55.766Z", "linea_base": null, "solicitudes": [], "tipoitem": 4, "version": 2, "complejidad": 2, "descripcion": "asd", "nombre": "Plan econ\\u00f3mico", "costo": 5, "estado": "ACT", "fecha_modificacion": "2014-05-24T10:38:00.608Z", "usuario_modificacion": 2}}]	Plan económico
-12	7	5	5	16	json	[{"pk": 5, "model": "administrarItems.itembase", "fields": {"tiempo": 2, "usuario": 3, "fecha_creacion": "2014-06-07T01:22:13.753Z", "linea_base": null, "solicitudes": [], "tipoitem": 26, "version": 1, "complejidad": 2, "descripcion": "Primer item de prueba", "nombre": "Item1", "costo": 2, "estado": "ACT", "fecha_modificacion": "2014-06-07T01:22:13.752Z", "usuario_modificacion": 3}}]	Item1
-13	7	5	5	18	json	[{"pk": 5, "model": "administrarItems.camponumero", "fields": {"item": 5, "atributo": 25, "valor": 0}}]	CampoNumero object
-14	8	6	6	16	json	[{"pk": 6, "model": "administrarItems.itembase", "fields": {"tiempo": 3, "usuario": 3, "fecha_creacion": "2014-06-07T01:48:01.754Z", "linea_base": null, "solicitudes": [], "tipoitem": 26, "version": 1, "complejidad": 3, "descripcion": "Tercero xD", "nombre": "Item2", "costo": 3, "estado": "ACT", "fecha_modificacion": "2014-06-07T01:48:01.754Z", "usuario_modificacion": 3}}]	Item2
-15	8	6	6	18	json	[{"pk": 6, "model": "administrarItems.camponumero", "fields": {"item": 6, "atributo": 25, "valor": 0}}]	CampoNumero object
-16	9	5	5	16	json	[{"pk": 5, "model": "administrarItems.itembase", "fields": {"tiempo": 2, "usuario": 3, "fecha_creacion": "2014-06-07T01:22:13.753Z", "linea_base": null, "solicitudes": [], "tipoitem": 26, "version": 2, "complejidad": 2, "descripcion": "Primer item de prueba", "nombre": "Item1", "costo": 2, "estado": "ACT", "fecha_modificacion": "2014-06-07T02:11:21.315Z", "usuario_modificacion": 3}}]	Item1
-17	9	5	5	18	json	[{"pk": 5, "model": "administrarItems.camponumero", "fields": {"item": 5, "atributo": 25, "valor": 11.0}}]	CampoNumero object
-18	10	5	5	16	json	[{"pk": 5, "model": "administrarItems.itembase", "fields": {"tiempo": 4, "usuario": 3, "fecha_creacion": "2014-06-07T01:22:13.753Z", "linea_base": null, "solicitudes": [], "tipoitem": 26, "version": 3, "complejidad": 10, "descripcion": "Primer \\u00edtem de prueba.", "nombre": "Item1", "costo": 1, "estado": "ACT", "fecha_modificacion": "2014-06-07T02:11:49.741Z", "usuario_modificacion": 3}}]	Item1
-19	11	2	2	17	json	[{"pk": 2, "model": "administrarItems.itemrelacion", "fields": {"itemPadre": 6, "estado": "ACT", "itemHijo": 5}}]	ItemRelacion object
-20	11	5	5	16	json	[{"pk": 5, "model": "administrarItems.itembase", "fields": {"tiempo": 2, "usuario": 3, "fecha_creacion": "2014-06-07T01:22:13.753Z", "linea_base": null, "solicitudes": [], "tipoitem": 26, "version": 4, "complejidad": 2, "descripcion": "Primer item de prueba", "nombre": "Item1", "costo": 2, "estado": "ACT", "fecha_modificacion": "2014-06-07T02:12:25.694Z", "usuario_modificacion": 3}}]	Item1
-21	12	5	5	16	json	[{"pk": 5, "model": "administrarItems.itembase", "fields": {"tiempo": 2, "usuario": 3, "fecha_creacion": "2014-06-07T01:22:13.753Z", "linea_base": null, "solicitudes": [], "tipoitem": 26, "version": 5, "complejidad": 2, "descripcion": "Primer item de prueba", "nombre": "ItemUNO", "costo": 2, "estado": "ACT", "fecha_modificacion": "2014-06-07T02:44:22.506Z", "usuario_modificacion": 3}}]	ItemUNO
-22	13	6	6	16	json	[{"pk": 6, "model": "administrarItems.itembase", "fields": {"tiempo": 3, "usuario": 3, "fecha_creacion": "2014-06-07T01:48:01.754Z", "linea_base": null, "solicitudes": [], "tipoitem": 26, "version": 2, "complejidad": 5, "descripcion": "Tercero xDD", "nombre": "Item2", "costo": 3, "estado": "ACT", "fecha_modificacion": "2014-06-07T02:51:55.400Z", "usuario_modificacion": 3}}]	Item2
-23	13	6	6	18	json	[{"pk": 6, "model": "administrarItems.camponumero", "fields": {"item": 6, "atributo": 25, "valor": 23.0}}]	CampoNumero object
-24	14	6	6	16	json	[{"pk": 6, "model": "administrarItems.itembase", "fields": {"tiempo": 3, "usuario": 3, "fecha_creacion": "2014-06-07T01:48:01.754Z", "linea_base": null, "solicitudes": [], "tipoitem": 26, "version": 3, "complejidad": 5, "descripcion": "Tercero xDD", "nombre": "ItemDOS", "costo": 3, "estado": "ACT", "fecha_modificacion": "2014-06-07T02:52:04.950Z", "usuario_modificacion": 3}}]	ItemDOS
-25	15	7	7	16	json	[{"pk": 7, "model": "administrarItems.itembase", "fields": {"tiempo": 1, "usuario": 2, "fecha_creacion": "2014-06-07T05:47:53.817Z", "linea_base": null, "solicitudes": [], "tipoitem": 5, "version": 1, "complejidad": 2, "descripcion": "descripcion0", "nombre": "Item0", "costo": 11, "estado": "ACT", "fecha_modificacion": "2014-06-07T05:47:53.814Z", "usuario_modificacion": 2}}]	Item0
-26	15	7	7	18	json	[{"pk": 7, "model": "administrarItems.camponumero", "fields": {"item": 7, "atributo": 5, "valor": 0}}]	CampoNumero object
-27	16	3	3	17	json	[{"pk": 3, "model": "administrarItems.itemrelacion", "fields": {"itemPadre": 4, "estado": "ACT", "itemHijo": 7}}]	ItemRelacion object
-28	16	7	7	16	json	[{"pk": 7, "model": "administrarItems.itembase", "fields": {"tiempo": 1, "usuario": 2, "fecha_creacion": "2014-06-07T05:47:53.817Z", "linea_base": null, "solicitudes": [], "tipoitem": 5, "version": 2, "complejidad": 2, "descripcion": "descripcion0", "nombre": "Item0", "costo": 11, "estado": "ACT", "fecha_modificacion": "2014-06-07T05:48:05.788Z", "usuario_modificacion": 2}}]	Item0
+11	6	4	4	16	json	[{"pk": 4, "model": "administrarItems.itembase", "fields": {"tiempo": 4, "usuario": 2, "fecha_creacion": "2014-05-24T10:36:55.766Z", "linea_base": null, "solicitudes": [], "tipoitem": 4, "version": 2, "complejidad": 2, "descripcion": "asd", "nombre": "Plan economico", "costo": 5, "estado": "ACT", "fecha_modificacion": "2014-05-24T10:38:00.608Z", "usuario_modificacion": 2}}]	Plan economico
 \.
+
+
+--
+-- Name: reversion_version_id_seq; Type: SEQUENCE SET; Schema: public; Owner: zar
+--
+
+SELECT pg_catalog.setval('reversion_version_id_seq', 11, true);
 
 
 --

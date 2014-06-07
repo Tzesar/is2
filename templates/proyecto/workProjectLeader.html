@@ -33,17 +33,17 @@
     {% block panelCentral %}
         <div class="panel-heading">
             <h1 class="text-info" style="display: inline-block">Proyecto: {{ proyecto.nombre|capfirst }}</h1>
-            <a href="{% url 'administrarProyectos.views.changeProjectLeader' proyecto.id %}">
-                <span class="glyphicon glyphicon-cog" style="font-size: 2em"></span>
-            </a>
+            {% if proyecto.estado != "FIN" %}
+                <a href="{% url 'administrarProyectos.views.changeProjectLeader' proyecto.id %}">
+                    <span class="glyphicon glyphicon-cog" style="font-size: 2em"></span>
+                </a>
+            {% endif %}
             <span class="pull-right" style="padding-top: 2%">
                 {% if proyecto.estado == 'PEN' %}
                     <a href="{% url 'administrarProyectos.views.startProject' proyecto.id %}" class="btn btn-md btn-primary btn-md" role="button">Iniciar Proyecto</a>
                 {% elif proyecto.estado == 'ACT' %}
                     <a href='{% url 'administrarProyectos.views.vistaDesarrollo' proyecto.id %}' class="btn btn-md btn-primary btn-md" role="button">Vista de Desarrollo</a>
                     <a href='{% url 'administrarProyectos.views.finProject' proyecto.id %}' class="btn btn-md btn-success btn-md" role="button">Finalizar Proyecto</a>
-                {% elif proyecto.estado == 'FIN' %}
-                    <a href='#' class="btn btn-md btn-info btn-md" role="button">Consultar Proyecto</a>
                 {% endif %}
             </span>
         </div>
@@ -137,13 +137,15 @@
                             <div class="col-sm-6" style="padding-top: 2%">
                                 <span>Lista de Roles</span>
                             </div>
-                            <div class="col-sm-6">
-                                <span class="pull-right" data-toggle="tooltip" title="Agregar Rol" id="tooltip">
-                                    <a href="{% url 'administrarRolesPermisos.views.crearRol' proyecto.id %}" class="text-success">
-                                        <span class="glyphicon glyphicon-plus-sign" style="font-size: 2em"></span>
-                                    </a>
-                                </span>
-                            </div>
+                            {% if proyecto.estado != "FIN" %}
+                                <div class="col-sm-6">
+                                    <span class="pull-right" data-toggle="tooltip" title="Agregar Rol" id="tooltip">
+                                        <a href="{% url 'administrarRolesPermisos.views.crearRol' proyecto.id %}" class="text-success">
+                                            <span class="glyphicon glyphicon-plus-sign" style="font-size: 2em"></span>
+                                        </a>
+                                    </span>
+                                </div>
+                            {% endif %}
                         </div>
                     </div>
                     <div class="list-group">
@@ -152,17 +154,23 @@
                                 <div class="list-group-item">
                                     <div class="row">
                                         <div class="col-sm-6">
-                                            <a href="{% url 'administrarRolesPermisos.views.modificarRol' proyecto.id rol.id %}">
-                                                {{ rol.grupo.name }}
-                                            </a>
-                                        </div>
-                                        <div class="col-sm-6">
-                                            <span class="pull-right" style="padding-right: 5%" data-toggle="tooltip" title="Eliminar Rol" id="tooltip">
-                                                <a href="{% url 'administrarRolesPermisos.views.eliminarRol' proyecto.id rol.id %}" class="text-danger">
-                                                    <span class="glyphicon glyphicon-minus-sign"></span>
+                                            {% if proyecto.estado != "FIN" %}
+                                                <a href="{% url 'administrarRolesPermisos.views.modificarRol' proyecto.id rol.id %}">
+                                                    {{ rol.grupo.name }}
                                                 </a>
-                                            </span>
+                                            {% else %}
+                                                <span class="text-primary">{{ rol.grupo.name }}</span>
+                                            {% endif %}
                                         </div>
+                                        {% if proyecto.estado != "FIN" %}
+                                            <div class="col-sm-6">
+                                                <span class="pull-right" style="padding-right: 5%" data-toggle="tooltip" title="Eliminar Rol" id="tooltip">
+                                                    <a href="{% url 'administrarRolesPermisos.views.eliminarRol' proyecto.id rol.id %}" class="text-danger">
+                                                        <span class="glyphicon glyphicon-minus-sign"></span>
+                                                    </a>
+                                                </span>
+                                            </div>
+                                        {% endif %}
                                     </div>
                                 </div>
                             {% endfor %}

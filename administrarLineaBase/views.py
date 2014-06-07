@@ -202,6 +202,7 @@ def visualizarLB(request, id_fase):
                                             kwargs={'id_proyecto': fase.proyecto_id}))
 
 
+# TODO: controlar permisos al cancelar solicitud
 def cancelarSolicitudCambios(request, id_solicitud, id_fase):
     """
     *Función para cancelar una solicitud de cambios, de forma que los cambios solicitados seas descartados
@@ -280,7 +281,7 @@ def workApplication(request, id_fase):
                                                               'puedeCrearSC': puedeCrearSC,
                                                               'otrasSolicitudes': otrasSolicitudes_lista.items(), })
 
-
+# TODO: controlar permisos al visualizar solicitud
 def visualizarSolicitud(request, id_solicitud, id_fase):
     """
     *Funcion para visualizar las Solicitudes creadas. Se consulta explicitamente todos los atributos de la Solicitud
@@ -360,9 +361,9 @@ def crearSolicitudCambios(request, id_fase):
 
                 solicitud.save()
 
-                mensaje = 'Solicitud Creada y Enviada satisfactoriamente al comité de cambios'
+                mensajes.append('Solicitud Creada y Enviada satisfactoriamente al comité de cambios')
                 error = 0
-                request.session['messages'] = mensaje
+                request.session['messages'] = mensajes
                 request.session['error'] = error
                 enviarNotificacionesComite(solicitud.id)
 
@@ -376,6 +377,7 @@ def crearSolicitudCambios(request, id_fase):
                                                     context_instance=RequestContext(request))
 
 
+# TODO: verificar permisos al votar solicitud
 def votarSolicitud(request, id_solicitud, voto):
     """
     *Función para realizar las votaciones correspondientes a una solicitud de cambio. *
@@ -441,7 +443,7 @@ def votarSolicitud(request, id_solicitud, voto):
     return render(request, 'lineabase/createvote.html', {'form': form, 'proyecto': proyecto, 'user': request.user,
                                                          'fase': fase, 'solicitud': solicitud}, )
 
-
+# TODO: controlar permisos al revocar credencial
 def revocarPermisos(request, id_solicitud):
 
     solicitud = SolicitudCambios.objects.get(pk=id_solicitud)
@@ -449,9 +451,10 @@ def revocarPermisos(request, id_solicitud):
     for item in solicitud.items.all():
         remove_perm("credencial", solicitud.usuario, item)
 
-    mensaje = u'Permisos de Modificacion de items de Linea Base revocados a ' + solicitud.usuario.username.capitalize()
+    mensajes = []
+    mensajes.append(u'Permisos de Modificacion de items de Linea Base revocados a ' + solicitud.usuario.username.capitalize())
     error = 0
-    request.session['messages'] = mensaje
+    request.session['messages'] = mensajes
     request.session['error'] = error
     return HttpResponseRedirect(reverse('administrarLineaBase.views.workApplication',
                                         kwargs={'id_fase': solicitud.fase_id}))
