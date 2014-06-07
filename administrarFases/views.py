@@ -6,8 +6,8 @@ from django.http import HttpResponseRedirect, Http404
 from django.template import RequestContext
 from django.shortcuts import render
 from django.utils.html import format_html
-from guardian.shortcuts import get_objects_for_user
 from django.db import IntegrityError
+from guardian.decorators import permission_required, permission_required_or_403
 
 from administrarFases.forms import NewPhaseForm, ChangePhaseForm
 from administrarLineaBase.models import LineaBase
@@ -16,12 +16,11 @@ from administrarProyectos.models import Proyecto
 from administrarFases.models import Fase
 from administrarTipoItem.models import TipoItem, Atributo
 from administrarTipoItem.views import importItemType
-from administrarRolesPermisos.decorators import user_passes_test, puede_crear_fase, puede_modificar_fase
+from administrarRolesPermisos.decorators import user_passes_test, puede_modificar_fase, lider_requerido
 from administrarItems.models import ItemRelacion, ItemBase
 
 
-@login_required()
-@user_passes_test(puede_crear_fase)
+@lider_requerido("id_proyecto")
 def createPhase(request, id_proyecto):
     """
     *Vista para la creación de fases en el sistema.
@@ -74,7 +73,7 @@ def createPhase(request, id_proyecto):
                                                      'error': {}, })
 
 @login_required()
-@user_passes_test(puede_modificar_fase)
+# @user_passes_test(puede_modificar_fase)
 def changePhase(request, id_fase):
     """
     *Vista para la modificacion de una fase dentro del sistema.
@@ -91,7 +90,6 @@ def changePhase(request, id_fase):
     try:
         Fase.objects.get(pk=id_fase)
     except Fase.DoesNotExist:
-        # print 'La fase especificada no existe'
         raise Http404
 
     phase = Fase.objects.get(pk=id_fase)
@@ -124,7 +122,7 @@ def changePhase(request, id_fase):
 
 
 @login_required
-@user_passes_test(puede_modificar_fase)
+# @user_passes_test(puede_modificar_fase)
 def confirmar_eliminacion_fase(request, id_fase):
     """
     *Vista para la confirmar la eliminación definitiva de una fase del proyecto.
@@ -140,7 +138,7 @@ def confirmar_eliminacion_fase(request, id_fase):
                                                                'tipos': tiposItem},)
 
 @login_required
-@user_passes_test(puede_modificar_fase)
+# @user_passes_test(puede_modificar_fase)
 def deletePhase(request, id_fase):
     """
     *Vista para la eliminación de una fase dentro del sistema.
@@ -208,9 +206,6 @@ def phaseList(request, id_proyecto):
     return render(request, "fase/phaselist.html", {'phase': phase, 'project': project,
                                                    'error': error, 'messages': messages})
 
-
-
-#TODO: Revisar funcional pero ineficiente
 #@user_passes_test(puede_modificar_fase)
 def importMultiplePhase(request, id_fase, id_proyecto_destino):
     """
@@ -247,7 +242,7 @@ def importMultiplePhase(request, id_fase, id_proyecto_destino):
     return HttpResponseRedirect('/phaselist/' + str(proyectoDestino.id))
 
 
-# @user_passes_test(puede_modificar_fase)
+@permission_required('administrarFases.consultar_Fase', (Fase, 'id', 'id_fase'))
 def workphase(request, id_fase):
     """
     *Vista para el trabajo sobre una fase de un proyecto.
@@ -274,13 +269,6 @@ def workphase(request, id_fase):
                 relaciones[i] = None
 
         if proyectoTrabajo.estado == 'ACT':
-
-            usuario = request.user
-            objetos = get_objects_for_user(usuario, 'crear_Solicitud_Cambio', klass=Fase)
-            puedeCrearSC = False
-            if faseTrabajo in objetos:
-                puedeCrearSC = True
-
             error = None
             messages = None
             if 'error' in request.session:
@@ -290,14 +278,15 @@ def workphase(request, id_fase):
             return render(request, 'fase/workPhase.html', {'proyecto': proyectoTrabajo, 'fase': faseTrabajo,
                                                            'user': request.user, 'listaItems': itemsFase,
                                                            'relaciones': relaciones.items(), 'error': error,
-                                                           'messages': messages, 'puedeCrearSC': puedeCrearSC})
+                                                           'messages': messages})
 
         else:
-            return render(request, 'fase/workphase_finalizada.html', {'proyecto': proyectoTrabajo, 'fase': faseTrabajo, 'user': request.user,
-                                                           'listaItems': itemsFase, 'relaciones': relaciones.items()})
+            return render(request, 'fase/workphase_finalizada.html', {'proyecto': proyectoTrabajo, 'fase': faseTrabajo,
+                                                                      'user': request.user, 'listaItems': itemsFase,
+                                                                      'relaciones': relaciones.items()})
 
 
-@user_passes_test(puede_modificar_fase)
+# @user_passes_test(puede_modificar_fase)
 def subirOrden(request, id_fase):
     """
     *Función para "Subir" el número de orden de una Fase que pertenece a algún proyecto*
@@ -322,7 +311,7 @@ def subirOrden(request, id_fase):
         return HttpResponseRedirect('/workproject/' + str(fase.proyecto.id))
 
 
-@user_passes_test(puede_modificar_fase)
+# @user_passes_test(puede_modificar_fase)
 def bajarOrden(request, id_fase):
     """
     *Función para "Bajar" el número de orden de una Fase que pertenece a algún proyecto*
@@ -347,7 +336,7 @@ def bajarOrden(request, id_fase):
         return HttpResponseRedirect('/workproject/' + str(fase.proyecto.id))
 
 
-@user_passes_test(puede_modificar_fase)
+@lider_requerido("id_fase")
 def finPhase(request, id_fase):
     """
     *Función para finalizar una fase. La cual se encarga de analizar todas las restricciones y requisitos para
@@ -393,7 +382,7 @@ def finPhase(request, id_fase):
                                         kwargs={'id_proyecto': proyecto.id}))
 
 
-@user_passes_test(puede_modificar_fase)
+# @user_passes_test(puede_modificar_fase)
 def startPhase(request, id_fase):
     """
     *Función para iniciar una nueva fase dentro del proyecto. Función que se ejecuta inmediatamente con la existencia

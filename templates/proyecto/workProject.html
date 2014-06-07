@@ -1,5 +1,6 @@
 {% extends 'base.html' %}
 {% load staticfiles %}
+{% load guardian_tags %}
 
     {% block title %}Proyecto: {{ proyecto.nombre }}{% endblock %}
     {% block errorBlock %}
@@ -61,6 +62,7 @@
         {% else %}
             <div class="panel-body">
                 {% for fase in fases %}
+                    {% get_obj_perms user for fase as "permisosFase" %}
                     {% if forloop.counter0|divisibleby:"3" %}
                         <div class="row">
                     {% endif %}
@@ -100,8 +102,12 @@
                             <div class="panel-heading">
                                 {% if fase.estado == 'DES' %}
                                     <a href="{% url 'administrarFases.views.workphase' fase.id %}" class="btn btn-primary btn-sm">Gestionar Ítems</a>
-                                    {% if user == proyecto.lider_proyecto %}<a href="{% url 'administrarFases.views.finPhase' fase.id %}" class="btn btn-success btn-sm">Fin Fase</a>{% endif %}
-                                    <a href="{% url 'administrarLineaBase.views.visualizarLB' fase.id %}" class="btn btn-gray btn-sm">Lineas Base</a>
+                                    {% if user == proyecto.lider_proyecto %}
+                                        <a href="{% url 'administrarFases.views.finPhase' fase.id %}" class="btn btn-success btn-sm">Fin Fase</a>
+                                    {% endif %}
+                                    {% if "consultar_Lineas_Base" in permisosFase %}
+                                        <a href="{% url 'administrarLineaBase.views.visualizarLB' fase.id %}" class="btn btn-gray btn-sm">Lineas Base</a>
+                                    {% endif %}
                                 {% else %}
                                     {% if fase.estado != 'PEN' %}
                                         <a href="{% url 'administrarFases.views.workphase' fase.id %}"class="btn btn-primary btn-sm">Ver Ítems</a>

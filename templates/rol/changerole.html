@@ -10,11 +10,35 @@
     {% block title %}Modificar Rol{% endblock %}
 
     {% block errorBlock %}
-        {% if form.errors %}
+        {% if rolGrupoForm.errors %}
             <div class="container-fluid">
                 <div class="alert alert-danger alert-dismissable">
                     <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
-                    {{ form.errors }}
+                    {{ rolGrupoForm.errors }}
+                </div>
+            </div>
+        {% endif %}
+        {% if asignarUsuariosForm.errors %}
+            <div class="container-fluid">
+                <div class="alert alert-danger alert-dismissable">
+                    <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+                    {{ asignarUsuariosForm.errors }}
+                </div>
+            </div>
+        {% endif %}
+        {% if fasesPermisosForms.errors %}
+            <div class="container-fluid">
+                <div class="alert alert-danger alert-dismissable">
+                    <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+                    {{ fasesPermisosForms.errors }}
+                </div>
+            </div>
+        {% endif %}
+        {% if grupoPermisosForm.errors %}
+            <div class="container-fluid">
+                <div class="alert alert-danger alert-dismissable">
+                    <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+                    {{ grupoPermisosForm.errors }}
                 </div>
             </div>
         {% endif %}
@@ -46,7 +70,7 @@
                         <div>
                             {{ grupoPermisosForm.as_p }}
                         </div>
-                        {% for faseForm in fasesPermisosForm %}
+                        {% for faseForm in fasesPermisosForms %}
                             <h3>{{ faseForm.obj.nombre }}</h3>
                             <div>
                                 {{ faseForm.as_p }}

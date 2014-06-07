@@ -1,24 +1,30 @@
 #encoding:utf-8
 
 from django.contrib.auth.decorators import login_required
+from django.http import HttpResponseRedirect
+from django.core.urlresolvers import reverse
+from django.http import HttpResponseRedirect
 from django.shortcuts import render
 from django.utils import timezone
-from administrarFases.views import workphase
+from guardian.decorators import permission_required
+from django.forms.models import inlineformset_factory
+import reversion
+from administrarFases.models import Fase
 
+from administrarFases.views import workphase
 from administrarItems.forms import itemForm, campoEnteroForm, campoImagenForm, campoTextoCortoForm, campoFileForm, modificarAtributosBasicosForm,\
     modificarDatosItemForm, campoTextoLargoForm, CustomInlineFormSet_NUM, CustomInlineFormSet_STR, \
     CustomInlineFormSet_TXT, CustomInlineFormSet_IMG, CustomInlineFormSet_FIL
-
-from django.forms.models import inlineformset_factory
 from administrarItems.models import ItemBase, CampoImagen, CampoNumero, CampoFile, CampoTextoCorto, CampoTextoLargo, ItemRelacion
-from administrarLineaBase.views import generarCalculoImpacto, generarGrafo
-from administrarRolesPermisos.decorators import *
-import reversion
+from administrarLineaBase.views import generarGrafo
+from administrarRolesPermisos.decorators import user_passes_test, verificar_permiso, puede_modificar_fase, \
+    lider_miembro_comite_requerido
 from administrarTipoItem.models import TipoItem, Atributo
 
 
 @login_required()
 @reversion.create_revision()
+@permission_required('administrarFases.crear_Item', (Fase, 'id', 'id_fase'))
 def createItem(request, id_fase):
     """
     *Vista para la creación de fases en el sistema.
@@ -99,6 +105,7 @@ def crearAtributos(item_id):
         nuevoAtributo.save()
 
 
+@verificar_permiso(["consultar_Item", "modificar_Item"], "id_item", False)
 def historialItemBase(request, id_fase, id_item):
     """
     *Funcion para visualizar el historial de versiones de los ítems. *
@@ -184,6 +191,7 @@ def reversionItemBase(request, id_item, id_fase, id_version):
 
 
 @reversion.create_revision()
+@verificar_permiso(["modificar_Item"], "id_item_hijo", False)
 def relacionarItemBase(request, id_item_hijo, id_item_padre, id_fase):
     """
     *Funcion para establecer relaciones entre los items. Se pueden establecer relaciones del tipo Padre-Hijo
@@ -242,6 +250,7 @@ def relacionarItemBase(request, id_item_hijo, id_item_padre, id_fase):
         return HttpResponseRedirect('/workphase/' + str(id_fase))
 
 
+@verificar_permiso(["modificar_Item"], "id_item_actual", False)
 def relacionarItemBaseView(request, id_fase_actual, id_item_actual):
     """
     *Función que realiza el proceso de filtar los ítems disponibles para relacionar una relación, de tal forma,
@@ -318,6 +327,7 @@ def validarItem(request, id_item):
     return HttpResponseRedirect(reverse('administrarFases.views.workphase', kwargs={'id_fase': item.tipoitem.fase_id}))
 
 
+@verificar_permiso(["modificar_Item"], "id_item", False)
 def finalizarItem(request, id_item):
     """
     *Función para realizar la finalización correcta de un item. La finalización consiste en finalizar el
@@ -343,7 +353,7 @@ def finalizarItem(request, id_item):
             relacion = None
 
         if relacion:
-            if relacion.itemPadre == None and item.tipoitem.fase.nro_orden != 1:
+            if relacion.itemPadre is None and item.tipoitem.fase.nro_orden != 1:
                 error = 1
                 mensajes.append('No se puede Finalizar el item. Se precisa especificar su relacion con otro item')
         elif item.tipoitem.fase.nro_orden != 1:
@@ -366,6 +376,7 @@ def finalizarItem(request, id_item):
     return HttpResponseRedirect(reverse('administrarFases.views.workphase', kwargs={'id_fase': fase.id}))
 
 
+@verificar_permiso(["dar_de_baja_Item"], "id_item", False)
 def dardebajaItem(request, id_item):
     """
     *Función para Dar de Baja un item. Dar de Baja consiste en el borrado lógico del ítem, es decir, este pasa
@@ -443,6 +454,7 @@ def dardebajaItem(request, id_item):
         return HttpResponseRedirect('/workphase/' + str(fase.id))
 
 
+@verificar_permiso(["restaurar_Item"], "id_item", False)
 def restaurarItem(request, id_item):
     """
     *Función para Restaurar un item que fue Dado de Baja. Restaurar consiste en realizar una activación del
@@ -519,6 +531,7 @@ def restaurarItemRelacion(padres, hijos):
 
 
 @reversion.create_revision()
+@verificar_permiso(["modificar_Item"], "id_item", False)
 def workItem(request, id_item):
     """
     *Vista para el desarrollo de ítems creados en una Fase de un Proyecto.
@@ -835,6 +848,7 @@ def changeItem(request, id_item):
                                                     'tiposItem': tipoItem, 'user': request.user}, )
 
 
+@verificar_permiso(["consultar_Item"], "id_item", False)
 def verItem(request, id_item):
     """
     *Función que permite visualizar un ítem junto con sus atributos y su grafo de relaciones.*
@@ -862,6 +876,8 @@ def verItem(request, id_item):
                                                  'imagenes': imagenes, 'archivos': archivos, 'grafo': grafoRelaciones})
 
 
+@lider_miembro_comite_requerido("id_item")
+# TODO: remover el parametro id_fase, se puede recuperar del item
 def finRevisionItem(request, id_fase, id_item):
     """
     *Función para Finalizar de un ítem que ha entrado en una estado de Revision.

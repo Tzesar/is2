@@ -1,5 +1,6 @@
 {% extends 'base.html' %}
 {% load staticfiles %}
+{% load guardian_tags %}
 
     {% block title %}Solicitudes de Cambio: {{ fase.nombre }}{% endblock %}
     {% block errorBlock %}
@@ -28,11 +29,14 @@
 
     {% block padTop %}{% endblock padTop %}
     {% block panelCentral %}
+        {% get_obj_perms user for fase as "permisosFase" %}
         <div class="panel-heading">
             <h1 class="text-info" style="display: inline-block">Solicitud de Cambios - Fase: {{ fase.nombre|capfirst }}</h1>
         </div>
         <div class="panel-body" style="padding-bottom: 2%">
-            <a href="{% url 'administrarLineaBase.views.crearSolicitudCambios' fase.id %}" class="btn btn-sm btn-info"> Crear Solicitudes de Cambios</a>
+            {% if "crear_Linea_Base" in permisosFase or proyecto.lider_proyecto == user %}
+                <a href="{% url 'administrarLineaBase.views.crearSolicitudCambios' fase.id %}" class="btn btn-sm btn-info"> Crear Solicitudes de Cambios</a>
+            {% endif %}
             <hr>
             {% if misSolicitudes or otrasSolicitudes %}
                 {% if misSolicitudes %}
@@ -51,7 +55,7 @@
                                     <div class="panel panel-default">
                                         <div class="panel-heading">
                                             <div class="row">
-                                                <div class="col-sm-8 col-md-8 col-lg-8">
+                                                <div class="col-sm-12 col-md-12 col-lg-12">
                                                     <span class="text-primary">
                                                         Id. Solicitud: {{ solicitud.id }}
                                                     </span>
@@ -99,12 +103,18 @@
                                                     </span>
 
                                                 {% else %}
-                                                    <span class="pull-right" style="font-size: 70%; color: forestgreen; padding-top: 2%"">
+                                                    <span class="pull-right" style="font-size: 70%; color: forestgreen; padding-top: 2%">
                                                         Usted ya votó por esta solicitud
                                                     </span>
                                                 {% endif %}
                                             {% endif %}
                                             <a href="{% url 'administrarLineaBase.views.visualizarSolicitud' solicitud.id fase.id %}" class="btn btn-xs btn-success">Ver Solicitud</a>
+
+                                            {% get_obj_perms solicitud.usuario for solicitud.items.all.0 as "permisosItem" %}
+
+                                            {% if solicitud.fase.proyecto.lider_proyecto == user and "credencial" in permisosItem %}
+                                                <a href="{% url 'administrarLineaBase.views.revocarPermisos' solicitud.id %}" class="btn btn-xs btn-danger pull-right">Revocar Permisos</a>
+                                            {% endif %}
                                         </div>
 
                                     </div>
@@ -182,6 +192,11 @@
                                                 {% endif %}
                                             {% endif %}
                                             <a href="{% url 'administrarLineaBase.views.visualizarSolicitud' solicitud.id fase.id %}" class="btn btn-xs btn-success">Ver Solicitud</a>
+                                            {% get_obj_perms solicitud.usuario for solicitud.items.all.0 as "permisosItem" %}
+
+                                            {% if solicitud.fase.proyecto.lider_proyecto == user and "credencial" in permisosItem %}
+                                                <a href="{% url 'administrarLineaBase.views.revocarPermisos' solicitud.id %}" class="btn btn-xs btn-danger pull-right">Revocar Permisos</a>
+                                            {% endif %}
                                         </div>
 
                                     </div>
