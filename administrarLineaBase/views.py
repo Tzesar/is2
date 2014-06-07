@@ -38,6 +38,7 @@ def createLB(request, id_fase):
     items = ItemBase.objects.filter(tipoitem=tipoitem)
     proyecto = fase.proyecto
     itemsVAL = items.filter(estado='VAL')
+    messages = []
 
     if itemsVAL:
         if request.method == 'POST':
@@ -63,24 +64,24 @@ def createLB(request, id_fase):
                         faseSgte.estado = 'DES'
                         faseSgte.save()
 
-                mensaje = 'Linea Base establecida para la fase: ' + fase.nombre
+                messages.append('Linea Base establecida para la fase: ' + fase.nombre)
                 error = 0
-                request.method = 'GET'
-                return workphase(request, id_fase)
+                request.session['messages'] = messages
+                request.session['error'] = error
+                return HttpResponseRedirect(reverse('administrarFases.views.workphase', kwargs={'id_fase': id_fase}))
         else:
 
             form = createLBForm()
-        return render(request, 'lineabase/createlb.html', {'form': form, 'proyecto': proyecto,
-                                                        'user': request.user, 'fase':fase, })
+            return render(request, 'lineabase/createlb.html', {'form': form, 'proyecto': proyecto,
+                                                           'user': request.user, 'fase':fase,
+                                                           'itemsVAL': itemsVAL},)
     else:
 
         error = 1
-        messages = []
         messages.append(u'Error al crear Linea Base. No existen items VALIDADOS en la fase.')
         request.session['messages'] = messages
         request.session['error'] = error
         return HttpResponseRedirect(reverse('administrarFases.views.workphase', kwargs={'id_fase': id_fase}))
-        # return workphase(request, id_fase)
 
 
 def calculoImpacto(padres, hijos, costo, tiempo, grafo):
@@ -210,24 +211,24 @@ def cancelarSolicitudCambios(request, id_solicitud, id_fase):
     """
 
     solicitud = SolicitudCambios.objects.get(pk=id_solicitud)
+    mensaje = []
 
     if solicitud.estado == 'VOT':
         solicitud.estado = 'CAN'
         solicitud.save()
-        mensaje = 'La solicitud ha sido cancelada con éxito'
+        mensaje.append('La solicitud ha sido cancelada con éxito.')
         error = 0
 
         request.session['messages'] = mensaje
         request.session['error'] = error
     else:
-        mensaje = 'No se puede cancelar la solicitud.'
+        mensaje.append('No se puede cancelar la solicitud. La misma ya no esta en votacion')
         error = 1
 
         request.session['messages'] = mensaje
         request.session['error'] = error
 
     return HttpResponseRedirect(reverse('administrarLineaBase.views.workApplication', kwargs={'id_fase': id_fase}))
-    # return workApplication(request, id_fase)
 
 
 def workApplication(request, id_fase):
@@ -310,6 +311,16 @@ def crearSolicitudCambios(request, id_fase):
     """
     fase = Fase.objects.get(pk=id_fase)
     proyecto = fase.proyecto
+    mensajes = []
+
+    tipos = TipoItem.objects.filter(fase=fase)
+    opciones = ItemBase.objects.filter(estado='ELB', tipoitem__in=tipos)
+    if not opciones:
+        mensajes.append('Error al crear la solicitud de cambios. No existen items en Linea Base en esta fase.')
+        error = 1
+        request.session['messages'] = mensajes
+        request.session['error'] = error
+        return HttpResponseRedirect(reverse('administrarLineaBase.views.workApplication', kwargs={'id_fase': id_fase}))
 
     if request.method == 'POST':
         form = createSCForm(request.POST)
@@ -364,6 +375,7 @@ def votarSolicitud(request, id_solicitud, voto):
     solicitud = SolicitudCambios.objects.get(pk=id_solicitud)
     fase = solicitud.fase
     proyecto = fase.proyecto
+    mensaje = []
 
     if request.method == 'POST':
         form = emitirVotoForm(request.POST)
@@ -405,14 +417,12 @@ def votarSolicitud(request, id_solicitud, voto):
                     solicitud.estado = 'RCH'
                     solicitud.save()
 
-            mensaje = 'Voto confirmado para la solicitud ' + str(solicitud.id)
+            mensaje.append('Voto confirmado para la solicitud ' + str(solicitud.id))
             error = 0
-            # request.method = 'GET'
             enviarSolicitudRespuesta(solicitud.id)
             request.session['messages'] = mensaje
             request.session['error'] = error
             return HttpResponseRedirect(reverse('administrarLineaBase.views.workApplication', kwargs={'id_fase': fase.id}))
-            # return workApplication(request, fase.id, error=error, mensaje=mensaje)
     else:
         form = emitirVotoForm()
     return render(request, 'lineabase/createvote.html', {'form': form, 'proyecto': proyecto,

@@ -28,7 +28,7 @@
             <h1 class="text-info" style="display: inline-block">Atributo: {{ atributo.nombre }}</h1>
         </div>
         <div class="panel-body">
-            <div class="col-lg-4 col-md-4 col-sm-4">
+            <div class="col-lg-5 col-md-5 col-sm-5">
                 <form role="form" method="post">
                     {% csrf_token %}
                     {% form form using "formsLayouts/div.html" %}

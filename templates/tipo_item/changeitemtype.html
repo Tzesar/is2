@@ -12,6 +12,18 @@
                 </div>
             </div>
         {% endif %}
+        {% if messages %}
+            <div class="container-fluid">
+                <div class="alert {% if error == 1 %} alert-danger {% else %} alert-success {% endif %} alert-dismissable">
+                    <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+                    <ul>
+                        {% for message in messages %}
+                            <li>{{ message }}</li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            </div>
+        {% endif %}
     {% endblock errorBlock %}
 
     {% block breadContent %}
@@ -68,8 +80,8 @@
                                                 {{ attrib.nombre }}</a>
                                         </div>
                                         <div class="col-sm-6">
-                                            <span class="pull-right" style="padding-right: 5%">
-                                                <a href="{% url 'administrarTipoItem.views.deleteAtribute' attrib.id %}">
+                                            <span class="pull-right" style="padding-right: 5%" data-toggle="tooltip" title="Eliminar Atributo" id="tooltip">
+                                                <a href="{% url 'administrarTipoItem.views.deleteAtribute' attrib.id %}" class="text-danger">
                                                     <span class="glyphicon glyphicon-minus-sign"></span></a>
                                             </span>
                                         </div>

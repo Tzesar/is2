@@ -152,6 +152,7 @@ def changeProjectLeader(request, id_proyecto):
 
             miembrosComite = miembrosComiteForm.get_cleaned_data()
             rol.grupo.user_set.clear()
+            rol.grupo.user_set.add(project.lider_proyecto)
             for miembro in miembrosComite:
                 miembroNuevo = Usuario.objects.get(id=miembro)
                 rol.grupo.user_set.add(miembroNuevo)
@@ -160,7 +161,7 @@ def changeProjectLeader(request, id_proyecto):
             #             id_proyecto + form["nombre"].value() + ' dentro del sistema')
 
             messages = []
-            messages.append(u'El proyecto se ha modificado correctamente.')
+            messages.append('Configuraciones del proyecto actualizadas con exito.')
             request.session['messages'] = messages
             return HttpResponseRedirect(reverse('administrarProyectos.views.workProject', kwargs={'id_proyecto': id_proyecto}))
 
@@ -374,10 +375,11 @@ def startProject(request, id_proyecto):
                            u' y pueda iniciarse.')
             error = 1
 
-        nombreComite = u'ComiteDeCambios-' + proyecto.nombre
+        nombreComite = 'ComiteDeCambios-' + proyecto.nombre
         comite = Rol.objects.get(grupo__name__contains=nombreComite)
         if comite.grupo.user_set.all().count() < 3:
-            message.append(u'El Comite de cambios debe tener tres miembros.')
+            print comite.grupo.user_set.all().count()
+            message.append('El Comite de cambios debe tener tres miembros.')
             error = 1
 
         if error != 1:

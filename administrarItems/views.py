@@ -47,6 +47,11 @@ def createItem(request, id_fase):
 
             crearAtributos(item.id)
 
+            mensajes = []
+            mensajes.append('Item: ' + ItemBase.objects.last().nombre + ', creado exitosamente')
+            request.session['messages'] = mensajes
+            request.session['error'] = 0
+
             return HttpResponseRedirect('/workphase/' + str(fase.id))
 
     else:
@@ -170,12 +175,12 @@ def reversionItemBase(request, id_item, id_fase, id_version):
     for version in lista_version:
         if version.revision.id == id_new_version:
             version.revert()
-            mensaje = 'Item: ' + item.nombre + '. Reversionado correctamente.'
             error = 0
-            mensajes = list(mensaje)
+            mensajes = []
+            mensajes.append('Item: ' + item.nombre + '. Reversionado correctamente.')
             request.session['messages'] = mensajes
             request.session['error'] = error
-            return workphase(request, fase.id)
+            return HttpResponseRedirect('/workphase/' + str(fase.id))
 
 
 @reversion.create_revision()
@@ -212,7 +217,7 @@ def relacionarItemBase(request, id_item_hijo, id_item_padre, id_fase):
         error = 0
         request.session['messages'] = mensajes
         request.session['error'] = error
-        return workphase(request, id_fase)
+        return HttpResponseRedirect('/workphase/' + str(id_fase))
 
     relacion = ItemRelacion.objects.get(itemHijo=item_hijo)
     padre = relacion.itemPadre
@@ -222,7 +227,7 @@ def relacionarItemBase(request, id_item_hijo, id_item_padre, id_fase):
         mensajes.append(mensaje)
         request.session['messages'] = mensajes
         request.session['error'] = duplicado
-        return workphase(request, id_fase)
+        return HttpResponseRedirect('/workphase/' + str(id_fase))
     else:
         relacion.itemPadre = item_padre
         relacion.save()
@@ -234,7 +239,7 @@ def relacionarItemBase(request, id_item_hijo, id_item_padre, id_fase):
         mensajes.append(mensaje)
         request.session['messages'] = mensajes
         request.session['error'] = error
-        return workphase(request, id_fase)
+        return HttpResponseRedirect('/workphase/' + str(id_fase))
 
 
 def relacionarItemBaseView(request, id_fase_actual, id_item_actual):
@@ -262,12 +267,12 @@ def relacionarItemBaseView(request, id_fase_actual, id_item_actual):
             return render(request, 'item/relacionaritemvista.html', {'item': item, 'fase': fase_actual, 'proyecto': proyecto,
                       'itemlista': item_lista_fase_actual, 'user': request.user}, )
         else:
-            error=1
-            mensaje= 'No existen items con los cuales relacionarse'
+            error = 1
+            mensaje = 'No existen items con los cuales relacionarse'
             mensajes.append(mensaje)
             request.session['messages'] = mensajes
             request.session['error'] = error
-            return workphase(request, id_fase_actual)
+            return HttpResponseRedirect('/workphase/' + str(id_fase_actual))
     else:
         orden_anterior = fase_actual.nro_orden - 1
         fase_anterior = Fase.objects.get(proyecto=proyecto, nro_orden=orden_anterior)
@@ -359,7 +364,6 @@ def finalizarItem(request, id_item):
     request.session['messages'] = mensajes
     request.session['error'] = error
     return HttpResponseRedirect(reverse('administrarFases.views.workphase', kwargs={'id_fase': fase.id}))
-    # return workphase(request, fase.id)
 
 
 def dardebajaItem(request, id_item):
@@ -379,6 +383,7 @@ def dardebajaItem(request, id_item):
     item = ItemBase.objects.get(pk=id_item)
     fase = item.tipoitem.fase
     ti = TipoItem.objects.filter(fase=fase)
+    mensajes = []
 
     try:
         ItemRelacion.objects.get(itemPadre=item)
@@ -391,31 +396,28 @@ def dardebajaItem(request, id_item):
             try:
                 ItemRelacion.objects.get(itemHijo=item)
             except:
-                mensaje = 'Item: ' + item.nombre + '. Dado de Baja correctamente.'
+                mensajes.append('Item: ' + item.nombre + '. Dado de Baja correctamente.')
                 error = 0
-                mensajes = list(mensaje)
                 request.session['messages'] = mensajes
                 request.session['error'] = error
-                return workphase(request, fase.id)
+                return HttpResponseRedirect('/workphase/' + str(fase.id))
 
             itemRelacion = ItemRelacion.objects.get(itemHijo=item)
             itemRelacion.estado = 'DES'
             itemRelacion.save()
-            mensaje = 'Item: ' + item.nombre + '. Dado de Baja correctamente.'
+            mensajes.append('Item: ' + item.nombre + '. Dado de Baja correctamente.')
             error = 0
-            mensajes = list(mensaje)
             request.session['messages'] = mensajes
             request.session['error'] = error
-            return workphase(request, fase.id)
+            return HttpResponseRedirect('/workphase/' + str(fase.id))
 
     esPadre = ItemRelacion.objects.filter(itemPadre=item, estado='ACT')
     if esPadre:
-        mensaje = 'Item no puede darse de baja, el item posse una relación de Padre con algún otro item. Favor verificar las relaciones del ítem '
+        mensajes.append('Item no puede darse de baja, el item posse una relación de Padre con algún otro item. Favor verificar las relaciones del ítem ')
         error = 1
-        mensajes = list(mensaje)
         request.session['messages'] = mensajes
         request.session['error'] = error
-        return workphase(request, fase.id)
+        return HttpResponseRedirect('/workphase/' + str(fase.id))
     else:
         item.fecha_modificacion = timezone.now()
         item.usuario_modificacion = request.user
@@ -424,23 +426,21 @@ def dardebajaItem(request, id_item):
         try:
             ItemRelacion.objects.get(itemHijo=item)
         except:
-            mensaje = 'Item: ' + item.nombre + '. Dado de Baja correctamente.'
+            mensajes.append('Item: ' + item.nombre + '. Dado de Baja correctamente.')
             error = 0
-            mensajes = list(mensaje)
             request.session['messages'] = mensajes
             request.session['error'] = error
-            return workphase(request, fase.id)
+            return HttpResponseRedirect('/workphase/' + str(fase.id))
 
         itemRelacion = ItemRelacion.objects.get(itemHijo=item)
         itemRelacion.estado = 'DES'
         itemRelacion.save()
 
-        mensaje = 'Item: ' + item.nombre + '. Dado de Baja correctamente.'
+        mensajes.append('Item: ' + item.nombre + '. Dado de Baja correctamente.')
         error = 0
-        mensajes = list(mensaje)
         request.session['messages'] = mensajes
         request.session['error'] = error
-        return workphase(request, fase.id)
+        return HttpResponseRedirect('/workphase/' + str(fase.id))
 
 
 def restaurarItem(request, id_item):
@@ -460,6 +460,7 @@ def restaurarItem(request, id_item):
     """
     item = ItemBase.objects.get(pk=id_item)
     fase = item.tipoitem.fase
+    mensajes = []
 
     try:
         ItemRelacion.objects.get(itemHijo=item)
@@ -467,12 +468,11 @@ def restaurarItem(request, id_item):
         item.estado = 'ACT'
         item.save()
 
-        mensaje = 'Item ' + item.nombre + ' restaurado exitosamente'
+        mensajes.append('Item: ' + item.nombre + ' restaurado exitosamente')
         error = 0
-        mensajes = list(mensaje)
         request.session['messages'] = mensajes
         request.session['error'] = error
-        return workphase(request, fase.id)
+        return HttpResponseRedirect('/workphase/' + str(fase.id))
 
     padres = []
     hijos = [id_item]
@@ -486,12 +486,11 @@ def restaurarItem(request, id_item):
             item.estado = 'ACT'
             item.save()
 
-    mensaje = 'Item ' + item.nombre + ' restaurado exitosamente'
+    mensajes.append('Item ' + item.nombre + ' restaurado exitosamente')
     error = 0
-    mensajes = list(mensaje)
     request.session['messages'] = mensajes
     request.session['error'] = error
-    return workphase(request, fase.id)
+    return HttpResponseRedirect('/workphase/' + str(fase.id))
 
 
 def restaurarItemRelacion(padres, hijos):
@@ -536,6 +535,7 @@ def workItem(request, id_item):
     :param message: Mensaje de error o de éxito a ser desplegado según corresponda.
     :return: Proporciona la pagina ``workitem.html``, página dedicada al desarrollo del ítem especificado.
     """
+    mensajes = []
     item = ItemBase.objects.get(pk=id_item)
     tipoItem = item.tipoitem
     faseActual = tipoItem.fase
@@ -617,8 +617,7 @@ def workItem(request, id_item):
             item.save()
 
             no_error = 0
-            mensaje = 'Item: ' + item.nombre + '. Modificacion exitosa.'
-            mensajes = list(mensaje)
+            mensajes.append('Item: ' + item.nombre + '. Modificacion exitosa.')
             request.session['messages'] = mensajes
             request.session['error'] = no_error
             return HttpResponseRedirect(reverse('administrarFases.views.workphase',
@@ -801,6 +800,7 @@ def changeItem(request, id_item):
                  Modifica la fase especifica y luego regresa al menu principal
 
     """
+    mensajes = []
     items = ItemBase.objects.filter(pk=id_item)
     if items:
         print 'Inicio de Proceso de Modificacion'
@@ -822,6 +822,11 @@ def changeItem(request, id_item):
             item.version = reversion.get_unique_for_object(item).__len__() + 1
             item.save()
 
+            message = 'Modificaciones concluidas con exito en el Item: ' + item.nombre
+            error = 0
+            mensajes.append(message)
+            request.session['messages'] = mensajes
+            request.session['error'] = error
             return HttpResponseRedirect('/workphase/' + str(phase.id))
     else:
         form = itemForm(instance=item)

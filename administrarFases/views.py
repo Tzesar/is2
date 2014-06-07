@@ -102,7 +102,7 @@ def changePhase(request, id_fase):
         if form.is_valid():
             form.save()
 
-            mensaje = ('Fase: "' + Fase.objects.last().nombre + '", modificada exitosamente')
+            mensaje = ('Fase: ' + phase.nombre + ', modificada exitosamente')
             mensajes = []
             mensajes.append(mensaje)
             request.session['messages'] = mensajes
@@ -160,16 +160,25 @@ def deletePhase(request, id_fase):
             attr.delete()
         ti.delete()
 
-    phase_copy = phase
     project = Proyecto.objects.get(pk=phase.proyecto.id)
+    fasesProyecto = Fase.objects.filter(proyecto=project).order_by('nro_orden')
+    ordenEliminado = phase.nro_orden
+
+    for fase in fasesProyecto:
+        if fase.nro_orden > ordenEliminado:
+            fase.nro_orden = fase.nro_orden - 1
+            fase.save()
+
+
+    phase_nombre = phase.nombre
     phase.delete()
 
-    mensaje = 'Fase: ' + phase_copy.nombre + ', eliminada exitosamente'
+    mensaje = 'Fase: ' + phase_nombre + ', eliminada exitosamente'
     mensajes = []
     mensajes.append(mensaje)
     request.session['messages'] = mensajes
     request.session['error'] = 0
-    return HttpResponseRedirect(reverse('administrarProyectos.views.workProject', kwargs={'id_proyecto': phase_copy.proyecto.id,}))
+    return HttpResponseRedirect(reverse('administrarProyectos.views.workProject', kwargs={'id_proyecto': project.id,}))
 
 
 @login_required
@@ -189,8 +198,16 @@ def phaseList(request, id_proyecto):
     phase_available = phase_actual_project.values_list('id', flat=True)
 
     phase = Fase.objects.exclude(pk__in=phase_available)
-    return render(request, "fase/phaselist.html", {'phase': phase, 'project': project },
-                  context_instance=RequestContext(request) )
+
+    error = None
+    messages = None
+    if 'error' in request.session:
+        error = request.session.pop('error')
+    if 'messages' in request.session:
+        messages = request.session.pop('messages')
+    return render(request, "fase/phaselist.html", {'phase': phase, 'project': project,
+                                                   'error': error, 'messages': messages})
+
 
 
 #TODO: Revisar funcional pero ineficiente
@@ -205,21 +222,29 @@ def importMultiplePhase(request, id_fase, id_proyecto_destino):
     :return: La fase se importá correctamente con todos sus componentes
     """
 
+    proyectoDestino = Proyecto.objects.get(pk=id_proyecto_destino)
     phase = Fase.objects.get(pk=id_fase)
     phase.id = None
-    phase.proyecto = Proyecto.objects.get(pk=id_proyecto_destino)
-    project = phase.proyecto
+    phase.proyecto = proyectoDestino
+    cantFases_ProyectoDestino = Fase.objects.filter(proyecto=proyectoDestino).count()
+    phase.nro_orden = cantFases_ProyectoDestino + 1
 
     try:
         phase.save()
     except IntegrityError as e:
-        return render(request, "keyduplicate_fase.html", {'project': project, "message": e.message})
+        return render(request, "keyduplicate_fase.html", {'project': proyectoDestino, "message": e.message})
 
     tipos_items = TipoItem.objects.filter(fase=Fase.objects.get(pk=id_fase))
     for tipo in tipos_items:
         importItemType(request, phase.id, tipo.id)
 
-    return HttpResponseRedirect('/phaselist/' + str(project.id))
+    messages = []
+    messages.append('Fase: ' + phase.nombre + ', y sus tipos de item, importados correctamente. La misma '
+                                              'sera considerada como la ultima fase del proyecto. Puede continuar las '
+                                              'importaciones seleccionando otra fase, o bien concluir '
+                                              'la operacion con el boton "Finalizar Importaciones"')
+    request.session['messages'] = messages
+    return HttpResponseRedirect('/phaselist/' + str(proyectoDestino.id))
 
 
 # @user_passes_test(puede_modificar_fase)

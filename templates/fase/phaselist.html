@@ -11,6 +11,22 @@
 {% endblock breadContent %}
 
 {% block mainBody %}
+    {% block errorBlock %}
+        {% if messages %}
+            <div class="container-fluid">
+                <div class="alert {% if error == 1 %} alert-danger {% else %} alert-success {% endif %} alert-dismissable">
+                    <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+                    <ul>
+                        {% for message in messages %}
+                            <li>{{ message }}</li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            </div>
+        {% endif %}
+    {% endblock errorBlock %}
+
+
     <div class="container col-lg-offset-1 col-lg-10 col-xs-12" style="padding-top: 2%">
         <div class="panel panel-default" style="padding-top: 2%; padding-left: 2%; padding-right: 2%">
             <div class="panel panel-default">
@@ -19,28 +35,30 @@
                     <h1 class="text-info">Fases</h1>
                 </div>
                 {% if phase %}
-                    <table class="table">
-                        <thead>
-                            <tr>
-                                <th>#</th>
-                                <th>Nombre de Fase</th>
-                                <th>Proyecto</th>
-                                <th>Estado</th>
-                                <th></th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {% for phase in phase %}
+                    <div class="panel-body">
+                        <table class="table">
+                            <thead>
                                 <tr>
-                                    <td>{{ phase.id }}</td>
-                                    <td><a href='{% url 'administrarFases.views.changePhase' phase.id %}'>{{phase.nombre}}</a></td>
-                                    <td>{{ phase.proyecto.nombre }}</td>
-                                    <td>{{ phase.estado }}</td>
-                                    <td><a href="/importmultiplephase/{{ phase.id }}/{{ project.id }}" class="btn btn-success">Importar</a></td>
+                                    <th>Nombre de Fase</th>
+                                    <th>Proyecto</th>
+                                    <th>Descripción</th>
+                                    <th>Estado</th>
+                                    <th></th>
                                 </tr>
-                            {% endfor %}
-                        </tbody>
-                    </table>
+                            </thead>
+                            <tbody>
+                                {% for phase in phase %}
+                                    <tr>
+                                        <td><span class="text-primary">{{phase.nombre}}</span></td>
+                                        <td>{{ phase.proyecto.nombre }}</td>
+                                        <td>{{ phase.descripcion }}</td>
+                                        <td>{{ phase.estado }}</td>
+                                        <td><a href="/importmultiplephase/{{ phase.id }}/{{ project.id }}" class="btn btn-success">Importar</a></td>
+                                    </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
                 {% else %}
                     <div class="panel-body">
                         <span class="list-group-item list-group-item-warning">
@@ -52,7 +70,7 @@
                 <div class="btn-group btn-group-justified">
                     <div class="col-lg-4 col-md-4 col-sm-4" >
                         <div class="btn-group" style="padding-bottom: 5%">
-                            <a href="{% url 'administrarProyectos.views.workProject' project.id %}" class="btn btn-md btn-success" type="submit">Finalizar</a>
+                            <a href="{% url 'administrarProyectos.views.workProject' project.id %}" class="btn btn-md btn-success" type="submit">Finalizar Importaciones</a>
                         </div>
                     </div>
                 </div>

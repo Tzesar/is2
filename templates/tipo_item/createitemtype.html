@@ -12,6 +12,18 @@
                 </div>
             </div>
         {% endif %}
+        {% if messages %}
+            <div class="container-fluid">
+                <div class="alert {% if error == 1 %} alert-danger {% else %} alert-success {% endif %} alert-dismissable">
+                    <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+                    <ul>
+                        {% for message in messages %}
+                            <li>{{ message }}</li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            </div>
+        {% endif %}
     {% endblock errorBlock %}
 
     {% block breadContent %}
@@ -27,7 +39,7 @@
             <h1 class="text-info" style="display: inline-block">Crear Tipo de Item</h1>
         </div>
         <div class="panel-body">
-            <div class="col-lg-4 col-md-4 col-sm-4">
+            <div class="col-lg-5 col-md-5 col-sm-5">
                 <form action="" class="form-signin" role="form" method="post">
                     {% csrf_token %}
                     {% form form using "formsLayouts/div.html" %}

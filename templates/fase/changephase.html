@@ -81,8 +81,8 @@
                                                 {{ ti.nombre }}</a>
                                         </div>
                                         <div class="col-sm-6">
-                                            <span class="pull-right" style="padding-right: 5%">
-                                                <a href="{% url 'administrarTipoItem.views.deleteItemType' ti.id %}">
+                                            <span class="pull-right" style="padding-right: 5%" data-toggle="tooltip" title="Eliminar Tipo de Ítem" id="tooltip">
+                                                <a href="{% url 'administrarTipoItem.views.deleteItemType' ti.id %}" class="text-danger">
                                                     <span class="glyphicon glyphicon-minus-sign"></span>
                                                 </a>
                                             </span>

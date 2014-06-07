@@ -64,6 +64,10 @@ def crearRol(request, id_proyecto):
                 rol = Rol(grupo=rolGrupo, proyecto=proyecto)
                 rol.save()
 
+                messages = []
+                messages.append('Rol: '+ rol.grupo.name + ', creado con exito.')
+                request.session['messages'] = messages
+                request.session['error'] = 0
                 return HttpResponseRedirect(reverse('administrarProyectos.views.workProject',
                                                     kwargs={'id_proyecto': id_proyecto}))
 
@@ -166,6 +170,10 @@ def modificarRol(request, id_proyecto, id_rol):
                 rol = Rol(grupo=rolGrupo, proyecto=proyecto)
                 rol.save()
 
+                messages = []
+                messages.append('Rol: '+ rol.grupo.name + ', modificado con exito.')
+                request.session['messages'] = messages
+                request.session['error'] = 0
                 return HttpResponseRedirect(reverse('administrarProyectos.views.workProject',
                                                     kwargs={'id_proyecto': id_proyecto}))
 
@@ -209,6 +217,10 @@ def eliminarRol(request, id_proyecto, id_rol):
     rol.delete()
     rol.grupo.delete()
 
+    messages = []
+    messages.append('Rol: '+ rol.grupo.name + ', eliminado con exito.')
+    request.session['messages'] = messages
+    request.session['error'] = 0
     return HttpResponseRedirect(reverse('administrarProyectos.views.workProject', kwargs={'id_proyecto': id_proyecto}))
 
 

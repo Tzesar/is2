@@ -47,7 +47,6 @@ def createItemType(request, id_fase):
 
             mensajes = []
             mensajes.append('Tipo de Item: ' + TipoItem.objects.last().nombre + ', creado exitosamente')
-            # return changePhase(request, id_fase)
 
             request.session['messages'] = mensajes
             request.session['error'] = 0
@@ -81,11 +80,25 @@ def changeItemType(request, id_tipoitem):
         if form.is_valid():
             form.save()
 
+            mensajes = []
+            mensajes.append('Tipo de Item: ' + itemtype.nombre + ', modificado con exito')
+
+            request.session['messages'] = mensajes
+            request.session['error'] = 0
             return HttpResponseRedirect('/changephase/' + str(phase.id))
 
     else:
         form = ChangeItemTypeForm(instance=itemtype)
-    return render(request, 'tipo_item/changeitemtype.html', {'user': request.user, 'form': form, 'itemtype': itemtype, 'project': project, 'atributos': atributos, 'fase': phase})
+
+    error = None
+    messages = None
+    if 'error' in request.session:
+        error = request.session.pop('error')
+    if 'messages' in request.session:
+        messages = request.session.pop('messages')
+    return render(request, 'tipo_item/changeitemtype.html', {'user': request.user, 'form': form, 'itemtype': itemtype,
+                                                             'project': project, 'atributos': atributos, 'fase': phase,
+                                                             'error': error, 'messages': messages})
 
 
 @login_required()
@@ -104,7 +117,13 @@ def deleteItemType(request, id_tipoitem):
     for attr in atributos:
         attr.delete()
 
+    tipoEliminado_nombre = itemtype.nombre
     itemtype.delete()
+    mensajes = []
+    mensajes.append('Tipo de Item: ' + tipoEliminado_nombre + ', y sus atributos, eliminados con exito')
+
+    request.session['messages'] = mensajes
+    request.session['error'] = 0
 
     return HttpResponseRedirect('/changephase/' + str(fase.id))
 
@@ -169,6 +188,13 @@ def importItemType(request, id_fase, id_itemtype):
     #             ' de la fase ' +tipoItemExistente.fase.nombre + ' del proyecto ' +tipoItemExistente.fase.proyecto.nombre+
     #             ' a la fase' + fase.nombre +' del proyecto ' + fase.proyecto.nombre )
 
+    mensajes = []
+    mensajes.append('Tipo de Item: ' + tipoItemNuevo.nombre + ', y sus atributos, importados correctamente. '
+                                                              'Puede efectuar modifcaciones sobre el mismo, o saltarlas '
+                                                              'presionando "Volver a Fase"')
+
+    request.session['messages'] = mensajes
+    request.session['error'] = 0
     return HttpResponseRedirect('/changeitemtype/' + str(tipoItemNuevo.id))
 
 
@@ -204,7 +230,13 @@ def createAtribute(request, id_tipoitem):
             # logger.info('El usuario '+request.user.username+'  ha creado el atributo ' + atributo.nombre +
             #             ' perteneciente al tipo de item: '+ itemtype.nombre )
 
-        return HttpResponseRedirect('/changeitemtype/'+str(id_tipoitem))
+            mensajes = []
+            mensajes.append('Atributo: ' + atributo.nombre + ', creado con exito')
+
+            request.session['messages'] = mensajes
+            request.session['error'] = 0
+
+            return HttpResponseRedirect('/changeitemtype/'+str(id_tipoitem))
     else:
         form = CreateAtributeForm()
     return render(request, 'tipo_item/createatribute.html', {'user': request.user, 'form': form, 'project': project,
@@ -236,6 +268,11 @@ def changeAtribute(request, id_atribute):
 
             # logger.info('El usuario '+request.user.username+' ha modificado el atributo (ATI-' + atribute.id +') ' +
             #             atribute.nombre + ' perteneciente al tipo de ítem: ' + itemtype.nombre )
+            mensajes = []
+            mensajes.append('Atributo: ' + atribute.nombre + ', modificado   con exito')
+
+            request.session['messages'] = mensajes
+            request.session['error'] = 0
 
             return HttpResponseRedirect('/changeitemtype/' + str(itemtype.id))
     else:
@@ -255,9 +292,16 @@ def deleteAtribute(request, id_atribute):
     """
     attr = Atributo.objects.get(pk=id_atribute)
     id_tipoItem = attr.tipoDeItem.id
+    attrEliminado_nombre = attr.nombre
     attr.delete()
 
     # logger.info('El usuario '+ request.user.username +' ha eliminado el atributo '  + attr.nombre +
     #             ' perteneciente al tipo de ítem: ' + attr.tipoDeItem.nombre )
+
+    mensajes = []
+    mensajes.append('Atributo: ' + attrEliminado_nombre + ', eliminado con exito')
+
+    request.session['messages'] = mensajes
+    request.session['error'] = 0
 
     return HttpResponseRedirect('/changeitemtype/' + str(id_tipoItem))

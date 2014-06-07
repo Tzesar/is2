@@ -1,4 +1,3 @@
 
 - Agregar filtros para TODOS los templates en caso de que un proyecto ha sido anulado
-- Añadir un boton para CONSULTAR Roles ANU/FIN - En curso
-- VERIFICAR TODOS LOS MENSAJES DE EXITOS/FALLOS EN TODOS LOS TEMPLATES Y VISTAS
+- Añadir un boton para CONSULTAR Roles ANU/FIN

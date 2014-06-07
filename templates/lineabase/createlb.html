@@ -28,7 +28,19 @@
             <h1 class="text-info" style="display: inline-block">Linea Base: {{ fase.nombre }} </h1>
         </div>
         <div class="panel-body">
-            <div class="col-lg-4 col-md-4 col-sm-4">
+            <div class="col-lg-5 col-md-5 col-sm-5">
+                <p class="text-left" style="margin-bottom: 1%"><b>Estos ítems seran añadidos a la línea base:</b></p>
+                <div class="panel panel-default">
+                    <div class="panel-body">
+
+                            {% for item in itemsVAL %}
+                                <span class="text-primary">>> {{ item.nombre|capfirst }}</span><span class="text-muted"> (Versión: {{ item.version }})</span><br>
+                            {% endfor %}
+
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-5 col-md-5 col-sm-5">
                 <form action="" class="form-signin" role="form" method="post">
                     {% csrf_token %}
                     {% form form using "formsLayouts/div.html" %}

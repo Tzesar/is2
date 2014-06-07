@@ -26,12 +26,12 @@
             <h1 class="text-info" style="display: inline-block">Tipo de Item: {{ itemtype.nombre }} - Nuevo Atributo</h1>
         </div>
         <div class="panel-body">
-            <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4">
+            <div class="col-lg-5 col-md-5 col-sm-4 col-xs-5">
                 <form action="" class="form-signin" role="form" method="post">
                     {% csrf_token %}
                     {% form form using "formsLayouts/div.html" %}
                     <a href= "{% url 'administrarTipoItem.views.changeItemType' itemtype.id %}" class="btn btn-lg btn-warning btn-lg" role="button">Cancelar</a>
-                    <button class="btn btn-lg btn-success" type="submit">Crear</button>
+                    <button class="btn btn-lg btn-success" type="submit">Crear Atributo</button>
                 </form>
             </div>
         </div>
