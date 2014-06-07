@@ -11,7 +11,6 @@ from administrarProyectos.tables import ProyectoTabla
 from is2.settings import DEFAULT_FROM_EMAIL
 
 
-
 def myLogin(request, *args, **kwargs):
     """
     *Establece el tiempo de vida de la sesión.*
@@ -33,18 +32,6 @@ def myLogin(request, *args, **kwargs):
 
 
 @login_required
-def base(request):
-    """
-    *Vista para la plantilla* ``base.html``
-
-    :param request: HttpRequest con los datos de la sesion del usuario actual.
-    :param args: Argumentos para la funcion.
-    :param kwargs: Keyword Arguments para la funcion.
-    :return: Template base.html. Los demas templates heredan de este la estructura y los estilos.
-    """
-    return render(request, 'base.html')
-
-@login_required
 def main(request):
     """
     *Vista para la plantilla* ``main.html``
@@ -58,9 +45,6 @@ def main(request):
     if request.user.is_superuser:
         return render(request, 'mainAdmin.html', {'user': request.user})
     else:
-        # proyectos = Proyecto.objects.filter(lider_proyecto=request.user, usuarios_asociados__in=[request.user, ])
-
-        #proyectos = ProyectoTabla(Proyecto.objects.filter(usuariosvinculadosproyectos__in=[request.user]))
         u = UsuariosVinculadosProyectos.objects.filter(cod_usuario=request.user.id).values_list('cod_proyecto', flat=True)
         proyectos = ProyectoTabla(Proyecto.objects.filter(pk__in=u))
         RequestConfig(request, paginate={"per_page": 25}).configure(proyectos)

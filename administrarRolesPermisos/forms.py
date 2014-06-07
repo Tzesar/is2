@@ -132,8 +132,6 @@ class NuevoRolForm(forms2.ModelForm):
         }
 
 
-
-
 class asignarUsuariosRolForm(forms2.Form):
     """
     *Formulario para vincular usuarios a un rol.

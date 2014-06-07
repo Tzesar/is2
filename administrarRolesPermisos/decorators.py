@@ -9,6 +9,7 @@ from django.core.exceptions import ObjectDoesNotExist
 from django.http import HttpResponseRedirect, Http404
 from django.utils.decorators import available_attrs
 from guardian.shortcuts import get_perms, get_objects_for_user
+from administrarItems.models import ItemBase
 
 from administrarProyectos.models import Proyecto
 from administrarProyectos.models import UsuariosVinculadosProyectos
@@ -37,7 +38,7 @@ def admin_requerido(function):
     return es_admin
 
 
-def user_passes_test(test_func, login_url=None, redirect_field_name=REDIRECT_FIELD_NAME):
+def user_passes_test(test_func):
     """
     Decorator for views that checks that the user passes the given test,
     redirecting to the log-in page if necessary. The test should be a callable
@@ -208,3 +209,209 @@ def crear_linea_base(request, **kwargs):
         return True
 
     return False
+
+
+def verificar_permiso(permisos, nombre_id, conjuncion):
+        """
+        *``Metodo del Decorador``: Es llamado por el decorador ``lider_requerido`` para comprobar que el usuario logueado
+        sea Líder del proyecto al cual la vista intenta acceder.*
+
+        :param request: HttpRequest con los datos del usuario actual.
+        :param id_proyecto: Id del proyecto al cual se intenta acceder.
+        :return: La ``vista`` en el caso de que el usuario sea el ``Líder`` del proyecto, caso contrario se redirige a ``/acceso_denegado/``.
+        """
+        def decorator(view_func):
+            def _wrapped_view(request, *args, **kwargs):
+                id = kwargs.pop(nombre_id, None)
+
+                if 'item' in nombre_id:
+                    id_item = id
+                    if not id_item:
+                        return HttpResponseRedirect(reverse('administrarRolesPermisos.views.accesoDenegado', args=(1,)))
+
+                    try:
+                        item = ItemBase.objects.get(id=id_item)
+                    except ObjectDoesNotExist:
+                        raise Http404
+
+                    permisosItem = get_perms(request.user, item.tipoitem.fase)
+                else:
+                    id_fase = id
+                    if not id_fase:
+                        return HttpResponseRedirect(reverse('administrarRolesPermisos.views.accesoDenegado', args=(1,)))
+
+                    try:
+                        fase = Fase.objects.get(id=id_fase)
+                    except ObjectDoesNotExist:
+                        raise Http404
+
+                    permisosItem = get_perms(request.user, fase)
+
+                if conjuncion:
+                    for permiso in permisos:
+                        if permiso not in permisosItem:
+                            return HttpResponseRedirect(reverse('administrarRolesPermisos.views.accesoDenegado', args=(1,)))
+                else:
+                    for permiso in permisos:
+                        if permiso in permisosItem:
+                            kwargs[nombre_id] = id
+                            return view_func(request, *args, **kwargs)
+                return HttpResponseRedirect(reverse('administrarRolesPermisos.views.accesoDenegado', args=(1,)))
+
+            return _wrapped_view
+        return decorator
+
+
+def lider_miembro_comite_requerido(nombre_id_item):
+        """
+        *``Metodo del Decorador``: Es llamado por el decorador ``lider_requerido`` para comprobar que el usuario logueado
+        sea Líder del proyecto al cual la vista intenta acceder.*
+
+        :param request: HttpRequest con los datos del usuario actual.
+        :param id_proyecto: Id del proyecto al cual se intenta acceder.
+        :return: La ``vista`` en el caso de que el usuario sea el ``Líder`` del proyecto, caso contrario se redirige a ``/acceso_denegado/``.
+        """
+        # TODO: documentar el decorador lider_miembro_comite_requerido
+        def decorator(view_func):
+            def _wrapped_view(request, *args, **kwargs):
+                id_item = kwargs.pop(nombre_id_item, None)
+
+                if not id_item:
+                    return HttpResponseRedirect(reverse('administrarRolesPermisos.views.accesoDenegado', args=(1,)))
+
+                try:
+                    item = ItemBase.objects.get(id=id_item)
+                except ObjectDoesNotExist:
+                    raise Http404
+
+                permisosItem = get_perms(request.user, item)
+
+                if request.user == item.tipoitem.fase.proyecto.lider_proyecto:
+                    kwargs[nombre_id_item] = id_item
+                    return view_func(request, *args, **kwargs)
+                elif "credencial" in permisosItem:
+                    kwargs[nombre_id_item] = id_item
+                    return view_func(request, *args, **kwargs)
+                else:
+                    return HttpResponseRedirect(reverse('administrarRolesPermisos.views.accesoDenegado', args=(1,)))
+
+            return _wrapped_view
+        return decorator
+
+
+def lider_requerido(nombre_id):
+        """
+        *``Metodo del Decorador``: Es llamado por el decorador ``lider_requerido`` para comprobar que el usuario logueado
+        sea Líder del proyecto al cual la vista intenta acceder.*
+
+        :param request: HttpRequest con los datos del usuario actual.
+        :param id_proyecto: Id del proyecto al cual se intenta acceder.
+        :return: La ``vista`` en el caso de que el usuario sea el ``Líder`` del proyecto, caso contrario se redirige a ``/acceso_denegado/``.
+        """
+        # TODO: documentar el decorador lider_requerido
+        def decorator(view_func):
+            def _wrapped_view(request, *args, **kwargs):
+                id = kwargs.pop(nombre_id, None)
+
+                proyecto = None
+                if not id:
+                        return HttpResponseRedirect(reverse('administrarRolesPermisos.views.accesoDenegado', args=(1,)))
+
+                if 'fase' in nombre_id:
+                    id_fase = id
+
+                    try:
+                        fase = Fase.objects.get(id=id_fase)
+                    except ObjectDoesNotExist:
+                        raise Http404
+
+                    proyecto = fase.proyecto
+                elif 'proyecto' in nombre_id:
+                    id_proyecto = id
+
+                    try:
+                        proyecto = Proyecto.objects.get(id=id_proyecto)
+                    except ObjectDoesNotExist:
+                        raise Http404
+
+                if request.user == proyecto.lider_proyecto:
+                    kwargs[nombre_id] = id
+                    return view_func(request, *args, **kwargs)
+                else:
+                    return HttpResponseRedirect(reverse('administrarRolesPermisos.views.accesoDenegado', args=(1,)))
+
+            return _wrapped_view
+        return decorator
+
+
+def vinculado_proyecto_requerido(nombre_id):
+        """
+        *``Metodo del Decorador``: Es llamado por el decorador ``lider_requerido`` para comprobar que el usuario logueado
+        sea Líder del proyecto al cual la vista intenta acceder.*
+
+        :param request: HttpRequest con los datos del usuario actual.
+        :param id_proyecto: Id del proyecto al cual se intenta acceder.
+        :return: La ``vista`` en el caso de que el usuario sea el ``Líder`` del proyecto, caso contrario se redirige a ``/acceso_denegado/``.
+        """
+        # TODO: documentar el decorador vinculado_proyecto_requerido
+        def decorator(view_func):
+            def _wrapped_view(request, *args, **kwargs):
+
+                proyecto = None
+                id = kwargs.pop(nombre_id, None)
+                if 'proyecto' in nombre_id:
+                    id_proyecto = id
+                    if not id_proyecto:
+                        return HttpResponseRedirect(reverse('administrarRolesPermisos.views.accesoDenegado', args=(1,)))
+
+                    try:
+                        proyecto = Proyecto.objects.get(id=id_proyecto)
+                    except ObjectDoesNotExist:
+                        raise Http404
+                    id = id_proyecto
+                elif 'fase' in nombre_id:
+                    id_fase = id
+                    if not id_fase:
+                        return HttpResponseRedirect(reverse('administrarRolesPermisos.views.accesoDenegado', args=(1,)))
+
+                    try:
+                        proyecto = Fase.objects.get(id=id_fase).proyecto
+                    except ObjectDoesNotExist:
+                        raise Http404
+                    id = id_fase
+
+                usuarioVinculado = UsuariosVinculadosProyectos.objects.filter(cod_proyecto=proyecto, cod_usuario=request.user)
+                if usuarioVinculado:
+                    kwargs[nombre_id] = id
+                    return view_func(request, *args, **kwargs)
+                else:
+                    return HttpResponseRedirect(reverse('administrarRolesPermisos.views.accesoDenegado', args=(1,)))
+
+            return _wrapped_view
+        return decorator
+
+
+def puede_modificar_item(request, **kwargs):
+        """
+        *``Metodo del Decorador``: Es llamado por el decorador ``lider_requerido`` para comprobar que el usuario logueado
+        sea Líder del proyecto al cual la vista intenta acceder.*
+
+        :param request: HttpRequest con los datos del usuario actual.
+        :param id_proyecto: Id del proyecto al cual se intenta acceder.
+        :return: La ``vista`` en el caso de que el usuario sea el ``Líder`` del proyecto, caso contrario se redirige a ``/acceso_denegado/``.
+        """
+        id_item = kwargs.pop('id_item', None)
+        if not id_item:
+            return False
+
+        try:
+            item = ItemBase.objects.get(id=id_item)
+        except ObjectDoesNotExist:
+            raise Http404
+
+        permisosItem = get_perms(request.user, item.tipoitem.fase)
+
+        if "modificar_Item" in permisosItem:
+            return True
+
+        return False

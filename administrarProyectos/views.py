@@ -1,6 +1,5 @@
 #encoding:utf-8
 import json
-import logging
 
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import Group
@@ -10,13 +9,14 @@ from django.shortcuts import render
 from django_tables2 import RequestConfig
 from django.core.exceptions import ObjectDoesNotExist
 from django.utils import timezone
-from administrarItems.models import ItemBase
 
+from administrarItems.models import ItemBase
 from administrarProyectos.forms import NewProjectForm, ChangeProjectForm, setUserToProjectForm, ChangeProjectLeaderForm
 from administrarProyectos.models import UsuariosVinculadosProyectos, Proyecto
 from administrarProyectos.tables import ProyectoTablaAdmin
-from administrarRolesPermisos.decorators import user_passes_test, vinculadoProyecto, admin_requerido, puede_trabajar
-from administrarRolesPermisos.forms import asignarUsuariosRolForm, asignarMiembrosComiteForm
+from administrarRolesPermisos.decorators import user_passes_test, vinculadoProyecto, admin_requerido, lider_requerido, \
+    vinculado_proyecto_requerido
+from administrarRolesPermisos.forms import asignarMiembrosComiteForm
 from administrarRolesPermisos.models import Rol
 from administrarFases.models import Fase
 from administrarTipoItem.models import TipoItem, Atributo
@@ -118,8 +118,7 @@ def changeProject(request, id_proyecto):
     return render(request, 'proyecto/changeproject.html', {'user': request.user, 'form': form, 'project': project})
 
 
-@login_required()
-# @lider_requerido
+@lider_requerido("id_proyecto")
 def changeProjectLeader(request, id_proyecto):
     """
     *Vista para la modificación de un proyecto dentro del sistema.
@@ -145,6 +144,7 @@ def changeProjectLeader(request, id_proyecto):
 
             miembrosComite = miembrosComiteForm.get_cleaned_data()
             rol.grupo.user_set.clear()
+            rol.grupo.user_set.add(project.lider_proyecto)
             for miembro in miembrosComite:
                 miembroNuevo = Usuario.objects.get(id=miembro)
                 rol.grupo.user_set.add(miembroNuevo)
@@ -185,8 +185,7 @@ def projectList(request):
     return render(request, "proyecto/projectlist.html", {'user': request.user, 'proyectos': proyectos}, )
 
 
-@login_required()
-# @lider_requerido
+@lider_requerido("id_proyecto")
 def setUserToProject(request, id_proyecto):
     """
     *Vista para vincular usuarios a un proyecto existente.
@@ -220,12 +219,11 @@ def setUserToProject(request, id_proyecto):
                                                               'user': request.user},)
 
 
-@login_required()
-@user_passes_test(vinculadoProyecto)
+@lider_requerido("id_proyecto")
 def workProject(request, id_proyecto):
     """
     *Vista para el trabajo sobre un proyecto dentro del sistema.
-    Opción válida para usuarios asociados a un proyecto, ya sea como ``Líder de Proyecto`` o como participante.*
+    Opción válida para el ``Lider de Proyecto``.*
 
     :param request: HttpRequest necesario para visualizar el área de trabajo de los usuarios en un proyectos, es la solicitud de la acción.
     :param id_proyecto: Identificador del proyecto dentro del sistema.
@@ -297,7 +295,7 @@ def workProject(request, id_proyecto):
         return HttpResponse(json.dumps(responseDict), mimetype='application/javascript')
 
 
-#@user_passes_test(puede_trabajar)
+@vinculado_proyecto_requerido("id_proyecto")
 def vistaDesarrollo(request, id_proyecto):
     """
     * Vista para el área de desarrollo del proyecto.*
@@ -323,8 +321,7 @@ def vistaDesarrollo(request, id_proyecto):
                                                          'itemsPorFase': itemsPorFase.items(), 'error': error, 'messages': messages})
 
 
-@login_required()
-# @lider_requerido
+@lider_requerido("id_proyecto")
 def startProject(request, id_proyecto):
     """
     *Vista par iniciar un proyecto*
@@ -408,8 +405,7 @@ def cancelProject(request, id_proyecto):
     return HttpResponseRedirect(reverse('administrarProyectos.views.projectList'))
 
 
-@login_required()
-# @lider_requerido
+@lider_requerido("id_proyecto")
 def finProject(request, id_proyecto):
     """
     *Vista par inicar un proyecto*

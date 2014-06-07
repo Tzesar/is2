@@ -1,24 +1,29 @@
 #encoding:utf-8
 
 from django.contrib.auth.decorators import login_required
+from django.core.urlresolvers import reverse
+from django.http import HttpResponseRedirect
 from django.shortcuts import render
 from django.utils import timezone
-from administrarFases.views import workphase
+from guardian.decorators import permission_required
+from django.forms.models import inlineformset_factory
+import reversion
+from administrarFases.models import Fase
 
+from administrarFases.views import workphase
 from administrarItems.forms import itemForm, campoEnteroForm, campoImagenForm, campoTextoCortoForm, campoFileForm, modificarAtributosBasicosForm,\
     modificarDatosItemForm, campoTextoLargoForm, CustomInlineFormSet_NUM, CustomInlineFormSet_STR, \
     CustomInlineFormSet_TXT, CustomInlineFormSet_IMG, CustomInlineFormSet_FIL
-
-from django.forms.models import inlineformset_factory
 from administrarItems.models import ItemBase, CampoImagen, CampoNumero, CampoFile, CampoTextoCorto, CampoTextoLargo, ItemRelacion
-from administrarLineaBase.views import generarCalculoImpacto, generarGrafo
-from administrarRolesPermisos.decorators import *
-import reversion
+from administrarLineaBase.views import generarGrafo
+from administrarRolesPermisos.decorators import user_passes_test, verificar_permiso, puede_modificar_fase, \
+    lider_miembro_comite_requerido
 from administrarTipoItem.models import TipoItem, Atributo
 
 
 @login_required()
 @reversion.create_revision()
+@permission_required('administrarFases.crear_Item', (Fase, 'id', 'id_fase'))
 def createItem(request, id_fase):
     """
     *Vista para la creación de fases en el sistema.
@@ -89,6 +94,7 @@ def crearAtributos(item_id):
         nuevoAtributo.save()
 
 
+@verificar_permiso(["consultar_Item", "modificar_Item"], "id_item", False)
 def historialItemBase(request, id_fase, id_item):
     """
     *Vista para el historial de versiones de los ítems*
@@ -158,6 +164,7 @@ def reversionItemBase(request, id_item, id_fase, id_version):
 
 
 @reversion.create_revision()
+@verificar_permiso(["modificar_Item"], "id_item_hijo", False)
 def relacionarItemBase(request, id_item_hijo, id_item_padre, id_fase):
     """
     Vista para relaciones los items
@@ -182,7 +189,7 @@ def relacionarItemBase(request, id_item_hijo, id_item_padre, id_fase):
         error = 0
         request.session['messages'] = mensajes
         request.session['error'] = error
-        return workphase(request, id_fase)
+        return HttpResponseRedirect(reverse('administrarFases.views.workphase', kwargs={'id_fase': id_fase}))
 
     relacion = ItemRelacion.objects.get(itemHijo=item_hijo)
     padre = relacion.itemPadre
@@ -192,7 +199,7 @@ def relacionarItemBase(request, id_item_hijo, id_item_padre, id_fase):
         mensajes.append(mensaje)
         request.session['messages'] = mensajes
         request.session['error'] = duplicado
-        return workphase(request, id_fase)
+        return HttpResponseRedirect(reverse('administrarFases.views.workphase', kwargs={'id_fase': id_fase}))
     else:
         relacion.itemPadre = item_padre
         relacion.save()
@@ -204,9 +211,10 @@ def relacionarItemBase(request, id_item_hijo, id_item_padre, id_fase):
         mensajes.append(mensaje)
         request.session['messages'] = mensajes
         request.session['error'] = error
-        return workphase(request, id_fase)
+        return HttpResponseRedirect(reverse('administrarFases.views.workphase', kwargs={'id_fase': id_fase}))
 
 
+@verificar_permiso(["modificar_Item"], "id_item_actual", False)
 def relacionarItemBaseView(request, id_fase_actual, id_item_actual):
     """
     Vista para relacionar items
@@ -229,7 +237,7 @@ def relacionarItemBaseView(request, id_fase_actual, id_item_actual):
             mensajes.append(mensaje)
             request.session['messages'] = mensajes
             request.session['error'] = error
-            return workphase(request, id_fase_actual)
+            return HttpResponseRedirect(reverse('administrarFases.views.workphase', kwargs={'id_fase': id_fase_actual}))
     else:
         orden_anterior = fase_actual.nro_orden - 1
         fase_anterior = Fase.objects.get(proyecto=proyecto, nro_orden=orden_anterior)
@@ -266,6 +274,7 @@ def validarItem(request, id_item):
     return HttpResponseRedirect(reverse('administrarFases.views.workphase', kwargs={'id_fase': item.tipoitem.fase_id}))
 
 
+@verificar_permiso(["modificar_Item"], "id_item", False)
 def finalizarItem(request, id_item):
     """
     Vista para validar un item, previa aprovación del cliente
@@ -282,7 +291,7 @@ def finalizarItem(request, id_item):
             relacion = None
 
         if relacion:
-            if relacion.itemPadre == None and item.tipoitem.fase.nro_orden != 1:
+            if relacion.itemPadre is None and item.tipoitem.fase.nro_orden != 1:
                 error = 1
                 mensajes.append('No se puede Finalizar el item. Se precisa especificar su relacion con otro item')
         elif item.tipoitem.fase.nro_orden != 1:
@@ -303,9 +312,9 @@ def finalizarItem(request, id_item):
     request.session['messages'] = mensajes
     request.session['error'] = error
     return HttpResponseRedirect(reverse('administrarFases.views.workphase', kwargs={'id_fase': fase.id}))
-    # return workphase(request, fase.id)
 
 
+@verificar_permiso(["dar_de_baja_Item"], "id_item", False)
 def dardebajaItem(request, id_item):
     """
     Vista para dar de baja un item
@@ -330,7 +339,7 @@ def dardebajaItem(request, id_item):
                 mensajes = list(mensaje)
                 request.session['messages'] = mensajes
                 request.session['error'] = error
-                return workphase(request, fase.id)
+                return HttpResponseRedirect(reverse('administrarFases.views.workphase', kwargs={'id_fase': fase.id}))
 
             itemRelacion = ItemRelacion.objects.get(itemHijo=item)
             itemRelacion.estado = 'DES'
@@ -340,7 +349,7 @@ def dardebajaItem(request, id_item):
             mensajes = list(mensaje)
             request.session['messages'] = mensajes
             request.session['error'] = error
-            return workphase(request, fase.id)
+            return HttpResponseRedirect(reverse('administrarFases.views.workphase', kwargs={'id_fase': fase.id}))
 
     esPadre = ItemRelacion.objects.filter(itemPadre=item, estado='ACT')
     if esPadre:
@@ -349,7 +358,7 @@ def dardebajaItem(request, id_item):
         mensajes = list(mensaje)
         request.session['messages'] = mensajes
         request.session['error'] = error
-        return workphase(request, fase.id)
+        return HttpResponseRedirect(reverse('administrarFases.views.workphase', kwargs={'id_fase': fase.id}))
     else:
         item.fecha_modificacion = timezone.now()
         item.usuario_modificacion = request.user
@@ -363,7 +372,7 @@ def dardebajaItem(request, id_item):
             mensajes = list(mensaje)
             request.session['messages'] = mensajes
             request.session['error'] = error
-            return workphase(request, fase.id)
+            return HttpResponseRedirect(reverse('administrarFases.views.workphase', kwargs={'id_fase': fase.id}))
 
         itemRelacion = ItemRelacion.objects.get(itemHijo=item)
         itemRelacion.estado = 'DES'
@@ -374,9 +383,10 @@ def dardebajaItem(request, id_item):
         mensajes = list(mensaje)
         request.session['messages'] = mensajes
         request.session['error'] = error
-        return workphase(request, fase.id)
+        return HttpResponseRedirect(reverse('administrarFases.views.workphase', kwargs={'id_fase': fase.id}))
 
 
+@verificar_permiso(["restaurar_Item"], "id_item", False)
 def restaurarItem(request, id_item):
     """
     Vista para restaurar un item que fue dado de baja
@@ -395,7 +405,7 @@ def restaurarItem(request, id_item):
         mensajes = list(mensaje)
         request.session['messages'] = mensajes
         request.session['error'] = error
-        return workphase(request, fase.id)
+        return HttpResponseRedirect(reverse('administrarFases.views.workphase', kwargs={'id_fase': fase.id}))
 
     padres = []
     hijos = [id_item]
@@ -414,7 +424,7 @@ def restaurarItem(request, id_item):
     mensajes = list(mensaje)
     request.session['messages'] = mensajes
     request.session['error'] = error
-    return workphase(request, fase.id)
+    return HttpResponseRedirect(reverse('administrarFases.views.workphase', kwargs={'id_fase': fase.id}))
 
 
 def restaurarItemRelacion(padres, hijos):
@@ -438,6 +448,7 @@ def restaurarItemRelacion(padres, hijos):
 
 
 @reversion.create_revision()
+@verificar_permiso(["modificar_Item"], "id_item", False)
 def workItem(request, id_item):
     """
     *Vista para el desarrollo de ítems creados en una Fase de un Proyecto.
@@ -749,6 +760,7 @@ def changeItem(request, id_item):
                                                     'tiposItem': tipoItem, 'user': request.user}, )
 
 
+@verificar_permiso(["consultar_Item"], "id_item", False)
 def verItem(request, id_item):
     item = ItemBase.objects.get(pk=id_item)
     tipoItem = item.tipoitem
@@ -769,6 +781,8 @@ def verItem(request, id_item):
                                                  'imagenes': imagenes, 'archivos': archivos, 'grafo': grafoRelaciones})
 
 
+@lider_miembro_comite_requerido("id_item")
+# TODO: remover el parametro id_fase, se puede recuperar del item
 def finRevisionItem(request, id_fase, id_item):
     """
     *Vista para finalizar un ítem que ha pasado de un estado "En linea base" a un estado en "Revision" *

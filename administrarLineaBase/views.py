@@ -3,7 +3,7 @@ from django.core.urlresolvers import reverse
 from django.http import HttpResponseRedirect
 from django.template import RequestContext
 from django.utils import timezone
-from guardian.shortcuts import assign_perm
+from guardian.shortcuts import assign_perm, remove_perm, get_objects_for_user
 import pydot
 from django.shortcuts import render
 
@@ -14,7 +14,8 @@ from administrarLineaBase.forms import createLBForm, createSCForm, asignarItemSo
 from administrarLineaBase.models import LineaBase, SolicitudCambios, Votacion
 from administrarProyectos.views import vistaDesarrollo
 from administrarTipoItem.models import TipoItem
-from administrarRolesPermisos.decorators import user_passes_test, crear_linea_base
+from administrarRolesPermisos.decorators import user_passes_test, crear_linea_base, vinculado_proyecto_requerido, \
+    verificar_permiso
 from is2.settings import MEDIA_ROOT
 
 
@@ -141,6 +142,7 @@ def generarCalculoImpacto(id_item, id_solicitud):
     return costo, tiempo
 
 
+@verificar_permiso(["consultar_Lineas_Base"], "id_fase", False)
 def visualizarLB(request, id_fase):
     """
     Esta es la vista para visualizar Líneas Bases existentes en la fase actual
@@ -189,6 +191,7 @@ def cancelarSolicitudCambios(request, id_solicitud, id_fase):
     # return workApplication(request, id_fase)
 
 
+@vinculado_proyecto_requerido("id_fase")
 def workApplication(request, id_fase):
     """
     Vista para la gestión de Solicitud de Cambios Creada por el usuario
@@ -208,6 +211,12 @@ def workApplication(request, id_fase):
     for s in otrasSolicitudes:
         otrasSolicitudes_lista[s] = s.votacion_set.filter(usuario=request.user)
 
+    usuario = request.user
+    objetos = get_objects_for_user(usuario, 'crear_Solicitud_Cambio', klass=Fase)
+    puedeCrearSC = False
+    if fase in objetos:
+        puedeCrearSC = True
+
     error = None
     messages = None
     if 'error' in request.session:
@@ -217,7 +226,8 @@ def workApplication(request, id_fase):
     return render(request, 'lineabase/workapplication.html', {'proyecto': proyecto, 'fase': fase, 'user': usuario,
                                                               'misSolicitudes': misSolicitudes_lista.items(),
                                                               'error': error, 'messages': messages,
-                                                              'otrasSolicitudes': otrasSolicitudes_lista.items()})
+                                                              'puedeCrearSC': puedeCrearSC,
+                                                              'otrasSolicitudes': otrasSolicitudes_lista.items(), })
 
 
 def visualizarSolicitud(request, id_solicitud, id_fase):
@@ -244,6 +254,7 @@ def visualizarSolicitud(request, id_solicitud, id_fase):
                                                                   'votaciones': resultado_votacion})
 
 
+@verificar_permiso(["crear_Linea_Base"], "id_fase", False)
 def crearSolicitudCambios(request, id_fase):
     """
     Vista para la creación de solicitudes de cambios del sistema
@@ -275,13 +286,13 @@ def crearSolicitudCambios(request, id_fase):
                     solicitud.tiempo = solicitud.tiempo + tiempo
 
                 solicitud.save()
+
                 mensaje = 'Solicitud Creada y Enviada satisfactoriamente al comité de cambios'
                 error = 0
-
                 request.session['messages'] = mensaje
                 request.session['error'] = error
-                # return workApplication(request, fase.id, error=error, mensaje=mensaje)
-                return HttpResponseRedirect(reverse('administrarLineaBase.views.workApplication', kwargs={'id_fase': id_fase}))
+                return HttpResponseRedirect(reverse('administrarLineaBase.views.workApplication',
+                                                    kwargs={'id_fase': id_fase}))
 
     form = createSCForm()
     asignarItemSolicitud = asignarItemSolicitudForm(id_fase=id_fase)
@@ -329,7 +340,7 @@ def votarSolicitud(request, id_solicitud, voto):
                 if aceptado > rechazado:
                     solicitud.estado = 'ACP'
                     for item in solicitud.items.all():
-                        #assign_perm("credencial", solicitud.usuario, item)
+                        assign_perm("credencial", solicitud.usuario, item)
                         padres = [item.id]
                         hijos = []
                         buscarHijos(padres, hijos)
@@ -342,17 +353,29 @@ def votarSolicitud(request, id_solicitud, voto):
 
             mensaje = 'Voto confirmado para la solicitud ' + str(solicitud.id)
             error = 0
-            # request.method = 'GET'
 
             request.session['messages'] = mensaje
             request.session['error'] = error
             return HttpResponseRedirect(reverse('administrarLineaBase.views.workApplication', kwargs={'id_fase': fase.id}))
-            # return workApplication(request, fase.id, error=error, mensaje=mensaje)
     else:
         form = emitirVotoForm()
-    return render(request, 'lineabase/createvote.html', {'form': form, 'proyecto': proyecto,
-                                                         'user': request.user, 'fase': fase,
-                                                         'solicitud': solicitud}, )
+    return render(request, 'lineabase/createvote.html', {'form': form, 'proyecto': proyecto, 'user': request.user,
+                                                         'fase': fase, 'solicitud': solicitud}, )
+
+
+def revocarPermisos(request, id_solicitud):
+
+    solicitud = SolicitudCambios.objects.get(pk=id_solicitud)
+
+    for item in solicitud.items.all():
+        remove_perm("credencial", solicitud.usuario, item)
+
+    mensaje = u'Permisos de Modificacion de items de Linea Base revocados a ' + solicitud.usuario.username.capitalize()
+    error = 0
+    request.session['messages'] = mensaje
+    request.session['error'] = error
+    return HttpResponseRedirect(reverse('administrarLineaBase.views.workApplication',
+                                        kwargs={'id_fase': solicitud.fase_id}))
 
 
 def buscarHijos(padres, hijos):

@@ -38,7 +38,8 @@
                                         <td><b>Creado: </b>{{ itemsrelacion.fecha_creacion }}</td>
                                         <td>
                                             <div class="btn-group pull-right">
-                                            <a href="{% url 'administrarItems.views.relacionarItemBase' item.id itemsrelacion.id fase.id  %}" class="btn btn-info">Establecer Relación</a> </div>
+                                                <a href="{% url 'administrarItems.views.relacionarItemBase' item.id itemsrelacion.id fase.id  %}" class="btn btn-info">Establecer Relación</a>
+                                            </div>
                                         </td>
                                     </tr>
                                 {% endfor %}
