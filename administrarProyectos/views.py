@@ -56,7 +56,7 @@ def createProject(request):
             vincularLider(proyectoNuevo, form["lider_proyecto"].value())
 
             # Crea el rol Comite de cambios y asigna al Lider a este grupo.
-            grupoComite = Group(name="ComiteDeCambios-"+str(proyectoNuevo.nombre))
+            grupoComite = Group(name="ComiteDeCambios-"+str(proyectoNuevo.id))
             grupoComite.save()
             rolComite = Rol(grupo=grupoComite, proyecto=proyectoNuevo)
             rolComite.save()
@@ -105,7 +105,7 @@ def changeProject(request, id_proyecto):
             if 'lider_proyecto' in form.changed_data:
                 liderNuevo = form.cleaned_data['lider_proyecto']
 
-                nombreComite = u'ComiteDeCambios-'+project.nombre
+                nombreComite = u'ComiteDeCambios-' + str(project.id)
                 comite = Rol.objects.get(grupo__name__contains=nombreComite)
 
                 comite.grupo.user_set.remove(liderAnterior)
@@ -139,7 +139,7 @@ def changeProjectLeader(request, id_proyecto):
     """
 
     project = Proyecto.objects.get(pk=id_proyecto)
-    nombreComite = u'ComiteDeCambios-' + str(project.nombre)
+    nombreComite = u'ComiteDeCambios-' + str(project.id)
     rol = Rol.objects.get(grupo__name__contains=nombreComite)
 
     if request.method == 'POST':

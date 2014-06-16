@@ -17,7 +17,8 @@ from administrarLineaBase.models import LineaBase, SolicitudCambios, Votacion
 from administrarProyectos.models import UsuariosVinculadosProyectos
 from administrarProyectos.views import vistaDesarrollo
 from administrarTipoItem.models import TipoItem
-from administrarRolesPermisos.decorators import user_passes_test, crear_linea_base
+from administrarRolesPermisos.decorators import user_passes_test, crear_linea_base, puede_cancelar_solicitud, \
+    puede_votar, puede_visualizar_solicitud
 from autenticacion.models import Usuario
 from is2.settings import MEDIA_ROOT, DEFAULT_FROM_EMAIL
 from administrarRolesPermisos.decorators import user_passes_test, crear_linea_base, vinculado_proyecto_requerido, \
@@ -202,7 +203,8 @@ def visualizarLB(request, id_fase):
                                             kwargs={'id_proyecto': fase.proyecto_id}))
 
 
-# TODO: controlar permisos al cancelar solicitud
+# TODO: necesitan permisos el lider y el creador de la solicitud
+@puede_cancelar_solicitud()
 def cancelarSolicitudCambios(request, id_solicitud, id_fase):
     """
     *Función para cancelar una solicitud de cambios, de forma que los cambios solicitados seas descartados
@@ -255,6 +257,11 @@ def workApplication(request, id_fase):
     misPK = misSolicitudes.values_list('id', flat=True)
     otrasSolicitudes = SolicitudCambios.objects.filter(fase=fase).exclude(pk__in=misPK)
 
+    nombre = "ComiteDeCambios-" + str(proyecto.id)
+    miembro = False
+    if usuario.groups.filter(name=nombre).exists():
+        miembro = True
+
     misSolicitudes_lista = {}
     for s in misSolicitudes:
         misSolicitudes_lista[s] = s.votacion_set.filter(usuario=request.user)
@@ -278,10 +285,11 @@ def workApplication(request, id_fase):
     return render(request, 'lineabase/workapplication.html', {'proyecto': proyecto, 'fase': fase, 'user': usuario,
                                                               'misSolicitudes': misSolicitudes_lista.items(),
                                                               'error': error, 'messages': messages,
-                                                              'puedeCrearSC': puedeCrearSC,
+                                                              'puedeCrearSC': puedeCrearSC, 'miembro': miembro,
                                                               'otrasSolicitudes': otrasSolicitudes_lista.items(), })
 
-# TODO: controlar permisos al visualizar solicitud
+
+@puede_visualizar_solicitud()
 def visualizarSolicitud(request, id_solicitud, id_fase):
     """
     *Funcion para visualizar las Solicitudes creadas. Se consulta explicitamente todos los atributos de la Solicitud
@@ -365,7 +373,7 @@ def crearSolicitudCambios(request, id_fase):
                 error = 0
                 request.session['messages'] = mensajes
                 request.session['error'] = error
-                enviarNotificacionesComite(solicitud.id)
+                # enviarNotificacionesComite(solicitud.id)
 
                 return HttpResponseRedirect(reverse('administrarLineaBase.views.workApplication', kwargs={'id_fase': id_fase}))
 
@@ -377,7 +385,7 @@ def crearSolicitudCambios(request, id_fase):
                                                     context_instance=RequestContext(request))
 
 
-# TODO: verificar permisos al votar solicitud
+@puede_votar()
 def votarSolicitud(request, id_solicitud, voto):
     """
     *Función para realizar las votaciones correspondientes a una solicitud de cambio. *
@@ -421,7 +429,7 @@ def votarSolicitud(request, id_solicitud, voto):
                 if aceptado > rechazado:
                     solicitud.estado = 'ACP'
                     solicitud.save()
-                    enviarNotificacionSolicitudAprobada(solicitud.id)
+                    # enviarNotificacionSolicitudAprobada(solicitud.id)
                     for item in solicitud.items.all():
                         assign_perm("credencial", solicitud.usuario, item)
                         padres = [item.id]
@@ -434,7 +442,7 @@ def votarSolicitud(request, id_solicitud, voto):
 
             mensaje.append('Voto confirmado para la solicitud ' + str(solicitud.id))
             error = 0
-            enviarSolicitudRespuesta(solicitud.id)
+            # enviarSolicitudRespuesta(solicitud.id)
             request.session['messages'] = mensaje
             request.session['error'] = error
             return HttpResponseRedirect(reverse('administrarLineaBase.views.workApplication', kwargs={'id_fase': fase.id}))
@@ -442,6 +450,7 @@ def votarSolicitud(request, id_solicitud, voto):
         form = emitirVotoForm()
     return render(request, 'lineabase/createvote.html', {'form': form, 'proyecto': proyecto, 'user': request.user,
                                                          'fase': fase, 'solicitud': solicitud}, )
+
 
 # TODO: controlar permisos al revocar credencial
 def revocarPermisos(request, id_solicitud):
@@ -495,11 +504,12 @@ def enviarNotificacionesComite(id_solicitud):
 
     :param id_solicitud: Identificador de la solicitud que se ha creado y notificado a los miembros del comite.
     """
+    # TODO: Explota al crear solicitudes
     solicitud = SolicitudCambios.objects.get(pk=id_solicitud)
     fase = solicitud.fase
     proyecto = fase.proyecto
 
-    nombre = 'ComiteDeCambios-' + proyecto.nombre
+    nombre = 'ComiteDeCambios-' + str(proyecto.id)
     grupo = Group.objects.get(name=nombre)
     miembros = grupo.user_set.all()
     asunto = 'Notificacion: Nueva Solicitud de Cambios'
@@ -525,7 +535,7 @@ def enviarNotificacionSolicitudAprobada(id_solicitud):
 
     mensajes = []
     usuarios = UsuariosVinculadosProyectos.objects.filter(cod_proyecto=proyecto).exclude(cod_usuario=solicitud.usuario)
-    users = Usuario.objects.filter(pk__in=usuarios)
+
     for user in usuarios:
         mensaje = ('Notificacion: Solicitud de Cambios Aprobada',  'Estimado Usuario:\n\n' \
                     'Usted ha recibido este correo por que forma parte del equipo de Desarrollo del Proyecto ' + \
@@ -533,7 +543,6 @@ def enviarNotificacionSolicitudAprobada(id_solicitud):
                     '\nSolicitud Numero: ' + str(solicitud.id) + '\nSolicitante: ' + solicitud.usuario.get_full_name()\
                     + '\n\nAtte.\nZARpm Team', DEFAULT_FROM_EMAIL, [user.cod_usuario.email])
         mensajes.append(mensaje)
-
 
     send_mass_mail((mensajes))
 
@@ -544,6 +553,7 @@ def enviarSolicitudRespuesta(id_solicitud):
 
     :param id_solicitud: Identificador de la solicitud que se ha creado y notificado a los miembros del comite.
     """
+    #TODO: aca explota al votar sobre una solicitud
     solicitud = SolicitudCambios.objects.get(pk=id_solicitud)
     fase = solicitud.fase
     proyecto = fase.proyecto

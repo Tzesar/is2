@@ -9,7 +9,7 @@ from autenticacion.models import Usuario
 
 class ItemBase(models.Model):
     """
-    *Modelo para la clase* ``ItemBase`` *, en el cual se encuentras todos los atributos de un ítem:*
+    *Modelo para la clase* ``ItemBase`` *, en del cual se encuentras todos los atributos de un ítem:*
         + *Usuario*: Usuario que ha creado el ítem
         + *Usuario Modificacion*: Usuario que ha realizado la última modificación sobre el ítem
         + *Nombre*: Nombre del Ítem

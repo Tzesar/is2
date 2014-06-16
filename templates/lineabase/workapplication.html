@@ -84,36 +84,39 @@
                                                     <a href="{% url 'administrarLineaBase.views.cancelarSolicitudCambios' solicitud.id fase.id %}" class="btn btn-xs btn-danger">X</a>
                                                 </span>
 
-                                                {# TODO: Esto solo debe mostrarse a usuarios Miembros del Comité de Cambios #}
-                                                {% if not voto %}
-                                                    <span class="pull-right" data-toggle="tooltip" title="Voto a favor" id="tooltip">
-                                                        <span class="pull-right" style="padding-right: 5%">
+                                                {% if miembro %}
+                                                    {% if not voto %}
+                                                        <span class="pull-right" data-toggle="tooltip" title="Voto a favor" id="tooltip">
+                                                            <span class="pull-right" style="padding-right: 5%">
 
-                                                                <a href="{% url 'administrarLineaBase.views.votarSolicitud' solicitud.id 1 %}" class="text-success">
-                                                                    <span class="glyphicon glyphicon-thumbs-up"></span>
-                                                                </a>
+                                                                    <a href="{% url 'administrarLineaBase.views.votarSolicitud' solicitud.id 1 %}" class="text-success">
+                                                                        <span class="glyphicon glyphicon-thumbs-up"></span>
+                                                                    </a>
+                                                            </span>
                                                         </span>
-                                                    </span>
-                                                    <span class="pull-right" data-toggle="tooltip" title="Voto en contra" id="tooltip">
-                                                        <span class="pull-right" style="padding-right: 5%">
-                                                                <a href="{% url 'administrarLineaBase.views.votarSolicitud' solicitud.id 0 %}" class="text-danger">
-                                                                    <span class="glyphicon glyphicon-thumbs-down"></span>
-                                                                </a>&nbsp;
+                                                        <span class="pull-right" data-toggle="tooltip" title="Voto en contra" id="tooltip">
+                                                            <span class="pull-right" style="padding-right: 5%">
+                                                                    <a href="{% url 'administrarLineaBase.views.votarSolicitud' solicitud.id 0 %}" class="text-danger">
+                                                                        <span class="glyphicon glyphicon-thumbs-down"></span>
+                                                                    </a>&nbsp;
+                                                            </span>
                                                         </span>
-                                                    </span>
 
-                                                {% else %}
-                                                    <span class="pull-right" style="font-size: 70%; color: forestgreen; padding-top: 2%">
-                                                        Usted ya votó por esta solicitud
-                                                    </span>
+                                                    {% else %}
+                                                        <span class="pull-right" style="font-size: 70%; color: forestgreen; padding-top: 2%">
+                                                            Usted ya votó por esta solicitud
+                                                        </span>
+                                                    {% endif %}
                                                 {% endif %}
                                             {% endif %}
                                             <a href="{% url 'administrarLineaBase.views.visualizarSolicitud' solicitud.id fase.id %}" class="btn btn-xs btn-success">Ver Solicitud</a>
 
                                             {% get_obj_perms solicitud.usuario for solicitud.items.all.0 as "permisosItem" %}
 
-                                            {% if solicitud.fase.proyecto.lider_proyecto == user and "credencial" in permisosItem and solicitud.estado == "ACP" %}
-                                                <a href="{% url 'administrarLineaBase.views.revocarPermisos' solicitud.id %}" class="btn btn-xs btn-danger pull-right">Revocar Permisos</a>
+                                            {% if "credencial" in permisosItem %}
+                                                {% if solicitud.fase.proyecto.lider_proyecto == user or solicitud.usuario == user %}
+                                                    <a href="{% url 'administrarLineaBase.views.revocarPermisos' solicitud.id %}" class="btn btn-xs btn-danger pull-right">Revocar Permisos</a>
+                                                {% endif %}
                                             {% endif %}
                                         </div>
 
@@ -168,34 +171,37 @@
 
                                         <div class="panel-heading">
                                             {% if solicitud.estado == 'VOT' %}
-                                                {# TODO: Esto solo debe mostrarse a usuarios Miembros del Comité de Cambios #}
-                                                {% if not voto %}
-                                                    <span class="pull-right" data-toggle="tooltip" title="Voto a favor" id="tooltip">
-                                                        <span class="pull-right" style="padding-right: 5%">
+                                                {% if miembro %}
+                                                    {% if not voto %}
+                                                        <span class="pull-right" data-toggle="tooltip" title="Voto a favor" id="tooltip">
+                                                            <span class="pull-right" style="padding-right: 5%">
 
-                                                                <a href="{% url 'administrarLineaBase.views.votarSolicitud' solicitud.id 1 %}" class="text-success">
-                                                                    <span class="glyphicon glyphicon-thumbs-up"></span>
-                                                                </a>
+                                                                    <a href="{% url 'administrarLineaBase.views.votarSolicitud' solicitud.id 1 %}" class="text-success">
+                                                                        <span class="glyphicon glyphicon-thumbs-up"></span>
+                                                                    </a>
+                                                            </span>
                                                         </span>
-                                                    </span>
-                                                    <span class="pull-right" data-toggle="tooltip" title="Voto en contra" id="tooltip">
-                                                        <span class="pull-right" style="padding-right: 5%">
-                                                                <a href="{% url 'administrarLineaBase.views.votarSolicitud' solicitud.id 0 %}" class="text-danger">
-                                                                    <span class="glyphicon glyphicon-thumbs-down"></span>
-                                                                </a>&nbsp;
+                                                        <span class="pull-right" data-toggle="tooltip" title="Voto en contra" id="tooltip">
+                                                            <span class="pull-right" style="padding-right: 5%">
+                                                                    <a href="{% url 'administrarLineaBase.views.votarSolicitud' solicitud.id 0 %}" class="text-danger">
+                                                                        <span class="glyphicon glyphicon-thumbs-down"></span>
+                                                                    </a>&nbsp;
+                                                            </span>
                                                         </span>
-                                                    </span>
-                                                {% else %}
-                                                    <span class="pull-right" style="font-size: 70%; color: forestgreen; padding-top: 2%">
-                                                        Usted ya votó por esta solicitud
-                                                    </span>
+                                                    {% else %}
+                                                        <span class="pull-right" style="font-size: 70%; color: forestgreen; padding-top: 2%">
+                                                            Usted ya votó por esta solicitud
+                                                        </span>
+                                                    {% endif %}
                                                 {% endif %}
                                             {% endif %}
                                             <a href="{% url 'administrarLineaBase.views.visualizarSolicitud' solicitud.id fase.id %}" class="btn btn-xs btn-success">Ver Solicitud</a>
                                             {% get_obj_perms solicitud.usuario for solicitud.items.all.0 as "permisosItem" %}
 
-                                            {% if solicitud.fase.proyecto.lider_proyecto == user and "credencial" in permisosItem and solicitud.estado == "ACP" %}
-                                                <a href="{% url 'administrarLineaBase.views.revocarPermisos' solicitud.id %}" class="btn btn-xs btn-danger pull-right">Revocar Permisos</a>
+                                            {% if "credencial" in permisosItem %}
+                                                {% if solicitud.fase.proyecto.lider_proyecto == user or solicitud.usuario == user or miembro %}
+                                                    <a href="{% url 'administrarLineaBase.views.revocarPermisos' solicitud.id %}" class="btn btn-xs btn-danger pull-right">Revocar Permisos</a>
+                                                {% endif %}
                                             {% endif %}
                                         </div>
 
