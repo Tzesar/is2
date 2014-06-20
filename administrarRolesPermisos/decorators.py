@@ -20,7 +20,7 @@ from autenticacion.models import Usuario
 
 def admin_requerido(function):
     """
-    *``Decorador``: Verifica que el usuario actual sea ``Administrador`` antes de concederle acceso a la vista.*
+    ``Decorador`` *: Verifica que el usuario actual sea* ``Administrador`` *antes de concederle acceso a la vista.*
 
     :param function: Vista sobre la cual se controla el acceso.
     :return: El método ``es_admin`` que realiza las verificaciones.
@@ -41,18 +41,16 @@ def admin_requerido(function):
 
 def verificar_permiso(permisos, nombre_id, conjuncion):
     """
-    *Verifica que el parámetro ``nombre_id`` de encuentre en el ``request`` de la vista decorada. Según este parámetro,
-     si es ``item`` o ``fase``, sigue procedimientos distintos para obtener el objeto ``ItemBase`` y los permisos que
-     posee el usuario sobre dicho item. Luego verifica que la lista ``permisos`` se encuentre dentro de los permisos del
-     item. El argumento ``conjuncion`` especifica que el usuario debe poseer todos los ``permisos`` sobre el item para
-     acceder a la vista decorada. En caso contrario, se muestra la página ``accesoDenegado``.*
+    *Verifica que el parámetro* ``nombre_id`` *de encuentre en el* ``request`` *de la vista decorada. Según este parámetro,*
+    *si es* ``item`` *o* ``fase`` *, sigue procedimientos distintos para obtener el objeto* ``ItemBase`` *y los permisos que*
+    *posee el usuario sobre dicho item. Luego verifica que la lista* ``permisos`` *se encuentre dentro de los permisos del*
+    *item. El argumento* ``conjuncion`` *especifica que el usuario debe poseer todos los* ``permisos`` *sobre el item para*
+    *acceder a la vista decorada. En caso contrario, se muestra la página* ``accesoDenegado`` *.*
 
     :param permisos: Lista de strings, que contiene los códigos de los permisos que el usuario debe poseer sobre el item.
     :param nombre_id: Nombre del parámetro que identifica al item.
-    :param conjuncion: ``False`` si el usuario debe poseer al menos uno de los permisos especificados en el argumento
-    ``permisos`` sobre el item. ``True`` si se requieren todos y cada uno de los permisos.
-    :return: La ``vista`` en el caso de que el usuario sea el posea los permisos necesarios, caso contrario se
-    redirige a ``/acceso_denegado/``.
+    :param conjuncion: ``False`` si el usuario debe poseer al menos uno de los permisos especificados en el argumento ``permisos`` sobre el item. ``True`` si se requieren todos y cada uno de los permisos.
+    :return: La ``vista`` en el caso de que el usuario sea el posea los permisos necesarios, caso contrario se redirige a ``/acceso_denegado/``.
     """
     def decorator(view_func):
         def _wrapped_view(request, *args, **kwargs):
@@ -98,14 +96,12 @@ def verificar_permiso(permisos, nombre_id, conjuncion):
 
 def lider_miembro_comite_requerido(nombre_id_item):
     """
-    *Verifica que el parámetro ``nombre_id_item`` corresponda a un ``ItemBase`` existente. Luego obtiene los permisos
-     que posee el usuario sobre el item. Por último, comprueba si el usuario es el ``Líder del Proyecto``, luego
-     verifica si el usuario pertenece al ``Comité de Cambios``. En caso contrario, se muestra la página ``accesoDenegado``.*
+    *Verifica que el parámetro* ``nombre_id_item`` *corresponda a un* ``ItemBase`` *existente. Luego obtiene los permisos*
+    *que posee el usuario sobre el item. Por último, comprueba si el usuario es el* ``Líder del Proyecto`` *, luego*
+    *verifica si el usuario pertenece al* ``Comité de Cambios`` *. En caso contrario, se muestra la página* ``accesoDenegado`` *.*
 
-    :param nombre_id_item: Nombre del parámetro que identifica al item, se recupera del request de la vista que se
-    protege.
-    :return: La ``vista`` en el caso de que el usuario sea el ``Líder`` del proyecto o pertenezca al
-    ``Comité de Cambios``, caso contrario se redirige a ``/acceso_denegado/``.
+    :param nombre_id_item: Nombre del parámetro que identifica al item, se recupera del request de la vista que se protege.
+    :return: La ``vista`` en el caso de que el usuario sea el ``Líder`` del proyecto o pertenezca al ``Comité de Cambios``, caso contrario se redirige a ``/acceso_denegado/``.
     """
     def decorator(view_func):
         def _wrapped_view(request, *args, **kwargs):
@@ -138,13 +134,12 @@ def lider_miembro_comite_requerido(nombre_id_item):
 
 def lider_requerido(nombre_id):
     """
-    *Verifica que el parámetro ``nombre_id`` se encuentra en el ``request`` de la vista que se decora. Según este
-     parámetro, si es ``fase`` o ``proyecto``, sigue procedimientos distintos para obtener el objeto ``Proyecto``.
-     Por último, comprueba si el usuario es el ``Líder del Proyecto``. En caso contrario, se muestra la página
-     ``accesoDenegado``.*
+    *Verifica que el parámetro* ``nombre_id`` *se encuentra en el* ``request`` *de la vista que se decora. Según este*
+    *parámetro, si es* ``fase`` *o* ``proyecto`` *, sigue procedimientos distintos para obtener el objeto* ``Proyecto`` *.*
+    *Por último, comprueba si el usuario es el* ``Líder del Proyecto`` *. En caso contrario, se muestra la página*
+    ``accesoDenegado`` *.*
 
-    :param nombre_id: Nombre del parámetro que identifica al item, se recupera del request de la vista que se
-    protege.
+    :param nombre_id: Nombre del parámetro que identifica al item, se recupera del request de la vista que se protege.
     :return: La ``vista`` en el caso de que el usuario sea el ``Líder`` del proyecto, caso contrario se redirige a ``/acceso_denegado/``.
     """
     def decorator(view_func):
@@ -184,14 +179,12 @@ def lider_requerido(nombre_id):
 
 def vinculado_proyecto_requerido(nombre_id):
     """
-    *Verifica que el parámetro ``nombre_id`` se encuentra en el ``request`` de la vista que se decora, según este
-     parámetro, si es ``fase`` o ``proyecto``, sigue procedimientos distintos para obtener el objeto ``Proyecto``.
-     Luego, obtiene todos los usuarios vinculados al proyecto en cuestión y por último verifica si el usuario actual se
-     encuentra en esa lista.
-     En caso contrario, se muestra la página de ``accesoDenegado``.*
+    *Verifica que el parámetro* ``nombre_id`` *se encuentra en el* ``request`` *de la vista que se decora, según este*
+    *parámetro, si es* ``fase`` *o* ``proyecto`` *, sigue procedimientos distintos para obtener el objeto* ``Proyecto`` *.*
+    *Luego, obtiene todos los usuarios vinculados al proyecto en cuestión y por último verifica si el usuario actual se*
+    *encuentra en esa lista. En caso contrario, se muestra la página de* ``accesoDenegado`` *.*
 
-    :param nombre_id: Nombre del parámetro que identifica al item, se recupera del request de la vista que se
-    protege.
+    :param nombre_id: Nombre del parámetro que identifica al item, se recupera del request de la vista que se protege.
     :return: La ``vista`` en el caso de que el usuario sea el ``Líder`` del proyecto, caso contrario se redirige a ``/acceso_denegado/``.
     """
     def decorator(view_func):
@@ -233,13 +226,12 @@ def vinculado_proyecto_requerido(nombre_id):
 
 def puede_cancelar_solicitud():
     """
-    *Obtiene el identificador de la solicitud del ``request`` de la vista decorada. Recupera el objeto
-     ``SolicitudCambios``, si no existe muestra la página 404, y luego obtiene el proyecto sobre el cual se trabaja.
-      Por último, verifica si el usuario es ``Líder de Proyecto`` o es el creador de la ``Solicitud`` para mostrar la
-      vista decorada. En caso contrario, se muestra la página de ``accesoDenegado``.*
+    *Obtiene el identificador de la solicitud del* ``request`` *de la vista decorada. Recupera el objeto*
+    ``SolicitudCambios`` *, si no existe muestra la página 404, y luego obtiene el proyecto sobre el cual se trabaja.*
+    *Por último, verifica si el usuario es* ``Líder de Proyecto`` *o es el creador de la* ``Solicitud`` *para mostrar la*
+    *vista decorada. En caso contrario, se muestra la página de* ``accesoDenegado`` *.*
 
-    :return: La ``vista`` en el caso de que el usuario sea el ``Líder`` del proyecto o haya creado la ``solicitud``,
-     caso contrario se redirige a ``/acceso_denegado/``.
+    :return: La ``vista`` en el caso de que el usuario sea el ``Líder`` del proyecto o haya creado la ``solicitud``, caso contrario se redirige a ``/acceso_denegado/``.
     """
     def decorator(view_func):
         def _wrapped_view(request, *args, **kwargs):
@@ -271,15 +263,13 @@ def puede_cancelar_solicitud():
 
 def puede_visualizar_solicitud():
     """
-    *Obtiene el identificador de la solicitud del ``request`` de la vista decorada. Recupera el objeto
-     ``SolicitudCambios``, si no existe muestra la página 404, luego obtiene el proyecto sobre el cual se trabaja.
-     Por último, verifica si el usuario es ``Líder de Proyecto``, es el creador de la ``Solicitud`` o pertenece al
-     ``comité de cambios`` para mostrar la vista decorada. En caso contrario, se muestra la página de
-     ``accesoDenegado``.*
+    *Obtiene el identificador de la solicitud del* ``request`` *de la vista decorada. Recupera el objeto*
+    ``SolicitudCambios`` *, si no existe muestra la página 404, luego obtiene el proyecto sobre el cual se trabaja.*
+    *Por último, verifica si el usuario es* ``Líder de Proyecto`` *, es el creador de la* ``Solicitud`` *o pertenece al*
+    ``comité de cambios`` *para mostrar la vista decorada. En caso contrario, se muestra la página de*
+    ``accesoDenegado`` *.*
 
-    :return: La ``vista`` en el caso de que el usuario sea el ``Líder`` del proyecto, haya creado la ``solicitud`` o
-     sea miembro del comite de cambios,
-     caso contrario se redirige a ``/acceso_denegado/``.
+    :return: La ``vista`` en el caso de que el usuario sea el ``Líder`` del proyecto, haya creado la ``solicitud`` o sea miembro del comite de cambios, caso contrario se redirige a ``/acceso_denegado/``.
     """
     def decorator(view_func):
         def _wrapped_view(request, *args, **kwargs):
@@ -314,13 +304,12 @@ def puede_visualizar_solicitud():
 
 def puede_votar():
     """
-    *Obtiene el identificador de la solicitud del ``request`` de la vista decorada. Recupera el objeto
-     ``SolicitudCambios``, si no existe muestra la página 404, luego obtiene el proyecto sobre el cual se trabaja.
-     Por último, verifica si pertenece al ``comité de cambios`` para mostrar la vista decorada. En caso contrario,
-     se muestra la página de ``accesoDenegado``.*
+    *Obtiene el identificador de la solicitud del* ``request`` *de la vista decorada. Recupera el objeto*
+    ``SolicitudCambios`` *, si no existe muestra la página 404, luego obtiene el proyecto sobre el cual se trabaja.*
+    *Por último, verifica si pertenece al* ``comité de cambios`` *para mostrar la vista decorada. En caso contrario,*
+    *se muestra la página de* ``accesoDenegado`` *.*
 
-    :return: La ``vista`` en el caso de que el usuario sea miembro del comite de cambios, caso contrario se redirige a
-     ``/acceso_denegado/``.
+    :return: La ``vista`` en el caso de que el usuario sea miembro del comite de cambios, caso contrario se redirige a ``/acceso_denegado/``.
     """
     def decorator(view_func):
         def _wrapped_view(request, *args, **kwargs):
@@ -348,13 +337,12 @@ def puede_votar():
 
 def puede_crear_linea_base():
     """
-    *Verifica que el parámetro ``id_fase`` se encuentra en el ``request`` de la vista que se decora. Según este
-     parámetro obtiene el objeto ``Fase`` y de este recupera el objeto ``Proyecto``.
-     Por último, comprueba si el usuario es el ``Líder del Proyecto`` o si el usuario posee el permiso
-     ``crear_Linea_Base``. En caso contrario, se muestra la página ``accesoDenegado``.*
+    *Verifica que el parámetro* ``id_fase`` *se encuentra en el* ``request`` *de la vista que se decora. Según este*
+    *parámetro obtiene el objeto* ``Fase`` *y de este recupera el objeto* ``Proyecto`` *.*
+    *Por último, comprueba si el usuario es el* ``Líder del Proyecto`` *o si el usuario posee el permiso*
+    ``crear_Linea_Base`` *. En caso contrario, se muestra la página* ``accesoDenegado`` *.*
 
-    :return: La ``vista`` en el caso de que el usuario sea el ``Líder`` del proyecto o posee permisos para crear lineas
-     base en la fase, caso contrario se redirige a ``/acceso_denegado/``.
+    :return: La ``vista`` en el caso de que el usuario sea el ``Líder`` del proyecto o posee permisos para crear lineas base en la fase, caso contrario se redirige a ``/acceso_denegado/``.
     """
     def decorator(view_func):
         def _wrapped_view(request, *args, **kwargs):
@@ -393,13 +381,12 @@ def puede_crear_linea_base():
 
 def puede_revocar_credencial():
     """
-    *Obtiene el identificador de la solicitud del ``request`` de la vista decorada. Recupera el objeto
-     ``SolicitudCambios``, si no existe muestra la página 404, luego obtiene el proyecto sobre el cual se trabaja.
-     Por último, verifica si el usuario es ``Líder de Proyecto`` o pertenece al ``comité de cambios`` para mostrar
-     la vista decorada. En caso contrario, se muestra la página de ``accesoDenegado``.*
+    *Obtiene el identificador de la solicitud del* ``request`` *de la vista decorada. Recupera el objeto*
+    ``SolicitudCambios`` *, si no existe muestra la página 404, luego obtiene el proyecto sobre el cual se trabaja.*
+    *Por último, verifica si el usuario es* ``Líder de Proyecto`` *o pertenece al* ``comité de cambios`` *para mostrar*
+    *la vista decorada. En caso contrario, se muestra la página de* ``accesoDenegado`` *.*
 
-    :return: La ``vista`` en el caso de que el usuario sea el ``Líder`` del proyecto o sea miembro del comite de cambios,
-     caso contrario se redirige a ``/acceso_denegado/``.
+    :return: La ``vista`` en el caso de que el usuario sea el ``Líder`` del proyecto o sea miembro del comite de cambios, caso contrario se redirige a ``/acceso_denegado/``.
     """
     def decorator(view_func):
         def _wrapped_view(request, *args, **kwargs):
@@ -434,13 +421,12 @@ def puede_revocar_credencial():
 
 def puede_finalizar_revision_item():
     """
-    *Obtiene el identificador del item del ``request`` de la vista decorada. Recupera el objeto ``ItemBase``,
-     si no existe muestra la página 404, luego obtiene el proyecto sobre el cual se trabaja. Por último, verifica si el
-     usuario es ``Líder de Proyecto`` o es el creador de la ``Solicitud`` para mostrar la vista decorada. En caso
-     contrario, se muestra la página de ``accesoDenegado``.*
+    *Obtiene el identificador del item del* ``request`` *de la vista decorada. Recupera el objeto* ``ItemBase`` *,*
+    *si no existe muestra la página 404, luego obtiene el proyecto sobre el cual se trabaja. Por último, verifica si el*
+    *usuario es* ``Líder de Proyecto`` *o es el creador de la* ``Solicitud`` *para mostrar la vista decorada. En caso*
+    *contrario, se muestra la página de* ``accesoDenegado`` *.*
 
-    :return: La ``vista`` en el caso de que el usuario sea el ``Líder`` del proyecto o haya creado la ``solicitud`` sea
-     miembro del comite de cambios, caso contrario se redirige a ``/acceso_denegado/``.
+    :return: La ``vista`` en el caso de que el usuario sea el ``Líder`` del proyecto o haya creado la ``solicitud`` sea miembro del comite de cambios, caso contrario se redirige a ``/acceso_denegado/``.
     """
     def decorator(view_func):
         def _wrapped_view(request, *args, **kwargs):
