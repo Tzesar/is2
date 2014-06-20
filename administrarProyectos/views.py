@@ -11,11 +11,11 @@ from django.core.exceptions import ObjectDoesNotExist
 from django.utils import timezone
 
 from administrarItems.models import ItemBase
+from administrarLineaBase.models import SolicitudCambios
 from administrarProyectos.forms import NewProjectForm, ChangeProjectForm, setUserToProjectForm, ChangeProjectLeaderForm
 from administrarProyectos.models import UsuariosVinculadosProyectos, Proyecto
 from administrarProyectos.tables import ProyectoTablaAdmin
-from administrarRolesPermisos.decorators import user_passes_test, vinculadoProyecto, admin_requerido, lider_requerido, \
-    vinculado_proyecto_requerido
+from administrarRolesPermisos.decorators import admin_requerido, lider_requerido, vinculado_proyecto_requerido
 from administrarRolesPermisos.forms import asignarMiembrosComiteForm
 from administrarRolesPermisos.models import Rol
 from administrarFases.models import Fase
@@ -174,7 +174,6 @@ def changeProjectLeader(request, id_proyecto):
                                                                  'miembrosComiteForm': miembrosComiteForm})
 
 
-@login_required()
 @admin_requerido
 def projectList(request):
     """
@@ -234,7 +233,7 @@ def setUserToProject(request, id_proyecto):
                                                               'user': request.user},)
 
 
-# @lider_requerido("id_proyecto")
+@vinculado_proyecto_requerido("id_proyecto")
 def workProject(request, id_proyecto):
     """
     *Vista para el trabajo sobre un proyecto dentro del sistema.
@@ -304,7 +303,12 @@ def workProject(request, id_proyecto):
         return HttpResponse(json.dumps(responseDict), mimetype='application/javascript')
 
     usuario.save()
-    # TODO: cancelar todas las solicitudes de cambio creadas por este usuario
+    proyecto = Proyecto.objects.get(id=id_proyecto)
+    fases = Fase.objects.filter(proyecto=proyecto).order_by('nro_orden')
+    solicitudes = SolicitudCambios.objects.filter(usuario=usuario.cod_usuario, estado='VOT', fase__in=fases)
+    for solicitud in solicitudes:
+        solicitud.estado = 'CAN'
+        solicitud.save()
 
     if xhr:
         responseDict = {'exito': True}
@@ -346,7 +350,6 @@ def startProject(request, id_proyecto):
     proyecto = Proyecto.objects.get(pk=id_proyecto)
     roles = Rol.objects.filter(proyecto=proyecto)
     fases = proyecto.fase_set.all().order_by('nro_orden')
-    cantFases = fases.count()
 
     message = []
     error = 0
@@ -395,7 +398,7 @@ def startProject(request, id_proyecto):
     return HttpResponseRedirect(reverse('administrarProyectos.views.workProject', kwargs={'id_proyecto': id_proyecto}))
 
 
-@login_required()
+@lider_requerido("id_proyecto")
 def cancelProject(request, id_proyecto):
     """
     *Vista para anular un proyecto*
@@ -404,7 +407,6 @@ def cancelProject(request, id_proyecto):
     proyecto = Proyecto.objects.get(pk=id_proyecto)
 
     messages = []
-    #TODO: Insertar mensajes de exitos/fallos en el template
     if proyecto.estado == 'ANU':
         messages.append('No se puede anular un proyecto que ya se encuentra anulado')
         error = 1

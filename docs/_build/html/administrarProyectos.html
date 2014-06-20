@@ -375,78 +375,10 @@ campos necesarios para la creación de un proyecto en el sistema.</em></p>
 </dd></dl>
 
 <dl class="function">
-<dt id="administrarProyectos.views.changeProjectLeader">
-<tt class="descclassname">administrarProyectos.views.</tt><tt class="descname">changeProjectLeader</tt><big>(</big><em>request</em>, <em>*args</em>, <em>**kwargs</em><big>)</big><a class="headerlink" href="#administrarProyectos.views.changeProjectLeader" title="Enlazar permanentemente con esta definición">¶</a></dt>
-<dd><p><em>Vista para la modificación de un proyecto dentro del sistema.
-Opción válida para usuarios con rol de Lider.</em></p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parámetros:</th><td class="field-body"><ul class="first simple">
-<li><strong>request</strong> &#8211; HttpRequest necesario para modificar proyectos, es la solicitud de la acción.</li>
-<li><strong>args</strong> &#8211; Argumentos para el modelo <tt class="docutils literal"><span class="pre">Proyecto</span></tt>.</li>
-<li><strong>kwargs</strong> &#8211; Keyword Arguments para la el modelo <tt class="docutils literal"><span class="pre">Proyecto</span></tt>.</li>
-</ul>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Devuelve:</th><td class="field-body"><p class="first last">Proporciona la pagina <tt class="docutils literal"><span class="pre">changeproject.html</span></tt> con el formulario correspondiente
-Modifica el proyecto y luego regresa al menu principal</p>
-</td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
-<dl class="function">
-<dt id="administrarProyectos.views.finProject">
-<tt class="descclassname">administrarProyectos.views.</tt><tt class="descname">finProject</tt><big>(</big><em>request</em>, <em>*args</em>, <em>**kwargs</em><big>)</big><a class="headerlink" href="#administrarProyectos.views.finProject" title="Enlazar permanentemente con esta definición">¶</a></dt>
-<dd><p><em>Vista par inicar un proyecto</em></p>
-</dd></dl>
-
-<dl class="function">
-<dt id="administrarProyectos.views.setUserToProject">
-<tt class="descclassname">administrarProyectos.views.</tt><tt class="descname">setUserToProject</tt><big>(</big><em>request</em>, <em>*args</em>, <em>**kwargs</em><big>)</big><a class="headerlink" href="#administrarProyectos.views.setUserToProject" title="Enlazar permanentemente con esta definición">¶</a></dt>
-<dd><p><em>Vista para vincular usuarios a un proyecto existente.
-Acción solo realizada por los usuarios con rol de ``Líder de proyecto``</em></p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parámetros:</th><td class="field-body"><ul class="first simple">
-<li><strong>request</strong> &#8211; HttpRequest necesario para vincular los usuarios a proyectos, es la solicitud de la acción.</li>
-<li><strong>id_proyecto</strong> &#8211; Identificador del proyecto dentro del sistema al cual se le vincularán usuarios para su desarrollo.</li>
-</ul>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Devuelve:</th><td class="field-body"><p class="first last">Proporciona la pagina <tt class="docutils literal"><span class="pre">setusertoproject.html</span></tt> con la lista de todos los usuarios existentes en el sistema para listar al proyecto
-Usuarios vinculados correctamente al proyecto.</p>
-</td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
-<dl class="function">
-<dt id="administrarProyectos.views.startProject">
-<tt class="descclassname">administrarProyectos.views.</tt><tt class="descname">startProject</tt><big>(</big><em>request</em>, <em>*args</em>, <em>**kwargs</em><big>)</big><a class="headerlink" href="#administrarProyectos.views.startProject" title="Enlazar permanentemente con esta definición">¶</a></dt>
-<dd><p><em>Vista par iniciar un proyecto</em></p>
-</dd></dl>
-
-<dl class="function">
-<dt id="administrarProyectos.views.vistaDesarrollo">
-<tt class="descclassname">administrarProyectos.views.</tt><tt class="descname">vistaDesarrollo</tt><big>(</big><em>request</em>, <em>id_proyecto</em><big>)</big><a class="headerlink" href="#administrarProyectos.views.vistaDesarrollo" title="Enlazar permanentemente con esta definición">¶</a></dt>
-<dd><ul class="simple">
-<li>Vista para el área de desarrollo del proyecto.*</li>
-<li>En él se observan las principales fases e ítems que se encuentran en desarrollo dentro del proyecto*</li>
-</ul>
-</dd></dl>
-
-<dl class="function">
 <dt id="administrarProyectos.views.workProject">
-<tt class="descclassname">administrarProyectos.views.</tt><tt class="descname">workProject</tt><big>(</big><em>request</em>, <em>*args</em>, <em>**kwargs</em><big>)</big><a class="headerlink" href="#administrarProyectos.views.workProject" title="Enlazar permanentemente con esta definición">¶</a></dt>
+<tt class="descclassname">administrarProyectos.views.</tt><tt class="descname">workProject</tt><big>(</big><em>request</em>, <em>id_proyecto</em><big>)</big><a class="headerlink" href="#administrarProyectos.views.workProject" title="Enlazar permanentemente con esta definición">¶</a></dt>
 <dd><p><em>Vista para el trabajo sobre un proyecto dentro del sistema.
-Opción válida para usuarios asociados a un proyecto, ya sea como ``Líder de Proyecto`` o como participante.</em></p>
+Opción válida para el ``Lider de Proyecto``.</em></p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />

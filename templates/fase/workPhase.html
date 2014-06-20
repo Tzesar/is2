@@ -58,7 +58,9 @@
 
             {% if listaItems %}
                 {% for item, padre in relaciones %}
+                    {% get_obj_perms user for item as "permisosItem" %}
                     {% if forloop.counter0|divisibleby:"3" %}<div class="row">{% endif %}
+
                     <div class="col-lg-4 col-md-4 col-sm-4">
                         <div class="panel panel-default">
                             <div class="panel-heading">
@@ -202,13 +204,14 @@
                                         {% endif %}
                                     {% endif %}
                                     {% if item.estado == 'REV' %}
+                                        {# Verifica si el usuario actual tiene el permiso credencial sobre este item #}
                                         {% if "credencial" in permisosItem %}
                                             <a href="{% url 'administrarItems.views.workItem' item.id %}" class="btn btn-xs btn-success">Ir al ítem</a>
-                                            <a href="{% url 'administrarItems.views.finRevisionItem' fase.id  item.id %}" class="btn btn-xs btn-info">Fin Revision</a>
+                                            <a href="{% url 'administrarItems.views.finRevisionItem' item.id %}" class="btn btn-xs btn-info">Fin Revision</a>
                                             <a href="{% url 'administrarItems.views.historialItemBase' fase.id item.id %}" class="btn btn-xs btn-warning">Historial de Versiones</a>
                                         {% elif proyecto.lider_proyecto == user %}
                                             <a href="{% url 'administrarItems.views.verItem' item.id %}" class="btn btn-xs btn-success">Ver ítem</a>
-                                            <a href="{% url 'administrarItems.views.finRevisionItem' fase.id  item.id %}" class="btn btn-xs btn-info">Fin Revision</a>
+                                            <a href="{% url 'administrarItems.views.finRevisionItem' item.id %}" class="btn btn-xs btn-info">Fin Revision</a>
                                             <a href="{% url 'administrarItems.views.historialItemBase' fase.id item.id %}" class="btn btn-xs btn-warning">Historial de Versiones</a>
                                         {% elif "consultar_Item" in permisosFase %}
                                             <a href="{% url 'administrarItems.views.verItem' item.id %}" class="btn btn-xs btn-success">Ver ítem</a>

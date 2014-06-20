@@ -274,7 +274,7 @@ sea Líder del proyecto al cual la vista intenta acceder.</em></p>
 <span id="vistas-funciones"></span><h2>Vistas(Funciones)<a class="headerlink" href="#module-administrarFases.views" title="Enlazar permanentemente con este título">¶</a></h2>
 <dl class="function">
 <dt id="administrarFases.views.bajarOrden">
-<tt class="descclassname">administrarFases.views.</tt><tt class="descname">bajarOrden</tt><big>(</big><em>request</em>, <em>*args</em>, <em>**kwargs</em><big>)</big><a class="headerlink" href="#administrarFases.views.bajarOrden" title="Enlazar permanentemente con esta definición">¶</a></dt>
+<tt class="descclassname">administrarFases.views.</tt><tt class="descname">bajarOrden</tt><big>(</big><em>request</em>, <em>id_fase</em><big>)</big><a class="headerlink" href="#administrarFases.views.bajarOrden" title="Enlazar permanentemente con esta definición">¶</a></dt>
 <dd><p><em>Función para &#8220;Bajar&#8221; el número de orden de una Fase que pertenece a algún proyecto</em></p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -341,31 +341,6 @@ Opción válida para usuarios con los roles correspondientes.</em></p>
 </dd></dl>
 
 <dl class="function">
-<dt id="administrarFases.views.createPhase">
-<tt class="descclassname">administrarFases.views.</tt><tt class="descname">createPhase</tt><big>(</big><em>request</em>, <em>*args</em>, <em>**kwargs</em><big>)</big><a class="headerlink" href="#administrarFases.views.createPhase" title="Enlazar permanentemente con esta definición">¶</a></dt>
-<dd><p><em>Vista para la creación de fases en el sistema.
-Opción válida para usuarios con los roles correspondientes.</em></p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parámetros:</th><td class="field-body"><ul class="first simple">
-<li><strong>request</strong> &#8211; HttpRequest necesario para crear fases dentro de los proyectos, es la solicitud de la acción.</li>
-<li><strong>id_proyecto</strong> &#8211; Identificador del proyecto dentro del sistema al cual se le vincularán las fases creadas.</li>
-<li><strong>args</strong> &#8211; Argumentos para el modelo <tt class="docutils literal"><span class="pre">Fase</span></tt>.</li>
-<li><strong>kwargs</strong> &#8211; Keyword Arguments para la el modelo <tt class="docutils literal"><span class="pre">Fase</span></tt>.</li>
-</ul>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Devuelve:</th><td class="field-body"><p class="first last">Proporciona la pagina <tt class="docutils literal"><span class="pre">createphase.html</span></tt> con el formulario correspondiente.
-Crea la fase dentro del proyecto especificando y luego regresa al menu principal</p>
-</td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
-<dl class="function">
 <dt id="administrarFases.views.deletePhase">
 <tt class="descclassname">administrarFases.views.</tt><tt class="descname">deletePhase</tt><big>(</big><em>request</em>, <em>*args</em>, <em>**kwargs</em><big>)</big><a class="headerlink" href="#administrarFases.views.deletePhase" title="Enlazar permanentemente con esta definición">¶</a></dt>
 <dd><p><em>Vista para la eliminación de una fase dentro del sistema.
@@ -381,28 +356,6 @@ Opción válida para usuarios con los roles correspondientes.</em></p>
 </td>
 </tr>
 <tr class="field-even field"><th class="field-name">Devuelve:</th><td class="field-body"><p class="first last">Elimina la fase especifica  y luego regresa al menu de fases.</p>
-</td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
-<dl class="function">
-<dt id="administrarFases.views.finPhase">
-<tt class="descclassname">administrarFases.views.</tt><tt class="descname">finPhase</tt><big>(</big><em>request</em>, <em>*args</em>, <em>**kwargs</em><big>)</big><a class="headerlink" href="#administrarFases.views.finPhase" title="Enlazar permanentemente con esta definición">¶</a></dt>
-<dd><p><em>Función para finalizar una fase. La cual se encarga de analizar todas las restricciones y requisitos para
-finalizar una fase correctamente dentro del sistema</em></p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parámetros:</th><td class="field-body"><ul class="first simple">
-<li><strong>request</strong> &#8211; HttpRequest es la solicitud de la acción.</li>
-<li><strong>id_fase</strong> &#8211; Es el identificador de la fase la cual se desea finalizar</li>
-</ul>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Devuelve:</th><td class="field-body"><p class="first last">La fase se finaliza correctamente una vez válidado los requisitos</p>
 </td>
 </tr>
 </tbody>
@@ -457,7 +410,7 @@ Opción válida para usuarios con los roles correspondientes.</em></p>
 
 <dl class="function">
 <dt id="administrarFases.views.startPhase">
-<tt class="descclassname">administrarFases.views.</tt><tt class="descname">startPhase</tt><big>(</big><em>request</em>, <em>*args</em>, <em>**kwargs</em><big>)</big><a class="headerlink" href="#administrarFases.views.startPhase" title="Enlazar permanentemente con esta definición">¶</a></dt>
+<tt class="descclassname">administrarFases.views.</tt><tt class="descname">startPhase</tt><big>(</big><em>request</em>, <em>id_fase</em><big>)</big><a class="headerlink" href="#administrarFases.views.startPhase" title="Enlazar permanentemente con esta definición">¶</a></dt>
 <dd><p><a href="#id1"><span class="problematic" id="id2">*</span></a>Función para iniciar una nueva fase dentro del proyecto. Función que se ejecuta inmediatamente con la existencia
 de una Línea Base en la Fase inmediata anterior. En caso de ser la primera fase, esta entra en Desarrollo
 automáticamente cuando el proyecto es iniciado.</p>
@@ -477,7 +430,7 @@ automáticamente cuando el proyecto es iniciado.</p>
 
 <dl class="function">
 <dt id="administrarFases.views.subirOrden">
-<tt class="descclassname">administrarFases.views.</tt><tt class="descname">subirOrden</tt><big>(</big><em>request</em>, <em>*args</em>, <em>**kwargs</em><big>)</big><a class="headerlink" href="#administrarFases.views.subirOrden" title="Enlazar permanentemente con esta definición">¶</a></dt>
+<tt class="descclassname">administrarFases.views.</tt><tt class="descname">subirOrden</tt><big>(</big><em>request</em>, <em>id_fase</em><big>)</big><a class="headerlink" href="#administrarFases.views.subirOrden" title="Enlazar permanentemente con esta definición">¶</a></dt>
 <dd><p><em>Función para &#8220;Subir&#8221; el número de orden de una Fase que pertenece a algún proyecto</em></p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -497,8 +450,27 @@ automáticamente cuando el proyecto es iniciado.</p>
 </dd></dl>
 
 <dl class="function">
+<dt id="administrarFases.views.verFase">
+<tt class="descclassname">administrarFases.views.</tt><tt class="descname">verFase</tt><big>(</big><em>request</em>, <em>id_fase</em><big>)</big><a class="headerlink" href="#administrarFases.views.verFase" title="Enlazar permanentemente con esta definición">¶</a></dt>
+<dd><p>Función para visualizar detalles de una fase dentro de un proyecto que ya ha entrado en ejecución,
+ha sido cancelado o ha finalizado.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parámetros:</th><td class="field-body"><ul class="first last simple">
+<li><strong>request</strong> &#8211; HttpRequest es la solicitud de la acción.</li>
+<li><strong>id_fase</strong> &#8211; Es el identificador de la fase que se viualiza.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
 <dt id="administrarFases.views.workphase">
-<tt class="descclassname">administrarFases.views.</tt><tt class="descname">workphase</tt><big>(</big><em>request</em>, <em>id_fase</em><big>)</big><a class="headerlink" href="#administrarFases.views.workphase" title="Enlazar permanentemente con esta definición">¶</a></dt>
+<tt class="descclassname">administrarFases.views.</tt><tt class="descname">workphase</tt><big>(</big><em>request</em>, <em>*args</em>, <em>**kwargs</em><big>)</big><a class="headerlink" href="#administrarFases.views.workphase" title="Enlazar permanentemente con esta definición">¶</a></dt>
 <dd><p><em>Vista para el trabajo sobre una fase de un proyecto.
 Opción válida para usuarios asociados a un proyecto, con permisos de trabajo sobre items de la fase en cuestion</em></p>
 <table class="docutils field-list" frame="void" rules="none">

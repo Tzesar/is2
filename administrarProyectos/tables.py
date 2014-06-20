@@ -35,6 +35,7 @@ class ProyectoTablaAdmin(tables.Table):
     def __init__(self, *args, **kwargs):
         super(ProyectoTablaAdmin, self).__init__(*args, **kwargs)
 
+
 class ProyectoTabla(tables.Table):
     """
     *Tabla personalizada para el desarrollo de proyectos en el sistema.*
@@ -49,9 +50,7 @@ class ProyectoTabla(tables.Table):
         modificar_url = reverse("administrarProyectos.views.workProject", args=[record.pk])
         return mark_safe('<span data-toggle="tooltip" title="Trabajar en Proyecto" id="tooltip"> '
                          '<a href="%s" class="text-info"><span class="glyphicon glyphicon-eye-open"></span></a> '
-                         % modificar_url )
-
-
+                         % modificar_url)
 
     class Meta:
         model = Proyecto

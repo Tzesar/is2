@@ -1,24 +1,23 @@
 #encoding:utf-8
 
 from django.contrib.auth.decorators import login_required
-from django.http import HttpResponseRedirect
 from django.core.urlresolvers import reverse
 from django.http import HttpResponseRedirect
 from django.shortcuts import render
 from django.utils import timezone
 from guardian.decorators import permission_required
 from django.forms.models import inlineformset_factory
+from guardian.shortcuts import remove_perm, get_users_with_perms
 import reversion
-from administrarFases.models import Fase
 
-from administrarFases.views import workphase
+from administrarFases.models import Fase
 from administrarItems.forms import itemForm, campoEnteroForm, campoImagenForm, campoTextoCortoForm, campoFileForm, modificarAtributosBasicosForm,\
     modificarDatosItemForm, campoTextoLargoForm, CustomInlineFormSet_NUM, CustomInlineFormSet_STR, \
     CustomInlineFormSet_TXT, CustomInlineFormSet_IMG, CustomInlineFormSet_FIL
 from administrarItems.models import ItemBase, CampoImagen, CampoNumero, CampoFile, CampoTextoCorto, CampoTextoLargo, ItemRelacion
+from administrarLineaBase.models import SolicitudCambios
 from administrarLineaBase.views import generarGrafo
-from administrarRolesPermisos.decorators import user_passes_test, verificar_permiso, puede_modificar_fase, \
-    lider_miembro_comite_requerido
+from administrarRolesPermisos.decorators import verificar_permiso
 from administrarTipoItem.models import TipoItem, Atributo
 
 
@@ -130,6 +129,7 @@ def historialItemBase(request, id_fase, id_item):
                                               'proyecto': proyecto, 'fase': fase, 'user': usuario}, )
 
 
+@verificar_permiso(["modificar_Item"], "id_item", False)
 def reversionItemBase(request, id_item, id_fase, id_version):
     """
     *Funcion para realizar la reversión de un ítem. Una reversión consiste en recuperar todos los
@@ -876,9 +876,8 @@ def verItem(request, id_item):
                                                  'imagenes': imagenes, 'archivos': archivos, 'grafo': grafoRelaciones})
 
 
-@lider_miembro_comite_requerido("id_item")
-# TODO: remover el parametro id_fase, se puede recuperar del item
-def finRevisionItem(request, id_fase, id_item):
+@puede_finalizar_revision_item()
+def finRevisionItem(request, id_item):
     """
     *Función para Finalizar de un ítem que ha entrado en una estado de Revision.
      Obs. Solo el Lider de Proyecto puede realizar esta operación. *
@@ -894,12 +893,29 @@ def finRevisionItem(request, id_fase, id_item):
     item = ItemBase.objects.get(pk=id_item)
     mensajes = []
 
-    item.estado = 'ELB'
-    item.save()
+    usuarios = get_users_with_perms(item)
+    if usuarios.count() == 0 or request.user in usuarios:
 
-    message = 'Revision Finalizada para el Item:' + item.nombre
-    error = 0
-    mensajes.append(message)
-    request.session['messages'] = mensajes
-    request.session['error'] = error
-    return HttpResponseRedirect(reverse('administrarFases.views.workphase', kwargs={'id_fase': id_fase}))
+        remove_perm('credencial', request.user, item)
+
+        item.estado = 'ELB'
+        item.save()
+
+        usuarios = get_users_with_perms(item)
+        if usuarios.count() == 0:
+            solicitud = SolicitudCambios.objects.get(usuario=request.user, estado='ACP', items=item)
+            solicitud.estado = 'EJC'
+            solicitud.save()
+
+        message = 'Revision Finalizada para el Item:' + item.nombre
+        error = 0
+        mensajes.append(message)
+        request.session['messages'] = mensajes
+        request.session['error'] = error
+    else:
+        message = 'No se puede terminar la revision, aún existen usuarios trabajando en el item.'
+        error = 1
+        mensajes.append(message)
+        request.session['messages'] = mensajes
+        request.session['error'] = error
+    return HttpResponseRedirect(reverse('administrarFases.views.workphase', kwargs={'id_fase': item.tipoitem.fase_id}))

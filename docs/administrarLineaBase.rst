@@ -26,4 +26,5 @@ Vistas(Funciones)
 ---------------------------------
 
 .. automodule:: administrarLineaBase.views
-    :members:    :show-inheritance:
+    :members:
+    :show-inheritance:

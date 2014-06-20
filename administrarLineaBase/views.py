@@ -1,4 +1,6 @@
 #encoding:utf-8
+import threading
+
 from django.contrib.auth.models import Group
 from django.core.mail import send_mail, send_mass_mail
 from django.core.urlresolvers import reverse
@@ -10,23 +12,18 @@ import pydot
 from django.shortcuts import render
 
 from administrarFases.models import Fase
-from administrarFases.views import workphase
 from administrarItems.models import ItemBase, ItemRelacion
 from administrarLineaBase.forms import createLBForm, createSCForm, asignarItemSolicitudForm, emitirVotoForm
 from administrarLineaBase.models import LineaBase, SolicitudCambios, Votacion
 from administrarProyectos.models import UsuariosVinculadosProyectos
-from administrarProyectos.views import vistaDesarrollo
+from administrarRolesPermisos.decorators import puede_crear_linea_base, verificar_permiso, puede_visualizar_solicitud, \
+    vinculado_proyecto_requerido, puede_cancelar_solicitud, puede_votar, puede_revocar_credencial
 from administrarTipoItem.models import TipoItem
-from administrarRolesPermisos.decorators import user_passes_test, crear_linea_base, puede_cancelar_solicitud, \
-    puede_votar, puede_visualizar_solicitud
-from autenticacion.models import Usuario
-from is2.settings import MEDIA_ROOT, DEFAULT_FROM_EMAIL
-from administrarRolesPermisos.decorators import user_passes_test, crear_linea_base, vinculado_proyecto_requerido, \
-    verificar_permiso
+from is2.settings import DEFAULT_FROM_EMAIL
 from is2.settings import MEDIA_ROOT
 
 
-@user_passes_test(crear_linea_base)
+@puede_crear_linea_base()
 def createLB(request, id_fase):
     """
     *Función para la creación de Linea Base, la creación de una Linea Base consiste en registrar todos los ítems
@@ -160,7 +157,6 @@ def generarCalculoImpacto(id_item, id_solicitud):
     """
     item = ItemBase.objects.get(pk=id_item)
     tipoitem = item.tipoitem
-    fase = tipoitem.fase
 
     grafo = pydot.Dot(graph_type='graph')
     costo = []
@@ -203,7 +199,6 @@ def visualizarLB(request, id_fase):
                                             kwargs={'id_proyecto': fase.proyecto_id}))
 
 
-# TODO: necesitan permisos el lider y el creador de la solicitud
 @puede_cancelar_solicitud()
 def cancelarSolicitudCambios(request, id_solicitud, id_fase):
     """
@@ -253,7 +248,7 @@ def workApplication(request, id_fase):
     usuario = request.user
     fase = Fase.objects.get(pk=id_fase)
     proyecto = fase.proyecto
-    misSolicitudes = SolicitudCambios.objects.filter(usuario=usuario, fase=fase)
+    misSolicitudes = SolicitudCambios.objects.filter(usuario=usuario, fase=fase).order_by('id')
     misPK = misSolicitudes.values_list('id', flat=True)
     otrasSolicitudes = SolicitudCambios.objects.filter(fase=fase).exclude(pk__in=misPK)
 
@@ -312,7 +307,8 @@ def visualizarSolicitud(request, id_solicitud, id_fase):
 
     items_grafos = {}
     for item in itemsSolicitud:
-        direccion = '/static/grafos/' + item.nombre + '_' + str(id_solicitud)
+        # direccion = '/static/grafos/' + item.nombre + '_' + str(id_solicitud)
+        direccion = 'grafos/' + item.nombre + '_' + str(id_solicitud)
         items_grafos[item] = direccion
 
     return render(request, 'lineabase/visualizarsolicitud.html', {'user': request.user, 'fase': fase,
@@ -369,12 +365,14 @@ def crearSolicitudCambios(request, id_fase):
 
                 solicitud.save()
 
+                hilo = threading.Thread(target=enviarNotificacionesComite, args=[solicitud.id])
+                hilo.setDaemon(True)
+                hilo.start()
+
                 mensajes.append('Solicitud Creada y Enviada satisfactoriamente al comité de cambios')
                 error = 0
                 request.session['messages'] = mensajes
                 request.session['error'] = error
-                # enviarNotificacionesComite(solicitud.id)
-
                 return HttpResponseRedirect(reverse('administrarLineaBase.views.workApplication', kwargs={'id_fase': id_fase}))
 
     form = createSCForm()
@@ -429,7 +427,9 @@ def votarSolicitud(request, id_solicitud, voto):
                 if aceptado > rechazado:
                     solicitud.estado = 'ACP'
                     solicitud.save()
-                    # enviarNotificacionSolicitudAprobada(solicitud.id)
+                    hilo = threading.Thread(target=enviarNotificacionSolicitudAprobada, args=[solicitud.id])
+                    hilo.setDaemon(True)
+                    hilo.start()
                     for item in solicitud.items.all():
                         assign_perm("credencial", solicitud.usuario, item)
                         padres = [item.id]
@@ -440,9 +440,12 @@ def votarSolicitud(request, id_solicitud, voto):
                     solicitud.estado = 'RCH'
                     solicitud.save()
 
+            hilo = threading.Thread(target=enviarSolicitudRespuesta, args=[solicitud.id])
+            hilo.setDaemon(True)
+            hilo.start()
+
             mensaje.append('Voto confirmado para la solicitud ' + str(solicitud.id))
             error = 0
-            # enviarSolicitudRespuesta(solicitud.id)
             request.session['messages'] = mensaje
             request.session['error'] = error
             return HttpResponseRedirect(reverse('administrarLineaBase.views.workApplication', kwargs={'id_fase': fase.id}))
@@ -452,7 +455,7 @@ def votarSolicitud(request, id_solicitud, voto):
                                                          'fase': fase, 'solicitud': solicitud}, )
 
 
-# TODO: controlar permisos al revocar credencial
+@puede_revocar_credencial()
 def revocarPermisos(request, id_solicitud):
 
     solicitud = SolicitudCambios.objects.get(pk=id_solicitud)
@@ -460,6 +463,8 @@ def revocarPermisos(request, id_solicitud):
     for item in solicitud.items.all():
         remove_perm("credencial", solicitud.usuario, item)
 
+    solicitud.estado = 'EJC'
+    solicitud.save()
     mensajes = []
     mensajes.append(u'Permisos de Modificacion de items de Linea Base revocados a ' + solicitud.usuario.username.capitalize())
     error = 0
@@ -504,7 +509,6 @@ def enviarNotificacionesComite(id_solicitud):
 
     :param id_solicitud: Identificador de la solicitud que se ha creado y notificado a los miembros del comite.
     """
-    # TODO: Explota al crear solicitudes
     solicitud = SolicitudCambios.objects.get(pk=id_solicitud)
     fase = solicitud.fase
     proyecto = fase.proyecto
@@ -512,15 +516,14 @@ def enviarNotificacionesComite(id_solicitud):
     nombre = 'ComiteDeCambios-' + str(proyecto.id)
     grupo = Group.objects.get(name=nombre)
     miembros = grupo.user_set.all()
-    asunto = 'Notificacion: Nueva Solicitud de Cambios'
+    asunto = u'Notificacion: Nueva Solicitud de Cambios'
 
-    for user in miembros:
-        mensaje =   'Estimado ' + user.get_full_name() + ':\n\n' \
-                    'Usted ha recibido este correo por que forma parte del Comite de Cambios del Proyecto ' + \
-                     proyecto.nombre + ' y esto es una notificacion sobre la nueva solicitud de cambios recibida.' \
-                    '\nSolicitud Numero: ' + str(solicitud.id) + '\nSolicitante: ' + solicitud.usuario.get_full_name()\
-                    + '\n\nAtte.\nZARpm Team'
-        send_mail(asunto, mensaje, DEFAULT_FROM_EMAIL, [user.email] )
+    for miembro in miembros:
+        mensaje =   'Estimado ' + miembro.get_full_name() + ':\n\nUsted ha recibido este correo por que forma parte del Comite de Cambios del Proyecto ' + \
+                     proyecto.nombre + ' y esto es una notificacion sobre la nueva solicitud de cambios recibida.\nSolicitud Numero: '\
+                    + str(solicitud.id) + '\nSolicitante: ' + solicitud.usuario.get_full_name() + '\n\nAtte.\nZARpm Team'
+
+        send_mail(asunto, mensaje, DEFAULT_FROM_EMAIL, [miembro.email])
 
 
 def enviarNotificacionSolicitudAprobada(id_solicitud):
@@ -553,7 +556,6 @@ def enviarSolicitudRespuesta(id_solicitud):
 
     :param id_solicitud: Identificador de la solicitud que se ha creado y notificado a los miembros del comite.
     """
-    #TODO: aca explota al votar sobre una solicitud
     solicitud = SolicitudCambios.objects.get(pk=id_solicitud)
     fase = solicitud.fase
     proyecto = fase.proyecto
