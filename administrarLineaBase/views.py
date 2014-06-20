@@ -119,6 +119,7 @@ def calculoImpacto(padres, hijos, costo, tiempo, grafo):
             arista = pydot.Edge(item.nombre, itemHijo.nombre)
             grafo.add_edge(arista)
 
+        grafo.add_edge('None')
         calculoImpacto(padres, hijos, costo, tiempo, grafo)
 
     else:
