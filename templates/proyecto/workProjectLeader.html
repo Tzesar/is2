@@ -228,6 +228,15 @@
                     </tbody>
                 </table>
             </div>
+            <span class="pull-left" style="padding-top: 2%">
+                <a href="{% url 'autenticacion.views.main' %}" class="btn btn-md btn-warning btn-md" role="button">Volver al Inicio</a>
+                <span data-toggle="tooltip" title="Genera un reporte del proyecto en su estado actual en formato PDF">
+                    <a href="{% url 'administrarReportes.views.reporte_proyecto' proyecto.id %}" class="btn btn-md btn-success btn-md" role="button">Reporte de Proyecto</a>
+                </span>
+                <span data-toggle="tooltip" title="Genera un reporte de las solicitudes actuales del proyecto en formato PDF">
+                    <a href="{% url 'administrarReportes.views.reporte_solicitud' proyecto.id %}" class="btn btn-md btn-success btn-md" role="button">Reporte de Solicitudes</a>
+                </span>
+            </span>
         </div>
     {% endblock panelCentral %}>
     {% block botonesBottom %}{% endblock botonesBottom %}

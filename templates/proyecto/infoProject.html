@@ -29,6 +29,14 @@
     {% block panelCentral %}{% block padTop %}{% endblock padTop %}
         <div class="panel-heading">
             <h1 class="text-info" style="display: inline-block">Proyecto: {{ project.nombre|capfirst }}</h1>
+            <span class="pull-right" style="padding-top: 2%">
+                <span data-toggle="tooltip" title="Genera un reporte del proyecto en su estado actual en formato PDF">
+                    <a href="{% url 'administrarReportes.views.reporte_proyecto' project.id %}" class="btn btn-md btn-success btn-md" role="button">Reporte de Proyecto</a>
+                </span>
+                <span data-toggle="tooltip" title="Genera un reporte de las solicitudes actuales del proyecto en formato PDF">
+                    <a href="{% url 'administrarReportes.views.reporte_solicitud' project.id %}" class="btn btn-md btn-success btn-md" role="button">Reporte de Solicitudes</a>
+                </span>
+            </span>
         </div>
         <div class="panel-body">
             <div class="list-group-item-info">
