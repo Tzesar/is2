@@ -1453,8 +1453,8 @@ COPY "administrarItems_itembase" (id, usuario_id, usuario_modificacion_id, nombr
 2	10	10	Plano del alumbrado	descripcion	ELB	2014-05-24 04:20:36.635506-04	2014-05-24 06:27:54.891877-04	1	2	2	3	1	2
 7	2	2	Item0	descripcion0	ELB	2014-06-07 01:47:53.81776-04	2014-06-07 01:48:12.798455-04	5	2	11	1	2	6
 4	2	2	Plan economico	asd	ELB	2014-05-24 06:36:55.766508-04	2014-05-24 06:38:11.65743-04	4	2	5	4	2	3
-5	3	3	ItemUNO	Primer item de prueba	ELB	2014-06-06 21:22:13.753-04	2014-06-06 22:44:35.007563-04	26	2	2	2	5	4
 6	3	3	ItemDOS	Tercero xDD	ELB	2014-06-06 21:48:01.754674-04	2014-06-06 22:52:23.946548-04	26	5	3	3	3	5
+5	3	3	ItemUNO	Primer item de prueba	ELB	2014-06-06 21:22:13.753-04	2014-06-06 22:44:35.007563-04	26	2	2	2	5	4
 \.
 
 
@@ -1477,9 +1477,6 @@ COPY "administrarItems_itembase_solicitudes" (id, itembase_id, solicitudcambios_
 6	4	6
 7	6	7
 8	5	7
-9	4	8
-10	4	9
-11	6	10
 \.
 
 
@@ -1487,7 +1484,7 @@ COPY "administrarItems_itembase_solicitudes" (id, itembase_id, solicitudcambios_
 -- Name: administrarItems_itembase_solicitudes_id_seq; Type: SEQUENCE SET; Schema: public; Owner: zar
 --
 
-SELECT pg_catalog.setval('"administrarItems_itembase_solicitudes_id_seq"', 12, true);
+SELECT pg_catalog.setval('"administrarItems_itembase_solicitudes_id_seq"', 32, true);
 
 
 --
@@ -1540,9 +1537,7 @@ COPY "administrarLineaBase_solicitudcambios" (id, usuario_id, fase_id, motivo, f
 6	9	1	Modificacion requerida.	2014-06-06 14:33:50.47805-04	CAN	5	4
 5	2	1	Alguna cosa.	2014-06-06 14:32:23.824535-04	RCH	5	4
 7	3	7	Esta solicitud de Cambios se ha creado a modo de prueba (verificación) del funcionamiento de este módulo.	2014-06-06 22:54:28.490898-04	VOT	7	7
-9	5	1	alog2	2014-06-07 01:28:35.661813-04	CAN	5	4
-8	5	1	ALog	2014-06-07 01:26:42.402762-04	ACP	5	4
-10	2	7	ok	2014-06-19 21:12:21.210924-04	VOT	5	5
+8	5	1	Alguna razon suficiente.	2014-06-07 01:26:42.402762-04	ACP	5	4
 \.
 
 
@@ -1550,7 +1545,7 @@ COPY "administrarLineaBase_solicitudcambios" (id, usuario_id, fase_id, motivo, f
 -- Name: administrarLineaBase_solicitudcambios_id_seq; Type: SEQUENCE SET; Schema: public; Owner: zar
 --
 
-SELECT pg_catalog.setval('"administrarLineaBase_solicitudcambios_id_seq"', 11, true);
+SELECT pg_catalog.setval('"administrarLineaBase_solicitudcambios_id_seq"', 30, true);
 
 
 --
@@ -1584,8 +1579,8 @@ SELECT pg_catalog.setval('"administrarLineaBase_votacion_id_seq"', 11, true);
 
 COPY "administrarProyectos_proyecto" (id, nombre, lider_proyecto_id, descripcion, fecha_creacion, fecha_inicio, fecha_fin, estado, observaciones) FROM stdin;
 2	Proyecto02	10	proyecto 02	2014-05-24	2014-05-24	2014-06-28	ANU	Algo
-3	G-001	3	G-NRO#1	2014-06-06	2014-06-06	2014-06-30	ACT	Proyecto de Prueba.
 1	Proyecto01	2	Proyecto 01	2014-05-24	2014-05-24	2014-06-07	FIN	asd
+3	G-001	3	G-NRO#1	2014-06-06	2014-06-06	2014-06-30	ACT	Proyecto de Prueba.
 \.
 
 
@@ -1615,8 +1610,8 @@ COPY "administrarProyectos_usuariosvinculadosproyectos" (id, cod_proyecto_id, co
 12	3	10	t
 13	3	5	t
 14	3	9	t
-15	3	8	t
 16	3	2	t
+15	3	8	f
 \.
 
 
@@ -1730,10 +1725,10 @@ COPY autenticacion_usuario (id, password, last_login, is_superuser, username, fi
 10	pbkdf2_sha256$12000$EYEEmelvEOup$oK+5FrqKDaPESAJiDXSeFanDSsqWX6plqDkOkaj2nRQ=	2014-05-24 06:13:54.866392-04	f	rosa	Rosa	Irigoyen	rosa.irigoyen@zarpm.org	f	t	2014-05-24 00:31:12.96015-04	21423
 9	pbkdf2_sha256$12000$IagfPiEh9GoE$oOZp+BXdFgAP31RjobQZxWThOQgNFoYXm7q9Hzy5L2w=	2014-06-06 14:33:09.116737-04	f	gonzalo	Gonzalo	Cañete	gonzalo.canete@zarpm.org	f	t	2014-05-24 00:29:40.931951-04	12123
 1	pbkdf2_sha256$12000$0u2U6OPRPreh$pmJMX3k1XW9gZkhfSzL7Q/OHK3wfUlcd+xwm1AROKpU=	2014-06-06 23:21:00.674422-04	t	admin			admin@zarpm.org	t	t	2014-05-24 00:08:53.045254-04	
-3	pbkdf2_sha256$12000$OvurLzU2fsz6$5sJPv+AHez6i4Fsd8mvjoedKhhNWvsDPy7pElAzeO0I=	2014-06-06 23:25:10.67262-04	f	gerardo	Gerardo	Ramos	gerardo.ramos@zarpm.org	f	t	2014-05-24 00:26:00.034848-04	12345
-2	pbkdf2_sha256$12000$uIzDmGIc2gM7$dwRapexhReL9d+PyCHkqHyN6jRcaZc8R/+b9nJpROs4=	2014-06-19 21:11:52.418055-04	f	augusto	Augusto	Amarilla	agu.amarilla@gmail.com	f	t	2014-05-24 00:25:51.053749-04	12313
-8	pbkdf2_sha256$12000$sjYt2xyEKKF4$weaeRMjTrkd9bjpakU41tuHmQvGDEO9CCECs9g0eiBE=	2014-06-07 01:30:37.828544-04	f	enzo	Enzo	Amarilla	agu.amarilla@gmail.com	f	t	2014-05-24 00:29:23.846231-04	651654
 5	pbkdf2_sha256$12000$k7RStkLID7ym$yNHmvXRbl8z0AaoldGAQ6wqGaoMSj6U5VXQ3Xtv54js=	2014-06-07 01:24:11.012458-04	f	diego	Diego	Amarilla	agu.amarilla@gmail.com	f	t	2014-05-24 00:26:20.640528-04	51651
+2	pbkdf2_sha256$12000$uIzDmGIc2gM7$dwRapexhReL9d+PyCHkqHyN6jRcaZc8R/+b9nJpROs4=	2014-06-19 22:25:20.558004-04	f	augusto	Augusto	Amarilla	agu.amarilla@gmail.com	f	t	2014-05-24 00:25:51.053749-04	12313
+8	pbkdf2_sha256$12000$sjYt2xyEKKF4$weaeRMjTrkd9bjpakU41tuHmQvGDEO9CCECs9g0eiBE=	2014-06-19 23:35:46.664182-04	f	enzo	Enzo	Amarilla	agu.amarilla@gmail.com	f	t	2014-05-24 00:29:23.846231-04	651654
+3	pbkdf2_sha256$12000$OvurLzU2fsz6$5sJPv+AHez6i4Fsd8mvjoedKhhNWvsDPy7pElAzeO0I=	2014-06-20 00:30:45.60887-04	f	gerardo	Gerardo	Ramos	agu.amarilla@gmail.com	f	t	2014-05-24 00:26:00.034848-04	12345
 \.
 
 
@@ -1747,17 +1742,6 @@ COPY autenticacion_usuario_groups (id, usuario_id, group_id) FROM stdin;
 9	10	3
 10	5	2
 11	8	2
-19	11	6
-20	12	6
-21	10	6
-22	5	6
-23	9	6
-24	8	6
-25	2	6
-26	3	6
-29	3	5
-30	12	5
-31	9	5
 39	2	1
 40	8	1
 41	5	1
@@ -1765,6 +1749,16 @@ COPY autenticacion_usuario_groups (id, usuario_id, group_id) FROM stdin;
 43	8	9
 46	5	4
 47	2	4
+51	3	5
+52	9	5
+53	2	5
+54	11	6
+55	12	6
+56	10	6
+57	9	6
+58	5	6
+59	2	6
+60	3	6
 \.
 
 
@@ -1772,7 +1766,7 @@ COPY autenticacion_usuario_groups (id, usuario_id, group_id) FROM stdin;
 -- Name: autenticacion_usuario_groups_id_seq; Type: SEQUENCE SET; Schema: public; Owner: zar
 --
 
-SELECT pg_catalog.setval('autenticacion_usuario_groups_id_seq', 47, true);
+SELECT pg_catalog.setval('autenticacion_usuario_groups_id_seq', 60, true);
 
 
 --
@@ -1933,88 +1927,7 @@ COPY auth_permission (id, name, content_type_id, codename) FROM stdin;
 92	Puede borrar group object permission	27	borrar_groupobjectpermission
 93	Puede crear lineas base	11	crear_Linea_Base
 142	Modificar Item de LB	16	credencial
-143	Can add item relacion	17	add_itemrelacion
-144	Can change item relacion	17	change_itemrelacion
-145	Can delete item relacion	17	delete_itemrelacion
-146	Can add campo numero	18	add_camponumero
-147	Can change campo numero	18	change_camponumero
-148	Can delete campo numero	18	delete_camponumero
-149	Can add campo texto corto	19	add_campotextocorto
-150	Can change campo texto corto	19	change_campotextocorto
-151	Can delete campo texto corto	19	delete_campotextocorto
-152	Can add campo texto largo	20	add_campotextolargo
-153	Can change campo texto largo	20	change_campotextolargo
-154	Can delete campo texto largo	20	delete_campotextolargo
-155	Can add campo file	21	add_campofile
-156	Can change campo file	21	change_campofile
-157	Can delete campo file	21	delete_campofile
-158	Can add campo imagen	22	add_campoimagen
-159	Can change campo imagen	22	change_campoimagen
-160	Can delete campo imagen	22	delete_campoimagen
-161	Can add linea base	23	add_lineabase
-162	Can change linea base	23	change_lineabase
-163	Can delete linea base	23	delete_lineabase
-164	Can add solicitud cambios	24	add_solicitudcambios
-165	Can change solicitud cambios	24	change_solicitudcambios
-166	Can delete solicitud cambios	24	delete_solicitudcambios
-167	Can add votacion	25	add_votacion
-168	Can change votacion	25	change_votacion
-169	Can delete votacion	25	delete_votacion
-170	Can add user object permission	26	add_userobjectpermission
-171	Can change user object permission	26	change_userobjectpermission
-172	Can delete user object permission	26	delete_userobjectpermission
-173	Can add group object permission	27	add_groupobjectpermission
-174	Can change group object permission	27	change_groupobjectpermission
-175	Can delete group object permission	27	delete_groupobjectpermission
-176	Can add permission	1	add_permission
-177	Can change permission	1	change_permission
-178	Can delete permission	1	delete_permission
-179	Can add group	2	add_group
-180	Can change group	2	change_group
-181	Can delete group	2	delete_group
-182	Can add content type	3	add_contenttype
-183	Can change content type	3	change_contenttype
-184	Can delete content type	3	delete_contenttype
-185	Can add session	4	add_session
-186	Can change session	4	change_session
-187	Can delete session	4	delete_session
-188	Can add log entry	5	add_logentry
-189	Can change log entry	5	change_logentry
-190	Can delete log entry	5	delete_logentry
-191	Can add revision	6	add_revision
-192	Can change revision	6	change_revision
-193	Can delete revision	6	delete_revision
-194	Can add version	7	add_version
-195	Can change version	7	change_version
-196	Can delete version	7	delete_version
-197	Can add user	8	add_usuario
-198	Can change user	8	change_usuario
-199	Can delete user	8	delete_usuario
-200	Can add proyecto	9	add_proyecto
-201	Can change proyecto	9	change_proyecto
-202	Can delete proyecto	9	delete_proyecto
-203	Can add usuarios vinculados proyectos	10	add_usuariosvinculadosproyectos
-204	Can change usuarios vinculados proyectos	10	change_usuariosvinculadosproyectos
-205	Can delete usuarios vinculados proyectos	10	delete_usuariosvinculadosproyectos
-206	Can add fase	11	add_fase
-207	Can change fase	11	change_fase
-208	Can delete fase	11	delete_fase
 209	Puede consultar lineas base	11	consultar_Lineas_Base
-210	Can add permiso	12	add_permiso
-211	Can change permiso	12	change_permiso
-212	Can delete permiso	12	delete_permiso
-213	Can add rol	13	add_rol
-214	Can change rol	13	change_rol
-215	Can delete rol	13	delete_rol
-216	Can add TipoItem	14	add_tipoitem
-217	Can change TipoItem	14	change_tipoitem
-218	Can delete TipoItem	14	delete_tipoitem
-219	Can add Atributo	15	add_atributo
-220	Can change Atributo	15	change_atributo
-221	Can delete Atributo	15	delete_atributo
-222	Can add item base	16	add_itembase
-223	Can change item base	16	change_itembase
-224	Can delete item base	16	delete_itembase
 \.
 
 
@@ -2094,7 +2007,9 @@ umvyqta8a054nfnk94j8szo5syu8yrub	Y2JhZDRlZTE5MmEwOWZhOGQ4MDczNDA3NTE0NjIxMDZhMjV
 ced02l4e2wycmj41vsyacnsd2uqiv7p5	Y2JhZDRlZTE5MmEwOWZhOGQ4MDczNDA3NTE0NjIxMDZhMjVhZDc1ZDp7fQ==	2014-07-03 21:09:24.517482-04
 kkqfygseymueh8ix6gye8c1mxla8xim0	Y2JhZDRlZTE5MmEwOWZhOGQ4MDczNDA3NTE0NjIxMDZhMjVhZDc1ZDp7fQ==	2014-07-03 21:10:01.55095-04
 b0rxukirzies0rh9ip7n6rec1gah6g1n	Y2JhZDRlZTE5MmEwOWZhOGQ4MDczNDA3NTE0NjIxMDZhMjVhZDc1ZDp7fQ==	2014-07-03 21:11:27.374672-04
-dwqjlw3eywz25lqked4fs14bby4da66n	Yjk4ODJiYTk2NmRhOTE3NDQwOGQzNWVhODVlNzhkMjEzNDQwZjM5Njp7Il9hdXRoX3VzZXJfYmFja2VuZCI6ImRqYW5nby5jb250cmliLmF1dGguYmFja2VuZHMuTW9kZWxCYWNrZW5kIiwiX2F1dGhfdXNlcl9pZCI6MiwiX3Nlc3Npb25fZXhwaXJ5IjowfQ==	2014-07-03 21:11:52.426854-04
+mfhz5c46o0z4ou5dmc2e1gawjoebmh47	ZDlkMTk5MjQyZTBjMjBmMDdhYjdhMjQzNWE3NTUyMmJlNzIyMGFlNzp7Il9hdXRoX3VzZXJfYmFja2VuZCI6ImRqYW5nby5jb250cmliLmF1dGguYmFja2VuZHMuTW9kZWxCYWNrZW5kIiwiX2F1dGhfdXNlcl9pZCI6MywiX3Nlc3Npb25fZXhwaXJ5IjowfQ==	2014-07-03 23:32:48.932933-04
+wv1jed8ljvbbkqbkrfny9l9ws738tttt	ZDlkMTk5MjQyZTBjMjBmMDdhYjdhMjQzNWE3NTUyMmJlNzIyMGFlNzp7Il9hdXRoX3VzZXJfYmFja2VuZCI6ImRqYW5nby5jb250cmliLmF1dGguYmFja2VuZHMuTW9kZWxCYWNrZW5kIiwiX2F1dGhfdXNlcl9pZCI6MywiX3Nlc3Npb25fZXhwaXJ5IjowfQ==	2014-07-04 00:31:19.279491-04
+7p1yrvb4qbl1khnosmsfspkiaws4tb10	Y2JhZDRlZTE5MmEwOWZhOGQ4MDczNDA3NTE0NjIxMDZhMjVhZDc1ZDp7fQ==	2014-07-03 22:25:09.397213-04
 \.
 
 
@@ -2173,6 +2088,9 @@ COPY guardian_groupobjectpermission (id, permission_id, content_type_id, object_
 72	93	11	1	9
 73	209	11	1	4
 74	209	11	2	4
+75	209	11	12	6
+76	209	11	24	6
+77	209	11	7	6
 \.
 
 
@@ -2180,7 +2098,7 @@ COPY guardian_groupobjectpermission (id, permission_id, content_type_id, object_
 -- Name: guardian_groupobjectpermission_id_seq; Type: SEQUENCE SET; Schema: public; Owner: zar
 --
 
-SELECT pg_catalog.setval('guardian_groupobjectpermission_id_seq', 74, true);
+SELECT pg_catalog.setval('guardian_groupobjectpermission_id_seq', 77, true);
 
 
 --
