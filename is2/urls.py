@@ -112,7 +112,7 @@ urlpatterns = patterns('',
                        url(r'^media/(?P<path>.*)$', 'django.views.static.serve', {'document_root':settings.MEDIA_ROOT, 'show_indexes': True} ),
                        url(r'^veritem/(?P<id_item>\d+)$', verItem ),
                        url(r'^veritem/(?P<path>.*)$', 'django.views.static.serve', {'document_root':settings.MEDIA_ROOT, 'show_indexes': True} ),
-                       url(r'^finrevisionitem/(?P<id_fase>\d+)/(?P<id_item>\d+)$', finRevisionItem ),
+                       url(r'^finrevisionitem/(?P<id_item>\d+)$', finRevisionItem ),
 
 
 ###################################################### LINEA BASE ######################################################
