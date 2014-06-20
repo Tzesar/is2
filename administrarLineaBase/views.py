@@ -141,7 +141,7 @@ def generarGrafo(id_item):
     hijos = []
 
     calculoImpacto(padres, hijos, costo, tiempo, grafo)
-    direccion = MEDIA_ROOT + 'grafos/' + item.nombre
+    direccion = MEDIA_ROOT + 'grafos/' + item.nombre + '_' + str(item.id)
     grafo.write(direccion, format='png')
 
     return
