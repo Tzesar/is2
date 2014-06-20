@@ -35,7 +35,7 @@
                                     {% for item in items %}
                                         <tr>
                                         {% if item.linea_base_id == lineas.id %}
-                                                <td style="width: 20%" ><a href='#'>{{item.nombre}}</a></td>
+                                                <td style="width: 20%" ><a href="{% url 'administrarItems.views.verItem' item %}">{{item.nombre}}</a></td>
                                                 <td style="width: 10%">{{ item.version }}</td>
                                                 <td style="width: 60%">{{ item.descripcion }}</td>
                                         {% endif %}
@@ -47,7 +47,7 @@
                     </div>
                 {% endfor %}
                 <div>
-                    <a href="{% url 'administrarProyectos.views.vistaDesarrollo' proyecto.id  %}" class="btn btn-md btn-success">Finalizar Revisión</a>
+                    <a href="{% url 'administrarProyectos.views.vistaDesarrollo' proyecto.id  %}" class="btn btn-md btn-success">Volver Atrás</a>
                 </div>
             </div>
         </div>

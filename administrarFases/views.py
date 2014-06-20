@@ -275,6 +275,8 @@ def workphase(request, id_fase):
                 error = request.session.pop('error')
             if 'messages' in request.session:
                 messages = request.session.pop('messages')
+
+            request.session['retorno'] = '/workphase/' + str(id_fase)
             return render(request, 'fase/workPhase.html', {'proyecto': proyectoTrabajo, 'fase': faseTrabajo,
                                                            'user': request.user, 'listaItems': itemsFase,
                                                            'relaciones': relaciones.items(), 'error': error,
@@ -434,7 +436,9 @@ def verFase(request, id_fase):
         atributos = Atributo.objects.filter(tipoDeItem=t)
         tiposItem[t] = atributos
 
+    retorno = request.session.pop('retorno')
+
     return render(request, 'fase/infophase.html', {'proyecto': fase.proyecto, 'fase': fase, 'user': request.user,
-                                                   'tiposItem': tiposItem.items()})
+                                                   'tiposItem': tiposItem.items(), 'pagina_retorno': retorno})
 
 

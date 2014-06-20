@@ -10,7 +10,8 @@ from django_tables2 import RequestConfig
 from django.core.exceptions import ObjectDoesNotExist
 from django.utils import timezone
 
-from administrarItems.models import ItemBase
+from administrarItems.models import ItemBase, ItemRelacion
+from administrarLineaBase.models import SolicitudCambios, LineaBase
 from administrarProyectos.forms import NewProjectForm, ChangeProjectForm, setUserToProjectForm, ChangeProjectLeaderForm
 from administrarProyectos.models import UsuariosVinculadosProyectos, Proyecto
 from administrarProyectos.tables import ProyectoTablaAdmin
@@ -251,7 +252,7 @@ def workProject(request, id_proyecto):
         proyecto = Proyecto.objects.get(id=id_proyecto)
         usuario = request.user
         fases = Fase.objects.filter(proyecto=proyecto).order_by('nro_orden')
-
+        request.session['retorno'] = '/workproject/' + str(id_proyecto)
         if usuario == proyecto.lider_proyecto:
             cantFases = fases.count()
             roles = Rol.objects.filter(proyecto=proyecto)[1:]
@@ -333,6 +334,8 @@ def vistaDesarrollo(request, id_proyecto):
         error = request.session.pop('error')
     if 'messages' in request.session:
         messages = request.session.pop('messages')
+
+    request.session['retorno'] = '/desarrollo/' + str(id_proyecto)
     return render(request, 'proyecto/workProject.html', {'user': request.user, 'proyecto': proyecto, 'fases': fases,
                                                          'itemsPorFase': itemsPorFase.items(), 'error': error, 'messages': messages})
 
@@ -404,7 +407,6 @@ def cancelProject(request, id_proyecto):
     proyecto = Proyecto.objects.get(pk=id_proyecto)
 
     messages = []
-    #TODO: Insertar mensajes de exitos/fallos en el template
     if proyecto.estado == 'ANU':
         messages.append('No se puede anular un proyecto que ya se encuentra anulado')
         error = 1
@@ -452,3 +454,50 @@ def finProject(request, id_proyecto):
     request.session['messages'] = messages
     request.session['error'] = error
     return HttpResponseRedirect(reverse('administrarProyectos.views.workProject', kwargs={'id_proyecto': id_proyecto}))
+
+
+def infoProject(request, id_proyecto):
+    proyectoTrabajo = Proyecto.objects.get(pk=id_proyecto)
+    if request.user.is_superuser:
+        return render(request, 'proyecto/infoProjectAdmin.html', {'user': request.user, 'project': proyectoTrabajo })
+    else:
+        request.session['retorno'] = '/infoproject/' + str(id_proyecto)
+        fases = Fase.objects.filter(proyecto=proyectoTrabajo).order_by('nro_orden')
+
+        itemsporfase = {}
+        for fase in fases:
+            tipos = TipoItem.objects.filter(fase=fase)
+            items = ItemBase.objects.filter(tipoitem__in=tipos)
+
+            if items:
+                relaciones = {}
+                for item in items:
+                    try:
+                        itemRelacionado = ItemRelacion.objects.get(itemHijo=item).itemPadre
+                        relaciones[item] = itemRelacionado
+                    except:
+                        relaciones[item] = None
+                itemsporfase[fase] = relaciones.items()
+            else:
+                itemsporfase[fase] = None
+
+        comite_nombre = "ComiteDeCambios-" + str(proyectoTrabajo.id)
+        comite = Group.objects.get(name=comite_nombre)
+        comite_miembros = comite.user_set.all()
+
+        solicitudes = SolicitudCambios.objects.filter(fase__in=fases)
+        items_solicitud = {}
+        if solicitudes:
+            for solicitud in solicitudes:
+                items = solicitud.items.all()
+                items_solicitud[solicitud] = items
+
+        lineasBase = LineaBase.objects.filter(fase__in=fases)
+        lineasbase_items = {}
+        if lineasBase:
+            for linea in lineasBase:
+                items = ItemBase.objects.filter(linea_base=linea)
+                lineasbase_items[linea] = items
+        return render(request, 'proyecto/infoProject.html', {'user': request.user, 'project': proyectoTrabajo, 'fases': fases,
+                                                             'itemsporfase': itemsporfase.items(), 'miembrosComite': comite_miembros,
+                                                             'items_solicitud': items_solicitud.items(), 'lineasBase': lineasbase_items.items()})

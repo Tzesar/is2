@@ -35,7 +35,7 @@ def admin_requerido(function):
         """
         if request.user.is_superuser:
             return function(request, *args, **kwargs)
-        return HttpResponseRedirect('/acceso_denegado/1')
+        return HttpResponseRedirect('/denegado/1')
     return es_admin
 
 

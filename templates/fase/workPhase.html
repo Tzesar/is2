@@ -207,7 +207,7 @@
                                             <a href="{% url 'administrarItems.views.finRevisionItem' fase.id  item.id %}" class="btn btn-xs btn-info">Fin Revision</a>
                                             <a href="{% url 'administrarItems.views.historialItemBase' fase.id item.id %}" class="btn btn-xs btn-warning">Historial de Versiones</a>
                                         {% elif proyecto.lider_proyecto == user %}
-                                            <a href="{% url 'administrarItems.views.verItem' item.id %}" class="btn btn-xs btn-success">Ver ítem</a>
+                                            <a href="{% url 'administrarItems.views.workItem' item.id %}" class="btn btn-xs btn-success">Ver ítem</a>
                                             <a href="{% url 'administrarItems.views.finRevisionItem' fase.id  item.id %}" class="btn btn-xs btn-info">Fin Revision</a>
                                             <a href="{% url 'administrarItems.views.historialItemBase' fase.id item.id %}" class="btn btn-xs btn-warning">Historial de Versiones</a>
                                         {% elif "consultar_Item" in permisosFase %}

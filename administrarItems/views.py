@@ -869,11 +869,14 @@ def verItem(request, id_item):
     archivos = CampoFile.objects.filter(item=item)
 
     generarGrafo(id_item)
-    grafoRelaciones = '/static/grafos/' + item.nombre
+    grafoRelaciones = '/static/grafos/' + item.nombre + '_' + str(id_item)
+
+    retorno = request.session.pop('retorno')
 
     return render(request, 'item/veritem.html', {'proyecto': proyecto, 'fase': fase, 'item': item, 'user': request.user,
                                                  'numericos': numericos, 'cadenas': cadenas, 'textosextensos': textos,
-                                                 'imagenes': imagenes, 'archivos': archivos, 'grafo': grafoRelaciones})
+                                                 'imagenes': imagenes, 'archivos': archivos, 'grafo': grafoRelaciones,
+                                                 'pagina_retorno': retorno})
 
 
 @lider_miembro_comite_requerido("id_item")

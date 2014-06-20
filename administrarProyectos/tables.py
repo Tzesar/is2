@@ -18,6 +18,12 @@ class ProyectoTablaAdmin(tables.Table):
     def render_modificar(self, record):
         modificar_url = reverse("administrarProyectos.views.changeProject", args=[record.pk])
         cancelar_url = reverse("administrarProyectos.views.cancelProject", args=[record.pk])
+        info_url = reverse("administrarProyectos.views.infoProject", args=[record.pk])
+        proyecto = Proyecto.objects.get(pk=record.pk)
+        if proyecto.estado == 'ANU' or proyecto.estado == 'FIN':
+            return mark_safe('<span data-toggle="tooltip" title="Informacion del Proyecto" id="tooltip"> '
+                             '<a href="%s" class="btn btn-sm btn-primary"><span class="glyphicon glyphicon-eye-open"></span></a></span> '
+                              % info_url)
         return mark_safe('<span data-toggle="tooltip" title="Modificar Proyecto" id="tooltip"> '
                          '<a href="%s" class="btn btn-sm btn-primary"><span class="glyphicon glyphicon-wrench"></span></a></span> '
                          % modificar_url +
@@ -47,10 +53,20 @@ class ProyectoTabla(tables.Table):
 
     def render_modificar(self, record):
         modificar_url = reverse("administrarProyectos.views.workProject", args=[record.pk])
-        return mark_safe('<span data-toggle="tooltip" title="Trabajar en Proyecto" id="tooltip"> '
-                         '<a href="%s" class="text-info"><span class="glyphicon glyphicon-eye-open"></span></a> '
-                         % modificar_url )
-
+        info_url = reverse("administrarProyectos.views.infoProject", args=[record.pk])
+        proyecto = Proyecto.objects.get(pk=record.pk)
+        if proyecto.estado == 'ACT' or proyecto.estado == 'PEN':
+            return mark_safe('<span data-toggle="tooltip" title="Trabajar en Proyecto" id="tooltip"> '
+                             '<a href="%s" class="btn btn-sm btn-primary"><span class="glyphicon glyphicon-forward"></span></a> '
+                             % modificar_url )
+        elif proyecto.estado == 'ANU':
+            return mark_safe('<span data-toggle="tooltip" title="Informacion del Proyecto" id="tooltip"> '
+                             '<a href="%s" class="btn btn-sm btn-danger"><span class="glyphicon glyphicon-eye-open"></span></a> '
+                             % info_url )
+        elif proyecto.estado == 'FIN':
+            return mark_safe('<span data-toggle="tooltip" title="Informacion del Proyecto" id="tooltip"> '
+                             '<a href="%s" class="btn btn-sm btn-success"><span class="glyphicon glyphicon-eye-open"></span></a> '
+                             % info_url )
 
 
     class Meta:

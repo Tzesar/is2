@@ -190,6 +190,7 @@ def visualizarLB(request, id_fase):
     LB = LineaBase.objects.filter(fase=fase)
     items = ItemBase.objects.filter(linea_base__in=LB)
     if LB:
+        request.session['retorno'] = '/visualizarlb/' + str(id_fase)
         return render(request, 'lineabase/visualizarlb.html', {'user': request.user, 'proyecto': proyecto, 'fase': fase,
                                                                'items': items, 'lb': LB})
     else:
@@ -282,6 +283,7 @@ def workApplication(request, id_fase):
         error = request.session.pop('error')
     if 'messages' in request.session:
         messages = request.session.pop('messages')
+    request.session['retorno'] = '/workapplication/' + str(id_fase)
     return render(request, 'lineabase/workapplication.html', {'proyecto': proyecto, 'fase': fase, 'user': usuario,
                                                               'misSolicitudes': misSolicitudes_lista.items(),
                                                               'error': error, 'messages': messages,
@@ -315,9 +317,10 @@ def visualizarSolicitud(request, id_solicitud, id_fase):
         direccion = '/static/grafos/' + item.nombre + '_' + str(id_solicitud)
         items_grafos[item] = direccion
 
+    retorno = request.session.pop('retorno')
     return render(request, 'lineabase/visualizarsolicitud.html', {'user': request.user, 'fase': fase,
                                                                   'proyecto': proyecto, 'solicitud': solicitud,
-                                                                  'items': items_grafos.items(),
+                                                                  'items': items_grafos.items(), 'pagina_retorno': retorno,
                                                                   'votaciones': resultado_votacion})
 
 

@@ -1,0 +1,257 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+
+    {% block cssAdicional %}
+        <link href="{% static "bootstrap/css/autocomplete.css" %}" rel="stylesheet">
+    {% endblock cssAdicional %}
+
+    {% block title %}Informaciones sobre el Proyecto: {{ project.nombre }}{% endblock %}
+    {% block errorBlock %}
+        {% if messages %}
+            <div class="container-fluid">
+                <div class="alert {% if error == 1 %} alert-danger {% else %} alert-success {% endif %} alert-dismissable">
+                    <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+                    <ul>
+                        {% for message in messages %}
+                            <li>{{ message }}</li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            </div>
+        {% endif %}
+    {% endblock errorBlock %}
+
+    {% block breadContent %}
+            <li><a href="{% url 'autenticacion.views.main' %}">Inicio</a></li>
+            <li class="active">{{ project.nombre|capfirst }}</li>
+    {% endblock breadContent %}
+
+    {% block panelCentral %}{% block padTop %}{% endblock padTop %}
+        <div class="panel-heading">
+            <h1 class="text-info" style="display: inline-block">Proyecto: {{ project.nombre|capfirst }}</h1>
+        </div>
+        <div class="panel-body">
+            <div class="list-group-item-info">
+                <p class="text-center" style="font-size: 1.2em"><b>DATOS GENERALES</b></p>
+            </div>
+            <div class="panel panel-primary">
+                <div class="panel-heading">
+                    DATOS DEL PROYECTO
+                </div>
+                <div class="list-group-item">
+                    <div class="row">
+                        <div class="col-sm-3 col-md-3 col-lg-3">
+                            <span class="text-primary"><i>Líder de Proyecto:</i></span>
+                        </div>
+                        <div class="col-sm-9 col-md-9 col-lg-9">
+                            {{ project.lider_proyecto.get_full_name }}
+                        </div>
+                   </div>
+                </div>
+                <div class="list-group-item">
+                    <div class="row">
+                        <div class="col-sm-3 col-md-3 col-lg-3">
+                            <span class="text-primary"><i>Descripción:</i></span>
+                        </div>
+                        <div class="col-sm-9 col-md-9 col-lg-9">
+                            {{ project.descripcion }}
+                        </div>
+                   </div>
+                </div>
+                <div class="list-group-item">
+                    <div class="row">
+                        <div class="col-sm-3 col-md-3 col-lg-3">
+                            <span class="text-primary"><i>Estado:</i></span>
+                        </div>
+                        <div class="col-sm-9 col-md-9 col-lg-9">
+                            {{ project.get_estado_display }}
+                        </div>
+                   </div>
+                </div>
+                <div class="list-group-item">
+                    <div class="row">
+                        <div class="col-sm-3 col-md-3 col-lg-3">
+                            <span class="text-primary"><i>Creado:</i></span>
+                        </div>
+                        <div class="col-sm-9 col-md-9 col-lg-9">
+                            {{ project.fecha_creacion }}
+                        </div>
+                   </div>
+                </div>
+                <div class="list-group-item">
+                    <div class="row">
+                        <div class="col-sm-3 col-md-3 col-lg-3">
+                            <span class="text-primary"><i>Fecha de Inicio:</i></span>
+                        </div>
+                        <div class="col-sm-9 col-md-9 col-lg-9">
+                            {{ project.fecha_inicio }}
+                        </div>
+                   </div>
+                </div>
+                <div class="list-group-item">
+                    <div class="row">
+                        <div class="col-sm-3 col-md-3 col-lg-3">
+                            <span class="text-primary"><i>Fecha de Finalización:</i></span>
+                        </div>
+                        <div class="col-sm-9 col-md-9 col-lg-9">
+                            {% if project.fecha_fin %}{{ project.fecha_fin }}{% else %}--{% endif %}
+                        </div>
+                   </div>
+                </div>
+            </div>
+            <div class="panel panel-primary">
+                <div class="panel-heading">
+                    FASES DEL PROYECTO
+                </div>
+                {% for fase in fases %}
+                    <div class="list-group-item">
+                        <div class="row">
+                            <div class="col-sm-4 col-md-4 col-lg-4">
+                                <span data-toggle="tooltip" title="Ver Fase" id="tooltip">
+                                    <a href="{% url 'administrarFases.views.verFase' fase.id %}">
+                                        <span class="text-muted">[{{ fase.nro_orden }}]</span>
+                                    </a>
+                                </span>
+                                <span class="text-primary"><i>{{ fase.nombre }}</i></span>
+                                <span class="text-muted"><i>(Estado: {{ fase.get_estado_display }})</i></span>
+                            </div>
+                            <div class="col-sm-8 col-md-8 col-lg-8">
+                                {{ fase.descripcion }}
+
+                            </div>
+                       </div>
+                    </div>
+                {% endfor %}
+            </div>
+            <div class="list-group-item-info">
+                <p class="text-center" style="font-size: 1.2em"><b>DETALLE DE ITEMS GESTIONADOS</b></p>
+            </div>
+            {% for fase, relaciones in itemsporfase %}
+                <div class="panel panel-primary">
+                    <div class="panel-heading">
+                        ITEMS DE LA FASE: {{ fase.nombre|upper }}
+                    </div>
+                    {% if relaciones %}
+                        {% for item, padre in relaciones %}
+                            <div class="list-group-item">
+                                <div class="row">
+                                    <div class="col-sm-4 col-md-4 col-lg-4">
+                                        <span class="text-muted">[ID: {{ item.id }}]</span>
+                                        <span class="text-primary"><i>{{ item.nombre }}</i></span>
+                                        <br>
+                                        <a href="{% url 'administrarItems.views.verItem' item.id %}" class="text-muted">
+                                            (Ver detalles del ítem)
+                                        </a>
+                                    </div>
+                                    <div class="col-sm-8 col-md-8 col-lg-8">
+                                        <i><u>Tipo de Ítem</u></i>: {{ item.tipoitem }}
+                                        <br><i><u>Versión</u></i>: {{ item.version }}
+                                        <br><i><u>Costo Unitario</u></i>: {{ item.costo }}
+                                        <br><i><u>Costo Temporal</u></i>: {{ item.tiempo }}
+                                        <br><i><u>Complejidad</u></i>: {{ item.complejidad }}
+                                        <br><i><u>Fecha de creación</u></i>: {{ item.fecha_creacion }}, por {{ item.usuario.get_full_name }}
+                                        <br><i><u>Última modificación</u></i>: {{ item.fecha_modificacion }}, por {{ item.usuario_modificacion.get_full_name }}
+                                        <br><i><u>Descripción</u></i>: {{ item.descripcion }}
+                                        <br><i><u>Item Relacionado</u></i>: {% if padre %}{{ padre.nombre|capfirst }}, con ID: {{ padre.id }}{% else %}Este ítem no presenata antecesores.{% endif %}
+                                    </div>
+                               </div>
+                            </div>
+                        {% endfor %}
+                    {% else %}
+                        <div class="list-group-item">
+                            No se crearon ítems en esta fase.
+                        </div>
+                    {% endif %}
+                </div>
+            {% endfor %}
+            <div class="list-group-item-info">
+                <p class="text-center" style="font-size: 1.2em"><b>DETALLE DE LA GESTIÓN DE CONFIGURACIÓN DE ITEMS</b></p>
+            </div>
+            <div class="panel panel-primary">
+                <div class="panel-heading">
+                    COMITÉ DE CAMBIOS
+                </div>
+                {% for miembro in miembrosComite %}
+                    <div class="list-group-item">
+                        <span class="text-muted">[{{ miembro.username }}]</span>
+                        <span> - {{ miembro.get_full_name }}</span>
+                    </div>
+                {% endfor %}
+            </div>
+            <div class="panel panel-primary">
+                <div class="panel-heading">
+                    LÍNEAS BASE ESTABLECIDAS
+                </div>
+                {% if lineasBase %}
+                    {% for linea, items in lineasBase %}
+                        <div class="list-group-item">
+                            <div class="row">
+                                <div class="col-sm-4 col-md-4 col-lg-4">
+                                    <span data-toggle="tooltip" title="Detalle de Línea Base" id="tooltip">
+                                        <a href="{% url 'administrarLineaBase.views.visualizarLB' linea.fase.id %}"
+                                            <span class="text-primary">ID de Línea Base: {{ linea.id }}</span>
+                                        </a>
+                                    </span>
+                                    <br>
+                                    <span class="text-muted">Fase: {{ linea.fase }}</span>
+                                </div>
+                                <div class="col-sm-8 col-md-8 col-lg-8">
+                                    <i><u>Fecha de Creación</u></i>: {{ linea.fecha_creacion }}
+                                    <br><i><u>Items involucrados</u></i>: {% for item in items %}
+                                                                                {{ item.nombre }} [ID: {{ item.id }}] {% if not forloop.last %},{% endif %}
+                                                                          {% endfor %}
+                                    <br><i><u>Observaciones</u></i>: {{ linea.observaciones }}
+                                </div>
+                            </div>
+                        </div>
+                    {% endfor %}
+                {% else %}
+                    <div class="list-group-item">
+                        No se establecieron líneas base en el proyecto.
+                    </div>
+                {% endif %}
+            </div>
+            <div class="panel panel-primary">
+                <div class="panel-heading">
+                    SOLICITUDES DE CAMBIO
+                </div>
+                {% if items_solicitud %}
+                    {% for solicitud, items in items_solicitud %}
+                        <div class="list-group-item">
+                            <div class="row">
+                                <div class="col-sm-4 col-md-4 col-lg-4">
+                                    <span data-toggle="tooltip" title="Detalle de Solicitud" id="tooltip">
+                                        <a href="{% url 'administrarLineaBase.views.visualizarSolicitud' solicitud.id solicitud.fase.id %}"
+                                            <span class="text-primary">ID de Solicitud: {{ solicitud.id }}</span>
+                                        </a>
+                                    </span>
+                                    <br>
+                                    <span class="text-muted">Estado: {{ solicitud.get_estado_display }}</span>
+                                </div>
+                                <div class="col-sm-8 col-md-8 col-lg-8">
+                                    <i><u>Usuario Solicitante</u></i>: {{ solicitud.usuario.get_full_name }}
+                                    <br><i><u>Fecha de Creación</u></i>: {{ solicitud.fecha_creacion }}
+                                    <br><i><u>Fase afectada</u></i>: {{ solicitud.fase }} [ID: {{ solicitud.fase.id }}]
+                                    <br><i><u>Items involucrados</u></i>: {% for item in items %}
+                                                                                {{ item.nombre }} [ID: {{ item.id }}] {% if not forloop.last %},{% endif %}
+                                                                          {% endfor %}
+                                    <br><i><u>Motivo de Solicitud</u></i>: {{ solicitud.motivo }}
+                                    <br><i><u>Costo de modificaciones</u></i>: {{ solicitud.costo }}
+                                    <br><i><u>Tiempo estimado</u></i>: {{ solicitud.tiempo }}
+                                </div>
+                            </div>
+                        </div>
+                    {% endfor %}
+                {% else  %}
+                    <div class="list-group-item">
+                        No se crearon solicitudes de cambio en el proyecto.
+                    </div>
+                {% endif %}
+            </div>
+            <a href="{% url 'autenticacion.views.main' %}" class="btn btn-md btn-success">Volver Atrás</a>
+        </div>
+    {% endblock panelCentral %}
+    {% block jsAdicional %}
+        <script src="{% static "bootstrap/js/jquery.autocomplete.min.js" %}"></script>
+        <script src="{% static "bootstrap/js/autocomplete.js" %}"></script>
+    {% endblock jsAdicional %}

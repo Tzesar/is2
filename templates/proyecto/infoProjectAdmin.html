@@ -1,0 +1,73 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+
+    {% block cssAdicional %}
+        <link href="{% static "bootstrap/css/autocomplete.css" %}" rel="stylesheet">
+    {% endblock cssAdicional %}
+
+    {% block title %}Informaciones sobre el Proyecto: {{ project.nombre }}{% endblock %}
+    {% block errorBlock %}
+        {% if messages %}
+            <div class="container-fluid">
+                <div class="alert {% if error == 1 %} alert-danger {% else %} alert-success {% endif %} alert-dismissable">
+                    <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+                    <ul>
+                        {% for message in messages %}
+                            <li>{{ message }}</li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            </div>
+        {% endif %}
+    {% endblock errorBlock %}
+
+    {% block breadContent %}
+            <li><a href="{% url 'autenticacion.views.main' %}">Inicio</a></li>
+            <li><a href="{% url 'administrarProyectos.views.projectList' %}">Proyectos</a></li>
+            <li class="active">{{ project.nombre }}</li>
+    {% endblock breadContent %}
+
+    {% block panelCentral %}{% block padTop %}{% endblock padTop %}
+        <div class="panel-heading">
+            <h1 class="text-info" style="display: inline-block">Información sobre el proyecto: {{ project.nombre|capfirst }}</h1>
+        </div>
+
+        <div class="panel-body">
+            <div class="list-group-item">
+                <div class="row">
+                    <div class="col-sm-2 col-md-2 col-lg-2">
+                        <span class="text-primary"><i>Líder de Proyecto:</i></span>
+                    </div>
+                    <div class="col-sm-10 col-md-10 col-lg-10">
+                        {{ project.lider_proyecto.get_full_name }}
+                    </div>
+               </div>
+            </div>
+            <div class="list-group-item">
+                <div class="row">
+                    <div class="col-sm-2 col-md-2 col-lg-2">
+                        <span class="text-primary"><i>Descripción:</i></span>
+                    </div>
+                    <div class="col-sm-10 col-md-10 col-lg-10">
+                        {{ project.descripcion }}
+                    </div>
+               </div>
+            </div>
+            <div class="list-group-item">
+                <div class="row">
+                    <div class="col-sm-2 col-md-2 col-lg-2">
+                        <span class="text-primary"><i>Estado:</i></span>
+                    </div>
+                    <div class="col-sm-10 col-md-10 col-lg-10">
+                        {{ project.get_estado_display }}
+                    </div>
+               </div>
+            </div>
+            <br>
+            <a href='/projectlist/' class="btn btn-md btn-success" role="button">Volver a Proyectos</a>
+        </div>
+    {% endblock panelCentral %}
+    {% block jsAdicional %}
+        <script src="{% static "bootstrap/js/jquery.autocomplete.min.js" %}"></script>
+        <script src="{% static "bootstrap/js/autocomplete.js" %}"></script>
+    {% endblock jsAdicional %}
