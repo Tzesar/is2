@@ -8,7 +8,7 @@ fi
 
 # Crear archivos .rst sobre los modulos
 echo "Creando .rst"
-sphinx-apidoc -f -o docs/ .
+sphinx-apidoc  -o docs/ .
 
 # Cambiar el titulo del archivo modules.rst
 cd docs/
