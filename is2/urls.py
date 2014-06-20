@@ -9,6 +9,7 @@ from django.contrib.auth.views import logout_then_login
 
 from administrarLineaBase.views import generarCalculoImpacto, createLB, visualizarLB, workApplication, \
     crearSolicitudCambios, cancelarSolicitudCambios, visualizarSolicitud, votarSolicitud, revocarPermisos
+from administrarReportes.views import reporte_proyecto, reporte_solicitud
 from administrarTipoItem.views import createItemType, deleteItemType, itemTypeList, changeItemType, changeAtribute,\
     createAtribute, deleteAtribute, importItemType
 from autenticacion.views import main, myLogin
@@ -108,14 +109,11 @@ urlpatterns = patterns('',
                        url(r'^validaritem/(?P<id_item>\d+)$', validarItem ),
                        url(r'^dardebajaitem/(?P<id_item>\d+)$', dardebajaItem ),
                        url(r'^restauraritem/(?P<id_item>\d+)$', restaurarItem ),
-                       url(r'^media/(?P<path>.*)$', 'django.views.static.serve',
-		                                                    {'document_root':settings.MEDIA_ROOT, 'show_indexes': True}
-                       ),
+                       url(r'^media/(?P<path>.*)$', 'django.views.static.serve', {'document_root':settings.MEDIA_ROOT, 'show_indexes': True} ),
                        url(r'^veritem/(?P<id_item>\d+)$', verItem ),
-                       url(r'^veritem/(?P<path>.*)$', 'django.views.static.serve',
-		                                                    {'document_root':settings.MEDIA_ROOT, 'show_indexes': True}
-                       ),
+                       url(r'^veritem/(?P<path>.*)$', 'django.views.static.serve', {'document_root':settings.MEDIA_ROOT, 'show_indexes': True} ),
                        url(r'^finrevisionitem/(?P<id_fase>\d+)/(?P<id_item>\d+)$', finRevisionItem ),
+
 
 ###################################################### LINEA BASE ######################################################
                        url(r'^createlb/(?P<id_fase>\d+)$', createLB ),
@@ -128,4 +126,9 @@ urlpatterns = patterns('',
                        url(r'^visualizarsolicitud/(?P<id_solicitud>\d+)/(?P<id_fase>\d+)$', visualizarSolicitud ),
                        url(r'^createvote/(?P<id_solicitud>\d+)/(?P<voto>\d+)$', votarSolicitud),
                        url(r'^revocarPermisos/(?P<id_solicitud>\d+)$', revocarPermisos ),
+
+###################################################### REPORTES ########################################################
+                       url(r'^reporte_proyecto/(?P<id_proyecto>\d+)$', reporte_proyecto ),
+                       url(r'^reporte_solicitud/(?P<id_proyecto>\d+)$', reporte_solicitud ),
+
                        )

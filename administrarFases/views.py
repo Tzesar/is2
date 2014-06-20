@@ -258,6 +258,7 @@ def workphase(request, id_fase):
         faseTrabajo = Fase.objects.get(pk=id_fase)
         proyectoTrabajo = faseTrabajo.proyecto
         ti = TipoItem.objects.filter(fase=faseTrabajo)
+
         itemsFase = ItemBase.objects.filter(tipoitem__in=ti).order_by('fecha_creacion')
 
         relaciones = {}

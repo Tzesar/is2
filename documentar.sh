@@ -8,7 +8,7 @@ fi
 
 # Crear archivos .rst sobre los modulos
 echo "Creando .rst"
-sphinx-apidoc -o docs/ .
+sphinx-apidoc -f -o docs/ .
 
 # Cambiar el titulo del archivo modules.rst
 cd docs/
@@ -20,7 +20,7 @@ sed -i.bak s/^=$/========/ modules.rst
 echo -e "Creando archivos html\n"
 make html
 
-# Mostrar la documentacion actual
+echo "Mostramos la documentacion actual"
 cd ..
 firefox docs/_build/html/index.html &
 if [ $? -ne 0 ]; then

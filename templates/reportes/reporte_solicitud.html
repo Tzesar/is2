@@ -1,0 +1,90 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<html>
+<head>
+    <title> Reporte: Solicitudes de Cambio</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <style type="text/css">
+            @page {
+                size: {{ pagesize }};
+                margin: 2cm;
+                @frame footer {
+                    -pdf-frame-content: footerContent;
+                    bottom: 0cm;
+                    margin-left: 10cm;
+                    margin-right: 9cm;
+                    height: 1cm;
+                }
+            }
+        </style>
+</head>
+<body lang="es-ES" dir="ltr">
+    <p align="center" style="margin-top: 0.07cm; margin-bottom: 0.07cm; line-height: 100%"> <font size="6"> Facultad Politécnica - UNA </font> </p>
+    <p align="center" style="margin-top: 0.07cm; margin-bottom: 0.07cm; line-height: 100%"> <font size="5"> Ingeniería de Software II </font></p>
+    <p align="center" style="margin-top: 0.07cm; margin-bottom: 0.07cm; line-height: 100%"> <font size="4">ZAR Project Manager </font> </p>
+    <br>
+
+    <p style="margin-top: 0.85cm; margin-bottom: 0.28cm; margin-left: 1.0cm; text-transform: uppercase; line-height: 100%">
+        <font color="#7e97ad"><font face="Calibri, sans-serif"><font size="6" style="font-size: 24pt">Reporte: Solicitudes de Cambio </font></font></font></p>
+
+    <p style=" margin-left: 1.0cm; margin-right: 1.5cm; text-indent: -0.3cm; margin-top: 0.64cm; margin-bottom: 0.42cm; background: #7e97ad; border: 1px solid #7e97ad; padding: 0.14cm 0.51cm; text-transform: uppercase; line-height: 100%; page-break-inside: avoid; page-break-before: auto; page-break-after: avoid">
+        <font color="#ffffff"><font face="Calibri, sans-serif"><font size="4" style="font-size: 11pt">SOLICITUDES EN EL PROYECTO</font></font></font></p>
+
+    {% for fase, solicitudes in solicitudesporfase %}
+        <p style="margin-top: 0.85cm; margin-bottom: 0.28cm; margin-left: 1.0cm; text-transform: uppercase; line-height: 100%">
+        <font color="#7e97ad"><font face="Calibri, sans-serif"><font size="4" style="font-size: 24pt"> Fase: {{ fase.nombre }} </font></font></font></p>
+
+        {# ITEMS #}
+        <table class="table" cellpadding="2" cellspacing="0">
+        <thead>
+            <tr>
+                <td width="5%" style=" margin-left: 1.5cm; border-top: none; border-bottom: none; border-left: none; border-right: none; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0cm; padding-right: 0cm">
+                    <p align="center" style="margin-top: 0.07cm; text-transform: uppercase">
+                    <font color="#577188"><font face="Calibri, sans-serif">ID</font></font></p>
+                </td>
+                <td width="25%" style="border-top: none; border-bottom: none; border-left: none; border-right: none; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm">
+                    <p align="center" style="margin-top: 0.07cm; text-transform: uppercase">
+                    <font color="#577188"><font face="Calibri, sans-serif">USUARIO</font></font></p>
+                </td>
+                <td width="40%" style="border-top: none; border-bottom: none; border-left: none; border-right: none; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0cm; padding-right: 0cm">
+                    <p align="center" style="margin-top: 0.07cm; text-transform: uppercase">
+                    <font color="#577188"><font face="Calibri, sans-serif">MOTIVO</font></font></p>
+                </td>
+                <td width="15%" style="border-top: none; border-bottom: none; border-left: none; border-right: none; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0cm; padding-right: 0cm">
+                    <p align="center" style="margin-top: 0.07cm; text-transform: uppercase">
+                    <font color="#577188"><font face="Calibri, sans-serif">ÍTEMS</font></font></p>
+                </td>
+                <td width="15%" style="border-top: none; border-bottom: none; border-left: none; border-right: none; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0cm; padding-right: 0cm">
+                    <p align="center" style="margin-top: 0.07cm; text-transform: uppercase">
+                    <font color="#577188"><font face="Calibri, sans-serif">ESTADO</font></font></p>
+                </td>
+            </tr>
+        </thead>
+        <tbody>
+            {% for solicitud, items in solicitudes %}
+                <tr>
+                    <td width="5%" style=" margin-left: 1.5cm; border-top: none; border-bottom: none; border-left: none; border-right: none; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0cm; padding-right: 0cm">
+                        <p align="center" style="margin-top: 0.07cm; text-transform: uppercase">{{ solicitud.id }}</td>
+                    <td width="25%" style="border-top: none; border-bottom: none; border-left: none; border-right: none; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.3cm; padding-right: 0.3cm">
+                        <p align="center" style="margin-top: 0.07cm; text-transform: uppercase">{{ solicitud.usuario.get_full_name }}</td>
+                    <td width="35%" style="border-top: none; border-bottom: none; border-left: none; border-right: none; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0cm; padding-right: 0cm">
+                        <p align="justify" style="margin-top: 0.07cm; text-transform: uppercase">{{ solicitud.motivo }}</td>
+                    <td width="15%" style="border-top: none; border-bottom: none; border-left: none; border-right: none; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0cm; padding-right: 0cm">
+                        <p align="center" style="margin-top: 0.07cm; text-transform: uppercase">
+                        {% for item in items %}
+                            {{ item.nombre }}
+                            {% if not forloop.last %} <br> {% endif %}
+                        {% endfor %}
+                    </td>
+                    <td width="15%" style="border-top: none; border-bottom: none; border-left: none; border-right: none; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0cm; padding-right: 0cm">
+                        <p align="center" style="margin-top: 0.07cm; text-transform: uppercase">{{ solicitud.estado }}
+                    </td>
+                    </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    {% endfor %}
+<div id="footerContent">
+	<big>Pagina <pdf:pagenumber></big>
+</div>
+</body>
+</html>
