@@ -104,6 +104,8 @@ def calculoImpacto(padres, hijos, costo, tiempo, grafo):
     if padres:
         padre = padres.pop()
         item = ItemBase.objects.get(pk=padre)
+        node_padre = pydot.Node(item.nombre)
+        grafo.add_node(node_padre)
         costo.append(item.costo)
         tiempo.append(item.tiempo)
 
@@ -113,7 +115,9 @@ def calculoImpacto(padres, hijos, costo, tiempo, grafo):
 
         for articulo in item_hijos:
             itemHijo = ItemBase.objects.get(pk=articulo)
-            arista = pydot.Edge(item.nombre, itemHijo.nombre)
+            node_hijo = pydot.Node(itemHijo.nombre)
+            grafo.add_node(node_hijo)
+            arista = pydot.Edge(node_padre, node_hijo)
             grafo.add_edge(arista)
 
         calculoImpacto(padres, hijos, costo, tiempo, grafo)
