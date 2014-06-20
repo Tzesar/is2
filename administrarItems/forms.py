@@ -87,7 +87,6 @@ class modificarAtributosBasicosForm(forms.ModelForm):
         }
 
 
-#TODO: Eliminar si ya no se usa
 class campoEnteroForm(forms.ModelForm):
     """
     Este es el formulario para la creacion de campos enteros

@@ -79,6 +79,7 @@ class ItemRelacion(models.Model):
 
 reversion.register(ItemRelacion)
 
+
 class CampoNumero(models.Model):
     """
     *Modelo especifícado para todos los atributos que pertenecen al tipo* ``Numérico``

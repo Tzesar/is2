@@ -44,7 +44,8 @@ class SolicitudCambios(models.Model):
         ('VOT', 'En votación'),
         ('ACP', 'Aceptado'),
         ('RCH', 'Rechazado'),
-        ('CAN', 'Cancelado'), )
+        ('CAN', 'Cancelado'),
+        ('EJC', 'Ejecutado'), )
 
     usuario = models.ForeignKey(Usuario)
     fase = models.ForeignKey(Fase)
@@ -57,7 +58,11 @@ class SolicitudCambios(models.Model):
     tiempo = models.IntegerField(help_text='Tiempo total empleado en realizar las modificaciones')
 
     def __unicode__(self):
-        return self.fecha_creacion
+        return self.fase.nombre + '-' +self.usuario.username
+
+    class Meta:
+        verbose_name = 'solicitud'
+        verbose_name_plural = 'solicitudes'
 
 
 class Votacion(models.Model):

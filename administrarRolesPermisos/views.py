@@ -113,7 +113,7 @@ def encontrarFormInvalidas(formsList):
     return formsInvalidos
 
 
-@login_required
+@lider_requerido("id_proyecto")
 def modificarRol(request, id_proyecto, id_rol):
     """
     *Vista para la modificación de roles en un proyecto.*
@@ -165,9 +165,6 @@ def modificarRol(request, id_proyecto, id_rol):
                     usuarioNuevo = Usuario.objects.get(id=usuario)
                     rolGrupo.user_set.add(usuarioNuevo)
 
-                # rol = Rol(grupo=rolGrupo, proyecto=proyecto)
-                # rol.save()
-
                 messages = []
                 messages.append('Rol: '+ rol.grupo.name + ', modificado con exito.')
                 request.session['messages'] = messages
@@ -200,7 +197,7 @@ def modificarRol(request, id_proyecto, id_rol):
                                                    'asignarUsuariosForm': asignarUsuariosForm, })
 
 
-@login_required
+@lider_requerido("id_proyecto")
 def eliminarRol(request, id_proyecto, id_rol):
     """
     *Vista para la eliminación de roles en un proyecto.*
@@ -217,7 +214,7 @@ def eliminarRol(request, id_proyecto, id_rol):
     rol.grupo.delete()
 
     messages = []
-    messages.append('Rol: '+ rol.grupo.name + ', eliminado con exito.')
+    messages.append('Rol: ' + rol.grupo.name + ', eliminado con exito.')
     request.session['messages'] = messages
     request.session['error'] = 0
     return HttpResponseRedirect(reverse('administrarProyectos.views.workProject', kwargs={'id_proyecto': id_proyecto}))

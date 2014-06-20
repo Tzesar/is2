@@ -42,9 +42,7 @@
                 {% if misSolicitudes %}
                     <div class="panel panel-default">
                         <div class="panel-heading">
-                            <span class="text-primary">
-                                MIS SOLICITUDES
-                            </span>
+                            <span class="text-primary">MIS SOLICITUDES</span>
                         </div>
                         <div class="panel-body">
                             {% for solicitud, voto in misSolicitudes %}
@@ -69,6 +67,7 @@
                                             <p class="{% if solicitud.estado == 'ACP' %}list-group-item-success
                                                       {% elif solicitud.estado == 'RCH' %}list-group-item-danger
                                                       {% elif solicitud.estado == 'VOT' %}list-group-item-warning
+                                                      {% elif solicitud.estado == 'EJE' %}list-group-item-info
                                                       {% else %}list-group-item-gray
                                                       {% endif %}" style="font-size: 10px; line-height: 2">
                                                 <b>Información general</b><br>
@@ -113,10 +112,8 @@
 
                                             {% get_obj_perms solicitud.usuario for solicitud.items.all.0 as "permisosItem" %}
 
-                                            {% if "credencial" in permisosItem %}
-                                                {% if solicitud.fase.proyecto.lider_proyecto == user or solicitud.usuario == user %}
+                                            {% if solicitud.estado == 'ACP' and "credencial" in permisosItem and user == proyecto.lider_proyecto %}
                                                     <a href="{% url 'administrarLineaBase.views.revocarPermisos' solicitud.id %}" class="btn btn-xs btn-danger pull-right">Revocar Permisos</a>
-                                                {% endif %}
                                             {% endif %}
                                         </div>
 
@@ -132,9 +129,7 @@
                 {% if otrasSolicitudes %}
                     <div class="panel panel-default">
                         <div class="panel-heading">
-                            <span class="text-primary">
-                                SOLICITUDES DE OTROS USUARIOS
-                            </span>
+                            <span class="text-primary">SOLICITUDES DE OTROS USUARIOS</span>
                         </div>
                         <div class="panel-body">
                             {% for solicitud, voto in otrasSolicitudes %}
@@ -160,7 +155,8 @@
                                             <p class="{% if solicitud.estado == 'ACP' %}list-group-item-success
                                                       {% elif solicitud.estado == 'RCH' %}list-group-item-danger
                                                       {% elif solicitud.estado == 'VOT' %}list-group-item-warning
-                                                      {% else %}list-group-item-gray
+                                                      {% elif solicitud.estado == 'EJE' %}list-group-item-info
+                                                      {% else %}list-group-item-grey
                                                       {% endif %}" style="font-size: 10px; line-height: 2">
                                                 <b>Información general</b><br>
                                                 <b> + Estado:</b> {{ solicitud.get_estado_display }}
@@ -198,10 +194,8 @@
                                             <a href="{% url 'administrarLineaBase.views.visualizarSolicitud' solicitud.id fase.id %}" class="btn btn-xs btn-success">Ver Solicitud</a>
                                             {% get_obj_perms solicitud.usuario for solicitud.items.all.0 as "permisosItem" %}
 
-                                            {% if "credencial" in permisosItem %}
-                                                {% if solicitud.fase.proyecto.lider_proyecto == user or solicitud.usuario == user or miembro %}
+                                            {% if solicitud.estado == 'ACP' and "credencial" in permisosItem and user == proyecto.lider_proyecto %}
                                                     <a href="{% url 'administrarLineaBase.views.revocarPermisos' solicitud.id %}" class="btn btn-xs btn-danger pull-right">Revocar Permisos</a>
-                                                {% endif %}
                                             {% endif %}
                                         </div>
 

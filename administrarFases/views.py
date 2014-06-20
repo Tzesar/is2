@@ -1,22 +1,19 @@
 #encoding:utf-8
 
-from django.contrib.auth.decorators import login_required
 from django.core.urlresolvers import reverse
 from django.http import HttpResponseRedirect, Http404
-from django.template import RequestContext
 from django.shortcuts import render
 from django.utils.html import format_html
 from django.db import IntegrityError
-from guardian.decorators import permission_required, permission_required_or_403
+from guardian.decorators import permission_required
 
 from administrarFases.forms import NewPhaseForm, ChangePhaseForm
 from administrarLineaBase.models import LineaBase
-from administrarProyectos.views import vistaDesarrollo
 from administrarProyectos.models import Proyecto
 from administrarFases.models import Fase
+from administrarRolesPermisos.decorators import lider_requerido
 from administrarTipoItem.models import TipoItem, Atributo
 from administrarTipoItem.views import importItemType
-from administrarRolesPermisos.decorators import user_passes_test, puede_modificar_fase, lider_requerido
 from administrarItems.models import ItemRelacion, ItemBase
 
 
@@ -72,8 +69,8 @@ def createPhase(request, id_proyecto):
     return render(request, 'fase/createphase.html', {'form': form, 'proyecto': project, 'user': request.user,
                                                      'error': {}, })
 
-@login_required()
-# @user_passes_test(puede_modificar_fase)
+
+@lider_requerido("id_fase")
 def changePhase(request, id_fase):
     """
     *Vista para la modificacion de una fase dentro del sistema.
@@ -121,8 +118,7 @@ def changePhase(request, id_fase):
                                                      'error': error, 'messages': messages})
 
 
-@login_required
-# @user_passes_test(puede_modificar_fase)
+@lider_requerido("id_fase")
 def confirmar_eliminacion_fase(request, id_fase):
     """
     *Vista para la confirmar la eliminación definitiva de una fase del proyecto.
@@ -137,8 +133,8 @@ def confirmar_eliminacion_fase(request, id_fase):
     return render(request, 'fase/confirmar_eliminacion.html', {'fase': faseAEliminar,
                                                                'tipos': tiposItem},)
 
-@login_required
-# @user_passes_test(puede_modificar_fase)
+
+@lider_requerido("id_fase")
 def deletePhase(request, id_fase):
     """
     *Vista para la eliminación de una fase dentro del sistema.
@@ -176,10 +172,10 @@ def deletePhase(request, id_fase):
     mensajes.append(mensaje)
     request.session['messages'] = mensajes
     request.session['error'] = 0
-    return HttpResponseRedirect(reverse('administrarProyectos.views.workProject', kwargs={'id_proyecto': project.id,}))
+    return HttpResponseRedirect(reverse('administrarProyectos.views.workProject', kwargs={'id_proyecto': project.id, }))
 
 
-@login_required
+@lider_requerido("id_proyecto")
 def phaseList(request, id_proyecto):
     """
     *Vista para la listar todas las fases dentro de algún proyecto.
@@ -206,7 +202,8 @@ def phaseList(request, id_proyecto):
     return render(request, "fase/phaselist.html", {'phase': phase, 'project': project,
                                                    'error': error, 'messages': messages})
 
-#@user_passes_test(puede_modificar_fase)
+
+@lider_requerido("id_fase")
 def importMultiplePhase(request, id_fase, id_proyecto_destino):
     """
     *Vista para la importación de un tipo de ítem a otra fase*
@@ -242,7 +239,7 @@ def importMultiplePhase(request, id_fase, id_proyecto_destino):
     return HttpResponseRedirect('/phaselist/' + str(proyectoDestino.id))
 
 
-@permission_required('administrarFases.consultar_Fase', (Fase, 'id', 'id_fase'))
+@permission_required('administrarFases.consultar_Fase', (Fase, 'id', 'id_fase'), return_403=True)
 def workphase(request, id_fase):
     """
     *Vista para el trabajo sobre una fase de un proyecto.
@@ -289,7 +286,7 @@ def workphase(request, id_fase):
                                                                       'relaciones': relaciones.items()})
 
 
-# @user_passes_test(puede_modificar_fase)
+@lider_requerido("id_fase")
 def subirOrden(request, id_fase):
     """
     *Función para "Subir" el número de orden de una Fase que pertenece a algún proyecto*
@@ -314,7 +311,7 @@ def subirOrden(request, id_fase):
         return HttpResponseRedirect('/workproject/' + str(fase.proyecto.id))
 
 
-# @user_passes_test(puede_modificar_fase)
+@lider_requerido("id_fase")
 def bajarOrden(request, id_fase):
     """
     *Función para "Bajar" el número de orden de una Fase que pertenece a algún proyecto*
@@ -385,7 +382,7 @@ def finPhase(request, id_fase):
                                         kwargs={'id_proyecto': proyecto.id}))
 
 
-# @user_passes_test(puede_modificar_fase)
+@lider_requerido("id_fase")
 def startPhase(request, id_fase):
     """
     *Función para iniciar una nueva fase dentro del proyecto. Función que se ejecuta inmediatamente con la existencia
@@ -408,18 +405,19 @@ def startPhase(request, id_fase):
         request.session['messages'] = messages
         request.session['error'] = error
         return HttpResponseRedirect(reverse('administrarProyectos.views.vistaDesarrollo',
-                                        kwargs={'id_proyecto': fase.proyecto.id}))
+                                            kwargs={'id_proyecto': fase.proyecto.id}))
 
     else:
-        messages.append('La fase ' + fase.nombre + ' no se ha iniciado coorrectamente. Favor verifique la existencia ' \
-                                             'de Lineas Base en la Fase Anterior: ' + fase_anterior.nombre)
+        messages.append('La fase ' + fase.nombre + ' no se ha iniciado coorrectamente. Favor verifique la existencia '
+                                                   'de Lineas Base en la Fase Anterior: ' + fase_anterior.nombre)
         error = 1
         request.session['messages'] = messages
         request.session['error'] = error
         return HttpResponseRedirect(reverse('administrarProyectos.views.vistaDesarrollo',
-                                        kwargs={'id_proyecto': fase.proyecto.id}))
+                                            kwargs={'id_proyecto': fase.proyecto.id}))
 
 
+@lider_requerido("id_fase")
 def verFase(request, id_fase):
     """
     Función para visualizar detalles de una fase dentro de un proyecto que ya ha entrado en ejecución,

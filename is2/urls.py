@@ -82,7 +82,6 @@ urlpatterns = patterns('',
                        url(r'^changerole/(?P<id_proyecto>\d+)/(?P<id_rol>\d+)$', modificarRol),
                        url(r'^deleterole/(?P<id_proyecto>\d+)/(?P<id_rol>\d+)$', eliminarRol),
                        url(r'^denegado/(?P<id_error>\d+)$', accesoDenegado),
-                       # TODO: Agregar pagina 403, parecida a la desplegada por accesoDenegado
                        # TODO: Agregar paginas 404 y 500
 
 ###################################################### TIPO DE ITEMS ###################################################

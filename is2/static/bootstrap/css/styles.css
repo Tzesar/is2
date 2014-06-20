@@ -25,7 +25,6 @@ body {
     src: url('../fonts/bear/bearglyph.eot');
     src: url('../fonts/bear/bearglyph.eot?#iefix') format('embedded-opentype'), url('../fonts/bear/bearglyph.woff') format('woff'), url('../fonts/bear/bearglyph.ttf') format('truetype'), url('../fonts/bear/bearglyph.svg#bearglyph') format('svg');
 }
-
 .bearglyph {
     position: relative;
     top: 1px;
@@ -37,7 +36,6 @@ body {
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
 }
-
 .bearglyph-center{
     position: absolute;
     top: 18px;
@@ -46,25 +44,27 @@ body {
     width: 24px;
     font-size: 24px;
 }
-
 .bearglyph-claw:before {
     content: "\e600";
 }
-
 .bearglyph-bear:before {
     content: "\e601";
 }
-
 .bearglyph-octocat:before {
     content: "\e602";
 }
-
+.list-group-item-gray {
+    color: #464646;
+    background-color: #ffffff;
+}
+a.list-group-item-gray {
+    color: #464646;
+}
 .btn-gray{
     color: #ffffff;
     background-color: #333333;
     border-color: #cccccc;
 }
-
 .btn-gray:hover,
 .btn-gray:focus,
 .btn-gray:active,
@@ -74,12 +74,6 @@ body {
     background-color: #464646;
     border-color: #adadad;
 }
-
-.list-group-item-gray {
-    color: #464646;
-    background-color: #ffffff;
-}
-
 .disable {
     color: #adadad;
 }

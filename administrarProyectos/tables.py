@@ -41,6 +41,7 @@ class ProyectoTablaAdmin(tables.Table):
     def __init__(self, *args, **kwargs):
         super(ProyectoTablaAdmin, self).__init__(*args, **kwargs)
 
+
 class ProyectoTabla(tables.Table):
     """
     *Tabla personalizada para el desarrollo de proyectos en el sistema.*

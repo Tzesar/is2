@@ -127,6 +127,7 @@ LOGIN_REDIRECT_URL = '/main/'
 
 # Configuracion necesaria para Django Guardian
 ANONYMOUS_USER_ID = -1
+GUARDIAN_RENDER_403 = True
 
 MEDIA_ROOT = os.path.join(BASE_DIR, 'is2/', 'static/')
 MEDIA_URL = '/media/'
@@ -134,7 +135,7 @@ MEDIA_URL = '/media/'
 EMAIL_USE_TLS = True
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_PORT = 587
-EMAIL_HOST_USER = 'admitres03'
+EMAIL_HOST_USER = 'admitres03@gmail.com'
 EMAIL_HOST_PASSWORD = 'administracion3'
 DEFAULT_FROM_EMAIL = 'admitres03@gmail.com'
 
