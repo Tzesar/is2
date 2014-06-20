@@ -138,7 +138,8 @@ class TestAdministrarSolicitudes_creacion(TestCase):
 
         request = self.factory.post('/createitem/', dato_item_exito)
         request.user = self.user
-        response = createItem(request, fase.id)
+        request.session = {}
+        response = createItem(request, id_fase=fase.id)
         self.assertEqual(response.status_code, 302, 'Error al crear el Item')
         item = ItemBase.objects.get(nombre='Item01')
         print item

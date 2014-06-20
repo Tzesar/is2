@@ -78,6 +78,7 @@ class TestAdministrarProjectos(TestCase):
         dato2 = {'nombre': 'ProyectoModificado', 'lider_proyecto': '1', 'estado': 'PEN', 'descripcion': 'Test:ModificadoProyecto'}
         request = self.factory.post('changeproject/', dato2)
         request.user = self.user
+        request.session = {}
         response = changeProject(request, '1')
         self.assertEqual(response.status_code, 302, 'Error al modificar el Proyecto')
         print 'Proyecto Modificado Exitosamente'

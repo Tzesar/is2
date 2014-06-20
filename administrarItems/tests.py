@@ -144,6 +144,7 @@ class TestAdministrarItems_modificacion(TestCase):
 
         request = self.factory.post('/changeitem/', dato_item_mod)
         request.user = self.user
+        request.session = {}
         response = changeItem(request, item.id)
 
         if response == None:
@@ -211,7 +212,8 @@ class TestAdministrarItems_creacion(TestCase):
         print 'Prueba de Exitosa'
         request = self.factory.post('/createitem/', dato_item_exito)
         request.user = self.user
-        response = createItem(request, fase.id)
+        request.session = {}
+        response = createItem(request, id_fase=fase.id)
         self.assertEqual(response.status_code, 302, 'Error al crear el Item')
         print ItemBase.objects.all()
 
@@ -240,7 +242,8 @@ class TestAdministrarItems_creacion(TestCase):
 
         request = self.factory.post('/createitem/', dato_item_falso)
         request.user = self.user
-        response = createItem(request, fase.id)
+        request.session = {}
+        response = createItem(request, id_fase=fase.id)
         if response.status_code == 200:
             self.assertEqual(response.status_code, 200, 'Error en la creación de ítems, los datos ingresados en el formulario no son válidos')
             print 'Es posible establecer una conexión con la vista. \nPero no es posible crear el ítem, ya que existen campos inválidos en el formulario.'
