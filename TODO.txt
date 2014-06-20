@@ -1,3 +1,21 @@
 
+- Arreglar Change Role
+- Boton para visualizar el resultado de la votacion (mejorar en el template =D)
+- Mensaje de modificacion/creacion de proyectos para el admin
+- Gestionar Solicitud de cambios no muestra aunque tenga permisos
 - Agregar filtros para TODOS los templates en caso de que un proyecto ha sido anulado
-- Añadir un boton para CONSULTAR Roles ANU/FIN
+- Añadir un boton para CONSULTAR Roles y Fases de los proyectos en estado ACT/ANU/FIN
+- VERIFICAR TODOS LOS MENSAJES DE EXITOS/FALLOS EN TODOS LOS TEMPLATES Y VISTAS
+- Verificar los Permisos, algunos fallan (ejemplo Importar Fase)
+- DOCUMENTACION
+- Informar sobre la solicitud de cambios al comite y el resultado de esta a los usuarios vinculados del proyecto
+
+Iteración 7 .i.
+- Reportes:
+    + Proyectos en el sistema
+    + Por proyectos
+    + Usuarios en el sistema
+
+Permisos (Mostrar algún mensaje)
+    + Redirección de Finalizar Revision en WorkProject, no modifica el estado de la fase
+    + Redirección de Ver items en workphase

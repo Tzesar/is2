@@ -31,7 +31,7 @@ class Proyecto(models.Model):
     fecha_inicio = models.DateField(help_text='Fecha de inicio del Proyecto', null=True)
     fecha_fin = models.DateField(help_text='Fecha estimada de finalizacion', null=True)
     estado = models.CharField(max_length=3, choices=opciones_estado, default='PEN', help_text='Estado del proyecto')
-    observaciones = models.TextField(max_length=140, null=True)
+    observaciones = models.TextField(max_length=140, null=True, default='No hay observaciones')
 
     def __unicode__(self):
         return self.nombre

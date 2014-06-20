@@ -141,7 +141,7 @@ def generarGrafo(id_item):
     hijos = []
 
     calculoImpacto(padres, hijos, costo, tiempo, grafo)
-    direccion = MEDIA_ROOT + 'grafos/' + item.nombre
+    direccion = MEDIA_ROOT + 'grafos/' + item.nombre + '_' + str(item.id)
     grafo.write(direccion, format='png')
 
     return
@@ -274,6 +274,7 @@ def workApplication(request, id_fase):
     usuario = request.user
     objetos = get_objects_for_user(usuario, 'crear_Solicitud_Cambio', klass=Fase)
     puedeCrearSC = False
+
     if fase in objetos:
         puedeCrearSC = True
 
@@ -284,6 +285,7 @@ def workApplication(request, id_fase):
     if 'messages' in request.session:
         messages = request.session.pop('messages')
     request.session['retorno'] = '/workapplication/' + str(id_fase)
+
     return render(request, 'lineabase/workapplication.html', {'proyecto': proyecto, 'fase': fase, 'user': usuario,
                                                               'misSolicitudes': misSolicitudes_lista.items(),
                                                               'error': error, 'messages': messages,
