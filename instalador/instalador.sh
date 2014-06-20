@@ -267,13 +267,7 @@ if [ -d /usr/local/lib/python2.7/dist-packages/html5lib-0.90-py2.7.egg ];
 	echo "html5lib-0.90 ya esta instalado"
 else
 	echo "Instalamos html5lib-0.90..."
-	cd paquetes
-	tar xzvf html5lib-0.90.tar.gz
-	cd html5lib-0.90
-	python setup.py install
-	cd ..
-	rm -rf html5lib-0.90
-	cd ..
+	pip install html5lib
 fi
 
 # instalamos reportlab
@@ -283,13 +277,7 @@ if [ -n "$instalado" ];
 	echo "la libreria reportlab ya esta instalada"
 else
 	echo "Instalamos reportlab..."
-	cd paquetes
-	tar xzvf reportlab-3.1.8.tar.gz
-	cd reportlab-3.1.8
-	python setup.py install
-	cd ..
-	rm -rf reportlab-3.1.8
-	cd ..
+	pip install reportlab
 fi
 
 
@@ -300,12 +288,7 @@ if [ -d /usr/local/lib/python2.7/dist-packages/unipath ];
 else
 	#instalamos el framework Django
 	echo "Instalamos la libreria unipath"
-	cd paquetes
-	tar xzvf Unipath-1.0.tar.gz
-	cd Unipath-1.0
-	python setup.py install
-	cd ..
-	rm -rf Unipath-1.0
+	pip install unipath
 fi
 
 
@@ -315,13 +298,7 @@ if [ -d /usr/local/lib/python2.7/dist-packages/PIL ];
 	echo "PIL ya esta instalado"
 else
 	echo "Instalamos PIL..."
-	cd paquetes
-	tar xzvf Imaging-1.1.7.tar.gz
-	cd Imaging-1.1.7
-	python setup.py install
-	cd ..
-	rm -rf Imaging-1.1.7
-	cd ..
+	pip install PIL
 fi
 
 # instalamos pyPdf
@@ -330,13 +307,7 @@ if [ -d /usr/local/lib/python2.7/dist-packages/pyPdf ];
 	echo "pyPdf ya esta instalado"
 else
 	echo "Instalamos pyPdf..."
-	cd paquetes
-	tar xzvf pyPdf-1.10.tar.gz
-	cd pyPdf-1.10
-	python setup.py install
-	cd ..
-	rm -rf pyPdf-1.10
-	cd ..
+	pip install pyPDF
 fi
 
 # finalmente instalamos pisa
@@ -345,13 +316,7 @@ if [ -d /usr/local/lib/python2.7/dist-packages/pisa-3.0.33-py2.7.egg ];
 	echo "pisa ya esta instalado"
 else
 	echo "Instalamos pisa..."
-	cd paquetes
-	tar xzvf pisa-3.0.33.tar.gz
-	cd pisa-3.0.33
-	python setup.py install
-	cd ..
-	rm -rf pisa-3.0.33
-	cd ..
+	pip install pisa
 fi
 
 
@@ -427,5 +392,7 @@ fi
 	python syncdb.py	
 
 rm instalados.txt
+
+./deployProject
 
 echo "###### INSTALACION FINALIZADA ######"

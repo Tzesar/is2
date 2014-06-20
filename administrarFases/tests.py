@@ -30,13 +30,22 @@ class UsuarioFactory(factory.DjangoModelFactory):
 class ProyectoFactory(factory.DjangoModelFactory):
     FACTORY_FOR = Proyecto
 
-    nombre = 'Proyecto de Prueba'
+    nombre = 'Proyecto01'
     lider_proyecto = Usuario.objects.get(pk='1')
     descripcion = 'Proyecto de Prueba para los Test'
     fecha_inicio = timezone.now()
     fecha_fin = timezone.now()
     estado = 'PEN'
     observaciones = 'Esto es una prueba'
+
+class FaseFactory(factory.DjangoModelFactory):
+    FACTORY_FOR = Fase
+
+    nombre = 'Fase01'
+    descripcion = 'Esta es la fase01'
+    estado = 'ACT'
+    proyecto = Proyecto.objects.get(pk='1')
+    nro_orden = '1'
 
 
 class TestAdministrarFases(TestCase):
@@ -55,6 +64,8 @@ class TestAdministrarFases(TestCase):
         self.user = Usuario.objects.get(username='admin')
         ProyectoFactory.lider_proyecto = self.user
         ProyectoFactory.create()
+        FaseFactory.proyecto = Proyecto.objects.get(nombre='Proyecto01')
+        FaseFactory.create()
         self.factory = RequestFactory()
 
     def test_createPhase_response(self):
@@ -64,7 +75,7 @@ class TestAdministrarFases(TestCase):
         print '\nInicio - Prueba: createPhase'
         login = self.client.login(username='admin', password='admin')
         self.assertTrue(login)
-        project = Proyecto.objects.get(nombre='Proyecto de Prueba')
+        project = Proyecto.objects.get(nombre='Proyecto01')
         dato_fase = {'nombre': 'Fase_Prueba', 'descripcion': 'Fase Test'}
         request = self.factory.post('/createphase/', dato_fase)
         request.user =self.user
@@ -81,15 +92,8 @@ class TestAdministrarFases(TestCase):
         print '\nInicio - Prueba: changePhase'
         login = self.client.login(username='admin', password='admin')
         self.assertTrue(login)
-        project = Proyecto.objects.get(nombre='Proyecto de Prueba')
-        dato_fase = {'nombre': 'Fase_Prueba', 'descripcion': 'Fase Test'}
-        request = self.factory.post('/createphase/', dato_fase)
-        request.user = self.user
-        response = createPhase(request, project.id )
-        self.assertEqual(response.status_code, 302, 'Error al crear la Fase')
-        print Fase.objects.all()
 
-        phase = Fase.objects.get(nombre='Fase_Prueba')
+        phase = Fase.objects.get(nombre='Fase01')
         dato_fase_mod = {'nombre': 'Fase_Prueba_modificado', 'estado': 'PEN', 'descripcion': 'Fase Test'}
         request = self.factory.post('/changephase/', dato_fase_mod)
         request.user = self.user
@@ -119,7 +123,7 @@ class TestAdministrarFases(TestCase):
         *Test para la vista de eliminacion de una fase en el sistema.*
         """
         print '\nInicio - Prueba: deletePhase'
-        project = Proyecto.objects.get(nombre='Proyecto de Prueba')
+        project = Proyecto.objects.get(nombre='Proyecto01')
         dato_fase = {'nombre': 'Fase_Prueba', 'descripcion': 'Fase Test'}
         request = self.factory.post('/createphase/', dato_fase)
         request.user = self.user
@@ -127,12 +131,11 @@ class TestAdministrarFases(TestCase):
         self.assertEqual(response.status_code, 302, 'Error al crear la Fase')
         print Fase.objects.all()
 
-        phase = Fase.objects.get(nombre='Fase_Prueba')
+        phase = Fase.objects.get(nombre='Fase01')
         dato_fase_mod = {'nombre': 'Fase_Prueba_modificado', 'estado': 'PEN', 'descripcion': 'Fase Test'}
         request = self.factory.post('/deletephase/', dato_fase_mod)
         request.user = self.user
         response = deletePhase(request, phase.id)
         self.assertEqual(response.status_code, 302, 'Error Previsto: Error al eiminar la Fase')
         print 'Fase Eliminada exitosamente'
-        print Fase.objects.all()
         print 'Fin - Prueba: deletePhase\n'

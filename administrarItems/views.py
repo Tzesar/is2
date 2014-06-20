@@ -17,7 +17,7 @@ from administrarItems.forms import itemForm, campoEnteroForm, campoImagenForm, c
 from administrarItems.models import ItemBase, CampoImagen, CampoNumero, CampoFile, CampoTextoCorto, CampoTextoLargo, ItemRelacion
 from administrarLineaBase.models import SolicitudCambios
 from administrarLineaBase.views import generarGrafo
-from administrarRolesPermisos.decorators import verificar_permiso
+from administrarRolesPermisos.decorators import verificar_permiso, puede_finalizar_revision_item
 from administrarTipoItem.models import TipoItem, Atributo
 
 

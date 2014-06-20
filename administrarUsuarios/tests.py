@@ -50,7 +50,7 @@ class TestAdministrarUsuarios(TestCase):
         *Test para el formulario de  creación de usuarios en el sistema.*
         """
         print '\nInicio - Prueba: CustomUserCreationForm'
-        self.user = Usuario.objects.get()
+        self.user = Usuario.objects.get(username='admin')
         print 'Usuario existente en la base de datos: ' + self.user.username
         dato = {'username': 'test', 'password1': '123456', 'password2': '123456'}
         form = CustomUserCreationForm(dato)
@@ -92,7 +92,7 @@ class TestAdministrarUsuarios(TestCase):
         print 'Inicio - Prueba: createUser'
         self.user = Usuario.objects.all()
         print self.user
-        self.user = Usuario.objects.get()
+        self.user = Usuario.objects.get(username='admin')
         dato = {'username': 'test2', 'password1': '123456', 'password2': '123456'}
         request = self.factory.post('/createUser/', dato)
         request.user = self.user
@@ -112,7 +112,7 @@ class TestAdministrarUsuarios(TestCase):
         login = self.client.login(username=self.un_admin, password=self.pw_admin)
         self.assertTrue(login)
         self.factory = RequestFactory()
-        self.user = Usuario.objects.get()
+        self.user = Usuario.objects.get(username='admin')
         dato = {'old_password': self.pw_admin, 'new_password1': self.pw_new_admin, 'new_password2': self.pw_new_admin}
         request = self.factory.post('usuario/changePass/', dato)
         request.user = self.user

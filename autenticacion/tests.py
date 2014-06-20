@@ -27,7 +27,7 @@ class TestAutenticacionViewsMyLogin(TestCase):
         Prueba para la vista autenticacion.views.myLogin.
     """
 
-    un_admin = 'xadmin'
+    un_admin = 'admin'
     pw_admin = 'admin'
 
     un_unknown_user = 'cualquiera'
