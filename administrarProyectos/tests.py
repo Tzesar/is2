@@ -8,6 +8,7 @@ from administrarProyectos.views import changeProject, createProject
 from administrarProyectos.forms import NewProjectForm, ChangeProjectForm
 import factory
 
+
 class UsuarioFactory(factory.DjangoModelFactory):
     FACTORY_FOR = Usuario
 
