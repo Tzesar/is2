@@ -51,7 +51,6 @@ def reporte_proyecto(request, id_proyecto):
     """
     proyecto = Proyecto.objects.get(id=id_proyecto)
     fases = Fase.objects.filter(proyecto=proyecto).order_by('nro_orden')
-
     itemsporfase = {}
     for fase in fases:
         tiposdelafase = TipoItem.objects.filter(fase=fase).order_by('id')
@@ -82,7 +81,7 @@ def reporte_solicitud(request, id_proyecto):
     :return: Despliega el reporte de las solicitudes creadas en el Proyecto.
     """
     proyecto = Proyecto.objects.get(id=id_proyecto)
-    fases = Fase.objects.filter(proyecto=proyecto)
+    fases = Fase.objects.filter(proyecto=proyecto).order_by('nro_orden')
 
     solicitudesporfase = {}
 

@@ -7,7 +7,7 @@ from django.shortcuts import render
 from django.utils import timezone
 from guardian.decorators import permission_required
 from django.forms.models import inlineformset_factory
-from guardian.shortcuts import remove_perm, get_users_with_perms
+from guardian.shortcuts import remove_perm, get_users_with_perms, get_perms
 import reversion
 
 from administrarFases.models import Fase
@@ -17,7 +17,7 @@ from administrarItems.forms import itemForm, campoEnteroForm, campoImagenForm, c
 from administrarItems.models import ItemBase, CampoImagen, CampoNumero, CampoFile, CampoTextoCorto, CampoTextoLargo, ItemRelacion
 from administrarLineaBase.models import SolicitudCambios
 from administrarLineaBase.views import generarGrafo
-from administrarRolesPermisos.decorators import verificar_permiso
+from administrarRolesPermisos.decorators import verificar_permiso, puede_finalizar_revision_item
 from administrarTipoItem.models import TipoItem, Atributo
 
 
@@ -907,8 +907,17 @@ def finRevisionItem(request, id_item):
         usuarios = get_users_with_perms(item)
         if usuarios.count() == 0:
             solicitud = SolicitudCambios.objects.get(usuario=request.user, estado='ACP', items=item)
-            solicitud.estado = 'EJC'
-            solicitud.save()
+            items_solicitud = solicitud.items.all()
+
+            finalizado = True
+            for item in items_solicitud:
+                permisos = get_perms(request.user, item)
+                if 'credencial' in permisos:
+                    finalizado = False
+
+            if finalizado:
+                solicitud.estado = 'EJC'
+                solicitud.save()
 
         message = 'Revision Finalizada para el Item:' + item.nombre
         error = 0
