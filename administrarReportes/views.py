@@ -19,9 +19,9 @@ from administrarTipoItem.models import TipoItem
 
 def generar_pdf(html, filename):
     """
-    *Función que genera los* ``Reportes`` * en formato PDF. Recibe una codificación HTML y la convierte a formato PDF.*
+    *Función que genera los* ``Reportes`` *en formato PDF. Recibe una codificación HTML y la convierte a formato PDF.*
 
-    :param html: Página web (HTML) que se desea convertir en formato HTML
+    :param html: Página web (HTML) que se desea convertir en formato PDF
     :param filename: Nombre del reporte que se generará.
     :return: Despliega los reportes solicitados
 
