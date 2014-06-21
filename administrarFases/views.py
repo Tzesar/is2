@@ -6,6 +6,7 @@ from django.shortcuts import render
 from django.utils.html import format_html
 from django.db import IntegrityError
 from guardian.decorators import permission_required
+from guardian.utils import clean_orphan_obj_perms
 
 from administrarFases.forms import NewPhaseForm, ChangePhaseForm
 from administrarLineaBase.models import LineaBase
@@ -167,6 +168,8 @@ def deletePhase(request, id_fase):
     phase_nombre = phase.nombre
     phase.delete()
 
+    clean_orphan_obj_perms()
+
     mensaje = 'Fase: ' + phase_nombre + ', eliminada exitosamente'
     mensajes = []
     mensajes.append(mensaje)
@@ -203,7 +206,7 @@ def phaseList(request, id_proyecto):
                                                    'error': error, 'messages': messages})
 
 
-@lider_requerido("id_fase")
+# @lider_requerido("id_fase")
 def importMultiplePhase(request, id_fase, id_proyecto_destino):
     """
     *Vista para la importación de un tipo de ítem a otra fase*
@@ -218,6 +221,7 @@ def importMultiplePhase(request, id_fase, id_proyecto_destino):
     phase = Fase.objects.get(pk=id_fase)
     phase.id = None
     phase.proyecto = proyectoDestino
+    phase.estado = 'PEN'
     cantFases_ProyectoDestino = Fase.objects.filter(proyecto=proyectoDestino).count()
     phase.nro_orden = cantFases_ProyectoDestino + 1
 

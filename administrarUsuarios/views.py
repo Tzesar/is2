@@ -35,7 +35,7 @@ def createUser(request):
             return HttpResponseRedirect("/userlist/")
     else:
         form = CustomUserCreationForm()
-    return render(request, "usuario/createuser.html", {'form': form, })
+    return render(request, "usuario/createuser.html", {'form': form, 'user': request.user})
 
 
 @login_required()

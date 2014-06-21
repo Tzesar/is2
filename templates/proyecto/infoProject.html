@@ -160,7 +160,7 @@
                                         <br><i><u>Fecha de creación</u></i>: {{ item.fecha_creacion }}, por {{ item.usuario.get_full_name }}
                                         <br><i><u>Última modificación</u></i>: {{ item.fecha_modificacion }}, por {{ item.usuario_modificacion.get_full_name }}
                                         <br><i><u>Descripción</u></i>: {{ item.descripcion }}
-                                        <br><i><u>Item Relacionado</u></i>: {% if padre %}{{ padre.nombre|capfirst }}, con ID: {{ padre.id }}{% else %}Este ítem no presenata antecesores.{% endif %}
+                                        <br><i><u>Item Relacionado</u></i>: {% if padre %}{{ padre.nombre|capfirst }}, con ID: {{ padre.id }}{% else %}Este ítem no presenta antecesores.{% endif %}
                                     </div>
                                </div>
                             </div>

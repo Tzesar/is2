@@ -1343,15 +1343,14 @@ ALTER TABLE ONLY reversion_version ALTER COLUMN id SET DEFAULT nextval('reversio
 --
 
 COPY "administrarFases_fase" (id, nombre, descripcion, estado, proyecto_id, nro_orden) FROM stdin;
-3	Fase01	Descripcion de la fase 01.	FIN	1	1
-4	Fase02	Descripcion de la fase 02.	FIN	1	2
-5	Fase03	Descripcion de la fase 03.	FIN	1	3
-8	Fase2	Descripcion de la fase 2	PEN	2	3
-7	Fase1	Descripcion de la fase 1	DES	2	2
-6	Fase0	Descripcion de la fase 0	FIN	2	1
-12	Fase2	Descripcion de la fase 2	PEN	4	3
-11	Fase1	Descripcion de la fase 1	DES	4	2
-9	Fase0	Descripcion de la fase 0	FIN	4	1
+6	Largo Plazo	Planeamientos con plazo mayores a un año	PEN	2	3
+4	Inicio	Planeamiento de las fases de Corto y Largo plazo	DES	2	1
+5	Corto Plazo	Planeamientos con plazo mayores a tres meses y menores a un año	DES	2	2
+12	Final	Cierre de Proyecto. Evaluación de Resultados	PEN	3	3
+24	Medio	Fase intermedia. Revisiones, operaciones sobre el producto.	DES	3	2
+7	Inicio	Fase Inicial del Proyecto	FIN	3	1
+1	Analisis	Analisis	FIN	1	1
+2	Desarrollo	Desarrollo	FIN	1	2
 \.
 
 
@@ -1359,7 +1358,7 @@ COPY "administrarFases_fase" (id, nombre, descripcion, estado, proyecto_id, nro_
 -- Name: administrarFases_fase_id_seq; Type: SEQUENCE SET; Schema: public; Owner: zar
 --
 
-SELECT pg_catalog.setval('"administrarFases_fase_id_seq"', 12, true);
+SELECT pg_catalog.setval('"administrarFases_fase_id_seq"', 25, true);
 
 
 --
@@ -1397,7 +1396,13 @@ SELECT pg_catalog.setval('"administrarItems_campoimagen_id_seq"', 1, false);
 --
 
 COPY "administrarItems_camponumero" (id, item_id, atributo_id, valor) FROM stdin;
-1	4	2	0
+1	1	1	0
+2	2	1	0
+3	3	1	0
+4	4	4	9
+5	5	25	11
+6	6	25	23
+7	7	5	0
 \.
 
 
@@ -1405,7 +1410,7 @@ COPY "administrarItems_camponumero" (id, item_id, atributo_id, valor) FROM stdin
 -- Name: administrarItems_camponumero_id_seq; Type: SEQUENCE SET; Schema: public; Owner: zar
 --
 
-SELECT pg_catalog.setval('"administrarItems_camponumero_id_seq"', 1, true);
+SELECT pg_catalog.setval('"administrarItems_camponumero_id_seq"', 7, true);
 
 
 --
@@ -1413,9 +1418,6 @@ SELECT pg_catalog.setval('"administrarItems_camponumero_id_seq"', 1, true);
 --
 
 COPY "administrarItems_campotextocorto" (id, item_id, atributo_id, valor) FROM stdin;
-1	5	3	<default>
-2	7	5	<default>
-3	9	8	<default>
 \.
 
 
@@ -1423,7 +1425,7 @@ COPY "administrarItems_campotextocorto" (id, item_id, atributo_id, valor) FROM s
 -- Name: administrarItems_campotextocorto_id_seq; Type: SEQUENCE SET; Schema: public; Owner: zar
 --
 
-SELECT pg_catalog.setval('"administrarItems_campotextocorto_id_seq"', 3, true);
+SELECT pg_catalog.setval('"administrarItems_campotextocorto_id_seq"', 1, false);
 
 
 --
@@ -1431,11 +1433,6 @@ SELECT pg_catalog.setval('"administrarItems_campotextocorto_id_seq"', 3, true);
 --
 
 COPY "administrarItems_campotextolargo" (id, item_id, atributo_id, valor) FROM stdin;
-1	1	1	Datos del atributo 00.
-2	2	1	<default>
-3	3	1	Texto largo de prueba.
-4	6	4	<default>
-5	8	7	<default>
 \.
 
 
@@ -1443,7 +1440,7 @@ COPY "administrarItems_campotextolargo" (id, item_id, atributo_id, valor) FROM s
 -- Name: administrarItems_campotextolargo_id_seq; Type: SEQUENCE SET; Schema: public; Owner: zar
 --
 
-SELECT pg_catalog.setval('"administrarItems_campotextolargo_id_seq"', 5, true);
+SELECT pg_catalog.setval('"administrarItems_campotextolargo_id_seq"', 1, false);
 
 
 --
@@ -1451,15 +1448,13 @@ SELECT pg_catalog.setval('"administrarItems_campotextolargo_id_seq"', 5, true);
 --
 
 COPY "administrarItems_itembase" (id, usuario_id, usuario_modificacion_id, nombre, descripcion, estado, fecha_creacion, fecha_modificacion, tipoitem_id, complejidad, costo, tiempo, version, linea_base_id) FROM stdin;
-3	2	3	Item02	Descripcion del item 02	ELB	2014-06-20 21:47:12.112387-04	2014-06-20 21:59:14.061753-04	1	1	1	1	2	2
-2	3	3	Item01	Descripcion del item 01	ELB	2014-06-20 21:29:54.886468-04	2014-06-20 21:52:29.852199-04	1	3	3	3	2	1
-1	3	3	Item00	Descripcion del item 00.	ELB	2014-06-20 21:27:03.972-04	2014-06-20 22:43:34.265164-04	1	2	2	2	4	1
-4	3	3	Item03	Descripcion del item 03.	ELB	2014-06-21 00:21:10.27673-04	2014-06-21 00:21:34.698432-04	2	5	5	5	3	3
-5	3	3	Item04	Descripcion del item 04	ELB	2014-06-21 00:22:56.236389-04	2014-06-21 00:23:07.400184-04	3	6	6	6	2	4
-6	2	2	Item1	Descripcion del item 00	ELB	2014-06-21 00:39:23.72629-04	2014-06-21 00:42:30.085506-04	4	1	1	1	1	5
-7	2	2	Item2	Descripcion del item 2	ACT	2014-06-21 00:43:27.293878-04	2014-06-21 00:43:27.293543-04	5	1	1	1	1	\N
-8	3	3	Item05	Descripcion del item 04	ELB	2014-06-21 01:00:40.541934-04	2014-06-21 01:00:51.401714-04	7	1	1	1	1	6
-9	3	3	Item06	Descripcion del item 8	VAL	2014-06-21 01:01:31.478056-04	2014-06-21 01:01:40.249852-04	8	8	8	8	2	\N
+3	10	10	Plan de limpieza del terreno	algo	ACT	2014-05-24 04:22:08.23545-04	2014-05-24 04:22:08.233813-04	1	2	1	1	1	\N
+1	10	10	Plano del puente 1	descripcion	ELB	2014-05-24 04:13:55.688774-04	2014-05-24 04:52:59.443251-04	1	3	2	5	2	1
+2	10	10	Plano del alumbrado	descripcion	ELB	2014-05-24 04:20:36.635506-04	2014-05-24 06:27:54.891877-04	1	2	2	3	1	2
+7	2	2	Item0	descripcion0	ELB	2014-06-07 01:47:53.81776-04	2014-06-07 01:48:12.798455-04	5	2	11	1	2	6
+4	2	2	Plan economico	asd	ELB	2014-05-24 06:36:55.766508-04	2014-05-24 06:38:11.65743-04	4	2	5	4	2	3
+6	3	3	ItemDOS	Tercero xDD	ELB	2014-06-06 21:48:01.754674-04	2014-06-06 22:52:23.946548-04	26	5	3	3	3	5
+5	3	3	ItemUNO	Primer item de prueba	ELB	2014-06-06 21:22:13.753-04	2014-06-06 22:44:35.007563-04	26	2	2	2	5	4
 \.
 
 
@@ -1467,7 +1462,7 @@ COPY "administrarItems_itembase" (id, usuario_id, usuario_modificacion_id, nombr
 -- Name: administrarItems_itembase_id_seq; Type: SEQUENCE SET; Schema: public; Owner: zar
 --
 
-SELECT pg_catalog.setval('"administrarItems_itembase_id_seq"', 9, true);
+SELECT pg_catalog.setval('"administrarItems_itembase_id_seq"', 7, true);
 
 
 --
@@ -1475,8 +1470,13 @@ SELECT pg_catalog.setval('"administrarItems_itembase_id_seq"', 9, true);
 --
 
 COPY "administrarItems_itembase_solicitudes" (id, itembase_id, solicitudcambios_id) FROM stdin;
-6	1	6
-19	1	19
+2	1	2
+3	2	3
+4	4	4
+5	4	5
+6	4	6
+7	6	7
+8	5	7
 \.
 
 
@@ -1484,7 +1484,7 @@ COPY "administrarItems_itembase_solicitudes" (id, itembase_id, solicitudcambios_
 -- Name: administrarItems_itembase_solicitudes_id_seq; Type: SEQUENCE SET; Schema: public; Owner: zar
 --
 
-SELECT pg_catalog.setval('"administrarItems_itembase_solicitudes_id_seq"', 19, true);
+SELECT pg_catalog.setval('"administrarItems_itembase_solicitudes_id_seq"', 32, true);
 
 
 --
@@ -1492,10 +1492,9 @@ SELECT pg_catalog.setval('"administrarItems_itembase_solicitudes_id_seq"', 19, t
 --
 
 COPY "administrarItems_itemrelacion" (id, "itemPadre_id", "itemHijo_id", estado) FROM stdin;
-1	1	2	ACT
-2	3	4	ACT
-3	4	5	ACT
-4	8	9	ACT
+1	2	1	ACT
+2	6	5	DES
+3	4	7	ACT
 \.
 
 
@@ -1503,7 +1502,7 @@ COPY "administrarItems_itemrelacion" (id, "itemPadre_id", "itemHijo_id", estado)
 -- Name: administrarItems_itemrelacion_id_seq; Type: SEQUENCE SET; Schema: public; Owner: zar
 --
 
-SELECT pg_catalog.setval('"administrarItems_itemrelacion_id_seq"', 4, true);
+SELECT pg_catalog.setval('"administrarItems_itemrelacion_id_seq"', 3, true);
 
 
 --
@@ -1511,12 +1510,12 @@ SELECT pg_catalog.setval('"administrarItems_itemrelacion_id_seq"', 4, true);
 --
 
 COPY "administrarLineaBase_lineabase" (id, fase_id, fecha_creacion, fecha_modificacion, observaciones) FROM stdin;
-1	3	2014-06-20	2014-06-20	Linea base 00
-2	3	2014-06-20	2014-06-20	Linea base 01
-3	4	2014-06-21	2014-06-21	Linea Base 01 de la fase 02
-4	5	2014-06-21	2014-06-21	Linea Base 01 de la fase 03
-5	6	2014-06-21	2014-06-21	Linea Base 01 de la fase 0
-6	9	2014-06-21	2014-06-21	Linea base
+1	4	2014-05-24	2014-05-24	Primera Linea base
+2	4	2014-05-24	2014-05-24	Linea base 2
+3	1	2014-05-24	2014-05-24	Linea base 1
+4	7	2014-06-06	2014-06-06	Línea base de prueba.
+5	7	2014-06-06	2014-06-06	Linea Base final de la fase.
+6	2	2014-06-07	2014-06-07	observacion0
 \.
 
 
@@ -1532,8 +1531,13 @@ SELECT pg_catalog.setval('"administrarLineaBase_lineabase_id_seq"', 6, true);
 --
 
 COPY "administrarLineaBase_solicitudcambios" (id, usuario_id, fase_id, motivo, fecha_creacion, estado, costo, tiempo) FROM stdin;
-6	3	3	Solicitud de prueba 1	2014-06-20 22:37:05.047545-04	CAN	5	5
-19	3	3	Solicitud de prueba	2014-06-21 00:08:30.28756-04	EJC	5	5
+2	10	4	Relación inconsistente	2014-05-24 06:23:40.029438-04	VOT	2	5
+3	10	4	Reestructuracion de cosas feas	2014-05-24 06:29:35.49352-04	VOT	4	8
+4	2	1	Discrepancias en relacion a campos del item con respecto a otros.	2014-06-06 14:05:16.280928-04	ACP	5	4
+6	9	1	Modificacion requerida.	2014-06-06 14:33:50.47805-04	CAN	5	4
+5	2	1	Alguna cosa.	2014-06-06 14:32:23.824535-04	RCH	5	4
+7	3	7	Esta solicitud de Cambios se ha creado a modo de prueba (verificación) del funcionamiento de este módulo.	2014-06-06 22:54:28.490898-04	VOT	7	7
+8	5	1	Alguna razon suficiente.	2014-06-07 01:26:42.402762-04	ACP	5	4
 \.
 
 
@@ -1541,7 +1545,7 @@ COPY "administrarLineaBase_solicitudcambios" (id, usuario_id, fase_id, motivo, f
 -- Name: administrarLineaBase_solicitudcambios_id_seq; Type: SEQUENCE SET; Schema: public; Owner: zar
 --
 
-SELECT pg_catalog.setval('"administrarLineaBase_solicitudcambios_id_seq"', 19, true);
+SELECT pg_catalog.setval('"administrarLineaBase_solicitudcambios_id_seq"', 30, true);
 
 
 --
@@ -1549,9 +1553,16 @@ SELECT pg_catalog.setval('"administrarLineaBase_solicitudcambios_id_seq"', 19, t
 --
 
 COPY "administrarLineaBase_votacion" (id, usuario_id, solicitud_id, voto, justificacion) FROM stdin;
-13	3	19	GOOD	ok
-14	4	19	GOOD	ok
-15	2	19	GOOD	ok
+1	2	4	GOOD	OK
+2	8	4	EVIL	NO
+4	9	4	GOOD	Y si
+5	2	5	EVIL	NOPE
+6	9	5	EVIL	PARA NADA
+7	9	6	GOOD	SI
+8	8	5	EVIL	NO NO NO
+9	5	8	GOOD	alog\r\n
+10	8	8	GOOD	l
+11	2	8	GOOD	g
 \.
 
 
@@ -1559,7 +1570,7 @@ COPY "administrarLineaBase_votacion" (id, usuario_id, solicitud_id, voto, justif
 -- Name: administrarLineaBase_votacion_id_seq; Type: SEQUENCE SET; Schema: public; Owner: zar
 --
 
-SELECT pg_catalog.setval('"administrarLineaBase_votacion_id_seq"', 15, true);
+SELECT pg_catalog.setval('"administrarLineaBase_votacion_id_seq"', 11, true);
 
 
 --
@@ -1567,10 +1578,9 @@ SELECT pg_catalog.setval('"administrarLineaBase_votacion_id_seq"', 15, true);
 --
 
 COPY "administrarProyectos_proyecto" (id, nombre, lider_proyecto_id, descripcion, fecha_creacion, fecha_inicio, fecha_fin, estado, observaciones) FROM stdin;
-3	Proyecto02	4	Descripcion del proyecto 02.	2014-06-20	\N	\N	PEN	No hay observaciones
-1	Proyecto00	3	Descripcion del proyecto 00	2014-06-20	2014-06-20	2014-06-21	FIN	No hay observaciones
-2	Proyecto01	2	Descripcion del proyecto 01.	2014-06-20	2014-06-21	2014-07-05	ACT	No hay observaciones
-4	Proyecto03	3	Descripcion del proyecto 03.	2014-06-20	2014-06-21	2014-07-12	ANU	No hay observaciones
+2	Proyecto02	10	proyecto 02	2014-05-24	2014-05-24	2014-06-28	ANU	Algo
+1	Proyecto01	2	Proyecto 01	2014-05-24	2014-05-24	2014-06-07	FIN	asd
+3	G-001	3	G-NRO#1	2014-06-06	2014-06-06	2014-06-30	ACT	Proyecto de Prueba.
 \.
 
 
@@ -1578,7 +1588,7 @@ COPY "administrarProyectos_proyecto" (id, nombre, lider_proyecto_id, descripcion
 -- Name: administrarProyectos_proyecto_id_seq; Type: SEQUENCE SET; Schema: public; Owner: zar
 --
 
-SELECT pg_catalog.setval('"administrarProyectos_proyecto_id_seq"', 4, true);
+SELECT pg_catalog.setval('"administrarProyectos_proyecto_id_seq"', 3, true);
 
 
 --
@@ -1586,18 +1596,22 @@ SELECT pg_catalog.setval('"administrarProyectos_proyecto_id_seq"', 4, true);
 --
 
 COPY "administrarProyectos_usuariosvinculadosproyectos" (id, cod_proyecto_id, cod_usuario_id, habilitado) FROM stdin;
-1	1	3	t
-2	2	2	t
-3	3	4	t
-4	4	3	t
-5	1	2	t
-6	1	4	t
-7	2	4	t
-8	2	3	t
+1	1	2	t
+2	2	10	t
+3	1	5	t
+4	1	8	t
+6	2	5	t
+7	2	8	t
+8	2	9	t
+5	1	9	t
 9	3	3	t
-10	3	2	t
-11	4	2	t
-12	4	4	t
+10	3	11	t
+11	3	12	t
+12	3	10	t
+13	3	5	t
+14	3	9	t
+16	3	2	t
+15	3	8	f
 \.
 
 
@@ -1605,7 +1619,7 @@ COPY "administrarProyectos_usuariosvinculadosproyectos" (id, cod_proyecto_id, co
 -- Name: administrarProyectos_usuariosvinculadosproyectos_id_seq; Type: SEQUENCE SET; Schema: public; Owner: zar
 --
 
-SELECT pg_catalog.setval('"administrarProyectos_usuariosvinculadosproyectos_id_seq"', 12, true);
+SELECT pg_catalog.setval('"administrarProyectos_usuariosvinculadosproyectos_id_seq"', 16, true);
 
 
 --
@@ -1630,11 +1644,11 @@ SELECT pg_catalog.setval('"administrarRolesPermisos_permiso_id_seq"', 1, false);
 COPY "administrarRolesPermisos_rol" (id, grupo_id, proyecto_id) FROM stdin;
 1	1	1
 2	2	2
-3	3	3
-4	4	4
-6	6	1
-7	7	2
-8	8	4
+3	3	2
+4	4	1
+5	5	3
+6	6	3
+9	9	1
 \.
 
 
@@ -1642,7 +1656,7 @@ COPY "administrarRolesPermisos_rol" (id, grupo_id, proyecto_id) FROM stdin;
 -- Name: administrarRolesPermisos_rol_id_seq; Type: SEQUENCE SET; Schema: public; Owner: zar
 --
 
-SELECT pg_catalog.setval('"administrarRolesPermisos_rol_id_seq"', 8, true);
+SELECT pg_catalog.setval('"administrarRolesPermisos_rol_id_seq"', 9, true);
 
 
 --
@@ -1650,15 +1664,19 @@ SELECT pg_catalog.setval('"administrarRolesPermisos_rol_id_seq"', 8, true);
 --
 
 COPY "administrarTipoItem_atributo" (id, nombre, tipo, "tipoDeItem_id", descripcion) FROM stdin;
-1	Atributo00	TXT	1	Descripcion del atributo 00.
-2	Atributo00	NUM	2	Descripcion del atributo 00.
-3	Atributo00	STR	3	Descripcion del atributo 00.
-4	Atributo00	TXT	4	Descripcion del atributo 00.
-5	Atributo00	STR	5	Descripcion del atributo 00.
-6	Atributo00	NUM	6	Descripcion del atributo 00.
-7	Atributo00	TXT	7	Descripcion del atributo 00.
-8	Atributo00	STR	8	Descripcion del atributo 00.
-9	Atributo00	NUM	9	Descripcion del atributo 00.
+1	Duración	NUM	1	El tiempo estimado de planificación
+2	Duración	NUM	2	Tiempo estimado de ejecución de la obra
+3	Duración	NUM	3	Tiempo estimado de ejecución de la obra
+4	Duración	NUM	4	El tiempo estimado de planificación
+5	Duración	NUM	5	Tiempo estimado de ejecución de la obra
+25	Duración	NUM	26	Tiempo estimado de ejecución de la obra
+27	Orden de Trabajo	TXT	25	Detalle de actividades a ser desarrolladas durante el proceso de construcción de la edificación
+26	Plano de Obra	IMG	25	Imagen que representa el plano de la obra a ser llevada a cabo
+28	Duración	NUM	25	Tiempo estimado de ejecución de la obra.
+29	Duración Estimada	NUM	27	El tiempo estimado de planificación.
+31	Plano de Obra	IMG	28	Imagen que representa el plano de la obra a ser llevada a cabo
+32	Duración	NUM	28	Tiempo estimado de ejecución de la obra.
+33	Evaluación de Integridad	TXT	28	Planilla con indicadores de cumplimiento respecto a la integridad de la obra terminada.
 \.
 
 
@@ -1666,7 +1684,7 @@ COPY "administrarTipoItem_atributo" (id, nombre, tipo, "tipoDeItem_id", descripc
 -- Name: administrarTipoItem_atributo_id_seq; Type: SEQUENCE SET; Schema: public; Owner: zar
 --
 
-SELECT pg_catalog.setval('"administrarTipoItem_atributo_id_seq"', 9, true);
+SELECT pg_catalog.setval('"administrarTipoItem_atributo_id_seq"', 33, true);
 
 
 --
@@ -1674,15 +1692,15 @@ SELECT pg_catalog.setval('"administrarTipoItem_atributo_id_seq"', 9, true);
 --
 
 COPY "administrarTipoItem_tipoitem" (id, nombre, fase_id, descripcion) FROM stdin;
-1	Tipo00	3	Descripcion del tipo de item 00.
-2	Tipo01	4	Descripcion del tipo de item 01.
-3	Tipo02	5	Descripcion del tipo de item 02.
-4	Tipo00	6	Descripcion del tipo de item 00.
-5	Tipo01	7	Descripcion del tipo de item 01.
-6	Tipo02	8	Descripcion del tipo de item 02.
-7	Tipo00	9	Descripcion del tipo de item 00.
-9	Tipo02	12	Descripcion del tipo de item 02.
-8	Tipo01	11	Descripcion del tipo de item 01.
+1	Planes	4	planes
+2	Obras pequeñas	5	Requerimientos para construcciones pequeñas
+3	Obras Grandes	6	Requerimientos para construcciones grandes
+4	Planes	1	planes
+5	Obras pequeñas	2	Requerimientos para construcciones pequeñas
+25	Obras Grandes	7	Requerimientos para construcciones grandes
+26	Obras pequeñas	7	Requerimientos para construcciones pequeñas
+27	Revisión	24	Revision de argumentos y parametros del proyecto.
+28	Test Obras Grandes	12	Requerimientos para construcciones grandes
 \.
 
 
@@ -1690,7 +1708,7 @@ COPY "administrarTipoItem_tipoitem" (id, nombre, fase_id, descripcion) FROM stdi
 -- Name: administrarTipoItem_tipoitem_id_seq; Type: SEQUENCE SET; Schema: public; Owner: zar
 --
 
-SELECT pg_catalog.setval('"administrarTipoItem_tipoitem_id_seq"', 9, true);
+SELECT pg_catalog.setval('"administrarTipoItem_tipoitem_id_seq"', 28, true);
 
 
 --
@@ -1698,11 +1716,19 @@ SELECT pg_catalog.setval('"administrarTipoItem_tipoitem_id_seq"', 9, true);
 --
 
 COPY autenticacion_usuario (id, password, last_login, is_superuser, username, first_name, last_name, email, is_staff, is_active, date_joined, telefono) FROM stdin;
--1		2014-06-20 20:00:41.752504-04	f	AnonymousUser				f	t	2014-06-20 20:00:41.752577-04	
-2	pbkdf2_sha256$12000$CcUYuwfAJhFw$ETLegJoT/9BqZPvxjE8DgzgiFvF0lYPn9Zviyga1454=	2014-06-21 00:32:28.643707-04	f	augusto	Augusto	Amarilla	agu.amarilla@gmail.com	f	t	2014-06-20 20:09:23.800495-04	456789
-4	pbkdf2_sha256$12000$ewgiDWvyl4rA$RLLWfJQt7XI9Sq2s7vT760at9mR72YXoep1waHE7o4M=	2014-06-21 00:43:44.363885-04	f	saul	Saul	Zalimben	szalimben93@gmail.com	f	t	2014-06-20 20:17:02.298192-04	963258
-1	pbkdf2_sha256$12000$DSCplnNVG8GH$rRsxFCGI0UF+K51hqmSuvS88mB3EMPKb26csaNRJVAs=	2014-06-21 01:02:29.540901-04	t	admin	Admin	Administrador	admitres03@gmail.com	t	t	2014-06-20 20:00:41.278974-04	123456
-3	pbkdf2_sha256$12000$xTjg1Ttt3mkl$AJXKcFhQ1tEcUn6iH2SB02jzrcs8FhzJ6jTusumw+w0=	2014-06-21 01:03:09.803612-04	f	gerardo	Gerardo	Ramos	ragen93@gmail.com	f	t	2014-06-20 20:10:20.899015-04	741258
+-1		2014-05-24 00:08:53.450495-04	f	AnonymousUser				f	t	2014-05-24 00:08:53.450571-04	
+4	pbkdf2_sha256$12000$qHdmACVDkCuX$Lb2hLsy5AuG4NyzCIWGBmGKpVusADMIsn1DBepDesnk=	2014-05-24 00:26:09.893862-04	f	saul	Saúl	Zalimben	saul.zalimben@zarpm.org	f	t	2014-05-24 00:26:09.894256-04	1354
+11	pbkdf2_sha256$12000$Ru9CxsozvSxu$vy3cuVP4S9IJS6OZMPlXiLFEUqheOvHM4kU6lXXzcGc=	2014-05-24 00:31:23.290906-04	f	juana	Juana	Alarcón	juana.alarcon@zarpm.org	f	t	2014-05-24 00:31:23.291196-04	12412
+12	pbkdf2_sha256$12000$imh0oPgEwmB6$zi66KcbY50NvjNuIgjVAB8XUM21TppnXNlxgJ+Jsrhw=	2014-05-24 00:31:40.053695-04	f	rebecca	Rebecca	López	rebecca.lopez@zarpm.org	f	t	2014-05-24 00:31:40.054038-04	123124
+7	pbkdf2_sha256$12000$gKjZR0mZrVe0$2TYpUMtbimksbX+Vxwi3HCvk0Xn7+8xyPnqvI4BzsKw=	2014-05-24 00:26:43.950842-04	f	pedro	Pedro	Perez	pedro.perez@zarpm.org	f	f	2014-05-24 00:26:43.951178-04	1684864
+6	pbkdf2_sha256$12000$3IIFnzgiT7ki$rbERpMWU6mrOgKXj/XPBWTGQQGtAyewE0yPVpJaLJno=	2014-05-24 00:26:34.375315-04	f	juan	Juan	Cardozo	juan.cardozo@zarpm.org	f	f	2014-05-24 00:26:34.375651-04	61548
+10	pbkdf2_sha256$12000$EYEEmelvEOup$oK+5FrqKDaPESAJiDXSeFanDSsqWX6plqDkOkaj2nRQ=	2014-05-24 06:13:54.866392-04	f	rosa	Rosa	Irigoyen	rosa.irigoyen@zarpm.org	f	t	2014-05-24 00:31:12.96015-04	21423
+9	pbkdf2_sha256$12000$IagfPiEh9GoE$oOZp+BXdFgAP31RjobQZxWThOQgNFoYXm7q9Hzy5L2w=	2014-06-06 14:33:09.116737-04	f	gonzalo	Gonzalo	Cañete	gonzalo.canete@zarpm.org	f	t	2014-05-24 00:29:40.931951-04	12123
+1	pbkdf2_sha256$12000$0u2U6OPRPreh$pmJMX3k1XW9gZkhfSzL7Q/OHK3wfUlcd+xwm1AROKpU=	2014-06-06 23:21:00.674422-04	t	admin			admin@zarpm.org	t	t	2014-05-24 00:08:53.045254-04	
+5	pbkdf2_sha256$12000$k7RStkLID7ym$yNHmvXRbl8z0AaoldGAQ6wqGaoMSj6U5VXQ3Xtv54js=	2014-06-07 01:24:11.012458-04	f	diego	Diego	Amarilla	agu.amarilla@gmail.com	f	t	2014-05-24 00:26:20.640528-04	51651
+2	pbkdf2_sha256$12000$uIzDmGIc2gM7$dwRapexhReL9d+PyCHkqHyN6jRcaZc8R/+b9nJpROs4=	2014-06-19 22:25:20.558004-04	f	augusto	Augusto	Amarilla	agu.amarilla@gmail.com	f	t	2014-05-24 00:25:51.053749-04	12313
+8	pbkdf2_sha256$12000$sjYt2xyEKKF4$weaeRMjTrkd9bjpakU41tuHmQvGDEO9CCECs9g0eiBE=	2014-06-19 23:35:46.664182-04	f	enzo	Enzo	Amarilla	agu.amarilla@gmail.com	f	t	2014-05-24 00:29:23.846231-04	651654
+3	pbkdf2_sha256$12000$OvurLzU2fsz6$5sJPv+AHez6i4Fsd8mvjoedKhhNWvsDPy7pElAzeO0I=	2014-06-20 00:30:45.60887-04	f	gerardo	Gerardo	Ramos	agu.amarilla@gmail.com	f	t	2014-05-24 00:26:00.034848-04	12345
 \.
 
 
@@ -1711,25 +1737,28 @@ COPY autenticacion_usuario (id, password, last_login, is_superuser, username, fi
 --
 
 COPY autenticacion_usuario_groups (id, usuario_id, group_id) FROM stdin;
-5	4	3
-24	3	1
-25	2	1
-26	4	1
-27	4	6
-28	2	6
-29	3	6
-30	2	2
-31	4	2
-32	3	2
-33	4	7
-34	3	7
-35	2	7
-36	3	4
-37	2	4
-38	4	4
-42	2	8
-43	4	8
-44	3	8
+2	10	2
+8	5	3
+9	10	3
+10	5	2
+11	8	2
+39	2	1
+40	8	1
+41	5	1
+42	5	9
+43	8	9
+46	5	4
+47	2	4
+51	3	5
+52	9	5
+53	2	5
+54	11	6
+55	12	6
+56	10	6
+57	9	6
+58	5	6
+59	2	6
+60	3	6
 \.
 
 
@@ -1737,14 +1766,14 @@ COPY autenticacion_usuario_groups (id, usuario_id, group_id) FROM stdin;
 -- Name: autenticacion_usuario_groups_id_seq; Type: SEQUENCE SET; Schema: public; Owner: zar
 --
 
-SELECT pg_catalog.setval('autenticacion_usuario_groups_id_seq', 44, true);
+SELECT pg_catalog.setval('autenticacion_usuario_groups_id_seq', 60, true);
 
 
 --
 -- Name: autenticacion_usuario_id_seq; Type: SEQUENCE SET; Schema: public; Owner: zar
 --
 
-SELECT pg_catalog.setval('autenticacion_usuario_id_seq', 4, true);
+SELECT pg_catalog.setval('autenticacion_usuario_id_seq', 12, true);
 
 
 --
@@ -1767,13 +1796,13 @@ SELECT pg_catalog.setval('autenticacion_usuario_user_permissions_id_seq', 1, fal
 --
 
 COPY auth_group (id, name) FROM stdin;
+3	Fundador
+4	SUPER
+6	Super
+9	Analista
 1	ComiteDeCambios-1
 2	ComiteDeCambios-2
-3	ComiteDeCambios-3
-4	ComiteDeCambios-4
-6	Super
-7	Super1
-8	Super2
+5	ComiteDeCambios-3
 \.
 
 
@@ -1781,7 +1810,7 @@ COPY auth_group (id, name) FROM stdin;
 -- Name: auth_group_id_seq; Type: SEQUENCE SET; Schema: public; Owner: zar
 --
 
-SELECT pg_catalog.setval('auth_group_id_seq', 8, true);
+SELECT pg_catalog.setval('auth_group_id_seq', 9, true);
 
 
 --
@@ -1847,58 +1876,58 @@ COPY auth_permission (id, name, content_type_id, codename) FROM stdin;
 41	Puede consultar items	11	consultar_Item
 42	Puede consultar fases	11	consultar_Fase
 43	Puede consultar tipos de item	11	consultar_Tipo_Item
-44	Puede consultar lineas base	11	consultar_Lineas_Base
-45	Puede crear solicitudes de cambio	11	crear_Solicitud_Cambio
-46	Puede crear lineas base	11	crear_Linea_Base
-47	Puede crear permiso	12	crear_permiso
-48	Puede modificar permiso	12	modificar_permiso
-49	Puede borrar permiso	12	borrar_permiso
-50	Puede crear rol	13	crear_rol
-51	Puede modificar rol	13	modificar_rol
-52	Puede borrar rol	13	borrar_rol
-53	Puede crear TipoItem	14	crear_tipoitem
-54	Puede modificar TipoItem	14	modificar_tipoitem
-55	Puede borrar TipoItem	14	borrar_tipoitem
-56	Puede crear Atributo	15	crear_atributo
-57	Puede modificar Atributo	15	modificar_atributo
-58	Puede borrar Atributo	15	borrar_atributo
-59	Puede crear item base	16	crear_itembase
-60	Puede modificar item base	16	modificar_itembase
-61	Puede borrar item base	16	borrar_itembase
-62	Modificar Item de LB	16	credencial
-63	Puede crear item relacion	17	crear_itemrelacion
-64	Puede modificar item relacion	17	modificar_itemrelacion
-65	Puede borrar item relacion	17	borrar_itemrelacion
-66	Puede crear campo numero	18	crear_camponumero
-67	Puede modificar campo numero	18	modificar_camponumero
-68	Puede borrar campo numero	18	borrar_camponumero
-69	Puede crear campo texto corto	19	crear_campotextocorto
-70	Puede modificar campo texto corto	19	modificar_campotextocorto
-71	Puede borrar campo texto corto	19	borrar_campotextocorto
-72	Puede crear campo texto largo	20	crear_campotextolargo
-73	Puede modificar campo texto largo	20	modificar_campotextolargo
-74	Puede borrar campo texto largo	20	borrar_campotextolargo
-75	Puede crear campo file	21	crear_campofile
-76	Puede modificar campo file	21	modificar_campofile
-77	Puede borrar campo file	21	borrar_campofile
-78	Puede crear campo imagen	22	crear_campoimagen
-79	Puede modificar campo imagen	22	modificar_campoimagen
-80	Puede borrar campo imagen	22	borrar_campoimagen
-81	Puede crear linea base	23	crear_lineabase
-82	Puede modificar linea base	23	modificar_lineabase
-83	Puede borrar linea base	23	borrar_lineabase
-84	Puede crear solicitud	24	crear_solicitudcambios
-85	Puede modificar solicitud	24	modificar_solicitudcambios
-86	Puede borrar solicitud	24	borrar_solicitudcambios
-87	Puede crear votacion	25	crear_votacion
-88	Puede modificar votacion	25	modificar_votacion
-89	Puede borrar votacion	25	borrar_votacion
-90	Puede crear user object permission	26	crear_userobjectpermission
-91	Puede modificar user object permission	26	modificar_userobjectpermission
-92	Puede borrar user object permission	26	borrar_userobjectpermission
-93	Puede crear group object permission	27	crear_groupobjectpermission
-94	Puede modificar group object permission	27	modificar_groupobjectpermission
-95	Puede borrar group object permission	27	borrar_groupobjectpermission
+44	Puede crear solicitudes de cambio	11	crear_Solicitud_Cambio
+45	Puede crear permiso	12	crear_permiso
+46	Puede modificar permiso	12	modificar_permiso
+47	Puede borrar permiso	12	borrar_permiso
+48	Puede crear rol	13	crear_rol
+49	Puede modificar rol	13	modificar_rol
+50	Puede borrar rol	13	borrar_rol
+51	Puede crear TipoItem	14	crear_tipoitem
+52	Puede modificar TipoItem	14	modificar_tipoitem
+53	Puede borrar TipoItem	14	borrar_tipoitem
+54	Puede crear Atributo	15	crear_atributo
+55	Puede modificar Atributo	15	modificar_atributo
+56	Puede borrar Atributo	15	borrar_atributo
+57	Puede crear item base	16	crear_itembase
+58	Puede modificar item base	16	modificar_itembase
+59	Puede borrar item base	16	borrar_itembase
+60	Puede crear item relacion	17	crear_itemrelacion
+61	Puede modificar item relacion	17	modificar_itemrelacion
+62	Puede borrar item relacion	17	borrar_itemrelacion
+63	Puede crear campo numero	18	crear_camponumero
+64	Puede modificar campo numero	18	modificar_camponumero
+65	Puede borrar campo numero	18	borrar_camponumero
+66	Puede crear campo texto corto	19	crear_campotextocorto
+67	Puede modificar campo texto corto	19	modificar_campotextocorto
+68	Puede borrar campo texto corto	19	borrar_campotextocorto
+69	Puede crear campo texto largo	20	crear_campotextolargo
+70	Puede modificar campo texto largo	20	modificar_campotextolargo
+71	Puede borrar campo texto largo	20	borrar_campotextolargo
+72	Puede crear campo file	21	crear_campofile
+73	Puede modificar campo file	21	modificar_campofile
+74	Puede borrar campo file	21	borrar_campofile
+75	Puede crear campo imagen	22	crear_campoimagen
+76	Puede modificar campo imagen	22	modificar_campoimagen
+77	Puede borrar campo imagen	22	borrar_campoimagen
+78	Puede crear linea base	23	crear_lineabase
+79	Puede modificar linea base	23	modificar_lineabase
+80	Puede borrar linea base	23	borrar_lineabase
+81	Puede crear solicitud cambios	24	crear_solicitudcambios
+82	Puede modificar solicitud cambios	24	modificar_solicitudcambios
+83	Puede borrar solicitud cambios	24	borrar_solicitudcambios
+84	Puede crear votacion	25	crear_votacion
+85	Puede modificar votacion	25	modificar_votacion
+86	Puede borrar votacion	25	borrar_votacion
+87	Puede crear user object permission	26	crear_userobjectpermission
+88	Puede modificar user object permission	26	modificar_userobjectpermission
+89	Puede borrar user object permission	26	borrar_userobjectpermission
+90	Puede crear group object permission	27	crear_groupobjectpermission
+91	Puede modificar group object permission	27	modificar_groupobjectpermission
+92	Puede borrar group object permission	27	borrar_groupobjectpermission
+93	Puede crear lineas base	11	crear_Linea_Base
+142	Modificar Item de LB	16	credencial
+209	Puede consultar lineas base	11	consultar_Lineas_Base
 \.
 
 
@@ -1906,7 +1935,7 @@ COPY auth_permission (id, name, content_type_id, codename) FROM stdin;
 -- Name: auth_permission_id_seq; Type: SEQUENCE SET; Schema: public; Owner: zar
 --
 
-SELECT pg_catalog.setval('auth_permission_id_seq', 95, true);
+SELECT pg_catalog.setval('auth_permission_id_seq', 224, true);
 
 
 --
@@ -1952,7 +1981,7 @@ COPY django_content_type (id, name, app_label, model) FROM stdin;
 21	campo file	administrarItems	campofile
 22	campo imagen	administrarItems	campoimagen
 23	linea base	administrarLineaBase	lineabase
-24	solicitud	administrarLineaBase	solicitudcambios
+24	solicitud cambios	administrarLineaBase	solicitudcambios
 25	votacion	administrarLineaBase	votacion
 26	user object permission	guardian	userobjectpermission
 27	group object permission	guardian	groupobjectpermission
@@ -1971,9 +2000,16 @@ SELECT pg_catalog.setval('django_content_type_id_seq', 27, true);
 --
 
 COPY django_session (session_key, session_data, expire_date) FROM stdin;
-tr2ojdheiwbeok5t28rfopof0edsqkcs	YmQ0YzczZGQ4MmE3ZjYxNGY0ODhhYzU5ZDlkYmZkY2Q2MGQwZmU2OTp7Il9hdXRoX3VzZXJfYmFja2VuZCI6ImRqYW5nby5jb250cmliLmF1dGguYmFja2VuZHMuTW9kZWxCYWNrZW5kIiwiX2F1dGhfdXNlcl9pZCI6MSwiX3Nlc3Npb25fZXhwaXJ5IjowfQ==	2014-07-04 20:04:14.655904-04
-cyovf9s626p3kuk7yi52n612jnq2f5ku	ZmE0MTYwNzBiMTZiMWVmYzI3ZjI3N2JiYjAzYzRlNWNhMGFkZjg0NTp7InJldG9ybm8iOiIvaW5mb3Byb2plY3QvNCIsIl9zZXNzaW9uX2V4cGlyeSI6MCwiX2F1dGhfdXNlcl9pZCI6MywiX2F1dGhfdXNlcl9iYWNrZW5kIjoiZGphbmdvLmNvbnRyaWIuYXV0aC5iYWNrZW5kcy5Nb2RlbEJhY2tlbmQifQ==	2014-07-05 01:03:13.67234-04
-86ysaix3hl7og0i7ld8ev8tjehuykyts	MzYzNDcwMDZhNjMwM2YzNzkwYzI1YjlmNWE5MWY5NDEwNDFjY2I0YTp7InJldG9ybm8iOiIvZGVzYXJyb2xsby80IiwiX2F1dGhfdXNlcl9pZCI6MywiX2F1dGhfdXNlcl9iYWNrZW5kIjoiZGphbmdvLmNvbnRyaWIuYXV0aC5iYWNrZW5kcy5Nb2RlbEJhY2tlbmQiLCJfc2Vzc2lvbl9leHBpcnkiOjB9	2014-07-05 00:58:49.455302-04
+07osbuz0etp85kwpypa3s45g74mh5wd2	ODZhODkyMWUyMWY4NDBiMmZhZmJhZGQyZjA3MTliMDU2YjYwNmYzMzp7Il9zZXNzaW9uX2V4cGlyeSI6MCwiX2F1dGhfdXNlcl9pZCI6MiwiX2F1dGhfdXNlcl9iYWNrZW5kIjoiZGphbmdvLmNvbnRyaWIuYXV0aC5iYWNrZW5kcy5Nb2RlbEJhY2tlbmQifQ==	2014-06-07 06:45:28.550536-04
+37sxgw4mjjgcmi4efbsa8n28iobnumno	NzczZTQxNTMzYTQzN2JmNWRhZTAyZjgzOGNjNmIxNDdlYWEzNWEzZDp7Il9hdXRoX3VzZXJfYmFja2VuZCI6ImRqYW5nby5jb250cmliLmF1dGguYmFja2VuZHMuTW9kZWxCYWNrZW5kIiwiX2F1dGhfdXNlcl9pZCI6OCwiX3Nlc3Npb25fZXhwaXJ5IjowfQ==	2014-06-19 21:16:09.354431-04
+umvyqta8a054nfnk94j8szo5syu8yrub	Y2JhZDRlZTE5MmEwOWZhOGQ4MDczNDA3NTE0NjIxMDZhMjVhZDc1ZDp7fQ==	2014-06-21 02:09:56.951467-04
+4h0axmc51c4k3elk5uekm4308zj5h5dk	ZDlkMTk5MjQyZTBjMjBmMDdhYjdhMjQzNWE3NTUyMmJlNzIyMGFlNzp7Il9hdXRoX3VzZXJfYmFja2VuZCI6ImRqYW5nby5jb250cmliLmF1dGguYmFja2VuZHMuTW9kZWxCYWNrZW5kIiwiX2F1dGhfdXNlcl9pZCI6MywiX3Nlc3Npb25fZXhwaXJ5IjowfQ==	2014-06-20 23:25:10.750474-04
+ced02l4e2wycmj41vsyacnsd2uqiv7p5	Y2JhZDRlZTE5MmEwOWZhOGQ4MDczNDA3NTE0NjIxMDZhMjVhZDc1ZDp7fQ==	2014-07-03 21:09:24.517482-04
+kkqfygseymueh8ix6gye8c1mxla8xim0	Y2JhZDRlZTE5MmEwOWZhOGQ4MDczNDA3NTE0NjIxMDZhMjVhZDc1ZDp7fQ==	2014-07-03 21:10:01.55095-04
+b0rxukirzies0rh9ip7n6rec1gah6g1n	Y2JhZDRlZTE5MmEwOWZhOGQ4MDczNDA3NTE0NjIxMDZhMjVhZDc1ZDp7fQ==	2014-07-03 21:11:27.374672-04
+mfhz5c46o0z4ou5dmc2e1gawjoebmh47	ZDlkMTk5MjQyZTBjMjBmMDdhYjdhMjQzNWE3NTUyMmJlNzIyMGFlNzp7Il9hdXRoX3VzZXJfYmFja2VuZCI6ImRqYW5nby5jb250cmliLmF1dGguYmFja2VuZHMuTW9kZWxCYWNrZW5kIiwiX2F1dGhfdXNlcl9pZCI6MywiX3Nlc3Npb25fZXhwaXJ5IjowfQ==	2014-07-03 23:32:48.932933-04
+wv1jed8ljvbbkqbkrfny9l9ws738tttt	ZDlkMTk5MjQyZTBjMjBmMDdhYjdhMjQzNWE3NTUyMmJlNzIyMGFlNzp7Il9hdXRoX3VzZXJfYmFja2VuZCI6ImRqYW5nby5jb250cmliLmF1dGguYmFja2VuZHMuTW9kZWxCYWNrZW5kIiwiX2F1dGhfdXNlcl9pZCI6MywiX3Nlc3Npb25fZXhwaXJ5IjowfQ==	2014-07-04 00:31:19.279491-04
+7p1yrvb4qbl1khnosmsfspkiaws4tb10	Y2JhZDRlZTE5MmEwOWZhOGQ4MDczNDA3NTE0NjIxMDZhMjVhZDc1ZDp7fQ==	2014-07-03 22:25:09.397213-04
 \.
 
 
@@ -1982,111 +2018,79 @@ cyovf9s626p3kuk7yi52n612jnq2f5ku	ZmE0MTYwNzBiMTZiMWVmYzI3ZjI3N2JiYjAzYzRlNWNhMGF
 --
 
 COPY guardian_groupobjectpermission (id, permission_id, content_type_id, object_pk, group_id) FROM stdin;
-3	28	9	1	6
-4	29	9	1	6
-27	36	11	3	6
-28	37	11	3	6
-29	38	11	3	6
-30	39	11	3	6
-31	40	11	3	6
-32	41	11	3	6
-33	42	11	3	6
-34	43	11	3	6
-35	44	11	3	6
-36	45	11	3	6
-37	46	11	3	6
-38	36	11	5	6
-39	37	11	5	6
-40	38	11	5	6
-41	39	11	5	6
-42	40	11	5	6
-43	41	11	5	6
-44	42	11	5	6
-45	43	11	5	6
-46	44	11	5	6
-47	45	11	5	6
-48	46	11	5	6
-49	36	11	4	6
-50	37	11	4	6
-51	38	11	4	6
-52	39	11	4	6
-53	40	11	4	6
-54	41	11	4	6
-55	42	11	4	6
-56	43	11	4	6
-57	44	11	4	6
-58	45	11	4	6
-59	46	11	4	6
-60	28	9	2	7
-61	29	9	2	7
-62	36	11	6	7
-63	37	11	6	7
-64	38	11	6	7
-65	39	11	6	7
-66	40	11	6	7
-67	41	11	6	7
-68	42	11	6	7
-69	43	11	6	7
-70	44	11	6	7
-71	45	11	6	7
-72	46	11	6	7
-73	36	11	7	7
-74	37	11	7	7
-75	38	11	7	7
-76	39	11	7	7
-77	40	11	7	7
-78	41	11	7	7
-79	42	11	7	7
-80	43	11	7	7
-81	44	11	7	7
-82	45	11	7	7
-83	46	11	7	7
-84	36	11	8	7
-85	37	11	8	7
-86	38	11	8	7
-87	39	11	8	7
-88	40	11	8	7
-89	41	11	8	7
-90	42	11	8	7
-91	43	11	8	7
-92	44	11	8	7
-93	45	11	8	7
-94	46	11	8	7
-95	28	9	4	8
-96	29	9	4	8
-97	36	11	12	8
-98	37	11	12	8
-99	38	11	12	8
-100	39	11	12	8
-101	40	11	12	8
-102	41	11	12	8
-103	42	11	12	8
-104	43	11	12	8
-105	44	11	12	8
-106	45	11	12	8
-107	46	11	12	8
-108	36	11	9	8
-109	37	11	9	8
-110	38	11	9	8
-111	39	11	9	8
-112	40	11	9	8
-113	41	11	9	8
-114	42	11	9	8
-115	43	11	9	8
-116	44	11	9	8
-117	45	11	9	8
-118	46	11	9	8
-119	36	11	11	8
-120	37	11	11	8
-121	38	11	11	8
-122	39	11	11	8
-123	40	11	11	8
-124	41	11	11	8
-125	42	11	11	8
-126	43	11	11	8
-127	44	11	11	8
-128	45	11	11	8
-129	46	11	11	8
+1	28	9	2	3
+2	29	9	2	3
+3	36	11	4	3
+4	37	11	4	3
+5	44	11	4	3
+6	28	9	1	4
+7	29	9	1	4
+8	36	11	2	4
+9	37	11	2	4
+10	38	11	2	4
+11	39	11	2	4
+12	40	11	2	4
+13	41	11	2	4
+14	42	11	2	4
+15	43	11	2	4
+16	44	11	2	4
+17	93	11	2	4
+18	36	11	1	4
+19	37	11	1	4
+20	38	11	1	4
+21	39	11	1	4
+22	40	11	1	4
+23	41	11	1	4
+24	42	11	1	4
+25	43	11	1	4
+26	44	11	1	4
+27	93	11	1	4
+28	28	9	3	6
+29	29	9	3	6
+30	36	11	7	6
+31	37	11	7	6
+32	38	11	7	6
+33	39	11	7	6
+34	40	11	7	6
+35	41	11	7	6
+36	42	11	7	6
+37	43	11	7	6
+38	44	11	7	6
+39	93	11	7	6
+40	36	11	12	6
+41	37	11	12	6
+42	38	11	12	6
+43	39	11	12	6
+44	40	11	12	6
+45	41	11	12	6
+46	42	11	12	6
+47	43	11	12	6
+48	44	11	12	6
+49	93	11	12	6
+50	36	11	24	6
+51	37	11	24	6
+52	38	11	24	6
+53	39	11	24	6
+54	40	11	24	6
+55	41	11	24	6
+56	42	11	24	6
+57	43	11	24	6
+58	44	11	24	6
+59	93	11	24	6
+64	36	11	1	9
+65	37	11	1	9
+66	38	11	1	9
+67	39	11	1	9
+68	41	11	1	9
+69	42	11	1	9
+70	43	11	1	9
+71	44	11	1	9
+72	93	11	1	9
+73	209	11	1	4
+74	209	11	2	4
+75	209	11	12	6
+76	209	11	24	6
+77	209	11	7	6
 \.
 
 
@@ -2094,7 +2098,7 @@ COPY guardian_groupobjectpermission (id, permission_id, content_type_id, object_
 -- Name: guardian_groupobjectpermission_id_seq; Type: SEQUENCE SET; Schema: public; Owner: zar
 --
 
-SELECT pg_catalog.setval('guardian_groupobjectpermission_id_seq', 129, true);
+SELECT pg_catalog.setval('guardian_groupobjectpermission_id_seq', 77, true);
 
 
 --
@@ -2102,6 +2106,7 @@ SELECT pg_catalog.setval('guardian_groupobjectpermission_id_seq', 129, true);
 --
 
 COPY guardian_userobjectpermission (id, permission_id, content_type_id, object_pk, user_id) FROM stdin;
+1	142	16	4	2
 \.
 
 
@@ -2109,7 +2114,7 @@ COPY guardian_userobjectpermission (id, permission_id, content_type_id, object_p
 -- Name: guardian_userobjectpermission_id_seq; Type: SEQUENCE SET; Schema: public; Owner: zar
 --
 
-SELECT pg_catalog.setval('guardian_userobjectpermission_id_seq', 5, true);
+SELECT pg_catalog.setval('guardian_userobjectpermission_id_seq', 2, true);
 
 
 --
@@ -2117,24 +2122,22 @@ SELECT pg_catalog.setval('guardian_userobjectpermission_id_seq', 5, true);
 --
 
 COPY reversion_revision (id, manager_slug, date_created, user_id, comment) FROM stdin;
-1	default	2014-06-20 21:27:04.040453-04	\N	
-2	default	2014-06-20 21:27:42.245419-04	\N	
-3	default	2014-06-20 21:27:51.132686-04	\N	
-4	default	2014-06-20 21:29:54.948559-04	\N	
-5	default	2014-06-20 21:30:23.720673-04	\N	
-6	default	2014-06-20 21:47:12.181072-04	\N	
-7	default	2014-06-20 21:52:57.570199-04	\N	
-8	default	2014-06-20 22:43:34.337723-04	\N	
-9	default	2014-06-21 00:21:10.372445-04	\N	
-10	default	2014-06-21 00:21:17.855284-04	\N	
-11	default	2014-06-21 00:21:29.74783-04	\N	
-12	default	2014-06-21 00:22:56.298392-04	\N	
-13	default	2014-06-21 00:23:04.001864-04	\N	
-14	default	2014-06-21 00:39:23.805221-04	\N	
-15	default	2014-06-21 00:43:27.390385-04	\N	
-16	default	2014-06-21 01:00:40.689492-04	\N	
-17	default	2014-06-21 01:01:31.572064-04	\N	
-18	default	2014-06-21 01:01:36.950252-04	\N	
+1	default	2014-05-24 04:13:55.803013-04	\N	
+2	default	2014-05-24 04:20:36.714497-04	\N	
+3	default	2014-05-24 04:20:44.47203-04	\N	
+4	default	2014-05-24 04:22:08.324382-04	\N	
+5	default	2014-05-24 06:36:55.843511-04	\N	
+6	default	2014-05-24 06:38:00.681683-04	\N	
+7	default	2014-06-06 21:22:14.02512-04	\N	
+8	default	2014-06-06 21:48:02.081416-04	\N	
+9	default	2014-06-06 22:11:21.395829-04	\N	
+10	default	2014-06-06 22:11:49.799361-04	\N	
+11	default	2014-06-06 22:12:25.760746-04	\N	
+12	default	2014-06-06 22:44:22.603954-04	\N	
+13	default	2014-06-06 22:51:55.476162-04	\N	
+14	default	2014-06-06 22:52:05.005744-04	\N	
+15	default	2014-06-07 01:47:54.037983-04	\N	
+16	default	2014-06-07 01:48:05.868985-04	\N	
 \.
 
 
@@ -2142,7 +2145,7 @@ COPY reversion_revision (id, manager_slug, date_created, user_id, comment) FROM 
 -- Name: reversion_revision_id_seq; Type: SEQUENCE SET; Schema: public; Owner: zar
 --
 
-SELECT pg_catalog.setval('reversion_revision_id_seq', 18, true);
+SELECT pg_catalog.setval('reversion_revision_id_seq', 16, true);
 
 
 --
@@ -2150,39 +2153,34 @@ SELECT pg_catalog.setval('reversion_revision_id_seq', 18, true);
 --
 
 COPY reversion_version (id, revision_id, object_id, object_id_int, content_type_id, format, serialized_data, object_repr) FROM stdin;
-1	1	1	1	16	json	[{"pk": 1, "model": "administrarItems.itembase", "fields": {"tiempo": 1, "usuario": 3, "fecha_creacion": "2014-06-21T01:27:03.972Z", "linea_base": null, "solicitudes": [], "tipoitem": 1, "version": 1, "complejidad": 1, "descripcion": "Descripcion del item 00.", "nombre": "Item00", "costo": 1, "estado": "ACT", "fecha_modificacion": "2014-06-21T01:27:03.972Z", "usuario_modificacion": 3}}]	Item00
-2	1	1	1	20	json	[{"pk": 1, "model": "administrarItems.campotextolargo", "fields": {"item": 1, "atributo": 1, "valor": "<default>"}}]	CampoTextoLargo object
-3	2	1	1	16	json	[{"pk": 1, "model": "administrarItems.itembase", "fields": {"tiempo": -2, "usuario": 3, "fecha_creacion": "2014-06-21T01:27:03.972Z", "linea_base": null, "solicitudes": [], "tipoitem": 1, "version": 2, "complejidad": 2, "descripcion": "Descripcion del item 00.", "nombre": "Item00", "costo": 2, "estado": "ACT", "fecha_modificacion": "2014-06-21T01:27:42.230Z", "usuario_modificacion": 3}}]	Item00
-4	2	1	1	20	json	[{"pk": 1, "model": "administrarItems.campotextolargo", "fields": {"item": 1, "atributo": 1, "valor": "Datos del atributo 00."}}]	CampoTextoLargo object
-5	3	1	1	16	json	[{"pk": 1, "model": "administrarItems.itembase", "fields": {"tiempo": 2, "usuario": 3, "fecha_creacion": "2014-06-21T01:27:03.972Z", "linea_base": null, "solicitudes": [], "tipoitem": 1, "version": 3, "complejidad": 2, "descripcion": "Descripcion del item 00.", "nombre": "Item00", "costo": 2, "estado": "ACT", "fecha_modificacion": "2014-06-21T01:27:51.115Z", "usuario_modificacion": 3}}]	Item00
-6	4	2	2	16	json	[{"pk": 2, "model": "administrarItems.itembase", "fields": {"tiempo": 3, "usuario": 3, "fecha_creacion": "2014-06-21T01:29:54.886Z", "linea_base": null, "solicitudes": [], "tipoitem": 1, "version": 1, "complejidad": 3, "descripcion": "Descripcion del item 01", "nombre": "Item01", "costo": 3, "estado": "ACT", "fecha_modificacion": "2014-06-21T01:29:54.886Z", "usuario_modificacion": 3}}]	Item01
-7	4	2	2	20	json	[{"pk": 2, "model": "administrarItems.campotextolargo", "fields": {"item": 2, "atributo": 1, "valor": "<default>"}}]	CampoTextoLargo object
-8	5	1	1	17	json	[{"pk": 1, "model": "administrarItems.itemrelacion", "fields": {"itemPadre": 1, "estado": "ACT", "itemHijo": 2}}]	ItemRelacion object
-9	5	2	2	16	json	[{"pk": 2, "model": "administrarItems.itembase", "fields": {"tiempo": 3, "usuario": 3, "fecha_creacion": "2014-06-21T01:29:54.886Z", "linea_base": null, "solicitudes": [], "tipoitem": 1, "version": 2, "complejidad": 3, "descripcion": "Descripcion del item 01", "nombre": "Item01", "costo": 3, "estado": "ACT", "fecha_modificacion": "2014-06-21T01:30:23.697Z", "usuario_modificacion": 3}}]	Item01
-10	6	3	3	16	json	[{"pk": 3, "model": "administrarItems.itembase", "fields": {"tiempo": 1, "usuario": 2, "fecha_creacion": "2014-06-21T01:47:12.112Z", "linea_base": null, "solicitudes": [], "tipoitem": 1, "version": 1, "complejidad": 1, "descripcion": "Descripcion del item 02.", "nombre": "Item02", "costo": 1, "estado": "ACT", "fecha_modificacion": "2014-06-21T01:47:12.112Z", "usuario_modificacion": 2}}]	Item02
-11	6	3	3	20	json	[{"pk": 3, "model": "administrarItems.campotextolargo", "fields": {"item": 3, "atributo": 1, "valor": "<default>"}}]	CampoTextoLargo object
-12	7	3	3	16	json	[{"pk": 3, "model": "administrarItems.itembase", "fields": {"tiempo": 1, "usuario": 2, "fecha_creacion": "2014-06-21T01:47:12.112Z", "linea_base": null, "solicitudes": [], "tipoitem": 1, "version": 2, "complejidad": 1, "descripcion": "Descripcion del item 02", "nombre": "Item02", "costo": 1, "estado": "ACT", "fecha_modificacion": "2014-06-21T01:52:57.558Z", "usuario_modificacion": 3}}]	Item02
-13	7	3	3	20	json	[{"pk": 3, "model": "administrarItems.campotextolargo", "fields": {"item": 3, "atributo": 1, "valor": "Texto largo de prueba."}}]	CampoTextoLargo object
-14	8	1	1	16	json	[{"pk": 1, "model": "administrarItems.itembase", "fields": {"tiempo": 2, "usuario": 3, "fecha_creacion": "2014-06-21T01:27:03.972Z", "linea_base": 1, "solicitudes": [6, 7], "tipoitem": 1, "version": 4, "complejidad": 2, "descripcion": "Descripcion del item 00.", "nombre": "Item00", "costo": 2, "estado": "REV", "fecha_modificacion": "2014-06-21T02:43:34.265Z", "usuario_modificacion": 3}}]	Item00
-15	9	1	1	18	json	[{"pk": 1, "model": "administrarItems.camponumero", "fields": {"item": 4, "atributo": 2, "valor": 0}}]	CampoNumero object
-16	9	4	4	16	json	[{"pk": 4, "model": "administrarItems.itembase", "fields": {"tiempo": 5, "usuario": 3, "fecha_creacion": "2014-06-21T04:21:10.276Z", "linea_base": null, "solicitudes": [], "tipoitem": 2, "version": 1, "complejidad": 5, "descripcion": "Descripcion del item 00.", "nombre": "Item03", "costo": 5, "estado": "ACT", "fecha_modificacion": "2014-06-21T04:21:10.276Z", "usuario_modificacion": 3}}]	Item03
-17	10	4	4	16	json	[{"pk": 4, "model": "administrarItems.itembase", "fields": {"tiempo": 5, "usuario": 3, "fecha_creacion": "2014-06-21T04:21:10.276Z", "linea_base": null, "solicitudes": [], "tipoitem": 2, "version": 2, "complejidad": 5, "descripcion": "Descripcion del item 03.", "nombre": "Item03", "costo": 5, "estado": "ACT", "fecha_modificacion": "2014-06-21T04:21:17.837Z", "usuario_modificacion": 3}}]	Item03
-18	11	2	2	17	json	[{"pk": 2, "model": "administrarItems.itemrelacion", "fields": {"itemPadre": 3, "estado": "ACT", "itemHijo": 4}}]	ItemRelacion object
-19	11	4	4	16	json	[{"pk": 4, "model": "administrarItems.itembase", "fields": {"tiempo": 5, "usuario": 3, "fecha_creacion": "2014-06-21T04:21:10.276Z", "linea_base": null, "solicitudes": [], "tipoitem": 2, "version": 3, "complejidad": 5, "descripcion": "Descripcion del item 03.", "nombre": "Item03", "costo": 5, "estado": "ACT", "fecha_modificacion": "2014-06-21T04:21:29.732Z", "usuario_modificacion": 3}}]	Item03
-20	12	1	1	19	json	[{"pk": 1, "model": "administrarItems.campotextocorto", "fields": {"item": 5, "atributo": 3, "valor": "<default>"}}]	CampoTextoCorto object
-21	12	5	5	16	json	[{"pk": 5, "model": "administrarItems.itembase", "fields": {"tiempo": 6, "usuario": 3, "fecha_creacion": "2014-06-21T04:22:56.236Z", "linea_base": null, "solicitudes": [], "tipoitem": 3, "version": 1, "complejidad": 6, "descripcion": "Descripcion del item 04", "nombre": "Item04", "costo": 6, "estado": "ACT", "fecha_modificacion": "2014-06-21T04:22:56.236Z", "usuario_modificacion": 3}}]	Item04
-22	13	3	3	17	json	[{"pk": 3, "model": "administrarItems.itemrelacion", "fields": {"itemPadre": 4, "estado": "ACT", "itemHijo": 5}}]	ItemRelacion object
-23	13	5	5	16	json	[{"pk": 5, "model": "administrarItems.itembase", "fields": {"tiempo": 6, "usuario": 3, "fecha_creacion": "2014-06-21T04:22:56.236Z", "linea_base": null, "solicitudes": [], "tipoitem": 3, "version": 2, "complejidad": 6, "descripcion": "Descripcion del item 04", "nombre": "Item04", "costo": 6, "estado": "ACT", "fecha_modificacion": "2014-06-21T04:23:03.990Z", "usuario_modificacion": 3}}]	Item04
-24	14	4	4	20	json	[{"pk": 4, "model": "administrarItems.campotextolargo", "fields": {"item": 6, "atributo": 4, "valor": "<default>"}}]	CampoTextoLargo object
-25	14	6	6	16	json	[{"pk": 6, "model": "administrarItems.itembase", "fields": {"tiempo": 1, "usuario": 2, "fecha_creacion": "2014-06-21T04:39:23.726Z", "linea_base": null, "solicitudes": [], "tipoitem": 4, "version": 1, "complejidad": 1, "descripcion": "Descripcion del item 00", "nombre": "Item1", "costo": 1, "estado": "ACT", "fecha_modificacion": "2014-06-21T04:39:23.725Z", "usuario_modificacion": 2}}]	Item1
-26	15	2	2	19	json	[{"pk": 2, "model": "administrarItems.campotextocorto", "fields": {"item": 7, "atributo": 5, "valor": "<default>"}}]	CampoTextoCorto object
-27	15	7	7	16	json	[{"pk": 7, "model": "administrarItems.itembase", "fields": {"tiempo": 1, "usuario": 2, "fecha_creacion": "2014-06-21T04:43:27.293Z", "linea_base": null, "solicitudes": [], "tipoitem": 5, "version": 1, "complejidad": 1, "descripcion": "Descripcion del item 2", "nombre": "Item2", "costo": 1, "estado": "ACT", "fecha_modificacion": "2014-06-21T04:43:27.293Z", "usuario_modificacion": 2}}]	Item2
-28	16	8	8	16	json	[{"pk": 8, "model": "administrarItems.itembase", "fields": {"tiempo": 1, "usuario": 3, "fecha_creacion": "2014-06-21T05:00:40.541Z", "linea_base": null, "solicitudes": [], "tipoitem": 7, "version": 1, "complejidad": 1, "descripcion": "Descripcion del item 04", "nombre": "Item05", "costo": 1, "estado": "ACT", "fecha_modificacion": "2014-06-21T05:00:40.541Z", "usuario_modificacion": 3}}]	Item05
-29	16	5	5	20	json	[{"pk": 5, "model": "administrarItems.campotextolargo", "fields": {"item": 8, "atributo": 7, "valor": "<default>"}}]	CampoTextoLargo object
-30	17	9	9	16	json	[{"pk": 9, "model": "administrarItems.itembase", "fields": {"tiempo": 8, "usuario": 3, "fecha_creacion": "2014-06-21T05:01:31.478Z", "linea_base": null, "solicitudes": [], "tipoitem": 8, "version": 1, "complejidad": 8, "descripcion": "Descripcion del item 8", "nombre": "Item06", "costo": 8, "estado": "ACT", "fecha_modificacion": "2014-06-21T05:01:31.477Z", "usuario_modificacion": 3}}]	Item06
-31	17	3	3	19	json	[{"pk": 3, "model": "administrarItems.campotextocorto", "fields": {"item": 9, "atributo": 8, "valor": "<default>"}}]	CampoTextoCorto object
-32	18	9	9	16	json	[{"pk": 9, "model": "administrarItems.itembase", "fields": {"tiempo": 8, "usuario": 3, "fecha_creacion": "2014-06-21T05:01:31.478Z", "linea_base": null, "solicitudes": [], "tipoitem": 8, "version": 2, "complejidad": 8, "descripcion": "Descripcion del item 8", "nombre": "Item06", "costo": 8, "estado": "ACT", "fecha_modificacion": "2014-06-21T05:01:36.937Z", "usuario_modificacion": 3}}]	Item06
-33	18	4	4	17	json	[{"pk": 4, "model": "administrarItems.itemrelacion", "fields": {"itemPadre": 8, "estado": "ACT", "itemHijo": 9}}]	ItemRelacion object
+1	1	1	1	16	json	[{"pk": 1, "model": "administrarItems.itembase", "fields": {"tiempo": 5, "usuario": 10, "fecha_creacion": "2014-05-24T08:13:55.688Z", "linea_base": null, "solicitudes": [], "tipoitem": 1, "version": 1, "complejidad": 3, "descripcion": "descripcion", "nombre": "Plano del puente 1", "costo": 2, "estado": "ACT", "fecha_modificacion": "2014-05-24T08:13:55.687Z", "usuario_modificacion": 10}}]	Plano del puente 1
+2	1	1	1	18	json	[{"pk": 1, "model": "administrarItems.camponumero", "fields": {"item": 1, "atributo": 1, "valor": 0}}]	CampoNumero object
+3	2	2	2	16	json	[{"pk": 2, "model": "administrarItems.itembase", "fields": {"tiempo": 3, "usuario": 10, "fecha_creacion": "2014-05-24T08:20:36.635Z", "linea_base": null, "solicitudes": [], "tipoitem": 1, "version": 1, "complejidad": 2, "descripcion": "descripcion", "nombre": "Plano del alumbrado", "costo": 2, "estado": "ACT", "fecha_modificacion": "2014-05-24T08:20:36.633Z", "usuario_modificacion": 10}}]	Plano del alumbrado
+4	2	2	2	18	json	[{"pk": 2, "model": "administrarItems.camponumero", "fields": {"item": 2, "atributo": 1, "valor": 0}}]	CampoNumero object
+5	3	1	1	17	json	[{"pk": 1, "model": "administrarItems.itemrelacion", "fields": {"itemPadre": 2, "estado": "ACT", "itemHijo": 1}}]	ItemRelacion object
+6	3	1	1	16	json	[{"pk": 1, "model": "administrarItems.itembase", "fields": {"tiempo": 5, "usuario": 10, "fecha_creacion": "2014-05-24T08:13:55.688Z", "linea_base": null, "solicitudes": [], "tipoitem": 1, "version": 2, "complejidad": 3, "descripcion": "descripcion", "nombre": "Plano del puente 1", "costo": 2, "estado": "ACT", "fecha_modificacion": "2014-05-24T08:20:44.414Z", "usuario_modificacion": 10}}]	Plano del puente 1
+7	4	3	3	16	json	[{"pk": 3, "model": "administrarItems.itembase", "fields": {"tiempo": 1, "usuario": 10, "fecha_creacion": "2014-05-24T08:22:08.235Z", "linea_base": null, "solicitudes": [], "tipoitem": 1, "version": 1, "complejidad": 2, "descripcion": "algo", "nombre": "Plan de limpieza del terreno", "costo": 1, "estado": "ACT", "fecha_modificacion": "2014-05-24T08:22:08.233Z", "usuario_modificacion": 10}}]	Plan de limpieza del terreno
+8	4	3	3	18	json	[{"pk": 3, "model": "administrarItems.camponumero", "fields": {"item": 3, "atributo": 1, "valor": 0}}]	CampoNumero object
+9	5	4	4	16	json	[{"pk": 4, "model": "administrarItems.itembase", "fields": {"tiempo": 4, "usuario": 2, "fecha_creacion": "2014-05-24T10:36:55.766Z", "linea_base": null, "solicitudes": [], "tipoitem": 4, "version": 1, "complejidad": 2, "descripcion": "asd", "nombre": "Plan econ\\u00f3mico", "costo": 5, "estado": "ACT", "fecha_modificacion": "2014-05-24T10:36:55.766Z", "usuario_modificacion": 2}}]	Plan económico
+10	5	4	4	18	json	[{"pk": 4, "model": "administrarItems.camponumero", "fields": {"item": 4, "atributo": 4, "valor": 0}}]	CampoNumero object
+11	6	4	4	16	json	[{"pk": 4, "model": "administrarItems.itembase", "fields": {"tiempo": 4, "usuario": 2, "fecha_creacion": "2014-05-24T10:36:55.766Z", "linea_base": null, "solicitudes": [], "tipoitem": 4, "version": 2, "complejidad": 2, "descripcion": "asd", "nombre": "Plan econ\\u00f3mico", "costo": 5, "estado": "ACT", "fecha_modificacion": "2014-05-24T10:38:00.608Z", "usuario_modificacion": 2}}]	Plan económico
+12	7	5	5	16	json	[{"pk": 5, "model": "administrarItems.itembase", "fields": {"tiempo": 2, "usuario": 3, "fecha_creacion": "2014-06-07T01:22:13.753Z", "linea_base": null, "solicitudes": [], "tipoitem": 26, "version": 1, "complejidad": 2, "descripcion": "Primer item de prueba", "nombre": "Item1", "costo": 2, "estado": "ACT", "fecha_modificacion": "2014-06-07T01:22:13.752Z", "usuario_modificacion": 3}}]	Item1
+13	7	5	5	18	json	[{"pk": 5, "model": "administrarItems.camponumero", "fields": {"item": 5, "atributo": 25, "valor": 0}}]	CampoNumero object
+14	8	6	6	16	json	[{"pk": 6, "model": "administrarItems.itembase", "fields": {"tiempo": 3, "usuario": 3, "fecha_creacion": "2014-06-07T01:48:01.754Z", "linea_base": null, "solicitudes": [], "tipoitem": 26, "version": 1, "complejidad": 3, "descripcion": "Tercero xD", "nombre": "Item2", "costo": 3, "estado": "ACT", "fecha_modificacion": "2014-06-07T01:48:01.754Z", "usuario_modificacion": 3}}]	Item2
+15	8	6	6	18	json	[{"pk": 6, "model": "administrarItems.camponumero", "fields": {"item": 6, "atributo": 25, "valor": 0}}]	CampoNumero object
+16	9	5	5	16	json	[{"pk": 5, "model": "administrarItems.itembase", "fields": {"tiempo": 2, "usuario": 3, "fecha_creacion": "2014-06-07T01:22:13.753Z", "linea_base": null, "solicitudes": [], "tipoitem": 26, "version": 2, "complejidad": 2, "descripcion": "Primer item de prueba", "nombre": "Item1", "costo": 2, "estado": "ACT", "fecha_modificacion": "2014-06-07T02:11:21.315Z", "usuario_modificacion": 3}}]	Item1
+17	9	5	5	18	json	[{"pk": 5, "model": "administrarItems.camponumero", "fields": {"item": 5, "atributo": 25, "valor": 11.0}}]	CampoNumero object
+18	10	5	5	16	json	[{"pk": 5, "model": "administrarItems.itembase", "fields": {"tiempo": 4, "usuario": 3, "fecha_creacion": "2014-06-07T01:22:13.753Z", "linea_base": null, "solicitudes": [], "tipoitem": 26, "version": 3, "complejidad": 10, "descripcion": "Primer \\u00edtem de prueba.", "nombre": "Item1", "costo": 1, "estado": "ACT", "fecha_modificacion": "2014-06-07T02:11:49.741Z", "usuario_modificacion": 3}}]	Item1
+19	11	2	2	17	json	[{"pk": 2, "model": "administrarItems.itemrelacion", "fields": {"itemPadre": 6, "estado": "ACT", "itemHijo": 5}}]	ItemRelacion object
+20	11	5	5	16	json	[{"pk": 5, "model": "administrarItems.itembase", "fields": {"tiempo": 2, "usuario": 3, "fecha_creacion": "2014-06-07T01:22:13.753Z", "linea_base": null, "solicitudes": [], "tipoitem": 26, "version": 4, "complejidad": 2, "descripcion": "Primer item de prueba", "nombre": "Item1", "costo": 2, "estado": "ACT", "fecha_modificacion": "2014-06-07T02:12:25.694Z", "usuario_modificacion": 3}}]	Item1
+21	12	5	5	16	json	[{"pk": 5, "model": "administrarItems.itembase", "fields": {"tiempo": 2, "usuario": 3, "fecha_creacion": "2014-06-07T01:22:13.753Z", "linea_base": null, "solicitudes": [], "tipoitem": 26, "version": 5, "complejidad": 2, "descripcion": "Primer item de prueba", "nombre": "ItemUNO", "costo": 2, "estado": "ACT", "fecha_modificacion": "2014-06-07T02:44:22.506Z", "usuario_modificacion": 3}}]	ItemUNO
+22	13	6	6	16	json	[{"pk": 6, "model": "administrarItems.itembase", "fields": {"tiempo": 3, "usuario": 3, "fecha_creacion": "2014-06-07T01:48:01.754Z", "linea_base": null, "solicitudes": [], "tipoitem": 26, "version": 2, "complejidad": 5, "descripcion": "Tercero xDD", "nombre": "Item2", "costo": 3, "estado": "ACT", "fecha_modificacion": "2014-06-07T02:51:55.400Z", "usuario_modificacion": 3}}]	Item2
+23	13	6	6	18	json	[{"pk": 6, "model": "administrarItems.camponumero", "fields": {"item": 6, "atributo": 25, "valor": 23.0}}]	CampoNumero object
+24	14	6	6	16	json	[{"pk": 6, "model": "administrarItems.itembase", "fields": {"tiempo": 3, "usuario": 3, "fecha_creacion": "2014-06-07T01:48:01.754Z", "linea_base": null, "solicitudes": [], "tipoitem": 26, "version": 3, "complejidad": 5, "descripcion": "Tercero xDD", "nombre": "ItemDOS", "costo": 3, "estado": "ACT", "fecha_modificacion": "2014-06-07T02:52:04.950Z", "usuario_modificacion": 3}}]	ItemDOS
+25	15	7	7	16	json	[{"pk": 7, "model": "administrarItems.itembase", "fields": {"tiempo": 1, "usuario": 2, "fecha_creacion": "2014-06-07T05:47:53.817Z", "linea_base": null, "solicitudes": [], "tipoitem": 5, "version": 1, "complejidad": 2, "descripcion": "descripcion0", "nombre": "Item0", "costo": 11, "estado": "ACT", "fecha_modificacion": "2014-06-07T05:47:53.814Z", "usuario_modificacion": 2}}]	Item0
+26	15	7	7	18	json	[{"pk": 7, "model": "administrarItems.camponumero", "fields": {"item": 7, "atributo": 5, "valor": 0}}]	CampoNumero object
+27	16	3	3	17	json	[{"pk": 3, "model": "administrarItems.itemrelacion", "fields": {"itemPadre": 4, "estado": "ACT", "itemHijo": 7}}]	ItemRelacion object
+28	16	7	7	16	json	[{"pk": 7, "model": "administrarItems.itembase", "fields": {"tiempo": 1, "usuario": 2, "fecha_creacion": "2014-06-07T05:47:53.817Z", "linea_base": null, "solicitudes": [], "tipoitem": 5, "version": 2, "complejidad": 2, "descripcion": "descripcion0", "nombre": "Item0", "costo": 11, "estado": "ACT", "fecha_modificacion": "2014-06-07T05:48:05.788Z", "usuario_modificacion": 2}}]	Item0
 \.
 
 
@@ -2190,7 +2188,7 @@ COPY reversion_version (id, revision_id, object_id, object_id_int, content_type_
 -- Name: reversion_version_id_seq; Type: SEQUENCE SET; Schema: public; Owner: zar
 --
 
-SELECT pg_catalog.setval('reversion_version_id_seq', 33, true);
+SELECT pg_catalog.setval('reversion_version_id_seq', 28, true);
 
 
 --

@@ -112,7 +112,6 @@ USE_TZ = True
 STATIC_URL = '/static/'
 
 STATICFILES_DIRS = (
-    #os.path.join(BASE_DIR, "static"),
     os.path.join(BASE_DIR, "is2/", "static/"),
 )
 
@@ -129,7 +128,7 @@ LOGIN_REDIRECT_URL = '/main/'
 ANONYMOUS_USER_ID = -1
 GUARDIAN_RENDER_403 = True
 
-MEDIA_ROOT = os.path.join(BASE_DIR, 'is2/', 'static/')
+MEDIA_ROOT = os.path.join(BASE_DIR, 'is2/', 'static/media')
 MEDIA_URL = '/media/'
 
 EMAIL_USE_TLS = True

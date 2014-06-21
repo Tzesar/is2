@@ -19,8 +19,7 @@ from administrarProyectos.models import UsuariosVinculadosProyectos
 from administrarRolesPermisos.decorators import puede_crear_linea_base, verificar_permiso, puede_visualizar_solicitud, \
     vinculado_proyecto_requerido, puede_cancelar_solicitud, puede_votar, puede_revocar_credencial
 from administrarTipoItem.models import TipoItem
-from is2.settings import DEFAULT_FROM_EMAIL
-from is2.settings import MEDIA_ROOT
+from django.conf import settings
 
 
 @puede_crear_linea_base()
@@ -142,7 +141,11 @@ def generarGrafo(id_item):
     hijos = []
 
     calculoImpacto(padres, hijos, costo, tiempo, grafo)
-    direccion = MEDIA_ROOT + 'grafos/' + item.nombre + '_' + str(item.id)
+    try:
+        ubicacionStatic = settings.STATIC_ROOT
+    except:
+        ubicacionStatic = settings.STATICFILES_DIRS[0]
+    direccion = ubicacionStatic + 'grafos/' + item.nombre + '_' + str(item.id)
     grafo.write(direccion, format='png')
 
     return
@@ -171,7 +174,12 @@ def generarCalculoImpacto(id_item, id_solicitud):
     calculoImpacto(padres, hijos, costo, tiempo, grafo)
     costo = sum(costo)
     tiempo = sum(tiempo)
-    direccion = MEDIA_ROOT + 'grafos/' + item.nombre + '_' + str(id_solicitud)
+    try:
+        settings.PRODUCCION
+        ubicacionStatic = settings.STATIC_ROOT
+    except:
+        ubicacionStatic = settings.STATICFILES_DIRS[0]
+    direccion = ubicacionStatic + 'grafos/' + item.nombre + '_' + str(id_solicitud)
     grafo.write(direccion, format='png')
 
     return costo, tiempo
@@ -315,7 +323,6 @@ def visualizarSolicitud(request, id_solicitud, id_fase):
 
     items_grafos = {}
     for item in itemsSolicitud:
-        # direccion = '/static/grafos/' + item.nombre + '_' + str(id_solicitud)
         direccion = 'grafos/' + item.nombre + '_' + str(id_solicitud)
         items_grafos[item] = direccion
 
@@ -532,7 +539,7 @@ def enviarNotificacionesComite(id_solicitud):
                      proyecto.nombre + ' y esto es una notificacion sobre la nueva solicitud de cambios recibida.\nSolicitud Numero: '\
                     + str(solicitud.id) + '\nSolicitante: ' + solicitud.usuario.get_full_name() + '\n\nAtte.\nZARpm Team'
 
-        send_mail(asunto, mensaje, DEFAULT_FROM_EMAIL, [miembro.email])
+        send_mail(asunto, mensaje, settings.DEFAULT_FROM_EMAIL, [miembro.email])
 
 
 def enviarNotificacionSolicitudAprobada(id_solicitud):
@@ -553,7 +560,7 @@ def enviarNotificacionSolicitudAprobada(id_solicitud):
                     'Usted ha recibido este correo por que forma parte del equipo de Desarrollo del Proyecto ' + \
                      proyecto.nombre + ' y esto es una notificacion sobre la solicitud de cambio que ha sido APROBADA.' \
                     '\nSolicitud Numero: ' + str(solicitud.id) + '\nSolicitante: ' + solicitud.usuario.get_full_name()\
-                    + '\n\nAtte.\nZARpm Team', DEFAULT_FROM_EMAIL, [user.cod_usuario.email])
+                    + '\n\nAtte.\nZARpm Team', settings.DEFAULT_FROM_EMAIL, [user.cod_usuario.email])
         mensajes.append(mensaje)
 
     send_mass_mail((mensajes))
@@ -578,4 +585,4 @@ def enviarSolicitudRespuesta(id_solicitud):
                 '\nSolicitud Numero: ' + str(solicitud.id) + '\nSolicitante: ' + solicitud.usuario.get_full_name()\
                 + '\nVotacion: ' + solicitud.estado + '\n\nAtte.\nZARpm Team'
 
-    send_mail(asunto, mensaje, DEFAULT_FROM_EMAIL, [user.email] )
+    send_mail(asunto, mensaje, settings.DEFAULT_FROM_EMAIL, [user.email] )

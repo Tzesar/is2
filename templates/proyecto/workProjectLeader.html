@@ -56,187 +56,193 @@
             <b>Estado:</b> <i> {{ proyecto.get_estado_display }} </i><br>
         </div>
         <div class="panel-body">
-            <div class="col-lg-4 col-md-4 col-sm-4">
-                <div class="panel panel-default">
-                    <div class="panel-heading" style="display: block">
-                        <div class="row">
-                            <div class="col-sm-6" style="padding-top: 2%">
-                                <span>Lista de Fases</span>
-                            </div>
-                            <div class="col-sm-6">
-                                {% if proyecto.estado == 'PEN' %}
-                                    <span class="pull-right" data-toggle="tooltip" title="Agregar Fase" id="tooltip">
-                                        <a href="{% url 'administrarFases.views.createPhase' proyecto.id %}" class="text-success">
-                                            <span class="glyphicon glyphicon-plus-sign" style="font-size: 2em"></span>
-                                        </a>
-                                    </span>
-                                {% endif %}
+            <div class="row">
+                <div class="col-lg-4 col-md-4 col-sm-4">
+                    <div class="panel panel-default">
+                        <div class="panel-heading" style="display: block">
+                            <div class="row">
+                                <div class="col-sm-6" style="padding-top: 2%">
+                                    <span>Lista de Fases</span>
+                                </div>
+                                <div class="col-sm-6">
+                                    {% if proyecto.estado == 'PEN' %}
+                                        <span class="pull-right" data-toggle="tooltip" title="Agregar Fase" id="tooltip">
+                                            <a href="{% url 'administrarFases.views.createPhase' proyecto.id %}" class="text-success">
+                                                <span class="glyphicon glyphicon-plus-sign" style="font-size: 2em"></span>
+                                            </a>
+                                        </span>
+                                    {% endif %}
+                                </div>
                             </div>
                         </div>
-                    </div>
-                    <div class="list-group">
-                        {% if fases %}
-                            {% for fase in fases %}
-                                {% if proyecto.estado == 'PEN' %}
-                                    <div class="list-group-item">
-                                        <div class="row">
-                                            <div class="col-sm-6">
-                                                <a href="{% url 'administrarFases.views.changePhase' fase.id %}">
-                                                    <span>{{ fase.nombre }}</span>
-                                                </a>
-                                            </div>
-                                            <div class="col-sm-6">
-                                                <span class="pull-right" data-toggle="tooltip" title="Eliminar Fase" id="tooltip">
-                                                    <span class="pull-right" style="padding-right: 5%">
-                                                        <a href="{% url 'administrarFases.views.confirmar_eliminacion_fase' fase.id %}" class="text-danger">
-                                                            <span class="glyphicon glyphicon-minus-sign"></span>
-                                                        </a>
-                                                    </span>
-                                                </span>
-                                                {% if fase.nro_orden != cantFases %}
-                                                    <span class="pull-right" data-toggle="tooltip" title="Bajar" id="tooltip">
+                        <div class="list-group">
+                            {% if fases %}
+                                {% for fase in fases %}
+                                    {% if proyecto.estado == 'PEN' %}
+                                        <div class="list-group-item">
+                                            <div class="row">
+                                                <div class="col-sm-6">
+                                                    <a href="{% url 'administrarFases.views.changePhase' fase.id %}">
+                                                        <span>{{ fase.nombre }}</span>
+                                                    </a>
+                                                </div>
+                                                <div class="col-sm-6">
+                                                    <span class="pull-right" data-toggle="tooltip" title="Eliminar Fase" id="tooltip">
                                                         <span class="pull-right" style="padding-right: 5%">
-                                                            <a href="{% url 'administrarFases.views.bajarOrden' fase.id %}" class="text-info">
-                                                                <span class="glyphicon glyphicon-circle-arrow-down"></span>
+                                                            <a href="{% url 'administrarFases.views.confirmar_eliminacion_fase' fase.id %}" class="text-danger">
+                                                                <span class="glyphicon glyphicon-minus-sign"></span>
                                                             </a>
                                                         </span>
                                                     </span>
-                                                {% endif %}
-                                                {% if fase.nro_orden != 1 %}
-                                                    <span class="pull-right" data-toggle="tooltip" title="Subir" id="tooltip">
-                                                        <span class="pull-right" style="padding-right: 5%">
-                                                            <a href="{% url 'administrarFases.views.subirOrden' fase.id %}" class="text-info">
-                                                                <span class="glyphicon glyphicon-circle-arrow-up"></span>
-                                                            </a>
+                                                    {% if fase.nro_orden != cantFases %}
+                                                        <span class="pull-right" data-toggle="tooltip" title="Bajar" id="tooltip">
+                                                            <span class="pull-right" style="padding-right: 5%">
+                                                                <a href="{% url 'administrarFases.views.bajarOrden' fase.id %}" class="text-info">
+                                                                    <span class="glyphicon glyphicon-circle-arrow-down"></span>
+                                                                </a>
+                                                            </span>
                                                         </span>
-                                                    </span>
-                                                {% endif %}
+                                                    {% endif %}
+                                                    {% if fase.nro_orden != 1 %}
+                                                        <span class="pull-right" data-toggle="tooltip" title="Subir" id="tooltip">
+                                                            <span class="pull-right" style="padding-right: 5%">
+                                                                <a href="{% url 'administrarFases.views.subirOrden' fase.id %}" class="text-info">
+                                                                    <span class="glyphicon glyphicon-circle-arrow-up"></span>
+                                                                </a>
+                                                            </span>
+                                                        </span>
+                                                    {% endif %}
+                                                </div>
                                             </div>
                                         </div>
-                                    </div>
-                                {% else %}
-                                    <div class="list-group-item">
-                                        <div class="row">
-                                            <div class="col-sm-12">
-                                                <a href="{% url 'administrarFases.views.verFase' fase.id %}" class="text-primary">{{ fase.nombre }}</a> <span class="text-muted">(Estado: {{ fase.get_estado_display }})</span>
+                                    {% else %}
+                                        <div class="list-group-item">
+                                            <div class="row">
+                                                <div class="col-sm-12">
+                                                    <a href="{% url 'administrarFases.views.verFase' fase.id %}" class="text-primary">{{ fase.nombre }}</a> <span class="text-muted">(Estado: {{ fase.get_estado_display }})</span>
+                                                </div>
                                             </div>
                                         </div>
-                                    </div>
-                                {% endif %}
-                            {% endfor %}
-                        {% else %}
-                                    <a class="list-group-item list-group-item-warning">El proyecto no tiene fases asociadas.</a>
-                        {% endif %}
-                    </div>
-                </div>
-            </div>
-            <div class="col-lg-4 col-md-4 col-sm-4">
-                <div class="panel panel-default">
-                    <div class="panel-heading" style="">
-                        <div class="row">
-                            <div class="col-sm-6" style="padding-top: 2%">
-                                <span>Lista de Roles</span>
-                            </div>
-                            {% if proyecto.estado != "FIN" %}
-                                <div class="col-sm-6">
-                                    <span class="pull-right" data-toggle="tooltip" title="Agregar Rol" id="tooltip">
-                                        <a href="{% url 'administrarRolesPermisos.views.crearRol' proyecto.id %}" class="text-success">
-                                            <span class="glyphicon glyphicon-plus-sign" style="font-size: 2em"></span>
-                                        </a>
-                                    </span>
-                                </div>
+                                    {% endif %}
+                                {% endfor %}
+                            {% else %}
+                                        <a class="list-group-item list-group-item-warning">El proyecto no tiene fases asociadas.</a>
                             {% endif %}
                         </div>
                     </div>
-                    <div class="list-group">
-                        {% if roles %}
-                            {% for rol in roles %}
-                                <div class="list-group-item">
-                                    <div class="row">
-                                        <div class="col-sm-6">
+                </div>
+                <div class="col-lg-4 col-md-4 col-sm-4">
+                    <div class="panel panel-default">
+                        <div class="panel-heading" style="">
+                            <div class="row">
+                                <div class="col-sm-6" style="padding-top: 2%">
+                                    <span>Lista de Roles</span>
+                                </div>
+                                {% if proyecto.estado != "FIN" %}
+                                    <div class="col-sm-6">
+                                        <span class="pull-right" data-toggle="tooltip" title="Agregar Rol" id="tooltip">
+                                            <a href="{% url 'administrarRolesPermisos.views.crearRol' proyecto.id %}" class="text-success">
+                                                <span class="glyphicon glyphicon-plus-sign" style="font-size: 2em"></span>
+                                            </a>
+                                        </span>
+                                    </div>
+                                {% endif %}
+                            </div>
+                        </div>
+                        <div class="list-group">
+                            {% if roles %}
+                                {% for rol in roles %}
+                                    <div class="list-group-item">
+                                        <div class="row">
+                                            <div class="col-sm-6">
+                                                {% if proyecto.estado != "FIN" %}
+                                                    <a href="{% url 'administrarRolesPermisos.views.modificarRol' proyecto.id rol.id %}">
+                                                        {{ rol.grupo.name }}
+                                                    </a>
+                                                {% else %}
+                                                    <span class="text-primary">{{ rol.grupo.name }}</span>
+                                                {% endif %}
+                                            </div>
                                             {% if proyecto.estado != "FIN" %}
-                                                <a href="{% url 'administrarRolesPermisos.views.modificarRol' proyecto.id rol.id %}">
-                                                    {{ rol.grupo.name }}
-                                                </a>
-                                            {% else %}
-                                                <span class="text-primary">{{ rol.grupo.name }}</span>
+                                                <div class="col-sm-6">
+                                                    <span class="pull-right" style="padding-right: 5%" data-toggle="tooltip" title="Eliminar Rol" id="tooltip">
+                                                        <a href="{% url 'administrarRolesPermisos.views.eliminarRol' proyecto.id rol.id %}" class="text-danger">
+                                                            <span class="glyphicon glyphicon-minus-sign"></span>
+                                                        </a>
+                                                    </span>
+                                                </div>
                                             {% endif %}
                                         </div>
-                                        {% if proyecto.estado != "FIN" %}
-                                            <div class="col-sm-6">
-                                                <span class="pull-right" style="padding-right: 5%" data-toggle="tooltip" title="Eliminar Rol" id="tooltip">
-                                                    <a href="{% url 'administrarRolesPermisos.views.eliminarRol' proyecto.id rol.id %}" class="text-danger">
-                                                        <span class="glyphicon glyphicon-minus-sign"></span>
-                                                    </a>
-                                                </span>
-                                            </div>
-                                        {% endif %}
                                     </div>
-                                </div>
-                            {% endfor %}
-                        {% else %}
-                            <a class="list-group-item list-group-item-warning disabled">El proyecto no tiene roles asociados.</a>
-                        {% endif %}
+                                {% endfor %}
+                            {% else %}
+                                <a class="list-group-item list-group-item-warning disabled">El proyecto no tiene roles asociados.</a>
+                            {% endif %}
+                        </div>
                     </div>
                 </div>
-            </div>
-            <div class="col-lg-4 col-md-4 col-sm-4">
-                <table class="table table-condensed table-responsive">
-                    <thead>
-                        <tr>
-                            <th>
-                                <div class="row">
-                                    <div class="col-sm-12" style="padding-top: 2%">
-                                        <span>Miembros del proyecto</span>
+                <div class="col-lg-4 col-md-4 col-sm-4">
+                    <table class="table table-condensed table-responsive">
+                        <thead>
+                            <tr>
+                                <th>
+                                    <div class="row">
+                                        <div class="col-sm-12" style="padding-top: 2%">
+                                            <span>Miembros del proyecto</span>
+                                        </div>
                                     </div>
-                                </div>
-                            </th>
-                            <th>
-                                <div class="row">
-                                    <div class="col-sm-offset-6 col-sm-4">
-                                        {% if proyecto.estado != 'FIN' %}
-                                            <span class="align-right" data-toggle="tooltip" title="Agregar Miembro">
-                                                <a href="{% url 'administrarProyectos.views.setUserToProject' proyecto.id %}" class="text-success">
-                                                    <span class="glyphicon glyphicon-plus-sign" style="font-size: 2em"></span>
-                                                </a>
-                                            </span>
-                                        {% else %}
-                                            <span></span>
-                                        {% endif %}
+                                </th>
+                                <th>
+                                    <div class="row">
+                                        <div class="col-sm-offset-6 col-sm-4">
+                                            {% if proyecto.estado != 'FIN' %}
+                                                <span class="align-right" data-toggle="tooltip" title="Agregar Miembro">
+                                                    <a href="{% url 'administrarProyectos.views.setUserToProject' proyecto.id %}" class="text-success">
+                                                        <span class="glyphicon glyphicon-plus-sign" style="font-size: 2em"></span>
+                                                    </a>
+                                                </span>
+                                            {% else %}
+                                                <span></span>
+                                            {% endif %}
+                                        </div>
                                     </div>
-                                </div>
-                            </th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {% for usuario in usuariosAsociados %}
-                            <tr class="{% if not usuario.habilitado %} alert-warning {% endif %}
-                                {% if usuario.cod_usuario == proyecto.lider_proyecto %}active{% endif %}">
-                                <td>[{{ usuario.cod_usuario.username }}] - {{ usuario.cod_usuario.get_full_name }}</td>
-                                <td class="estado">
-                                    {% if proyecto.estado != 'FIN' %}
-                                        {% if usuario.cod_usuario != proyecto.lider_proyecto%}
-                                            <input type="checkbox" name="usuario_activo_proyecto" id="{{ usuario.cod_usuario.id }}"
-                                                   data_user_id="{{ usuario.cod_usuario.id }}" data_project_id="{{ proyecto.id }}"
-                                                   data_url="{% url 'administrarProyectos.views.workProject' proyecto.id  %}"
-                                                   {% if usuario.habilitado %} checked {% endif %} />
-                                        {% endif %}
-                                    {% endif %}
-                                </td>
+                                </th>
                             </tr>
-                        {% endfor %}
-                    </tbody>
-                </table>
+                        </thead>
+                        <tbody>
+                            {% for usuario in usuariosAsociados %}
+                                <tr class="{% if not usuario.habilitado %} alert-warning {% endif %}
+                                    {% if usuario.cod_usuario == proyecto.lider_proyecto %}active{% endif %}">
+                                    <td>[{{ usuario.cod_usuario.username }}] - {{ usuario.cod_usuario.get_full_name }}</td>
+                                    <td class="estado">
+                                        {% if proyecto.estado != 'FIN' %}
+                                            {% if usuario.cod_usuario != proyecto.lider_proyecto%}
+                                                <input type="checkbox" name="usuario_activo_proyecto" id="{{ usuario.cod_usuario.id }}"
+                                                       data_user_id="{{ usuario.cod_usuario.id }}" data_project_id="{{ proyecto.id }}"
+                                                       data_url="{% url 'administrarProyectos.views.workProject' proyecto.id  %}"
+                                                       {% if usuario.habilitado %} checked {% endif %} />
+                                            {% endif %}
+                                        {% endif %}
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
             </div>
-            <span class="pull-left" style="padding-top: 2%">
-                <a href="{% url 'autenticacion.views.main' %}" class="btn btn-md btn-warning btn-md" role="button">Volver al Inicio</a>
-                <span data-toggle="tooltip" title="Genera un reporte del proyecto en su estado actual en formato PDF">
-                    <a href="{% url 'administrarReportes.views.reporte_proyecto' proyecto.id %}" class="btn btn-md btn-success btn-md" role="button">Reporte de Proyecto</a>
-                </span>
-                <span data-toggle="tooltip" title="Genera un reporte de las solicitudes actuales del proyecto en formato PDF">
-                    <a href="{% url 'administrarReportes.views.reporte_solicitud' proyecto.id %}" class="btn btn-md btn-success btn-md" role="button">Reporte de Solicitudes</a>
-                </span>
-            </span>
+            <div class="row">
+                <div class="col-sm-12">
+                    <span class="pull-left" style="padding-top: 2%">
+                        <a href="{% url 'autenticacion.views.main' %}" class="btn btn-md btn-warning btn-md" role="button">Volver al Inicio</a>
+                        <span data-toggle="tooltip" title="Genera un reporte del proyecto en su estado actual en formato PDF">
+                            <a href="{% url 'administrarReportes.views.reporte_proyecto' proyecto.id %}" class="btn btn-md btn-success btn-md" role="button">Reporte de Proyecto</a>
+                        </span>
+                        <span data-toggle="tooltip" title="Genera un reporte de las solicitudes actuales del proyecto en formato PDF">
+                            <a href="{% url 'administrarReportes.views.reporte_solicitud' proyecto.id %}" class="btn btn-md btn-success btn-md" role="button">Reporte de Solicitudes</a>
+                        </span>
+                    </span>
+                </div>
+            </div>
         </div>
     {% endblock panelCentral %}>
     {% block botonesBottom %}{% endblock botonesBottom %}

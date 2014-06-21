@@ -3,6 +3,7 @@
 import cStringIO as StringIO
 import cgi
 import os
+from django.utils import timezone
 
 import ho.pisa as pisa
 from django.template import RequestContext
@@ -31,13 +32,12 @@ def generar_pdf(html, filename):
     archivo = open(path, 'wb')
     result = StringIO.StringIO()
     pdf1 = pisa.pisaDocument(StringIO.StringIO(html.encode("UTF-8")), result)
-    pdf2= pisa.pisaDocument(StringIO.StringIO(html.encode("UTF-8")), archivo)
+    pdf2 = pisa.pisaDocument(StringIO.StringIO(html.encode("UTF-8")), archivo)
     archivo.close()
     if not pdf2.err:
         HttpResponseRedirect('/static/reportes/%s' %filename)
         return HttpResponse(result.getvalue(), mimetype='application/pdf')
     return HttpResponse('Error al generar el reporte: %s' % cgi.escape(html))
-
 
 
 def reporte_proyecto(request, id_proyecto):
@@ -67,7 +67,9 @@ def reporte_proyecto(request, id_proyecto):
         itemsporfase[fase] = relaciones.items()
 
     filename = 'reporte_proyecto_' + proyecto.nombre + '.pdf'
-    html = render_to_string('reportes/reporte_proyecto.html', {'pagesize':'A4', 'proyecto': proyecto, 'items': itemsporfase.items()},
+    fecha = timezone.now()
+    html = render_to_string('reportes/reporte_proyecto.html', {'pagesize':'A4', 'proyecto': proyecto,
+                                                               'items': itemsporfase.items(), 'fecha': fecha},
                             context_instance=RequestContext(request))
     return generar_pdf(html, filename)
 
@@ -96,8 +98,10 @@ def reporte_solicitud(request, id_proyecto):
 
 
     filename = 'reporte_solicitudes_' + proyecto.nombre + '.pdf'
+    fecha = timezone.now()
     html = render_to_string('reportes/reporte_solicitud.html', {'pagesize': 'A4', 'proyecto': proyecto, 'fases': fases,
-                                                                'solicitudesporfase': solicitudesporfase.items()},
+                                                                'solicitudesporfase': solicitudesporfase.items(),
+                                                                'fecha': fecha},
                             context_instance=RequestContext(request))
 
     return generar_pdf(html, filename)

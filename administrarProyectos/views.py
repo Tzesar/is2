@@ -219,12 +219,16 @@ def setUserToProject(request, id_proyecto):
         form = setUserToProjectForm(request.POST, id_proyecto=project.id)
         if form.is_valid():
             nuevosUsuariosAsociados = form.get_cleaned_data()
+            messages = []
             for idNuevoUsuario in nuevosUsuariosAsociados:
                 usuarioVinculado = UsuariosVinculadosProyectos()
                 usuarioVinculado.cod_usuario_id = idNuevoUsuario
                 usuarioVinculado.cod_proyecto = project
                 usuarioVinculado.save()
+                messages.append('Usuario: ' + usuarioVinculado.cod_usuario.get_full_name() + ' asignado al proyecto con exito.')
 
+            request.session['error'] = 0
+            request.session['messages'] = messages
             return HttpResponseRedirect(reverse('administrarProyectos.views.workProject', kwargs={'id_proyecto': id_proyecto}))
     else:
         form = setUserToProjectForm(id_proyecto=project.id)
@@ -377,7 +381,7 @@ def startProject(request, id_proyecto):
                            u' y pueda iniciarse.')
             error = 1
 
-        nombreComite = 'ComiteDeCambios-' + proyecto.nombre
+        nombreComite = 'ComiteDeCambios-' + str(proyecto.id)
         comite = Rol.objects.get(grupo__name__contains=nombreComite)
         if comite.grupo.user_set.all().count() < 3:
             print comite.grupo.user_set.all().count()
@@ -400,7 +404,7 @@ def startProject(request, id_proyecto):
     return HttpResponseRedirect(reverse('administrarProyectos.views.workProject', kwargs={'id_proyecto': id_proyecto}))
 
 
-@lider_requerido("id_proyecto")
+@admin_requerido
 def cancelProject(request, id_proyecto):
     """
     *Vista para anular un proyecto*

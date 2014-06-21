@@ -6,7 +6,7 @@
 #   3 : ERROR AL RESTAURAR LOS DATOS DESDE EL ARCHIVO CON LA HERRAMIENTA LOADDATA DE DJANGO
 
 echo -e "Base de datos zarbd [RESTAURANDO]"
-echo -e "Borrando la base de datos zarbd"
+echo -e "Borrando la base de datos zarbd antigua"
 echo -e "Ingrese la contrasenha del usuario zar"
 dropdb -U zar zarbd
 if [ "$?" -ne 0 ]
@@ -14,7 +14,7 @@ then
     echo -e "No se pudo borrar la base de datos zarbd, verifique que nadie la este usando"
     exit 1
 fi
-echo -e "Se ha borrado zarbd"
+echo -e "Se ha borrado zarbd antigua"
 
 echo -e "Creando la base de datos zarbd"
 echo -e "Ingrese la contrasenha del usuario zar"
@@ -28,7 +28,6 @@ echo -e "Se ha creado zarbd"
 
 echo -e "Restaurando los datos desde el archivo backupBD.dump"
 psql -U zar -d zarbd  -f backupDB.sql
-#django-admin.py loaddata backupBD.json --pythonpath='./' --settings=is2.settings
 
 if [ "$?" -ne 0 ]
 then

@@ -869,7 +869,7 @@ def verItem(request, id_item):
     archivos = CampoFile.objects.filter(item=item)
 
     generarGrafo(id_item)
-    grafoRelaciones = '/static/grafos/' + item.nombre + '_' + str(id_item)
+    grafoRelaciones = 'grafos/' + item.nombre + '_' + str(id_item)
 
     retorno = request.session.pop('retorno')
 
@@ -906,18 +906,20 @@ def finRevisionItem(request, id_item):
 
         usuarios = get_users_with_perms(item)
         if usuarios.count() == 0:
-            solicitud = SolicitudCambios.objects.get(usuario=request.user, estado='ACP', items=item)
-            items_solicitud = solicitud.items.all()
+            solicitudes = SolicitudCambios.objects.filter(usuario=request.user, estado='ACP', items=item)
+            if solicitudes.count() > 0:
+                solicitud = solicitudes[0]
+                items_solicitud = solicitud.items.all()
 
-            finalizado = True
-            for item in items_solicitud:
-                permisos = get_perms(request.user, item)
-                if 'credencial' in permisos:
-                    finalizado = False
+                finalizado = True
+                for item in items_solicitud:
+                    permisos = get_perms(request.user, item)
+                    if 'credencial' in permisos:
+                        finalizado = False
 
-            if finalizado:
-                solicitud.estado = 'EJC'
-                solicitud.save()
+                if finalizado:
+                    solicitud.estado = 'EJC'
+                    solicitud.save()
 
         message = 'Revision Finalizada para el Item:' + item.nombre
         error = 0

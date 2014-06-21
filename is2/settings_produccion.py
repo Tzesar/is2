@@ -18,8 +18,13 @@ DATABASES = {
     }
 }
 
-STATIC_URL = 'http://static-zarpm.org/'
+STATIC_URL = 'http://static-zarpm.org/static/'
 
 # STATIC_ROOT is the directory where the collectstatic will put all the static files collected
 # from the STATICFILES_DIRS
-STATIC_ROOT = '/var/www/staticZarPm'
+STATIC_ROOT = '/var/www/staticZarPm/static/'
+
+MEDIA_URL = 'http://static-zarpm.org/media/'
+MEDIA_ROOT = '/var/www/staticZarPm/media/'
+
+PRODUCCION = True
