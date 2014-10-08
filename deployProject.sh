@@ -3,7 +3,7 @@
 # Recolectar todos los archivos estaticos
 cd ../
 echo "----Recolectando archivos del sistema----"
-django-admin.py collectstatic --noinput --pythonpath='is2/' --settings=is2.settings_produccion
+django-admin.py collectstatic --noinput --pythonpath='../' --settings=is2.settings_produccion
 if [ "$?" -ne 0 ]
 then
     echo -e "ERROR: No se pudo recolectar los archivos estaticos"

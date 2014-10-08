@@ -49,7 +49,9 @@ while true
                 "Versión 2.0" 
                 "Versión 3.0" 
                 "Versión 4.0" 
-                "Versión 5.0" 
+                "Versión 5.0"
+                "Versión 6.0"
+                "Versión 7.0"
                 "Salir"  )
 
     select opt in "${options[@]}" 
@@ -83,6 +85,18 @@ while true
                 echo "Usted ha seleccionado la versión 5.0"
                 archivo="is2-Iteracion_4"
                 fuente="https://github.com/Tzesar/is2/archive/Iteracion_5.zip"
+                break
+                ;;
+            "Versión 6.0")
+                echo "Usted ha seleccionado la versión 6.0"
+                archivo="is2-Iteracion_6"
+                fuente="https://github.com/Tzesar/is2/archive/Iteracion_6.zip"
+                break
+                ;;
+            "Versión 7.0")
+                echo "Usted ha seleccionado la versión 7.0"
+                archivo="is2-Iteracion_7"
+                fuente="https://github.com/Tzesar/is2/archive/Iteracion7.zip"
                 break
                 ;;
             "Salir")
@@ -168,7 +182,7 @@ fi
 #Django - sphinx-rtd-theme
 if [ -d /usr/local/lib/python2.7/dist-packages/sphinx_rtd_theme ];
 	then
-	echo "sphinx-rtd-theme ya esta instalado"
+	echo "Sphinx-rtd-theme ya esta instalado"
 else
 	#Instalamos el framework Django
 	echo "Instalamos el sphinx-rtd-theme"
@@ -178,7 +192,7 @@ fi
 #Django - floppyforms
 if [ -d /usr/local/lib/python2.7/dist-packages/floppyforms ];
 	then
-	echo "sphinx-rtd-theme ya esta instalado"
+	echo "Floppyforms ya esta instalado"
 else
 	#Instalamos el framework Django
 	echo "Instalamos el Django-floppyforms"
@@ -188,7 +202,7 @@ fi
 #Django - filter
 if [ -d /usr/local/lib/python2.7/dist-packages/django_filters ];
 	then
-	echo "sphinx-rtd-theme ya esta instalado"
+	echo "Django-filter ya esta instalado"
 else
 	#Instalamos el framework Django
 	echo "Instalamos el Django-floppyforms"
@@ -198,7 +212,7 @@ fi
 #Django - Tables2
 if [ -d /usr/local/lib/python2.7/dist-packages/django_tables2 ];
 	then
-	echo "sphinx-rtd-theme ya esta instalado"
+	echo "Django-tables2 ya esta instalado"
 else
 	#Instalamos el framework Django
 	echo "Instalamos el django-tables2"
@@ -209,7 +223,7 @@ fi
 #Django - Guardian
 if [ -d /usr/local/lib/python2.7/dist-packages/guardian ];
 	then
-	echo "sphinx-rtd-theme ya esta instalado"
+	echo "Django-guardian ya esta instalado"
 else
 	#Instalamos el framework Django
 	echo "Instalamos Django-guardian"
@@ -386,10 +400,10 @@ fi
 	echo "\q" >> comandos.sql
 	sudo -u postgres psql -a -f comandos.sql
 	sudo -u postgres createdb zarbd -O zar
-	#Insertar aqui el script que carga la base de datos
+	./loadBD.sh
 	echo "Fin de las Operaciones sobre la Base de Datos"
 	rm comandos.sql
-	python syncdb.py	
+#	python syncdb.py
 
 rm instalados.txt
 
